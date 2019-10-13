@@ -1,0 +1,73 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Neo"><title>论二维码的原理及生成 · 浮生若梦</title><meta name="description" content="大家肯定都用过微信中的扫一扫功能。我们先来全面了解一下二维码
+二维码的起源二维码的起源是日本，原本是DensoWave公司为了追踪汽车零部件而设计的一种条码.今日QR码已广泛使用在各行各业.
+二维码的特点
+存储信息量传统的条形码只能处理20位左右的信息量，与此相比，QR码可处理条形码的几十倍到几百倍"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title><a href="/">浮生若梦</a></h3></div></div><ul class="social-links"></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a href="https://www.caicai.me"> CaiCai </a><span>&</span><a href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/about">关于</a></li><li><a href="/archives">归档</a></li><li><a href="/links">友链</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>论二维码的原理及生成</a></h3></div><div class="post-content"><p>大家肯定都用过微信中的扫一扫功能。我们先来全面了解一下二维码</p>
+<h2 id="二维码的起源"><a href="#二维码的起源" class="headerlink" title="二维码的起源"></a>二维码的起源</h2><p>二维码的起源是日本，原本是Denso<br>Wave公司为了追踪汽车零部件而设计的一种条码.今日QR码已广泛使用在各行各业.</p>
+<h2 id="二维码的特点"><a href="#二维码的特点" class="headerlink" title="二维码的特点"></a>二维码的特点</h2><ol>
+<li><strong>存储信息量</strong><br>传统的条形码只能处理20位左右的信息量，与此相比，QR码可处理条形码的几十倍到几百倍的信息量。另外，QR码还可以支持所有类型的数据。（如：数字、英文字母、日文字母、汉字、符号、二进制、控制码等）。一个QR码最多可以处理7089字(仅用数字时)的巨大信息量。</li>
+<li><strong>在小空间内打印</strong><br>QR码使用纵向和横向两个方向处理数据，如果是相同的信息量，QR码所占空间为条形码的十分之一左右。(还支持Micro<br>QR码，可以在更小空间内处理数据。)</li>
+<li><strong>有效的表现各种字母</strong><br>QR码是日本国产的二维码，因此非常适合处理日文字母和汉字。QR码字集规格定义是按照日本标准“JIS第一级和第二级的汉字”制定的，因此在日语处理方面，每一个全角字母和汉字都用13比特的数据处理，效率较高，与其他二维码相比，可以多存储20%以上的信息。</li>
+<li><strong>纠错功能</strong><br>QR码具备“纠错功能”，即使部分编码变脏或破损，也可以恢复数据。数据恢复以码字为单位※1，最多可以纠错约30%※2。</li>
+<li><strong>360度任一方向读取</strong><br>QR码从360°任一方向均可快速读取。其奥秘就在于QR码中的3处定位图案，可以帮助QR码不受背景样式的影响，实现快速稳定的读取。</li>
+<li><strong>支持数据合并功能</strong><br>QR码可以将数据分割为多个编码，最多支持16个QR码。使用这一功能，还可以在狭长区域内打印QR码。另外，也可以把多个分割编码合并为单个数据。</li>
+</ol>
+<p><img src="http://e.hiphotos.bdimg.com/album/s%3D550%3Bq%3D90%3Bc%3Dxiangce%2C100%2C100/sign=66197a630b24ab18e416e13205c197f0/d1160924ab18972be0789f8fe4cd7b899e510a30.jpg?referer=7eef5c76718da9771738b21b76ef&x=.jpg" alt="二维码"></p>
+<ul>
+<li>在上图21*21的矩阵中，黑白的区域在QR码规范中被指定为固定的位置，称为寻像图形（finder<br>pattern）和定位图形(timing<br>pattern)。寻像图形和定位图形用来帮助解码程序确定图形中具体符号的坐标。</li>
+<li>黄色的区域用来保存被编码的数据内容以及纠错信息码。</li>
+<li>蓝色的区域，用来标识纠错的级别（也就是Level L到Level H)和所谓的”Mask<br>pattern”,这个区域被称为“格式化信息”（format information）。</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="二维码的生成原理"><a href="#二维码的生成原理" class="headerlink" title="二维码的生成原理"></a>二维码的生成原理</h2><p>酷壳中的一篇文章写得不错，可以去看一下:<a href="http://coolshell.cn/articles/10590.html" target="_blank" rel="noopener">http://coolshell.cn/articles/10590.html</a></p>
+<h2 id="JAVA生成二维码"><a href="#JAVA生成二维码" class="headerlink" title="JAVA生成二维码"></a>JAVA生成二维码</h2><p>JAVA中的开源类库(<a href="https://github.com/zxing/zxing" target="_blank" rel="noopener">Zxing</a>)用于解析多种格式的条形码和二维码.<br>Maven中可以引用</p>
+<pre><code>&lt;dependency&gt;
+  &lt;groupId&gt;com.google.zxing&lt;/groupId&gt;
+  &lt;artifactId&gt;javase&lt;/artifactId&gt;
+  &lt;version&gt;2.2&lt;/version&gt;
+&lt;/dependency&gt;
+
+
+
+public class QRcodeTest {
+
+    public static void main(String[] args) {
+        String myCodeText = &quot;http://www.l99.com/media&quot;;
+        String filePath = &quot;/home/neoyin/temp/bak/test.png&quot;;
+        int size = 125;
+        String fileType = &quot;png&quot;;
+        File myFile = new File(filePath);
+        try {
+            Hashtable&lt;EncodeHintType, ErrorCorrectionLevel&gt; hintMap = new Hashtable&lt;EncodeHintType, ErrorCorrectionLevel&gt;();
+            hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+            QRCodeWriter qrCodeWriter = new QRCodeWriter();
+            BitMatrix byteMatrix = qrCodeWriter.encode(myCodeText,BarcodeFormat.QR_CODE, size, size, hintMap);
+            int CrunchifyWidth = byteMatrix.getWidth();
+            BufferedImage image = new BufferedImage(CrunchifyWidth, CrunchifyWidth,
+                    BufferedImage.TYPE_INT_RGB);
+            image.createGraphics();
+
+            Graphics2D graphics = (Graphics2D) image.getGraphics();
+            graphics.setColor(Color.WHITE);
+            graphics.fillRect(0, 0, CrunchifyWidth, CrunchifyWidth);
+            graphics.setColor(Color.BLACK);
+
+            for (int i = 0; i &lt; CrunchifyWidth; i++) {
+                for (int j = 0; j &lt; CrunchifyWidth; j++) {
+                    if (byteMatrix.get(i, j)) {
+                        graphics.fillRect(i, j, 1, 1);
+                    }
+                }
+            }
+            ImageIO.write(image, fileType, myFile);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(&quot;\n\nYou have successfully created QR Code.&quot;);
+    }    
+}</code></pre><p><a href="http://www.baike.com/wiki/%E4%BA%8C%E7%BB%B4%E7%A0%81" target="_blank" rel="noopener">二维码百度百科</a></p>
+<p><a href="http://zh.wikipedia.org/wiki/QR%E7%A0%81" target="_blank" rel="noopener">二维码wiki</a></p>
+<p><a href="http://www.felix021.com/blog/read.php?2116" target="_blank" rel="noopener">为程序员写的Reed-Solomon码解释</a></p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2014-02-17</span><i class="fa fa-tag"></i><a class="tag" href="/categories/技术流/" title="技术流">技术流 </a><a class="tag" href="/tags/QRcode/" title="QRcode">QRcode </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" href="http://twitter.com/home?status=,http://yoursite.com/2014/02/17/qrcode-generate/,浮生若梦,论二维码的原理及生成,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2014/02/19/what-if-star-sand/" title="【What if 系列】星际沙滩">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2014/02/11/what-if-hitting-a-comet/" title="【What if 系列】彗星与棒球">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>

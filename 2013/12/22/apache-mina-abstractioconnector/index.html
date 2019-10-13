@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Neo"><title>apache mina 基础类分析(三):AbstractIoConnector · 浮生若梦</title><meta name="description" content="AbstractIoConnector:这个类继承了AbstractIoService，实现了IoConnector接口，AbstractIoService已经介绍过了，在这个类中，主要实现了一个connect()(以及重载)方法：
+public final ConnectFuture connec"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title><a href="/">浮生若梦</a></h3></div></div><ul class="social-links"></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a href="https://www.caicai.me"> CaiCai </a><span>&</span><a href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/about">关于</a></li><li><a href="/archives">归档</a></li><li><a href="/links">友链</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>apache mina 基础类分析(三):AbstractIoConnector</a></h3></div><div class="post-content"><p>AbstractIoConnector:这个类继承了AbstractIoService，实现了IoConnector接口，AbstractIoService已经介绍过了，在这个类中，主要实现了一个connect()(以及重载)方法：</p>
+<pre><code>public final ConnectFuture connect(SocketAddress remoteAddress, SocketAddress localAddress,
+IoSessionInitializer&lt;? extends ConnectFuture&gt; sessionInitializer) {
+if (isDisposing()) {
+throw new IllegalStateException(&quot;The connector has been disposed.&quot;);
+}
+
+if (remoteAddress == null) {
+throw new IllegalArgumentException(&quot;remoteAddress&quot;);
+}
+
+if (!getTransportMetadata().getAddressType().isAssignableFrom(remoteAddress.getClass())) {
+throw new IllegalArgumentException(&quot;remoteAddress type: &quot; + remoteAddress.getClass() + &quot; (expected: &quot;
++ getTransportMetadata().getAddressType() + &quot;)&quot;);
+}
+
+if (localAddress != null &amp;&amp; !getTransportMetadata().getAddressType().isAssignableFrom(localAddress.getClass())) {
+throw new IllegalArgumentException(&quot;localAddress type: &quot; + localAddress.getClass() + &quot; (expected: &quot;
++ getTransportMetadata().getAddressType() + &quot;)&quot;);
+}
+
+if (getHandler() == null) {
+if (getSessionConfig().isUseReadOperation()) {
+setHandler(new IoHandler() {
+public void exceptionCaught(IoSession session, Throwable cause) throws Exception {
+// Empty handler
+}
+
+public void messageReceived(IoSession session, Object message) throws Exception {
+// Empty handler
+}
+
+public void messageSent(IoSession session, Object message) throws Exception {
+// Empty handler
+}
+
+public void sessionClosed(IoSession session) throws Exception {
+// Empty handler
+}
+
+public void sessionCreated(IoSession session) throws Exception {
+// Empty handler
+}
+
+public void sessionIdle(IoSession session, IdleStatus status) throws Exception {
+// Empty handler
+}
+
+public void sessionOpened(IoSession session) throws Exception {
+// Empty handler
+}
+});
+} else {
+throw new IllegalStateException(&quot;handler is not set.&quot;);
+}
+}
+
+return connect0(remoteAddress, localAddress, sessionInitializer);
+}</code></pre><h1 id="1-这个方法返回一个ConnectFuture对象，也就是说，调用这个方法后，会阻塞线程，在if-getHandler"><a href="#1-这个方法返回一个ConnectFuture对象，也就是说，调用这个方法后，会阻塞线程，在if-getHandler" class="headerlink" title="1.这个方法返回一个ConnectFuture对象，也就是说，调用这个方法后，会阻塞线程，在if(getHandler()"></a>1.这个方法返回一个ConnectFuture对象，也就是说，调用这个方法后，会阻塞线程，在if(getHandler()</h1><p>null)中，如果handler是空的，则默认实现一个空的handler,那也就不难理解，在开发时，在开发时，必须要自定义一个实现了IoHandler的类。  </p>
+<p>这个类需要实现IoHandler的七个方法，再仔细看看这个接口中的几个方法，也就不难得出，这个IoHandler是一个顶层的阻塞类，等待接收消息。这个IoHandler接口跟android中的Handler接口意义上差不多。  </p>
+<p>2.接着在这个类中调用了connect0方法，这个方法在这个类中是个抽象类，由其子类实现，下一篇将有这个类的分析</p>
+<p>总结：这个类是一个实现接收消息阻塞功能的定义类。</p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2013-12-22</span><i class="fa fa-tag"></i><a class="tag" href="/categories/技术流/" title="技术流">技术流 </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" href="http://twitter.com/home?status=,http://yoursite.com/2013/12/22/apache-mina-abstractioconnector/,浮生若梦,apache mina 基础类分析(三):AbstractIoConnector,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2013/12/24/solr-shard-error-of-query-createmainquery/" title="solr shard查询请求时createMainQuery报错">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2013/12/19/what-if-phone-keypad/" title="【What if 系列】恼人的键盘">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>

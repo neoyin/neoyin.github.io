@@ -1,0 +1,74 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Neo"><title>Extjs的borderlayout实战代码 · 浮生若梦</title><meta name="description" content="使用如下代码，你将创建出如上图所示的漂亮界面
+Ext.onReady(function(){
+var body = new Ext.Panel({
+layout: &amp;apos;border&amp;apos;,
+items: [
+{
+xtype: &amp;apos;panel&amp;apos;,
+region: &amp;ap"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title><a href="/">浮生若梦</a></h3></div></div><ul class="social-links"></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a href="https://www.caicai.me"> CaiCai </a><span>&</span><a href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/about">关于</a></li><li><a href="/archives">归档</a></li><li><a href="/links">友链</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>Extjs的borderlayout实战代码</a></h3></div><div class="post-content"><p><img src="http://www.floatinglife.cn/wp-content/uploads/2013/12/%E5%BF%AB%E7%85%A71.png" alt="image" title="Extjs"></p>
+<p>使用如下代码，你将创建出如上图所示的漂亮界面</p>
+<pre><code>Ext.onReady(function(){
+var body = new Ext.Panel({
+layout: &apos;border&apos;,
+items: [
+{
+xtype: &apos;panel&apos;,
+region: &apos;north&apos;,
+height: 80,
+html: &apos;&lt;IFRAME ID=&quot;head_frame&quot; width=&quot;100%&quot; height=&quot;100%&quot; FRAMEBORDER=0 SCROLLING=NO SRC=&quot;&apos; + basePath +&apos;head.jsp&quot;&gt;&lt;/IFRAME&gt;&apos;
+}, {
+xtype: &apos;panel&apos;,
+region: &apos;south&apos;,
+height: 30,
+html: &apos;south&apos;
+}, {
+xtype: &apos;panel&apos;,
+region: &apos;center&apos;,
+layout: &apos;border&apos;,
+tbar: [
+userName,
+{
+xtype: &apos;splitbutton&apos;,
+
+text: &apos;Split Button&apos;
+},
+&apos;-&gt;&apos;, // same as {xtype: &apos;tbfill&apos;}, // Ext.Toolbar.Fill
+{
+xtype: &apos;textfield&apos;,
+name: &apos;field1&apos;,
+emptyText: &apos;enter search term&apos;
+},
+// add a vertical separator bar between toolbar items
+&apos;-&apos;, // same as {xtype: &apos;tbseparator&apos;} to create Ext.Toolbar.Separator
+&apos;text 1&apos;, // same as {xtype: &apos;tbtext&apos;, text: &apos;text1&apos;} to create Ext.Toolbar.TextItem
+{xtype: &apos;tbspacer&apos;},// same as &apos; &apos; to create Ext.Toolbar.Spacer
+{
+text: &apos;退出&apos;,
+handler: logout
+},
+{xtype: &apos;tbspacer&apos;, width: 50}, // add a 50px space &apos;text 3&apos;
+
+],
+items: [
+{
+xtype: &apos;panel&apos;,
+region: &apos;center&apos;,
+html: &apos;&lt;IFRAME ID=&quot;container_frame&quot; width=&quot;100%&quot; height=&quot;100%&quot; FRAMEBORDER=0 SCROLLING=NO SRC=&quot;&apos; + basePath +&apos;welcome.jsp&quot;&gt;&lt;/IFRAME&gt;&apos;
+}, {
+xtype: &apos;panel&apos;,
+region: &apos;west&apos;,
+width: 150,
+split: true,
+layout: &apos;fit&apos;,
+items:getTree(&apos;tree/initTree.action?showLink=true&apos;)
+}
+]
+}
+]
+});
+
+var viewPort = new Ext.Viewport({
+layout: &apos;fit&apos;,
+items:body
+});
+});</code></pre></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2013-12-01</span><i class="fa fa-tag"></i><a class="tag" href="/categories/技术流/" title="技术流">技术流 </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" href="http://twitter.com/home?status=,http://yoursite.com/2013/12/01/extjs-borderlayout-example/,浮生若梦,Extjs的borderlayout实战代码,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2013/12/01/hadoop-jobclient-69s-timeout/" title="hadoop jobclient69秒超时问题">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2013/12/01/android-listview-issue/" title="android中的ListView在超过屏幕后，会使选择数据混乱的解决方法">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>

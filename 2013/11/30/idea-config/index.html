@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Neo"><title> · 浮生若梦</title><meta name="description" content="IDEA配置配置JDK打开 File-&amp;gt;Project Structure, 在Project SDK下选择安装的JDK位置.
+在IDEA中使用git配置
+打开 File-&amp;gt;Settings-&amp;gt;Version Control-&amp;gt;Git在 Path to Git executa"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title><a href="/">浮生若梦</a></h3></div></div><ul class="social-links"></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a href="https://www.caicai.me"> CaiCai </a><span>&</span><a href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/about">关于</a></li><li><a href="/archives">归档</a></li><li><a href="/links">友链</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a></a></h3></div><div class="post-content"><h3 id="IDEA配置"><a href="#IDEA配置" class="headerlink" title="IDEA配置"></a>IDEA配置</h3><h4 id="配置JDK"><a href="#配置JDK" class="headerlink" title="配置JDK"></a>配置JDK</h4><p>打开 File-&gt;Project Structure, 在Project SDK下选择安装的JDK位置.</p>
+<h3 id="在IDEA中使用git"><a href="#在IDEA中使用git" class="headerlink" title="在IDEA中使用git"></a>在IDEA中使用git</h3><h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><ol>
+<li>打开 File-&gt;Settings-&gt;Version Control-&gt;Git<br>在 Path to Git executable: 中填写git的执行程序路径  </li>
+<li>打开 File-&gt;Settings-&gt;Version Control-&gt;Github<br>host填github.com, 填好用户名,密码后点Test测试.</li>
+</ol>
+<h4 id="检出项目"><a href="#检出项目" class="headerlink" title="检出项目"></a>检出项目</h4><h4 id="从github中检出项目"><a href="#从github中检出项目" class="headerlink" title="从github中检出项目"></a>从github中检出项目</h4><p>选择菜单”VCS — Checkout from Version Control — Github”：<br>或者在欢迎界面上也有 Checkout from Version Control,<br>填好信息后, 点击”Clone”按钮，即完成获取过程。</p>
+<p>导入完成后会提示要不要作为一个Project打开,<br>IDEA中Project相当于Eclipse中workspace的概念,<br>如果不是要作为单个工程的话可以选no, 在后面再作为module导入,<br>IDEA的module相当于Eclipse的Project.</p>
+<h3 id="项目管理"><a href="#项目管理" class="headerlink" title="项目管理"></a>项目管理</h3><h4 id="删除项目"><a href="#删除项目" class="headerlink" title="删除项目"></a>删除项目</h4><ol>
+<li>关闭项目 File-&gt;Close Project  </li>
+<li>IntelliJ IDEA删除项目，先关闭项目，然后界面上不会是有项目例表，鼠标移到你想要删除的项目上（不要点击，一点就打开了），然后按DELETE键</li>
+</ol>
+<h3 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h3><p><a href="http://blog.csdn.net/palmerma/article/details/9163749" target="_blank" rel="noopener">http://blog.csdn.net/palmerma/article/details/9163749</a></p>
+<ul>
+<li>Ctrl + B<br>跳转到定义处这个就不用多说了，好象是个IDE就会提供的功能  </li>
+<li>Ctrl + W<br>按一个word来进行选择操作在IDEA里的这个快捷键功能是先选择光标所在字符处的单词，然后是选择源<br>代码的扩展区域  </li>
+<li>Ctrl + Q<br>在editor window中显示java docs这个功能很方便  </li>
+<li>F2/Shift + F2<br>跳转到下/上一个错误语句处IDEA提供了一个在错误语句之间方便的跳转的功能  </li>
+<li>Shift + F6<br>提供对方法、变量的重命名  </li>
+<li>Ctrl + Alt + L<br>根据模板格式化选择的代码,根据模板中设定的格式来format你的java代码  </li>
+<li>Ctrl + ]/[<br>跳转到代码块结束/开始处  </li>
+<li>Ctrl+F12<br>可以显示当前文件的结构  </li>
+<li>Ctrl+Shift+N<br>可以快速打开文件  </li>
+<li>Alt+Insert<br>可以生成构造器/Getter/Setter等  </li>
+<li>Ctrl+Alt+V<br>可以引入变量。例如把括号内的SQL赋成一个变量  </li>
+<li>Ctrl+Shift+Space<br>在很多时候都能够给出Smart提示  </li>
+<li>Ctrl+J<br>Live Templates!  </li>
+<li>Ctrl+Shift+E shortcut.<br>最近编辑过的文件列表</li>
+</ul>
+<hr>
+<p>eclipse转向IntelliJ IDEA的问答  </p>
+<p><a href="http://arhipov.blogspot.com/2011/06/whats-cool-in-intellijidea-part-i.html" target="_blank" rel="noopener">http://arhipov.blogspot.com/2011/06/whats-cool-in-intellijidea-part-i.html</a>  </p>
+<p><a href="http://arhipov.blogspot.com/2011/07/whats-cool-in-intellijidea-part-ii-live.html" target="_blank" rel="noopener">http://arhipov.blogspot.com/2011/07/whats-cool-in-intellijidea-part-ii-live.html</a>  </p>
+<p><a href="http://arhipov.blogspot.com/2011/08/whats-cool-in-intellijidea-part-iii.html" target="_blank" rel="noopener">http://arhipov.blogspot.com/2011/08/whats-cool-in-intellijidea-part-iii.html</a><br><a href="http://www.open-open.com/bbs/view/1380256028555" target="_blank" rel="noopener">http://www.open-open.com/bbs/view/1380256028555</a></p>
+<p><a href="http://www.jetbrains.com/idea/documentation/migration\_faq.html" target="_blank" rel="noopener">http://www.jetbrains.com/idea/documentation/migration\_faq.html</a></p>
+<blockquote>
+<p>在IntelliJIDEA中有动态模板—通过输入相关缩写调用预定义的代码片段。它们可能包括上下文参数,用于在它们插入时自动调整。点击这里查看更多有关在代码中如<br>何使用模板的信息。要管理动态模板,按Ctrl+ALT+S键打开设置对话框,然后单击Live<br>Templates来增加。</p>
+</blockquote>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2013-11-30</span><i class="fa fa-tag"></i><a class="tag" href="/categories/技术流/" title="技术流">技术流 </a><a class="tag" href="/tags/idea/" title="idea">idea </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" href="http://twitter.com/home?status=,http://yoursite.com/2013/11/30/idea-config/,浮生若梦,,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2013/12/01/android-listview-issue/" title="android中的ListView在超过屏幕后，会使选择数据混乱的解决方法">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2013/11/29/idea-tips-format/" title="Idea tips-格式化">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>

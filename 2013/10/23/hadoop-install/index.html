@@ -1,0 +1,130 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Neo"><title>打造分布式文件系统--Hadoop配置安装 · 浮生若梦</title><meta name="description" content="(Hadoop分布式文件系统 Hadoop Distributed File System)
+其相关知识就不在这里介绍了,可以直接去[http://hadoop.apache.org/](http://hadoop.apache.org/),也可以直接google
+直接进入安装(Ubuntu)环节:"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title><a href="/">浮生若梦</a></h3></div></div><ul class="social-links"></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a href="https://www.caicai.me"> CaiCai </a><span>&</span><a href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/about">关于</a></li><li><a href="/archives">归档</a></li><li><a href="/links">友链</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>打造分布式文件系统--Hadoop配置安装</a></h3></div><div class="post-content"><p></p>
+(Hadoop分布式文件系统 Hadoop Distributed File System)
+其相关知识就不在这里介绍了,可以直接去[http://hadoop.apache.org/](http://hadoop.apache.org/),也可以直接google
+直接进入安装(Ubuntu)环节: **1.环境需求** jdk 在此不做安装说明 ssh
+为建立免登录所用 <a id="more"></a>
+
+<pre><code>ssh-keygen -t rsa -P &quot;&quot;  #创建密钥
+cd ~/.ssh
+cat id_rsa.pub &gt;&gt; authorized_keys #加入授权
+ssh localhost
+
+需要在master slave 中都加入</code></pre><p><strong>2.下载安装</strong> 下载地址:<br><a href="http://hadoop.apache.org/releases.html#Download" target="_blank" rel="noopener">http://hadoop.apache.org/releases.html#Download</a><br>这里下载的版本:<br><a href="http://www.eu.apache.org/dist/hadoop/common/hadoop-2.2.0/hadoop-2.2.0.tar.gz" target="_blank" rel="noopener">hadoop-2.2.0.tar.gz</a><br>Release Notes : <a href="http://hadoop.apache.org/docs/r2.2.0/hadoop-project-dist/hadoop-common/releasenotes.html" target="_blank" rel="noopener">Hadoop 2.2.0 Release<br>Notes</a><br>解压到/usr/local 目录下</p>
+<pre><code>sudo ln -s hadoop-2.2.0/ hadoop   #建立链接
+添加环境路径
+export HADOOP_INSTALL=/usr/local/hapood
+export PATH=$HADOOP_INSTALL/bin:$HADOOP_INSTALL/sbin:$PATH
+export HADOOP_MAPRED_HOME=$HADOOP_INSTALL
+export HADOOP_COMMON_HOME=$HADOOP_INSTALL
+export HADOOP_HDFS_HOME=$HADOOP_INSTALL
+export YARN_HOME=$HADOOP_INSTALL  
+cd /usr/local/hadoop
+bin/hadoop version     #查看hadoop信息
+输入如下安装成功:
+Hadoop 2.2.0
+Subversion https://svn.apache.org/repos/asf/hadoop/common -r 1529768
+Compiled by hortonmu on 2013-10-07T06:28Z
+Compiled with protoc 2.5.0
+From source with checksum 79e53ce7994d1628b240f09af91e1af4
+This command was run using /usr/local/hadoop-2.2.0/share/hadoop/common/hadoop-common-2.2.0.jar</code></pre><p><strong>3.配置</strong> 这一部分描述在节点 上安装配置Hadoop， 这里的安装是指： 安装一个<br>HDFS （包含一个命名节点 namenode和一个数据节点 datanode） 以及 一个<br>Map/Reduce 机群（带有 jobtracker 和一个单独的 tasktracker） .<br>配置过程同样适用于大规模的机群的安装。<br>此版本配置文件目录为$HADOOP_INSTALL/etc/hadoop</p>
+<pre><code>hadoop-env.sh：包含Hadoop设置的一些环境变量。你可以使用他们影响Hadoop Deamons的行为，例如：日志文件的存储地点、 最大数量的堆栈内存的使用等等. 需修改的一个环境变量是JAVA_HOME
+slaves ：这个文件每行列出一个HOST的信息，在这些HOST上 Hadoop slave daemons (datanodes 和 tasktrackers)运行其上. 默认是一行： localhost
+core-site.xml： 此文件包含具体每个节点对所有 Hadoop daemons 和 Map/Reduce jobs的设置。此文件默认为空。
+mapred-site.xml ：此文件包含具体每个节点对 Hadoop Map/Reduce daemons 和 jobs的设置信息。默认为空。
+
+各相关配置如下:
+各master slave /etc/hosts添加
+#ip              $hostname
+192.168.50.110  neoyin-Inspiron-580
+192.168.50.124  lifeix-DX4840
+192.168.50.123  abc-DX4840
+
+core-site.xml
+&lt;configuration&gt;
+&lt;property&gt;
+&lt;name&gt;fs.defaultFS&lt;/name&gt;
+&lt;value&gt;hdfs://masterIP:9000&lt;/value&gt;
+&lt;/property&gt;
+&lt;/configuration&gt;
+
+hdfs-site.xml
+&lt;configuration&gt;
+&lt;property&gt;
+&lt;name&gt;dfs.name.dir&lt;/name&gt;
+&lt;value&gt;file:/data/hdfs/name&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;dfs.data.dir&lt;/name&gt;
+&lt;value&gt;file:/data/hdfs/data&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;dfs.permissions&lt;/name&gt;
+&lt;value&gt;false&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;dfs.replication&lt;/name&gt;
+&lt;value&gt;1&lt;/value&gt;
+&lt;/property&gt;
+&lt;/configuration&gt;
+
+mapred-site.xml
+&lt;property&gt;
+&lt;name&gt;mapreduce.framework.name&lt;/name&gt;
+&lt;value&gt;yarn&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;mapred.system.dir&lt;/name&gt;
+&lt;value&gt;file:/data/hdfs/mapred/mapred/system&lt;/value&gt;
+&lt;final&gt;true&lt;/final&gt;
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;mapred.local.dir&lt;/name&gt;
+&lt;value&gt;file:/data/hdfs/mapred/mapred/local&lt;/value&gt;
+&lt;final&gt;true&lt;/final&gt;
+&lt;/property&gt;
+
+yarn-site.xml
+&lt;property&gt;
+&lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;
+&lt;value&gt;mapreduce_shuffle&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;yarn.nodemanager.aux-services.mapreduce.shuffle.class&lt;/name&gt;
+&lt;value&gt;org.apache.hadoop.mapred.ShuffleHandler&lt;/value&gt;
+&lt;/property&gt;
+
+master
+#masterip
+slave
+#slave_1_ip
+#slave_2_ip
+...</code></pre><p>建立运行Hadoop第一<br>步是格式化Haoop文件系统，它是实现在本地机群的文件系统之上<br>，格式化文件系统是你安装Haddoop第一时间应该做的事情。不要格式化一个正在运行中的Hadoop文件系统，这会导致你所有的数据被清除。</p>
+<p><strong>格 式化之前，</strong>确保 <code>dfs.name.dir</code> 目录存在。 如果你选择默认的值，那么<br><code>mkdir -p $dfs.name.dir</code> 命令即可实现 . 格式化 (其实是初始化<br><code>dfs.name.dir</code> 变量指向的路径), 运行如下命令：</p>
+<pre><code>bin/hadoop namenode -format
+INFO namenode.NameNode: SHUTDOWN_MSG: 
+/************************************************************
+SHUTDOWN_MSG: Shutting down NameNode at xxx-xxx/127.0.1.1
+************************************************************/
+启动
+sbin/start-all.sh
+check 启动是否成功
+jps命令查看如下:
+14640 ResourceManager
+15138 Jps
+13967 NameNode
+14497 SecondaryNameNode</code></pre><p>访问如下页面<a href="http://localhost:8088/" target="_blank" rel="noopener">http://localhost:8088/</a> <a href="http://localhost:50070/" target="_blank" rel="noopener">http://localhost:50070/</a><br>可查看相关信息 Notes:</p>
+<ol>
+<li>Master和Slave上的几个conf配置文件不需要全部同步，如果确定都是通过Master去启动和关闭，那么Slave机器上的配置不需要去维护。但如果希望在任意一台机器都可以启动和关闭Hadoop，那么就需要全部保持一致了。</li>
+<li>Master和Slave机器上的<code>/etc/hosts</code>中必须把集群中机器都配置上去，就算在配置文件中使用的是IP也需如此,不然一直会出现<br>datanode denied communication with namenode 相关错误. 参考资料:</li>
+</ol>
+<hr>
+<p>参考：</p>
+<ul>
+<li><a href="http://hadoop.apache.org/docs/r2.2.0/" target="_blank" rel="noopener">http://hadoop.apache.org/docs/r2.2.0/</a></li>
+<li><a href="http://dongxicheng.org/mapreduce-nextgen/hadoop-2-2-0/" target="_blank" rel="noopener">http://dongxicheng.org/mapreduce-nextgen/hadoop-2-2-0/</a></li>
+<li><a href="http://www.yongbok.net/blog/how-to-install-hadoop-2-2-0-pseudo-distributed-mode/" target="_blank" rel="noopener">http://www.yongbok.net/blog/how-to-install-hadoop-2-2-0-pseudo-distributed-mode/</a></li>
+<li><a href="http://www.cnblogs.com/xia520pi/category/346943.html" target="_blank" rel="noopener">http://www.cnblogs.com/xia520pi/category/346943.html</a></li>
+</ul>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2013-10-23</span><i class="fa fa-tag"></i><a class="tag" href="/categories/技术流/" title="技术流">技术流 </a><a class="tag" href="/tags/hadoop/" title="hadoop">hadoop </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" href="http://twitter.com/home?status=,http://yoursite.com/2013/10/23/hadoop-install/,浮生若梦,打造分布式文件系统--Hadoop配置安装,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2013/10/26/open-vpn/" title="Ubuntu中搭建Open-vpn服务器">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2013/10/19/nginx-rewrite/" title="nginx Rewrite">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Neo"><title>android中的ListView在超过屏幕后，会使选择数据混乱的解决方法 · 浮生若梦</title><meta name="description" content="看了一下几个月以前写的一个android应用，后来捣鼓除了这个解决ListView的选择数据混乱的问题，由于sdk出了些问题，因此无法运行程序贴出图片，只能贴上代码，以后再待用了。
+package com.asms.adapter;
+
+import java.util.ArrayList;
+impo"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title><a href="/">浮生若梦</a></h3></div></div><ul class="social-links"></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a href="https://www.caicai.me"> CaiCai </a><span>&</span><a href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/about">关于</a></li><li><a href="/archives">归档</a></li><li><a href="/links">友链</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>android中的ListView在超过屏幕后，会使选择数据混乱的解决方法</a></h3></div><div class="post-content"><p>看了一下几个月以前写的一个android应用，后来捣鼓除了这个解决ListView的选择数据混乱的问题，由于sdk出了些问题，因此无法运行程序贴出图片，只能贴上代码，以后再待用了。</p>
+<pre><code>package com.asms.adapter;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.RadioButton;
+import android.widget.TextView;
+
+import com.asms.MainActivity;
+import com.asms.R;
+import com.asms.activity.SettingTargetEmailActivity;
+import com.asms.activity.UpdateTargetEmailActivity;
+import com.asms.db.DBManager;
+import com.asms.dialog.SelfSettingDialog;
+import com.asms.utils.Constant;
+
+/**
+* ListView的自定义布局类
+* @author Administrator
+*
+*/
+public class ListViewAdapter extends BaseAdapter{
+
+public static final int e_id = 1000;
+public static final int c_id = 100;
+private Context context = null;
+private ArrayList&lt;ContentValues&gt; cvs = null;
+private LayoutInflater layoutInflater = null;
+private HashMap&lt;Integer, Boolean&gt; statusMap = new HashMap&lt;Integer, Boolean&gt;();
+private HashMap&lt;Integer, Boolean&gt; removeMap = new HashMap&lt;Integer, Boolean&gt;();
+private View convertView = null;
+public ListViewAdapter(Context context, ArrayList&lt;ContentValues&gt; cvs) {
+this.context = context;
+this.cvs = cvs;
+this.layoutInflater = LayoutInflater.from(context);
+}
+
+@Override
+public int getCount() {
+return cvs.size();
+}
+
+@Override
+public Object getItem(int position) {
+return cvs.get(position);
+}
+
+@Override
+public long getItemId(int position) {
+return position;
+}
+
+@Override
+public View getView(int position, View convertView, ViewGroup parent) {
+ViewHolder vh = null;
+if(convertView == null) {
+Log.v(&quot;ListViewAdapter&quot;, &quot;&quot;+position);
+vh = new ViewHolder();
+convertView = layoutInflater.inflate(R.layout.listviewadapter, null);
+vh.emailShow = (TextView) convertView.findViewById(R.id.emailShowView);
+vh.statusShow = (RadioButton) convertView.findViewById(R.id.changeStatus);
+
+vh.removeCb = (CheckBox) convertView.findViewById(R.id.removeEmailChk);
+
+convertView.setTag(vh);
+} else {
+vh = (ViewHolder) convertView.getTag();
+}
+//给选择框添加事件
+vh.emailShow.setOnClickListener(new EmailShowListener());
+vh.emailShow.setId(e_id+position); //必须具有不同的id，不然会被覆盖掉
+
+vh.statusShow.setId(position);
+vh.removeCb.setId(c_id + position);
+vh.statusShow.setOnCheckedChangeListener(new RadioGroupListener());
+vh.removeCb.setOnCheckedChangeListener(new CheckBoxListener());
+
+String email = cvs.get(position).getAsString(&quot;email&quot;);
+if(email.length() &gt; 20) {
+email = email.substring(0, 20) + &quot;...&quot;;
+}
+vh.emailShow.setText(email);
+int status = cvs.get(position).getAsInteger(&quot;status&quot;).intValue();
+//在每一次下拉列表时，都会执行下面的判断
+if((status == 0 &amp;&amp; statusMap.size() &lt;= 0) || statusMap.containsKey(position)) {
+statusMap.put(position, true);
+vh.statusShow.setChecked(true);
+} else {
+vh.statusShow.setChecked(false);
+}
+if(removeMap.containsKey(c_id + position)) {
+vh.removeCb.setChecked(removeMap.get(c_id + position));
+} else {
+vh.removeCb.setChecked(false);
+}
+this.convertView = convertView;
+return convertView;
+}
+
+class ViewHolder {
+public TextView emailShow;
+public RadioButton statusShow;
+public CheckBox removeCb;
+}
+
+class CheckBoxListener implements android.widget.CompoundButton.OnCheckedChangeListener {
+@Override
+public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+int id = buttonView.getId();
+if(!isChecked) {
+removeMap.remove(id);
+return;
+}
+removeMap.put(id, isChecked);
+
+Log.v(&quot;ListViewAdapter&quot;, removeMap.toString());
+}
+}
+
+class RadioGroupListener implements OnCheckedChangeListener {
+public RadioGroupListener(){}
+@Override
+public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+int id = buttonView.getId();
+if(!isChecked) {
+return;
+}
+int tempId = -1;
+if(statusMap.size() &gt; 0) {
+tempId = statusMap.entrySet().iterator().next().getKey();
+RadioButton rb = (RadioButton) ((Activity) context).findViewById(tempId);
+if(rb != null)
+rb.setChecked(false);
+}
+statusMap.remove(tempId);
+statusMap.put(id, isChecked);
+DBManager db = new DBManager(context);
+ContentValues cv = new ContentValues();
+cv.put(&quot;status&quot;, 0);
+db.update(Constant.MAIN_TABLE, cv, &quot; where id = ?&quot;, cvs.get(id).getAsString(&quot;id&quot;));
+cv.put(&quot;status&quot;, 1);
+db.update(Constant.MAIN_TABLE, cv, &quot; where id != ?&quot;, cvs.get(id).getAsString(&quot;id&quot;));
+Log.v(&quot;ListViewAdapter&quot;, statusMap.toString() + &quot;, &quot; + id);
+}
+}
+
+class EmailShowListener implements OnClickListener {
+
+@Override
+public void onClick(View v) {
+int id = cvs.get(v.getId() - e_id).getAsInteger(&quot;id&quot;);
+DBManager db = new DBManager(context);
+String sql = &quot;select e.*, t.name, t.host_name,t.send_host_name from main_table e left join email_type t on t.id = e.email_type where t.status = 0 and e.id=?&quot;;
+ArrayList&lt;ContentValues&gt; cvs = db.rawQuery(sql, &quot;&quot; + id);
+if(cvs.size() &gt; 0) {
+ContentValues cv = cvs.get(0);
+SelfSettingDialog.Builder sb = new SelfSettingDialog.Builder(context);</code></pre><hr>
+<pre><code>sb.settitle(cv.getAsString(&quot;email&quot;));
+StringBuffer temp = new StringBuffer();
+temp.append(&quot;名称：&quot;).append(cv.getAsString(&quot;name&quot;)).append(&quot;\n&quot;).append(&quot;发送协议：&quot;).append(cv.getAsString(&quot;host_name&quot;)).append(&quot;\n&quot;);
+temp.append(&quot;接收协议：&quot;).append(cv.getAsString(&quot;send_host_name&quot;)).append(&quot;\n&quot;);
+temp.append(&quot;创建时间：&quot;).append(cv.getAsString(&quot;create_time&quot;));
+sb.setMessage(temp.toString());
+sb.setPostiveButton(R.string.ok, new PostiveButtonListener());
+sb.setNegativeButton(R.string.update, new NegativeButtonListener());
+Dialog dialog = sb.create();
+dialog.show();
+}
+}
+
+}
+
+public void setSelectAll(boolean isChecked) {
+int length = cvs.size();
+for(int i = 0; i &lt; length; i++) {
+removeMap.put(c_id + i, isChecked);
+}
+}
+
+public HashMap&lt;Integer, Boolean&gt; getSelectedRemove() {
+return removeMap;
+}
+
+public void setSelectedRomve(HashMap&lt;Integer, Boolean&gt; removes) {
+this.removeMap = removes;
+}
+
+public void setStatus(HashMap&lt;Integer, Boolean&gt; statusMap) {
+this.statusMap = statusMap;
+}
+
+public HashMap&lt;Integer, Boolean&gt; getStatusSelected() {
+return statusMap;
+}
+
+public ArrayList&lt;ContentValues&gt; getCvs() {
+return cvs;
+}
+
+class PostiveButtonListener implements DialogInterface.OnClickListener {
+
+@Override
+public void onClick(DialogInterface dialog, int which) {
+dialog.dismiss();
+}
+
+}
+
+class NegativeButtonListener implements DialogInterface.OnClickListener {
+
+@Override
+public void onClick(DialogInterface dialog, int which) {
+Intent intent = new Intent(context,UpdateTargetEmailActivity.class);
+((Activity)context).overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+MainActivity.tabHost.addTab(MainActivity.buildTabSpec(&quot;home2&quot;,-1, R.drawable.receivebox, intent,context.getResources()));
+//((Activity)context).startActivityForResult(intent, 1);
+}
+
+}
+}</code></pre></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2013-12-01</span><i class="fa fa-tag"></i><a class="tag" href="/categories/技术流/" title="技术流">技术流 </a><a class="tag" href="/tags/android/" title="android">android </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" href="http://twitter.com/home?status=,http://yoursite.com/2013/12/01/android-listview-issue/,浮生若梦,android中的ListView在超过屏幕后，会使选择数据混乱的解决方法,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2013/12/01/extjs-borderlayout-example/" title="Extjs的borderlayout实战代码">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2013/11/30/idea-config/" title>下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Neo"><title>正则表达式匹配3的倍数 · 浮生若梦</title><meta name="description" content="原文链接
+正则表达式匹配3的倍数你能写一个正则表达式只匹配3的倍数吗?例如,你要匹配3,03,24,1122,但是不匹配5, 10或20. 继续读下去学到新一手
+困难的解决方式你可能认为可以这样写: /^(0|102|10101|201)+$/ – 在这里0代表[0369],1代表[147], 2代"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title><a href="/">浮生若梦</a></h3></div></div><ul class="social-links"></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a href="https://www.caicai.me"> CaiCai </a><span>&</span><a href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/about">关于</a></li><li><a href="/archives">归档</a></li><li><a href="/links">友链</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>正则表达式匹配3的倍数</a></h3></div><div class="post-content"><p><a href="http://quaxio.com/triple/" target="_blank" rel="noopener">原文链接</a></p>
+<h2 id="正则表达式匹配3的倍数"><a href="#正则表达式匹配3的倍数" class="headerlink" title="正则表达式匹配3的倍数"></a>正则表达式匹配3的倍数</h2><p>你能写一个正则表达式只匹配3的倍数吗?例如,你要匹配3,03,24,1122,<br>但是不匹配5, 10或20. 继续读下去学到新一手</p>
+<h2 id="困难的解决方式"><a href="#困难的解决方式" class="headerlink" title="困难的解决方式"></a>困难的解决方式</h2><p>你可能认为可以这样写: <em>/^(0|10<em>2|10</em>10<em>1|20</em>1)+$/</em> – 在这里0代表[0369]<br>,1代表[147], 2代表[258] . <a href></a> 但这少了1122,2211或222.<br>你继续添加不同情况, 最后可能会得到答案, 但很困难…</p>
+<a id="more"></a>
+
+<h2 id="用有限状态机"><a href="#用有限状态机" class="headerlink" title="用有限状态机"></a>用有限状态机</h2><p>有一种简单的方法需要你知道正则表达式和有限状态机是可以互相转换的.<br>我们从3的倍数的状态机开始.<br>一个数如果是3的倍数,当且仅当它的所有数字的和是3的倍数.  </p>
+<p>状态机处理输入并跟踪数字的和.我们只需要把和对3取余,得到一个简单的状态机,只有3个状态<br>:A(开始状态),B(余1),C(余2).<br>在状态A时, 输入0,3,6,9, 还在状态A.<br>输入1,4,7转到状态B.输入2,5,8转入状态C. 图片1:<br><img src="http://zhchqingdao.qiniudn.com/images/statemachine01.png" alt="状态A"><br>在状态B时, 有类似的规则 图片2:<br><img src="http://zhchqingdao.qiniudn.com/images/statemachine02.png" alt="状态B"><br>最后,这是最终的状态机 图片3:<br><img src="http://zhchqingdao.qiniudn.com/images/statemachine03.png" alt="状态C"></p>
+<h2 id="转换状态机"><a href="#转换状态机" class="headerlink" title="转换状态机"></a>转换状态机</h2><p>要转换状态机到正则表达式,我们先写一些等式. 对每个状态,我们有如下等式:</p>
+<pre><code>A = ∅ | A[0369] | B[258] | C[147]
+B = A[147] | B[0369] | C[258]
+C = A[258] | B[147] | C[0369]</code></pre><p>∅ 表示初始状态. 为了表达简单,我们用0,1,2表示3组数字:</p>
+<pre><code>A = ∅ | A0 | B2 | C1
+B = A1 | B0 | C2
+C = A2 | B1 | C0</code></pre><p>我们的目标是替换B和C, 得到一个A的表达式. 递归的规则是这样</p>
+<pre><code> X=Xw|Y|Z 转换为X=Yw*|XW* , 也可以写成X=(Y|X)w*
+
+A = ( ∅ | B2 | C1 ) 0*
+B = ( A1 | C2 ) 0*
+C = ( A2 | B1 ) 0*</code></pre><p>C很容易代替:</p>
+<pre><code>A = ( ∅ | B2 | ( A2 | B1 ) 0* 1 ) 0*
+B = (A1 | ( A2 | B1 ) 0* 2 ) 0*</code></pre><p>再重复这一过程:</p>
+<pre><code>A = 0* | B2 0* | ( A2 | B1 ) 0* 1 0*
+B = A1 0* | ( A2 | B1 ) 0* 2 0*
+
+A = 0* | B2 0* | A2 0* 1 0* | B1 0* 1 0*
+B = A1 0* | A2 0* 2 0* | B1 0* 2 0*
+
+A = ( 0* | B2 0* | B1 0* 1 0* ) ( 2 0* 1 0* )*
+B = ( A1 0* | A2 0* 2 0* ) ( 1 0* 2 0* )*</code></pre><p>现在可以代替B:</p>
+<pre><code>A = (
+      0* |
+      ( A1 0* | A2 0* 2 0* ) (1 0* 2 0* )* 2 0* |
+      ( A1 0* | A2 0* 2 0* ) (1 0* 2 0* )* 1 0* 1 0*
+    ) (2 0* 1 0* )*
+
+A = 0* ( 2 0* 1 0* )* |
+    A1 0* ( 1 0* 2 0* )* 2 0* ( 2 0* 1 0* )* |
+    A2 0* 2 0* ( 1 0* 2 0* )* 2 0* ( 2 0* 1 0* )* |
+    A1 0* ( 1 0* 2 0* )* 1 0* 1 0* ( 2 0* 1 0* )* |
+    A2 0* 2 0* ( 1 0* 2 0* )* 1 0* 1 0* ( 2 0* 1 0* )*</code></pre><p>这时,我们有如以转换:</p>
+<pre><code>X = a | Xb | Xc 可以写成 X = a (b | c)*</code></pre><p>那么A就可以写成:</p>
+<pre><code>A = 0* ( 2 0* 1 0* )* (
+      1 0* ( 1 0* 2 0* )* 2 0* ( 2 0* 1 0* )* |
+      2 0* 2 0* ( 1 0* 2 0* )* 2 0* ( 2 0* 1 0* )* |
+      1 0* ( 1 0* 2 0* )* 1 0* 1 0* ( 2 0* 1 0* )* |
+      2 0* 2 0* ( 1 0* 2 0* )* 1 0* 1 0* ( 2 0* 1 0* )*
+    )*</code></pre><p>我们得到了一个答案,这个规则可以转换成正则表达式! 我们可以再简化一下</p>
+<pre><code>a* ( b a* )* becomes ( a | b )*
+
+A = 0* (
+      2 0* 1 0* |
+      1 0* ( 1 0* 2 0* )* 2 0* |
+      2 0* 2 0* ( 1 0* 2 0* )* 2 0* |
+      1 0* ( 1 0* 2 0* )* 1 0* 1 0* |
+      2 0* 2 0* ( 1 0* 2 0* )* 1 0* 1 0*
+    )*</code></pre><p>现用一次同样的规则:</p>
+<pre><code>A = (
+      0* |
+      2 0* 1 |
+      1 ( 0 | 1 0* 2 )* 2 |
+      2 0* 2 ( 0 | 1 0* 2 )* 2 |
+      1 ( 0 | 1 0* 2 )* 1 0* 1 |
+      2 0* 2 ( 0 | 1 0* 2 )* 1 0* 1
+    )*</code></pre><h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>上面的规则可以转换成正则表达式,加上^和$的限制:</p>
+<pre><code>/^(0|20*1|1(0|10*2)*2|20*2(0|10*2)*2|1(0|10*2)*10*1|20*2(0|10*2)*10*1)*$/</code></pre><p>然后把0,1,2替换回它们所代表的内容:</p>
+<pre><code>/^([0369]|[258][0369]*[147]|[147]([0369]|[147][0369]*[258])*[258]|[258][0369]*[258]([0369]|[147][0369]*[258])*[258]|[147]([0369]|[147][0369]*[258])*[147][0369]*[147]|[258][0369]*[258]([0369]|[147][0369]*[258])*[147][0369]*[147])*$/</code></pre><p>不相信?来试一下: 输入一个数字: <input><br><input type="button" value="测试"></p>
+<h2 id="一些链接"><a href="#一些链接" class="headerlink" title="一些链接"></a>一些链接</h2><ul>
+<li><a href="http://regex.alf.nu/" target="_blank" rel="noopener">regex.alf.nu</a> : test your regexp skills</li>
+<li><a href="http://www.coinheist.com/rubik/a_regular_crossword/grid.pdf" target="_blank" rel="noopener">A regular expression crossword<br>(pdf)</a></li>
+<li><a href="http://regexp.quaxio.com/" target="_blank" rel="noopener">regexp.quaxio.com</a> : A tool I wrote to<br>visulize regexps</li>
+</ul>
+<h2 id="感谢"><a href="#感谢" class="headerlink" title="感谢"></a>感谢</h2><ul>
+<li><p>erling for challenging me with this stuff :)</p>
+</li>
+<li><p>joel for finding a shorter solution:</p>
+<p>/^(0|20<em>1|(1|20<em>2)(0|10</em>2)</em>(2|10<em>1))</em>$/</p>
+</li>
+<li><p>camitz for pointing out <a href="https://github.com/alokmenghrajani/alokmenghrajani.github.com/issues/8" target="_blank" rel="noopener">a<br>mistake</a></p>
+</li>
+</ul>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2014-03-01</span><i class="fa fa-tag"></i><a class="tag" href="/categories/技术流/" title="技术流">技术流 </a><a class="tag" href="/tags/regex/" title="regex">regex </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" href="http://twitter.com/home?status=,http://yoursite.com/2014/03/01/regular-expression-match-multiple-of-3/,浮生若梦,正则表达式匹配3的倍数,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2014/03/02/solr-facet-group-fq/" title="Solr facet、group、fq">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2014/03/01/what-if-paint-the-earth/" title="【What if 系列】粉刷地球">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>

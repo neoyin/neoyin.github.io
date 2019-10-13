@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Neo"><title>Redis在Linux自启动 · 浮生若梦</title><meta name="description" content="在Linux自启动redis-server 如下：
+
+修改redis.conf中daemonize 配置no为yes
+
+编写脚本vim /etc/init.d/redis
+1234567891011121314151617181920212223242526272829303132333435363"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title><a href="/">浮生若梦</a></h3></div></div><ul class="social-links"></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a href="https://www.caicai.me"> CaiCai </a><span>&</span><a href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/about">关于</a></li><li><a href="/archives">归档</a></li><li><a href="/links">友链</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>Redis在Linux自启动</a></h3></div><div class="post-content"><p>在Linux自启动redis-server 如下：</p>
+<ul>
+<li>修改redis.conf中daemonize 配置no为yes</li>
+</ul>
+<p>编写脚本<code>vim /etc/init.d/redis</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"># chkconfig: 2345 10 90</span><br><span class="line"># description: Start and Stop redis</span><br><span class="line"> </span><br><span class="line">PATH=/usr/local/bin:/sbin:/usr/bin:/bin</span><br><span class="line"> </span><br><span class="line">REDISPORT=6379 #实际环境而定</span><br><span class="line">EXEC=/usr/local/redis/src/redis-server #实际环境而定</span><br><span class="line">REDIS_CLI=/usr/local/redis/src/redis-cli #实际环境而定</span><br><span class="line"> </span><br><span class="line">PIDFILE=/var/run/redis.pid</span><br><span class="line">CONF=&quot;/usr/local/redis/redis.conf&quot; #实际环境而定</span><br><span class="line"> </span><br><span class="line">case &quot;$1&quot; in</span><br><span class="line">        start)</span><br><span class="line">                if [ -f $PIDFILE ]</span><br><span class="line">                then</span><br><span class="line">                        echo &quot;$PIDFILE exists, process is already running or crashed.&quot;</span><br><span class="line">                else</span><br><span class="line">                        echo &quot;Starting Redis server...&quot;</span><br><span class="line">                        $EXEC $CONF</span><br><span class="line">                fi</span><br><span class="line">                if [ &quot;$?&quot;=&quot;0&quot; ]</span><br><span class="line">                then</span><br><span class="line">                        echo &quot;Redis is running...&quot;</span><br><span class="line">                fi</span><br><span class="line">                ;;</span><br><span class="line">        stop)</span><br><span class="line">                if [ ! -f $PIDFILE ]</span><br><span class="line">                then</span><br><span class="line">                        echo &quot;$PIDFILE exists, process is not running.&quot;</span><br><span class="line">                else</span><br><span class="line">                        PID=$(cat $PIDFILE)</span><br><span class="line">                        echo &quot;Stopping...&quot;</span><br><span class="line">                        $REDIS_CLI -p $REDISPORT SHUTDOWN</span><br><span class="line">                        while [ -x $PIDFILE ]</span><br><span class="line">                        do</span><br><span class="line">                                echo &quot;Waiting for Redis to shutdown...&quot;</span><br><span class="line">                                sleep 1</span><br><span class="line">                        done</span><br><span class="line">                        echo &quot;Redis stopped&quot;</span><br><span class="line">                fi</span><br><span class="line">                ;;</span><br><span class="line">        restart|force-reload)</span><br><span class="line">                $&#123;0&#125; stop</span><br><span class="line">                $&#123;0&#125; start</span><br><span class="line">                ;;</span><br><span class="line">        *)</span><br><span class="line">                echo &quot;Usage: /etc/init.d/redis &#123;start|stop|restart|force-reload&#125;&quot; &gt;&amp;2</span><br><span class="line">                exit 1</span><br><span class="line">esac</span><br></pre></td></tr></table></figure>
+
+<p>修改其执行权限：<code>chmod +x /etc/init.d/redis</code></p>
+<p>开机自启动：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 尝试启动或停止redis</span><br><span class="line">service redis start</span><br><span class="line">service redis stop</span><br><span class="line"> </span><br><span class="line"># 开启服务自启动</span><br><span class="line">chkconfig redis on</span><br></pre></td></tr></table></figure>
+
+<p>参数说明</p>
+<p>redis.conf 配置项说明如下：</p>
+<ol>
+<li><p>Redis默认不是以守护进程的方式运行，可以通过该配置项修改，使用yes启用守护进程<br> daemonize no</p>
+</li>
+<li><p>当Redis以守护进程方式运行时，Redis默认会把pid写入/var/run/redis.pid文件，可以通过pidfile指定<br> pidfile /var/run/redis.pid</p>
+</li>
+<li><p>指定Redis监听端口，默认端口为6379，作者在自己的一篇博文中解释了为什么选用6379作为默认端口，因为6379在手机按键上MERZ对应的号码，而MERZ取自意大利歌女Alessia Merz的名字<br> port 6379</p>
+</li>
+<li><p>绑定的主机地址<br> bind 127.0.0.1</p>
+</li>
+<li><p>当 客户端闲置多长时间后关闭连接，如果指定为0，表示关闭该功能<br>  timeout 300</p>
+</li>
+<li><p>指定日志记录级别，Redis总共支持四个级别：debug、verbose、notice、warning，默认为verbose<br> loglevel verbose</p>
+</li>
+<li><p>日志记录方式，默认为标准输出，如果配置Redis为守护进程方式运行，而这里又配置为日志记录方式为标准输出，则日志将会发送给/dev/null<br> logfile stdout</p>
+</li>
+<li><p>设置数据库的数量，默认数据库为0，可以使用SELECT <dbid>命令在连接上指定数据库id<br> databases 16</dbid></p>
+</li>
+<li><p>指定在多长时间内，有多少次更新操作，就将数据同步到数据文件，可以多个条件配合<br> save <seconds> <changes><br> Redis默认配置文件中提供了三个条件：<br> save 900 1<br> save 300 10<br> save 60 10000<br> 分别表示900秒（15分钟）内有1个更改，300秒（5分钟）内有10个更改以及60秒内有10000个更改。</changes></seconds></p>
+</li>
+<li><p>指定存储至本地数据库时是否压缩数据，默认为yes，Redis采用LZF压缩，如果为了节省CPU时间，可以关闭该选项，但会导致数据库文件变的巨大<br>rdbcompression yes</p>
+</li>
+<li><p>指定本地数据库文件名，默认值为dump.rdb<br>dbfilename dump.rdb</p>
+</li>
+<li><p>指定本地数据库存放目录<br>dir ./</p>
+</li>
+<li><p>设置当本机为slav服务时，设置master服务的IP地址及端口，在Redis启动时，它会自动从master进行数据同步<br>slaveof <masterip> <masterport></masterport></masterip></p>
+</li>
+<li><p>当master服务设置了密码保护时，slav服务连接master的密码<br>masterauth <master-password></master-password></p>
+</li>
+<li><p>设置Redis连接密码，如果配置了连接密码，客户端在连接Redis时需要通过AUTH <password>命令提供密码，默认关闭<br>requirepass foobared</password></p>
+</li>
+<li><p>设置同一时间最大客户端连接数，默认无限制，Redis可以同时打开的客户端连接数为Redis进程可以打开的最大文件描述符数，如果设置 maxclients 0，表示不作限制。当客户端连接数到达限制时，Redis会关闭新的连接并向客户端返回max number of clients reached错误信息<br>maxclients 128</p>
+</li>
+<li><p>指定Redis最大内存限制，Redis在启动时会把数据加载到内存中，达到最大内存后，Redis会先尝试清除已到期或即将到期的Key，当此方法处理 后，仍然到达最大内存设置，将无法再进行写入操作，但仍然可以进行读取操作。Redis新的vm机制，会把Key存放内存，Value会存放在swap区<br>maxmemory <bytes></bytes></p>
+</li>
+<li><p>指定是否在每次更新操作后进行日志记录，Redis在默认情况下是异步的把数据写入磁盘，如果不开启，可能会在断电时导致一段时间内的数据丢失。因为 redis本身同步数据文件是按上面save条件来同步的，所以有的数据会在一段时间内只存在于内存中。默认为no<br>appendonly no</p>
+</li>
+<li><p>指定更新日志文件名，默认为appendonly.aof<br> appendfilename appendonly.aof</p>
+</li>
+<li><p>指定更新日志条件，共有3个可选值：<br>no：表示等操作系统进行数据缓存同步到磁盘（快）<br>always：表示每次更新操作后手动调用fsync()将数据写到磁盘（慢，安全）<br>everysec：表示每秒同步一次（折衷，默认值）<br>appendfsync everysec</p>
+</li>
+<li><p>指定是否启用虚拟内存机制，默认值为no，简单的介绍一下，VM机制将数据分页存放，由Redis将访问量较少的页即冷数据swap到磁盘上，访问多的页面由磁盘自动换出到内存中（在后面的文章我会仔细分析Redis的VM机制）<br> vm-enabled no</p>
+</li>
+<li><p>虚拟内存文件路径，默认值为/tmp/redis.swap，不可多个Redis实例共享<br> vm-swap-file /tmp/redis.swap</p>
+</li>
+<li><p>将所有大于vm-max-memory的数据存入虚拟内存,无论vm-max-memory设置多小,所有索引数据都是内存存储的(Redis的索引数据 就是keys),也就是说,当vm-max-memory设置为0的时候,其实是所有value都存在于磁盘。默认值为0<br> vm-max-memory 0</p>
+</li>
+<li><p>Redis swap文件分成了很多的page，一个对象可以保存在多个page上面，但一个page上不能被多个对象共享，vm-page-size是要根据存储的 数据大小来设定的，作者建议如果存储很多小对象，page大小最好设置为32或者64bytes；如果存储很大大对象，则可以使用更大的page，如果不 确定，就使用默认值<br> vm-page-size 32</p>
+</li>
+<li><p>设置swap文件中的page数量，由于页表（一种表示页面空闲或使用的bitmap）是在放在内存中的，，在磁盘上每8个pages将消耗1byte的内存。<br> vm-pages 134217728</p>
+</li>
+<li><p>设置访问swap文件的线程数,最好不要超过机器的核数,如果设置为0,那么所有对swap文件的操作都是串行的，可能会造成比较长时间的延迟。默认值为4<br> vm-max-threads 4</p>
+</li>
+<li><p>设置在向客户端应答时，是否把较小的包合并为一个包发送，默认为开启<br>glueoutputbuf yes</p>
+</li>
+<li><p>指定在超过一定的数量或者最大的元素超过某一临界值时，采用一种特殊的哈希算法<br>hash-max-zipmap-entries 64<br>hash-max-zipmap-value 512</p>
+</li>
+<li><p>指定是否激活重置哈希，默认为开启（后面在介绍Redis的哈希算法时具体介绍）<br>activerehashing yes</p>
+</li>
+<li><p>指定包含其它的配置文件，可以在同一主机上多个Redis实例之间使用同一份配置文件，而同时各个实例又拥有自己的特定配置文件<br>include /path/to/local.conf</p>
+</li>
+</ol>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2015-10-06</span><i class="fa fa-tag"></i><a class="tag" href="/categories/技术流/" title="技术流">技术流 </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" href="http://twitter.com/home?status=,http://yoursite.com/2015/10/06/redis-linux-init/,浮生若梦,Redis在Linux自启动,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2015/10/12/git-log-format/" title="Git日志格式化输出">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2015/04/08/linux-command-pandoc/" title="很牛掰的格式转换器pandoc">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>

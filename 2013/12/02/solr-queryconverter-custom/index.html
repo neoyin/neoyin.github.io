@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Neo"><title>solr QueryConverter的定制 · 浮生若梦</title><meta name="description" content="其实我这里没有定制QueryConverter，只是基于此解决了一个问题。我在solr中引入suggest功能，Solr默认的QueryConverter为SpellQueryConvert，它是根据空格对查询参数做分隔，导致
+“nokia
+e”这样的字符被当作“nokia”，“e”这样的两个字符处"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title><a href="/">浮生若梦</a></h3></div></div><ul class="social-links"></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a href="https://www.caicai.me"> CaiCai </a><span>&</span><a href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/about">关于</a></li><li><a href="/archives">归档</a></li><li><a href="/links">友链</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>solr QueryConverter的定制</a></h3></div><div class="post-content"><div>
+其实我这里没有定制QueryConverter，只是基于此解决了一个问题。我在solr中引入suggest功能，Solr默认的QueryConverter为SpellQueryConvert，它是根据空格对查询参数做分隔，导致
+“nokia
+e”这样的字符被当作“nokia”，“e”这样的两个字符处理，不符合要求。例如索引中有数据“nokia
+email”，我需要“nokia
+e”作为一个整体处理获取suggestions，而分成“nokia”，“e”两个字符处理得到的数据并不是想要的。  
+
+<p>方法一：找到SpellCheckComponent类加断点调试发现那里有个判断函数，会先取spellcheck.q的值，如果不为空，按其值处理获得token<br>stream处理，如果为空，则按q获取值处理得到tokens<br>stream，这里这两个处理并不一样：<br>String q = params.get(SPELLCHECK_Q);</p>
+</div>
+<div>
+if (q != null) {  
+//we have a spell check param, tokenize it with the query analyzer
+applicable for this spellchecker  
+tokens = getTokens(q, spellChecker.getQueryAnalyzer());  
+} else {  
+q = rb.getQueryString();  
+if (q == null) {  
+q = params.get(CommonParams.Q);  
+}  
+tokens = queryConverter.convert(q);  
+}
+
+<p>前者处理“nokia e”后得到的token还是“nokia<br>e”，而后者处理后得到的token为[nokia,e]，也就是说前者才是符合我们需求的，所以在solrj中suggest功能模块用spellcheck.q查询。</p>
+<p>方法二：在solrconfig中添加</p>
+<p>&lt;queryConverter name=”phraseQueryConverter”/&gt;</p>
+<p>调试源码时发现还有一个SuggestQueryConverter类，与SpellQueryConvert一样继承QueryConverter类，查看官方WIKI解释发现</p>
+<pre><code>queryConverter默认值是SpellQueryConvert，这里加入配置改成SuggestQueryConverter即可，无需再定制QueryConverter，当然你可以定制QueryConverter实现你所需要的需求。其实这里的SuggestQueryConverter中和方法一if中的处理是一样的。实现结果如下：
+
+&lt;response&gt;
+  &lt;lst name=&quot;responseHeader&quot;&gt;
+  &lt;int name=&quot;status&quot;&gt;0&lt;/int&gt;
+  &lt;int name=&quot;QTime&quot;&gt;0&lt;/int&gt;
+  &lt;/lst&gt;
+  &lt;lst name=&quot;spellcheck&quot;&gt;
+    &lt;lst name=&quot;suggestions&quot;&gt;
+      &lt;lst name=&quot;motorola x&quot;&gt;
+        &lt;int name=&quot;numFound&quot;&gt;10&lt;/int&gt;
+        &lt;int name=&quot;startOffset&quot;&gt;0&lt;/int&gt;
+        &lt;int name=&quot;endOffset&quot;&gt;10&lt;/int&gt;
+        &lt;arr name=&quot;suggestion&quot;&gt;
+          &lt;str&gt;motorola xoom 3g版&lt;/str&gt;
+          &lt;str&gt;motorola xt875&lt;/str&gt;
+          &lt;str&gt;motorola xt300&lt;/str&gt;
+          &lt;str&gt;motorola xt883&lt;/str&gt;
+          &lt;str&gt;motorola xt702&lt;/str&gt;
+          &lt;str&gt;motorola xt806&lt;/str&gt;
+          &lt;str&gt;motorola xt800&lt;/str&gt;
+          &lt;str&gt;motorola xt502&lt;/str&gt;
+          &lt;str&gt;motorola xt882&lt;/str&gt;
+          &lt;str&gt;motorola xt316&lt;/str&gt;
+        &lt;/arr&gt;
+      &lt;/lst&gt;
+      &lt;str name=&quot;collation&quot;&gt;motorola xoom 3g版&lt;/str&gt;
+  &lt;/lst&gt;
+&lt;/lst&gt;
+&lt;/response&gt;        （这里引用的数据来自于http://www.colorfuldays.org/tag/solr/）</code></pre></div>
+
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2013-12-02</span><i class="fa fa-tag"></i><a class="tag" href="/categories/技术流/" title="技术流">技术流 </a><a class="tag" href="/tags/solr/" title="solr">solr </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" href="http://twitter.com/home?status=,http://yoursite.com/2013/12/02/solr-queryconverter-custom/,浮生若梦,solr QueryConverter的定制,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2013/12/05/idea-tips-shortcut/" title="IDEA-TIPS 合并行">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2013/12/01/zookeeperzkserver-sh-status-error/" title="zookeeper使用命令zkServer.sh status时出现错误提示问题">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>

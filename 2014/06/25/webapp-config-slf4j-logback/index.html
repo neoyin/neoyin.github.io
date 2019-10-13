@@ -1,0 +1,39 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Neo"><title>在web app中配置 slf4j 和 logback · 浮生若梦</title><meta name="description" content="在web app中配置 slf4j 和 logback (简略翻译)原文 : How to setup SLF4J and LOGBack in a web app -fast
+第0步 添加依赖jar (用maven的略过此步骤)
+WEB-INF** lib* logback-classic.x.x"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title><a href="/">浮生若梦</a></h3></div></div><ul class="social-links"></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a href="https://www.caicai.me"> CaiCai </a><span>&</span><a href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/about">关于</a></li><li><a href="/archives">归档</a></li><li><a href="/links">友链</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>在web app中配置 slf4j 和 logback</a></h3></div><div class="post-content"><h1 id="在web-app中配置-slf4j-和-logback-简略翻译"><a href="#在web-app中配置-slf4j-和-logback-简略翻译" class="headerlink" title="在web app中配置 slf4j 和 logback (简略翻译)"></a>在web app中配置 slf4j 和 logback (简略翻译)</h1><p>原文 : <a href="https://wiki.base22.com/display/btg/How+to+setup+SLF4J+and+LOGBack+in+a+web+app+-+fast" target="_blank" rel="noopener">How to setup SLF4J and LOGBack in a web app -<br>fast</a></p>
+<h3 id="第0步-添加依赖jar-用maven的略过此步骤"><a href="#第0步-添加依赖jar-用maven的略过此步骤" class="headerlink" title="第0步 添加依赖jar (用maven的略过此步骤)"></a>第0步 添加依赖jar (用maven的略过此步骤)</h3><ul>
+<li>WEB-INF<br>** lib<br><strong>* logback-classic.x.x.x.jar<br>*</strong> logback-core.x.x.x.jar<br>*** slf4j-api-x.x.x.jar</li>
+</ul>
+<h3 id="step-1-加入-maven-依赖"><a href="#step-1-加入-maven-依赖" class="headerlink" title="step 1 加入 maven 依赖"></a>step 1 加入 maven 依赖</h3><pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;ch.qos.logback&lt;/groupId&gt;
+    &lt;artifactId&gt;logback-classic&lt;/artifactId&gt;
+    &lt;version&gt;1.0.13&lt;/version&gt;
+&lt;/dependency&gt;</code></pre><p>###step 2 导入 初始的xml配置</p>
+<p>下面两个链接是可以用来做起步的初始配置文件</p>
+<ul>
+<li>src<br>** main<br><strong>* resources<br>**</strong> <a href="https://wiki.base22.com/download/attachments/35488048/logback.xml?version=1&modificationdate=1261291177000&api=v2" target="_blank" rel="noopener">logback.xml</a><br>** test<br><strong>* resources<br>**</strong> <a href="https://wiki.base22.com/download/attachments/35488048/logback-test.xml?version=1&modificationdate=1261291177000&api=v2" target="_blank" rel="noopener">logback-test.xml</a></li>
+</ul>
+<h3 id="step-3-自定义-XML-配置"><a href="#step-3-自定义-XML-配置" class="headerlink" title="step 3 自定义 XML 配置"></a>step 3 自定义 XML 配置</h3><p>上面下载的文件内容差不多是这样, logger 的名字是一个包的层级<br>(“com.base22”), 你可以改成自己的包, 也可以定义更多的logger (package<br>和/或 class).</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;configuration&gt;
+  &lt;appender name=&quot;STDOUT&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;
+    &lt;layout class=&quot;ch.qos.logback.classic.PatternLayout&quot;&gt;
+      &lt;Pattern&gt;%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n&lt;/Pattern&gt;
+    &lt;/layout&gt;
+  &lt;/appender&gt;
+
+  &lt;logger name=&quot;com.base22&quot; level=&quot;TRACE&quot;/&gt;
+
+
+  &lt;root level=&quot;debug&quot;&gt;
+    &lt;appender-ref ref=&quot;STDOUT&quot; /&gt;
+  &lt;/root&gt;
+&lt;/configuration&gt;</code></pre><h3 id="step-4-加入log代码"><a href="#step-4-加入log代码" class="headerlink" title="step 4 加入log代码"></a>step 4 加入log代码</h3><p>imports</p>
+<pre><code>import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;</code></pre><p>把下面代码加入到类的第一行里</p>
+<pre><code>static final Logger LOG = LoggerFactory.getLogger(MyClassName.class);</code></pre><p>log代码</p>
+<pre><code>LOG.trace(&quot;Hello World!&quot;);
+LOG.debug(&quot;How are you today?&quot;);
+LOG.info(&quot;I am fine.&quot;);
+LOG.warn(&quot;I love programming.&quot;);
+LOG.error(&quot;I am programming.&quot;);</code></pre><h3 id="step-5-运行程序看结果"><a href="#step-5-运行程序看结果" class="headerlink" title="step 5 运行程序看结果"></a>step 5 运行程序看结果</h3></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2014-06-25</span><i class="fa fa-tag"></i><a class="tag" href="/categories/技术流/" title="技术流">技术流 </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" href="http://twitter.com/home?status=,http://yoursite.com/2014/06/25/webapp-config-slf4j-logback/,浮生若梦,在web app中配置 slf4j 和 logback,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2014/06/27/mongodb-slow-query/" title="mongodb 慢查询">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2014/06/22/git-diff-two-version/" title="git 比较两个版本号的差异">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>
