@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Linux系统性能和使用活动监控工具 sysstat">
+
+
+
+
+  <meta name="keywords" content="linux,sysstat,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2014/10/24/linux-command-sysstat/">
+
+
+<meta name="description" content="Sysstat是一个非常方便的工具，它带有众多的系统资源监控工具，用于监控系统的性能和使用情况。我们在日常使用的工具中有相当一部分是来自sysstat工具包的。同时，它还提供了一种使用cron表达式来制定性能和活动数据的收集计划。">
+<meta name="keywords" content="linux,sysstat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux系统性能和使用活动监控工具 sysstat">
+<meta property="og:url" content="http://yoursite.com/2014/10/24/linux-command-sysstat/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="Sysstat是一个非常方便的工具，它带有众多的系统资源监控工具，用于监控系统的性能和使用情况。我们在日常使用的工具中有相当一部分是来自sysstat工具包的。同时，它还提供了一种使用cron表达式来制定性能和活动数据的收集计划。">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-13T10:47:53.910Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux系统性能和使用活动监控工具 sysstat">
+<meta name="twitter:description" content="Sysstat是一个非常方便的工具，它带有众多的系统资源监控工具，用于监控系统的性能和使用情况。我们在日常使用的工具中有相当一部分是来自sysstat工具包的。同时，它还提供了一种使用cron表达式来制定性能和活动数据的收集计划。">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Linux系统性能和使用活动监控工具 sysstat - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Linux系统性能和使用活动监控工具 sysstat
+        
+      </h1>
+
+      <time class="post-time">
+          Oct 24 2014
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>Sysstat是一个非常方便的工具，它带有众多的系统资源监控工具，用于监控系统的性能和使用情况。我们在日常使用的工具中有相当一部分是来自sysstat工具包的。同时，它还提供了一种使用cron表达式来制定性能和活动数据的收集计划。</p>
+<a id="more"></a>
+
+<p>下表是包含在sysstat包中的工具</p>
+<ul>
+<li>iostat: 输出CPU的统计信息和所有I/O设备的输入输出（I/O）统计信息。</li>
+<li>mpstat: 关于CPU的详细信息（单独输出或者分组输出）。</li>
+<li>pidstat: 关于运行中的进程/任务、CPU、内存等的统计信息。</li>
+<li>sar: 保存并输出不同系统资源（CPU、内存、IO、网络、内核等。。。）的详细信息。</li>
+<li>sadc: 系统活动数据收集器，用于收集sar工具的后端数据。</li>
+<li>sa1: 系统收集并存储sadc数据文件的二进制数据，与sadc工具配合使用</li>
+<li>sa2: 配合sar工具使用，产生每日的摘要报告。</li>
+<li>sadf: 用于以不同的数据格式（CVS或者XML）来格式化sar工具的输出。</li>
+<li>Sysstat: sysstat工具的man帮助页面。</li>
+<li>nfsiostat: NFS（Network File System）的I/O统计信息。</li>
+<li>cifsiostat: CIFS(Common Internet File System)的统计信息。</li>
+</ul>
+<p>最近(在2014年6月17日)，sysstat 11.0.0（稳定版）已经发布了，同时还新增了一些有趣的特性，如下：</p>
+<p>pidstat命令新增了一些新的选项：首先是“-R”选项，该选项将会输出有关策略和任务调度的优先级信息。然后是“-G”选项，通过这个选项我们可以使用名称搜索进程，然后列出所有匹配的线程。</p>
+<p>sar、sadc和sadf命令在数据文件方面同样带来了一些功能上的增强。与以往只能使用“saDD”来命名数据文件。现在使用-D选项可以用“saYYYYMMDD”来重命名数据文件，同样的，现在的数据文件不必放在“var/log/sa”目录中，我们可以使用“SA_DIR”变量来定义新的目录，该变量将应用与sa1和sa2命令。</p>
+<h4 id="在Linux系统中安装sysstat"><a href="#在Linux系统中安装sysstat" class="headerlink" title="在Linux系统中安装sysstat"></a>在Linux系统中安装sysstat</h4><p>在主要的linux发行版中，‘sysstat’工具包可以在默认的程序库中安装。然而，在默认程序库中的版本通常有点旧，因此，我们将会下载源代码包，编译安装最新版本（11.0.0版本）。</p>
+<p>首先，使用下面的连接下载最新版本的sysstat包，或者你可以使用wget命令直接在终端中下载。</p>
+<ul>
+<li><a href="http://sebastien.godard.pagesperso-orange.fr/download.html" target="_blank" rel="noopener">http://sebastien.godard.pagesperso-orange.fr/download.html</a><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># wget http://pagesperso-orange.fr/sebastien.godard/sysstat-11.0.0.tar.gz</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>下载sysstat包</p>
+<p>然后解压缩下载下来的包，进去该目录，开始编译安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># tar -xvf sysstat-11.0.0.tar.gz </span><br><span class="line"># cd sysstat-11.0.0/</span><br></pre></td></tr></table></figure>
+
+<p>这里，你有两种编译安装的方法：</p>
+<p>a)<br>第一，你可以使用iconfig(这将会给予你很大的灵活性，你可以选择/输入每个参数的自定义值)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># ./iconfig</span><br></pre></td></tr></table></figure>
+
+<p>sysstat的iconfig命令</p>
+<p>b)<br>第二，你可以使用标准的configure，在命令行中定义所有选项。你可以运行 ./configure –help 命令来列出该命令所支持的所有限选项。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># ./configure --help</span><br></pre></td></tr></table></figure>
+
+<p>stsstat的cofigure -help</p>
+<p>在这里，我们使用标准的./configure命令来编译安装sysstat工具包。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># ./configure</span><br><span class="line"># make</span><br><span class="line"># make install</span><br></pre></td></tr></table></figure>
+
+<p>在Linux系统中配置sysstat</p>
+<p>在编译完成后，我们将会看到一些类似于上图的输出。现在运行如下命令来查看sysstat的版本。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># mpstat -V</span><br><span class="line"> </span><br><span class="line">sysstat version 11.0.0</span><br><span class="line">(C) Sebastien Godard (sysstat &lt;at&gt; orange.fr)</span><br></pre></td></tr></table></figure>
+
+<h4 id="更新Linux-系统中的sysstat"><a href="#更新Linux-系统中的sysstat" class="headerlink" title="更新Linux 系统中的sysstat"></a>更新Linux 系统中的sysstat</h4><p>默认的，sysstat使用“/usr/local”作为其目录前缀。因此，所有的二进制数据/工具都会安装在“/usr/local/bin”目录中。如果你的系统已经安装了sysstat 工具包，则上面提到的二进制数据/工具有可能在“/usr/bin”目录中。</p>
+<p>因为“$PATH”变量不包含“/usr/local/bin”路径，你在更新时可能会失败。因此，确保“/usr/local/bin”路径包含在“$PATH”环境变量中，或者在更新前，在编译和卸载旧版本时将-prefix选项指定值为“/usr”。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># yum remove sysstat            [On RedHat based System]</span><br><span class="line"># apt-get remove sysstat        [On Debian based System]</span><br><span class="line"></span><br><span class="line"># ./configure --prefix=/usr</span><br><span class="line"># make</span><br><span class="line"># make install</span><br></pre></td></tr></table></figure>
+
+<p>现在，使用‘mpstat’命令的‘-V’选项查看更新后的版本。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># mpstat -V</span><br><span class="line"> </span><br><span class="line">sysstat version 11.0.0</span><br><span class="line">(C) Sebastien Godard (sysstat &lt;at&gt; orange.fr)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>参考:<br><a href="http://sebastien.godard.pagesperso-orange.fr/documentation.html" target="_blank" rel="noopener"> Sysstat Documentation</a></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/linux-sysstat/">linux,sysstat</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2014/10/30/android-method-id-not-in-0xffff/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Android  method ID not in [0, 0xffff]</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2014/10/08/mongodb-import-data-longnumber/">
+        <span class="next-text nav-default">解决mongoexport导出数据时NumberLong问题</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

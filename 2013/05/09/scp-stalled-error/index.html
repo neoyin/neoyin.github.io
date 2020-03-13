@@ -1,7 +1,146 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Neo"><title>Scp stalled 问题解析 · 浮生若梦</title><meta name="description" content="今天在做备份的时候，远程将tar.gz文件scp到本地时，时不时出现stalled的情况。
-这个文件也不是太大。就100+M左右
-网上搜索了一下如下：
-When transferring large files(for example mksysb images) using scpthrough "><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title><a href="/">浮生若梦</a></h3></div></div><ul class="social-links"></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a href="https://www.caicai.me"> CaiCai </a><span>&</span><a href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/about">关于</a></li><li><a href="/archives">归档</a></li><li><a href="/links">友链</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>Scp stalled 问题解析</a></h3></div><div class="post-content"><p>今天在做备份的时候，远程将tar.gz<br>文件scp到本地时，时不时出现stalled的情况。</p>
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Scp stalled 问题解析">
+
+
+
+
+  <meta name="keywords" content="linux,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2013/05/09/scp-stalled-error/">
+
+
+<meta name="description" content="今天在做备份的时候，远程将tar.gz文件scp到本地时，时不时出现stalled的情况。 这个文件也不是太大。就100+M左右 网上搜索了一下如下： When transferring large files(for example mksysb images) using scpthrough a firewall, the scp connection stalls. Cause:The r">
+<meta name="keywords" content="linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Scp stalled 问题解析">
+<meta property="og:url" content="http://yoursite.com/2013/05/09/scp-stalled-error/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="今天在做备份的时候，远程将tar.gz文件scp到本地时，时不时出现stalled的情况。 这个文件也不是太大。就100+M左右 网上搜索了一下如下： When transferring large files(for example mksysb images) using scpthrough a firewall, the scp connection stalls. Cause:The r">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-13T10:06:01.991Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Scp stalled 问题解析">
+<meta name="twitter:description" content="今天在做备份的时候，远程将tar.gz文件scp到本地时，时不时出现stalled的情况。 这个文件也不是太大。就100+M左右 网上搜索了一下如下： When transferring large files(for example mksysb images) using scpthrough a firewall, the scp connection stalls. Cause:The r">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Scp stalled 问题解析 - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Scp stalled 问题解析
+        
+      </h1>
+
+      <time class="post-time">
+          May 9 2013
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>今天在做备份的时候，远程将tar.gz<br>文件scp到本地时，时不时出现stalled的情况。</p>
 <p>这个文件也不是太大。就100+M左右</p>
 <p>网上搜索了一下如下：</p>
 <p>When transferring large files(for example mksysb images) using scp<br>through a firewall, the scp connection stalls.</p>
@@ -12,4 +151,128 @@ When transferring large files(for example mksysb images) using scpthrough "><met
 <p>这种情况可以通过限速来解决：</p>
 <p>另外还有个次要原因，可能是由于 Linux 下的 SACK<br>的造成。一般开启限速功能应该就能解决绝大多数的情况了。SACK<br>是什么请看<a href="http://packetlife.net/blog/2010/jun/17/tcp-selective-acknowledgments-sack/" target="_blank" rel="noopener">这里</a>。<br>要使用 TCP option 中的 SACK，需要两端都支持。</p>
 <p>根据<a href="http://serverfault.com/questions/10955/when-to-turn-tcp-sack-off" target="_blank" rel="noopener">这篇</a>文章的描述，在局域网或者低延迟的网络中，就完全没有必要开启<br>SACK options 了，另外在很小的带宽下，比如 1Mbps<br>的情况下，同样没有必要开启这个选项。该选项可以在 “high bandwidth, lossy<br>(or high delay)” 的情况下开启。因此出现 stalled<br>的情况一般都是在客户从公网连接某台服务器，带宽一般都是比较小的，瓶颈带宽在客户端这边，而不大可能是两台同一链路(连在同一台交换机)的服务器之间的数据传输。因此关闭<br>SACK 会比较有利传输:<br><code># echo 0 &gt; /proc/sys/net/ipv4/tcp_sack</code></p>
-</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2013-05-09</span><i class="fa fa-tag"></i><a class="tag" href="/categories/技术流/" title="技术流">技术流 </a><a class="tag" href="/tags/linux/" title="linux">linux </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" href="http://twitter.com/home?status=,http://yoursite.com/2013/05/09/scp-stalled-error/,浮生若梦,Scp stalled 问题解析,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2013/05/30/the-interest-group-company/" title="公司这个利益组织">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2013/05/08/feelings-of-writing/" title="书写的情怀">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/linux/">linux</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2013/05/30/the-interest-group-company/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">公司这个利益组织</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2013/05/08/feelings-of-writing/">
+        <span class="next-text nav-default">书写的情怀</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

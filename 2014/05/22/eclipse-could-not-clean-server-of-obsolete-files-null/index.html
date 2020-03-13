@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="eclipse报错Could-not-clean-server-of-obsolete-files-null">
+
+
+
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2014/05/22/eclipse-could-not-clean-server-of-obsolete-files-null/">
+
+
+<meta name="description" content="报错 Could not clean server of obsolete files: null堆栈信息 java.lang.NullPointerException     at org.eclipse.jst.server.tomcat.core.internal.TomcatVersionHelper.getCatalinaServerInstance(TomcatVersionHelpe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="eclipse报错Could-not-clean-server-of-obsolete-files-null">
+<meta property="og:url" content="http://yoursite.com/2014/05/22/eclipse-could-not-clean-server-of-obsolete-files-null/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="报错 Could not clean server of obsolete files: null堆栈信息 java.lang.NullPointerException     at org.eclipse.jst.server.tomcat.core.internal.TomcatVersionHelper.getCatalinaServerInstance(TomcatVersionHelpe">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-13T10:59:28.385Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="eclipse报错Could-not-clean-server-of-obsolete-files-null">
+<meta name="twitter:description" content="报错 Could not clean server of obsolete files: null堆栈信息 java.lang.NullPointerException     at org.eclipse.jst.server.tomcat.core.internal.TomcatVersionHelper.getCatalinaServerInstance(TomcatVersionHelpe">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> eclipse报错Could-not-clean-server-of-obsolete-files-null - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          eclipse报错Could-not-clean-server-of-obsolete-files-null
+        
+      </h1>
+
+      <time class="post-time">
+          May 22 2014
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h3 id="报错-Could-not-clean-server-of-obsolete-files-null"><a href="#报错-Could-not-clean-server-of-obsolete-files-null" class="headerlink" title="报错 Could not clean server of obsolete files: null"></a>报错 Could not clean server of obsolete files: null</h3><p>堆栈信息</p>
+<pre><code>java.lang.NullPointerException
+    at org.eclipse.jst.server.tomcat.core.internal.TomcatVersionHelper.getCatalinaServerInstance(TomcatVersionHelper.java:218)
+    at org.eclipse.jst.server.tomcat.core.internal.TomcatVersionHelper.cleanupCatalinaServer(TomcatVersionHelper.java:295)
+    at org.eclipse.jst.server.tomcat.core.internal.Tomcat60Configuration.cleanupServer(Tomcat60Configuration.java:701)
+    at org.eclipse.jst.server.tomcat.core.internal.TomcatServerBehaviour.publishServer(TomcatServerBehaviour.java:233)
+    at org.eclipse.wst.server.core.model.ServerBehaviourDelegate.publish(ServerBehaviourDelegate.java:975)
+    at org.eclipse.wst.server.core.model.ServerBehaviourDelegate.publish(ServerBehaviourDelegate.java:774)
+    at org.eclipse.wst.server.core.internal.Server.publishImpl(Server.java:3154)
+    at org.eclipse.wst.server.core.internal.Server$PublishJob.run(Server.java:345)
+    at org.eclipse.core.internal.jobs.Worker.run(Worker.java:53)</code></pre><p><a href="http://www.eclipse.org/forums/index.php/t/69850/" target="_blank" rel="noopener">老外Larry说</a></p>
+<blockquote>
+<p>This NPE implies that the WTP Tomcat Plug-in is trying to determine<br>the<br> appropriate path for a context.xml file relative to<br> “${catalina.base}/conf” (typically “Catalina/localhost” for Tomcat<br> 5.5.x). However, as the plug-in scans the server.xml to find the<br> appropriate Service, Engine, and Host to come up with this<br>“&lt;engine<br>&lt;/engine<br> name&gt;/<host name>“ path, it’s coming up<br>empty for one of Service,<br> Engine, or Host. In theory, you would not have been able create a<br> server from an installation whose server.xml had this problem. Have<br>you<br> made any recent changes to the server.xml under the Servers project<br> involving the Service, Engine, or Host elements?</host></p>
+<p>There is error information created by the methods involved that<br> eventually return the null that causes the NPE. It is a bug that the<br> info isn’t reported and the plug-in just NPEs. Please open a<br>Bugzilla<br> report and include the stack trace. I’ll see about fixing the error<br> handling.o</p>
+</blockquote>
+<p>差不多就是说, WTP Tomcat插件要找一个host,但是没找到,就报错了.<br>在我的配置中, 就是服务器配置的Host<br>name一栏写的是localhost(在Servers面板中双击server名字可以打开server配置),<br>但在server.xml中是这样配置的:</p>
+<pre><code>&lt;Host appBase=&quot;/home/mmm/workspace/my_project/&quot; autoDeploy=&quot;false&quot; debug=&quot;0&quot; name=&quot;www.xyz.com&quot;&gt;
+    &lt;Context debug=&quot;0&quot; docBase=&quot;.&quot; path=&quot;&quot; reloadable=&quot;false&quot;/&gt;
+&lt;/Host&gt;</code></pre><p>就会报错, 把localhost与<a href="http://www.xyx.com统一即可" target="_blank" rel="noopener">www.xyx.com统一即可</a>.  </p>
+<p>在网上搜了一下相关的做法，删除/temp0/、覆盖server.xml基本上都是解决这一问题的方式.</p>
+
+            </div>
+          
+
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

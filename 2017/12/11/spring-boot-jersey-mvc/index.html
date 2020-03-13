@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="SpringBoot同时配置Jersey和Mvc">
+
+
+
+
+  <meta name="keywords" content="spring,spring-boot,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2017/12/11/spring-boot-jersey-mvc/">
+
+
+<meta name="description" content="最近自己的Spring-boot小项目想用到jersey ，但是也需要jsp做展示，这就需要注册两个servlet  先配置好mvc相关配置 pom.xml中添加jsp相关依赖 12345678910111213141516171819202122&amp;lt;dependency&amp;gt;	&amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;">
+<meta name="keywords" content="spring,spring-boot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot同时配置Jersey和Mvc">
+<meta property="og:url" content="http://yoursite.com/2017/12/11/spring-boot-jersey-mvc/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="最近自己的Spring-boot小项目想用到jersey ，但是也需要jsp做展示，这就需要注册两个servlet  先配置好mvc相关配置 pom.xml中添加jsp相关依赖 12345678910111213141516171819202122&amp;lt;dependency&amp;gt;	&amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-13T10:41:21.563Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SpringBoot同时配置Jersey和Mvc">
+<meta name="twitter:description" content="最近自己的Spring-boot小项目想用到jersey ，但是也需要jsp做展示，这就需要注册两个servlet  先配置好mvc相关配置 pom.xml中添加jsp相关依赖 12345678910111213141516171819202122&amp;lt;dependency&amp;gt;	&amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/groupId&amp;gt;">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> SpringBoot同时配置Jersey和Mvc - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          SpringBoot同时配置Jersey和Mvc
+        
+      </h1>
+
+      <time class="post-time">
+          Dec 11 2017
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <hr>
+<p>最近自己的<code>Spring-boot</code>小项目想用到jersey ，但是也需要jsp做展示，这就需要注册两个servlet </p>
+<p>先配置好mvc相关配置</p>
+<p><code>pom.xml</code>中添加jsp相关依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.apache.tomcat.embed&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;tomcat-embed-jasper&lt;/artifactId&gt;</span><br><span class="line">	&lt;scope&gt;provided&lt;/scope&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;javax.servlet&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;jstl&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;spring-boot-starter-jersey&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.glassfish.jersey.media&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;jersey-media-multipart&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;2.19&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>application.properties</code>中添加 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">spring.mvc.view.prefix=/WEB-INF/jsp/</span><br><span class="line">spring.mvc.view.suffix=.jsp</span><br></pre></td></tr></table></figure>
+
+<p>添加jersey配置<code>jerseyConfig</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import org.glassfish.jersey.media.multipart.MultiPartFeature;</span><br><span class="line">import org.glassfish.jersey.server.ResourceConfig;</span><br><span class="line">import org.glassfish.jersey.server.spring.scope.RequestContextFilter;</span><br><span class="line">import org.springframework.context.annotation.Configuration;</span><br><span class="line"></span><br><span class="line">public class JerseyConfig extends ResourceConfig &#123;</span><br><span class="line"></span><br><span class="line">    public JerseyConfig()&#123;</span><br><span class="line">        register(RequestContextFilter.class);</span><br><span class="line">        register(MultiPartFeature.class);</span><br><span class="line">        packages(&quot;...controller&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>添加两个相关servlet</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">public class ServletConfig &#123;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public ServletRegistrationBean dispatcherRegistration(DispatcherServlet dispatcherServlet) &#123;</span><br><span class="line">        ServletRegistrationBean registration = new ServletRegistrationBean(</span><br><span class="line">                dispatcherServlet);</span><br><span class="line">        registration.addUrlMappings(&quot;/jsp/*&quot;);</span><br><span class="line">        return registration;</span><br><span class="line">    &#125;</span><br><span class="line">    @Bean</span><br><span class="line">    public ServletRegistrationBean registrationJerseyBean()&#123;</span><br><span class="line">        ServletRegistrationBean registration = new ServletRegistrationBean(new ServletContainer(new JerseyConfig()));</span><br><span class="line">        registration.setEnabled(true);</span><br><span class="line">        registration.setName(&quot;jersey-servlet&quot;);</span><br><span class="line">        registration.addUrlMappings(&quot;/rest/*&quot;);</span><br><span class="line">        return registration;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>参考</p>
+<ul>
+<li><a href="https://www.leveluplunch.com/blog/2014/04/01/spring-boot-configure-servlet-mapping-filters/" target="_blank" rel="noopener">https://www.leveluplunch.com/blog/2014/04/01/spring-boot-configure-servlet-mapping-filters/</a></li>
+<li><a href="https://stackoverflow.com/questions/35208439/use-different-paths-for-public-and-private-resources-jersey-spring-boot" target="_blank" rel="noopener">https://stackoverflow.com/questions/35208439/use-different-paths-for-public-and-private-resources-jersey-spring-boot</a></li>
+<li><a href="https://www.programcreek.com/java-api-examples/index.php?class=org.springframework.boot.context.embedded.ServletRegistrationBean&amp;method=setName" target="_blank" rel="noopener">https://www.programcreek.com/java-api-examples/index.php?class=org.springframework.boot.context.embedded.ServletRegistrationBean&amp;method=setName</a></li>
+</ul>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/spring-spring-boot/">spring,spring-boot</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2018/01/01/java-tech-all/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Java知识汇总</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2017/07/30/linux-command-lsof/">
+        <span class="next-text nav-default">Linux 命令lsof</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

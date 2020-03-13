@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Pyflink开发-环境部署">
+
+
+
+
+  <meta name="keywords" content="docker,flink,python,pyflink,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2020/02/25/pyflink-config-deploy/">
+
+
+<meta name="description" content="前言由于公司项目主要模块为python开发，最好项目都能跑在python环境下 公司虽然有flink平台,如果需要公司平台来支持pyflink 不一定有能力和资源去推动做这件事我们需要自己来维护一个小集群flink环境 满足我们项目需求即可最好的方案是实现部署在docker环境中.管理方便,资源最小化 PyFlink环境准备 JDK 1.8+ Python 3.5+ Flink-1.10.0">
+<meta name="keywords" content="docker,flink,python,pyflink">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pyflink开发-环境部署">
+<meta property="og:url" content="http://yoursite.com/2020/02/25/pyflink-config-deploy/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="前言由于公司项目主要模块为python开发，最好项目都能跑在python环境下 公司虽然有flink平台,如果需要公司平台来支持pyflink 不一定有能力和资源去推动做这件事我们需要自己来维护一个小集群flink环境 满足我们项目需求即可最好的方案是实现部署在docker环境中.管理方便,资源最小化 PyFlink环境准备 JDK 1.8+ Python 3.5+ Flink-1.10.0">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-13T10:06:22.542Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Pyflink开发-环境部署">
+<meta name="twitter:description" content="前言由于公司项目主要模块为python开发，最好项目都能跑在python环境下 公司虽然有flink平台,如果需要公司平台来支持pyflink 不一定有能力和资源去推动做这件事我们需要自己来维护一个小集群flink环境 满足我们项目需求即可最好的方案是实现部署在docker环境中.管理方便,资源最小化 PyFlink环境准备 JDK 1.8+ Python 3.5+ Flink-1.10.0">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Pyflink开发-环境部署 - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Pyflink开发-环境部署
+        
+      </h1>
+
+      <time class="post-time">
+          Feb 25 2020
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <hr>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>由于公司项目主要模块为python开发，最好项目都能跑在python环境下<br> 公司虽然有flink平台,如果需要公司平台来支持pyflink 不一定有能力和资源去推动做这件事<br>我们需要自己来维护一个小集群flink环境 满足我们项目需求即可<br>最好的方案是实现部署在docker环境中.管理方便,资源最小化</p>
+<h2 id="PyFlink环境准备"><a href="#PyFlink环境准备" class="headerlink" title="PyFlink环境准备"></a>PyFlink环境准备</h2><ol>
+<li>JDK 1.8+</li>
+<li>Python 3.5+</li>
+<li>Flink-1.10.0 </li>
+</ol>
+<h2 id="本地环境安装"><a href="#本地环境安装" class="headerlink" title="本地环境安装"></a>本地环境安装</h2><ol>
+<li><p>Flink-1.10.0 scala-2.11 到本地并解压 <a href="https://archive.apache.org/dist/flink/flink-1.10.0/flink-1.10.0-bin-scala_2.11.tgz" target="_blank" rel="noopener">https://archive.apache.org/dist/flink/flink-1.10.0/flink-1.10.0-bin-scala_2.11.tgz</a></p>
+</li>
+<li><p>pip install apache-flink  完成如下</p>
+<p>注意以下两个模块版本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apache-beam <span class="number">2.15</span><span class="number">.0</span></span><br><span class="line">apache-flink <span class="number">1.10</span><span class="number">.0</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">pip list</span><br><span class="line">Package Version</span><br><span class="line">--------------- ----------</span><br><span class="line">apache-beam <span class="number">2.15</span><span class="number">.0</span></span><br><span class="line">apache-flink <span class="number">1.10</span><span class="number">.0</span></span><br><span class="line">avro-python3 <span class="number">1.9</span><span class="number">.2</span><span class="number">.1</span></span><br><span class="line">bottle <span class="number">0.12</span><span class="number">.18</span></span><br><span class="line">certifi <span class="number">2019.11</span><span class="number">.28</span></span><br><span class="line">chardet <span class="number">3.0</span><span class="number">.4</span></span><br><span class="line">cloudpickle <span class="number">1.2</span><span class="number">.2</span></span><br><span class="line">crcmod <span class="number">1.7</span></span><br><span class="line">dill <span class="number">0.2</span><span class="number">.9</span></span><br><span class="line">docopt <span class="number">0.6</span><span class="number">.2</span></span><br><span class="line">fastavro <span class="number">0.21</span><span class="number">.24</span></span><br><span class="line">future <span class="number">0.18</span><span class="number">.2</span></span><br><span class="line">grpcio <span class="number">1.27</span><span class="number">.2</span></span><br><span class="line">hdfs <span class="number">2.5</span><span class="number">.8</span></span><br><span class="line">httplib2 <span class="number">0.12</span><span class="number">.0</span></span><br><span class="line">idna <span class="number">2.9</span></span><br><span class="line">mock <span class="number">2.0</span><span class="number">.0</span></span><br><span class="line">numpy <span class="number">1.18</span><span class="number">.1</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>安装模块需要比较好的网络 可以使用国内pip源</p>
+<p>用户目录pip配置<code>~/.config/pip/pip.conf</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[<span class="keyword">global</span>]</span><br><span class="line">index-url = http://mirrors.aliyun.com/pypi/simple</span><br><span class="line">[install]</span><br><span class="line">trusted-host = mirrors.aliyun.com</span><br></pre></td></tr></table></figure>
+
+<h2 id="Docker集群环境"><a href="#Docker集群环境" class="headerlink" title="Docker集群环境"></a>Docker集群环境</h2><p>官方并有一个python环境的flink，需要自己构建一个python环境的flink。</p>
+<h5 id="1-构建PyFlink-环境-Docker-Image"><a href="#1-构建PyFlink-环境-Docker-Image" class="headerlink" title="1.构建PyFlink 环境 Docker Image"></a>1.构建PyFlink 环境 Docker Image</h5><p>相关项目代码已发布git如下  <a href="https://git.chinawayltd.com/rdp/pyflink-rdp" target="_blank" rel="noopener">https://git.chinawayltd.com/rdp/pyflink-rdp</a></p>
+<p>在原官方Dockerfile中 加了入python环境及pyflink依赖 <a href="https://github.com/apache/flink-docker/blob/346809e6cab2ca0ac702fb4d2bf56afb6ee3c437/1.10/scala_2.11-debian/Dockerfile" target="_blank" rel="noopener">https://github.com/apache/flink-docker/blob/346809e6cab2ca0ac702fb4d2bf56afb6ee3c437/1.10/scala_2.11-debian/Dockerfile</a></p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Install python</span></span><br><span class="line"><span class="keyword">RUN</span> set -ex; \</span><br><span class="line">apt-get update; \</span><br><span class="line">apt-get -y install python3; \</span><br><span class="line">apt-get -y install python3-pip; \</span><br><span class="line">apt-get -y install python3-dev; \</span><br><span class="line">ln -s /usr/bin/python3 /usr/bin/python; \</span><br><span class="line">ln -s /usr/bin/pip3 /usr/bin/pip</span><br><span class="line"><span class="comment"># Install apache-flink</span></span><br><span class="line"><span class="keyword">RUN</span> set -ex; \</span><br><span class="line">apt-get update; \</span><br><span class="line">python -m pip install --upgrade pip; \</span><br><span class="line">pip install apache-flink</span><br></pre></td></tr></table></figure>
+
+<p>为了加快构建速度这里将 Flink安装包 下载到本地 </p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">COPY</span> flink-1.10.0-bin-scala_2.11.tgz $FLINK_HOME</span><br><span class="line"><span class="keyword">RUN</span> tar -xf flink*.tgz --strip-components=1;\</span><br><span class="line">rm flink*.tgz; \</span><br><span class="line">chown -R flink:flink .;</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-构建镜像-docker-build-t-pyflink-rdp-v1"><a href="#2-构建镜像-docker-build-t-pyflink-rdp-v1" class="headerlink" title="2. 构建镜像 docker build -t pyflink-rdp:v1 ."></a>2. 构建镜像 <code>docker build -t pyflink-rdp:v1 .</code></h5><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br><span class="line">REPOSITORY TAG IMAGE ID CREATED SIZE</span><br><span class="line">pyflink-rdp v1 <span class="number">2</span>c1f25773d6a <span class="number">12</span> hours ago <span class="number">2.27</span>GB</span><br><span class="line">openjdk <span class="number">8</span>-jre <span class="number">11</span>c7adda2eb7 <span class="number">12</span> days ago <span class="number">264</span>MB</span><br></pre></td></tr></table></figure>
+
+<p>最终整个镜像确实有点大.</p>
+<h5 id="3-docker-compose-编排如官网"><a href="#3-docker-compose-编排如官网" class="headerlink" title="3. docker-compose 编排如官网"></a>3. docker-compose 编排如官网</h5><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">version: <span class="string">"1.0"</span></span><br><span class="line">services:</span><br><span class="line">jobmanager:</span><br><span class="line">image: pyflink-rdp:v1</span><br><span class="line"><span class="keyword">expose</span>:</span><br><span class="line">- <span class="string">"6123"</span></span><br><span class="line">ports:</span><br><span class="line">- <span class="string">"8081:8081"</span></span><br><span class="line">command: jobmanager</span><br><span class="line">environment:</span><br><span class="line">- JOB_MANAGER_RPC_ADDRESS=jobmanager</span><br><span class="line">- FLINK_LOG_DIR=/opt/flink/log</span><br><span class="line">- log.file=/opt/flink/log/jobmanager.log</span><br><span class="line">taskmanager:</span><br><span class="line">image: pyflink-rdp:v1</span><br><span class="line"><span class="keyword">expose</span>:</span><br><span class="line">- <span class="string">"6121"</span></span><br><span class="line">- <span class="string">"6122"</span></span><br><span class="line">depends_on:</span><br><span class="line">- jobmanager</span><br><span class="line">command: taskmanager</span><br><span class="line">links:</span><br><span class="line">- <span class="string">"jobmanager:jobmanager"</span></span><br><span class="line">environment:</span><br><span class="line">- JOB_MANAGER_RPC_ADDRESS=jobmanager</span><br><span class="line">- FLINK_LOG_DIR=/opt/flink/log</span><br><span class="line">- log.file=/opt/flink/log/taskmanager.log</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-启动docker-compose-up-d"><a href="#4-启动docker-compose-up-d" class="headerlink" title="4. 启动docker-compose up -d"></a>4. 启动<code>docker-compose up -d</code></h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Creating pyflink-rdp_taskmanager_1 ... done</span><br><span class="line">Creating pyflink-rdp_jobmanager_1 ... done</span><br></pre></td></tr></table></figure>
+
+<p>访问http://$ip:8081验证成功</p>
+<h3 id="5-部署"><a href="#5-部署" class="headerlink" title="5. 部署"></a>5. 部署</h3><p>在本地Flink目录</p>
+<p><code>./flink run -m $ip:8081 -py $path/deploy_demo.py</code></p>
+<h2 id="遇到问题"><a href="#遇到问题" class="headerlink" title="遇到问题"></a>遇到问题</h2><ol>
+<li><strong>[本地环境]</strong>ModuleNotFoundError: No module named ‘grpc’<br>本地python环境有点问题 重新配置了python环境和pip</li>
+<li><strong>[本地环境]</strong>google/protobuf/<a href="http://descriptor_database.cc/" target="_blank" rel="noopener">descriptor_database.cc</a>:58] file already exists in database:<br>暂时将pyarrow从0.14.1 升级至pip install pyarrow==0.15.1 (可能有潜在问题)<br>Some synt  actic constructs of Python 3 are not yet fully supported by Apache Beam.</li>
+</ol>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/docker-flink-python-pyflink/">docker,flink,python,pyflink</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2020/03/13/about/index/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default"></span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2018/01/01/java-tech-all/">
+        <span class="next-text nav-default">Java知识汇总</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

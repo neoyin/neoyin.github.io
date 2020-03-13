@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="压力测试工具-Pylot">
+
+
+
+
+  <meta name="keywords" content="pylot,python,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2013/05/06/web-performance-tool-pylot/">
+
+
+<meta name="description" content="Pylot（www.pylot.org）是一款开源的用以测试WebService性能和扩展性的工具，它运行HTTP负载测试，这对于制定容量计划、确定基准点、分析系统瓶颈以及系统调优都非常有用。在使用过程中，Pylot会发起并发请求（HTTPRequests），检验服务器响应，以及带有相关指标的报表。它通过GUI或者Shell/Console来执行和监视对被测试网站的测试过程。 你开始在一个XML文">
+<meta name="keywords" content="pylot,python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="压力测试工具-Pylot">
+<meta property="og:url" content="http://yoursite.com/2013/05/06/web-performance-tool-pylot/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="Pylot（www.pylot.org）是一款开源的用以测试WebService性能和扩展性的工具，它运行HTTP负载测试，这对于制定容量计划、确定基准点、分析系统瓶颈以及系统调优都非常有用。在使用过程中，Pylot会发起并发请求（HTTPRequests），检验服务器响应，以及带有相关指标的报表。它通过GUI或者Shell/Console来执行和监视对被测试网站的测试过程。 你开始在一个XML文">
+<meta property="og:locale" content="cn">
+<meta property="og:image" content="http://www.floatinglife.cn/wp-content/uploads/2013/05/pylot_03.png">
+<meta property="og:image" content="http://www.floatinglife.cn/wp-content/uploads/2013/05/o_4.jpg">
+<meta property="og:updated_time" content="2020-03-13T10:39:23.852Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="压力测试工具-Pylot">
+<meta name="twitter:description" content="Pylot（www.pylot.org）是一款开源的用以测试WebService性能和扩展性的工具，它运行HTTP负载测试，这对于制定容量计划、确定基准点、分析系统瓶颈以及系统调优都非常有用。在使用过程中，Pylot会发起并发请求（HTTPRequests），检验服务器响应，以及带有相关指标的报表。它通过GUI或者Shell/Console来执行和监视对被测试网站的测试过程。 你开始在一个XML文">
+<meta name="twitter:image" content="http://www.floatinglife.cn/wp-content/uploads/2013/05/pylot_03.png">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> 压力测试工具-Pylot - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          压力测试工具-Pylot
+        
+      </h1>
+
+      <time class="post-time">
+          May 6 2013
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>Pylot（<a href="http://www.pylot.org/" target="_blank" rel="noopener">www.pylot.org</a>）是一款开源的用以测试Web<br>Service性能和扩展性的工具，它运行HTTP负载测试，这对于制定容量计划、确定基准点、分析系统瓶颈以及系统调优都非常有用。在使用过程中，Pylot会发起并发请求（HTTP<br>Requests），检验服务器响应，以及带有相关指标的报表。它通过GUI或者Shell/Console来执行和监视对被测试网站的测试过程。</p>
+<p>你开始在一个XML文件(testcases.xml)中定义你的测试用例。测试用例是验证你指定的请求（URL，Method，Body等）。可以验证服务器响应的正则表达式匹配的内容，HTTP状态码。您可以通过调整负载的工作量控制GUI或命令行设置，然后再开始测试运行（数目的代理，请求的时间间隔，上升时间，测试时间）。这些设置，您可以根据不同的负载情况下的模型试验。在运行加载的情况下，并传递到负载产生引擎。代理调度和运行，同时发送HTTP请求到你的web服务。它在执行过程中生成实时的统计和错误报告，通过这个报告可以很方便的进行监控。</p>
+<h2 id><a href="#" class="headerlink" title></a><img src="http://www.floatinglife.cn/wp-content/uploads/2013/05/pylot_03.png" alt="pylot\_03"></h2><p>安装起来挺简单基于python 2.5+ 也需要安装NumPy和Matplotli<br>以便生成图形界面.</p>
+<a id="more"></a>
+
+<p>看这里:<a href="http://pylot.org/gettingstarted.html" target="_blank" rel="noopener">http://pylot.org/gettingstarted.html</a></p>
+<h2 id="产品特点"><a href="#产品特点" class="headerlink" title="产品特点"></a>产品特点</h2><ul>
+<li>HTTP和HTTPS（SSL）支持</li>
+<li>多线程负载生成器</li>
+<li>自动cookie处理</li>
+<li>响应验证与正则表达式</li>
+<li>执行/监控控制台</li>
+<li>实时统计</li>
+<li>结果报告和图形</li>
+<li>定制的timer</li>
+<li>GUI模式</li>
+<li>外壳/控制台模式</li>
+<li>跨平台</li>
+</ul>
+<p>配置testcase</p>
+<pre><code>&lt;testcase&gt;
+&lt;param name=&quot;sneak_project&quot; value=&quot;http://sneak.l99.com/&quot; /&gt;
+&lt;case&gt;
+  &lt;url&gt;http://www.l99.com/EditAccount_login.action&lt;/url&gt;
+  &lt;method&gt;POST&lt;/method&gt;
+  &lt;body&gt;&lt;![CDATA[e=15101&amp;m=951626]]&gt;&lt;/body&gt;
+  &lt;add_header&gt;Content-Type: application/x-www-form-urlencoded&lt;/add_header&gt;
+
+  &lt;case&gt;&lt;url&gt;${sneak_project}myGameFriend.action&lt;/url&gt;&lt;/case&gt;
+  &lt;case&gt;&lt;url&gt;${sneak_project}showGame.action&lt;/url&gt;&lt;/case&gt;
+  &lt;case&gt;&lt;url&gt;${sneak_project}shop.action&lt;/url&gt;&lt;/case&gt;
+  &lt;case&gt;&lt;url&gt;${sneak_project}buyRes.action&lt;/url&gt;&lt;method&gt;POST&lt;/method&gt;&lt;body&gt;&lt;![CDATA[resId=45&amp;resNum=1]]&gt;&lt;/body&gt;&lt;/case&gt;
+&lt;/case&gt;
+&lt;/testcase&gt;</code></pre><h4 id="配置选项："><a href="#配置选项：" class="headerlink" title="配置选项："></a>配置选项：</h4><p>“${pylot_path}/core/config.py的包含了一些全局配置选项。您可以设置某些defauls和改变某些行为。如果在命令行上指定这些选项是覆盖。</p>
+<pre><code>AGENTS = 1
+DURATION = 60  # secs
+RAMPUP = 0  # secs
+INTERVAL = 0  # millisecs
+TC_XML_FILENAME = &apos;testcases.xml&apos;
+OUTPUT_DIR = None
+TEST_NAME = None
+LOG_MSGS = False
+
+GENERATE_RESULTS = True
+SHUFFLE_TESTCASES = False  # randomize order of testcases per agent
+WAITFOR_AGENT_FINISH = True  # wait for last requests to complete before stopping
+SMOOTH_TP_GRAPH = 1  # secs.  smooth/dampen throughput graph based on an interval
+SOCKET_TIMEOUT = 300  # secs
+COOKIES_ENABLED = True
+
+HTTP_DEBUG = False  # only useful when combined with blocking mode  
+BLOCKING = False  # stdout blocked until test finishes, then result is returned as XML
+GUI = False
+
+-a, --agents=NUM_AGENTS设置同时访问用户数量
+-d, --duration=DURATION设置总测试时间（秒）
+-r, --rampup=RAMPUP设置提升量（秒），没太懂是什么意思
+-i, --interval=INTERVAL设置访问间隔（毫秒）
+-x, --xmlfile=TEST_CASE_XML设置要使用的xml文件，默认testcase.xml
+-o, --output_dir=PATH设置输出文件路径
+-n, --name=TESTNAME设置测试名称
+-l, --log_msgs设置是否需要日志信息
+-b, --blocking设置是否开启锁定模式，如果开启会锁定输出直到测试结束
+-g, --gui设置是否使用图形界面
+-p, --port=PORT设置xml-rpc监听的端口
+
+#启动测试...
+python pylot -a 50</code></pre><h2 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h2><p><img src="http://www.floatinglife.cn/wp-content/uploads/2013/05/o_4.jpg" alt="o\_4"></p>
+<p>Workingload Model里分别是测试总时间、用户数以及提升和间隔时间。</p>
+<p>Results<br>Summary里是测试结果统计，可以看到总请求数（requests）、总错误数（errors）和总接受数据量（data<br>received）。</p>
+<p>avg是平均访问时间，stdev是标准差，min是最小值，max是最大值。50th %表示<br>排在50%位置（也就是中间位置）的访问时间，其他以此类推。</p>
+<p>官方示例:<a href="http://www.pylot.org/samples/results/results.html" target="_blank" rel="noopener">http://www.pylot.org/samples/results/results.html</a></p>
+<p>参考：</p>
+<ul>
+<li><a href="http://pylot.org/" target="_blank" rel="noopener">http://pylot.org/</a></li>
+<li><a href="http://www.cnblogs.com/limengqiang/archive/2013/02/07/Pylot.html" target="_blank" rel="noopener">http://www.cnblogs.com/limengqiang/archive/2013/02/07/Pylot.html</a></li>
+<li><a href="http://www.cnblogs.com/numbbbbb/archive/2013/04/19/3029959.html" target="_blank" rel="noopener">http://www.cnblogs.com/numbbbbb/archive/2013/04/19/3029959.html</a></li>
+</ul>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/pylot-python/">pylot,python</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2013/05/08/maven-dependency-moudle/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">maven项目继承及依赖</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2013/04/29/wait-for-the-truth-of-life/">
+        <span class="next-text nav-default">用尽生命的坚持 坚持等到真相</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

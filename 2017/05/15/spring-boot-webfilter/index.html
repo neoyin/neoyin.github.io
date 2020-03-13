@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="SpringBoot添加WebFilter">
+
+
+
+
+  <meta name="keywords" content="spring,spring-boot,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2017/05/15/spring-boot-webfilter/">
+
+
+<meta name="description" content="想在SpringBoot中添加一个自定义的filter 发现sevlet3支持 @WebFilter 于是添加之如下 12@Configure@WebFilter(         urlPatterns = &amp;quot;/admin/*&amp;quot;,         filterName = &amp;quot;AdminFilter&amp;quot;, ) public class ManageFilte">
+<meta name="keywords" content="spring,spring-boot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot添加WebFilter">
+<meta property="og:url" content="http://yoursite.com/2017/05/15/spring-boot-webfilter/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="想在SpringBoot中添加一个自定义的filter 发现sevlet3支持 @WebFilter 于是添加之如下 12@Configure@WebFilter(         urlPatterns = &amp;quot;/admin/*&amp;quot;,         filterName = &amp;quot;AdminFilter&amp;quot;, ) public class ManageFilte">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-13T10:41:17.003Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SpringBoot添加WebFilter">
+<meta name="twitter:description" content="想在SpringBoot中添加一个自定义的filter 发现sevlet3支持 @WebFilter 于是添加之如下 12@Configure@WebFilter(         urlPatterns = &amp;quot;/admin/*&amp;quot;,         filterName = &amp;quot;AdminFilter&amp;quot;, ) public class ManageFilte">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> SpringBoot添加WebFilter - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          SpringBoot添加WebFilter
+        
+      </h1>
+
+      <time class="post-time">
+          May 15 2017
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <hr>
+<p>想在SpringBoot中添加一个自定义的filter 发现sevlet3支持 <code>@WebFilter</code> 于是添加之如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@Configure</span><br><span class="line">@WebFilter(         urlPatterns = &quot;/admin/*&quot;,         filterName = &quot;AdminFilter&quot;, ) public class ManageFilter implements Filter &#123;     @Override     public void init(FilterConfig filterConfig) throws ServletException &#123;         System.out.println(&quot;init manage filter ....&quot;);     &#125;      @Override     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException &#123;          filterChain.doFilter(servletRequest,servletResponse);     &#125;      @Override     public void destroy() &#123;      &#125; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>启动时已初始化此filter 但是urlpatterns 怎么也对不上<br><code>o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: &#39;manageFilter&#39; to: [/*]</code></p>
+<p>百思不得其解,试了好几种方法都不work. 一直以为是urlpattern的问题</p>
+<p>google后去掉<code>@Configure</code>  在<code>Application</code>添加 <code>@ServletComponentScan</code> 解决问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@ImportResource(&quot;classpath:applicationContext.xml&quot;)</span><br><span class="line">@ServletComponentScan</span><br><span class="line">@SpringBootApplication</span><br><span class="line">public class SpringBootAnnotatedApp &#123;</span><br><span class="line"> </span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        SpringApplication.run(SpringBootAnnotatedApp.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/spring-spring-boot/">spring,spring-boot</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2017/05/20/mac-item2-lrzsz/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Mac下iterm2远程文件上传下载lrzsz </span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2017/05/11/how-to-write-excellent-dockerfiles/">
+        <span class="next-text nav-default">如何编写最佳的Dockerfile</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

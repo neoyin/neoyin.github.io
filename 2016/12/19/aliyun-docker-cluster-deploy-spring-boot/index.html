@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="阿里云容器服务部署SpringBoot 服务">
+
+
+
+
+  <meta name="keywords" content="docker,springboot,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2016/12/19/aliyun-docker-cluster-deploy-spring-boot/">
+
+
+<meta name="description" content="之前在阿里云上使用Rancher来管理容器和部署项目，但是阿里云上也有自己的容器服务，也来试试看 创建容器集群SpringBoot Build 镜像在pom.xml中引入plugin 123456789101112131415161718&amp;lt;plugin&amp;gt;	&amp;lt;groupId&amp;gt;com.spotify&amp;lt;/groupId&amp;gt;	&amp;lt;artifactId&amp;gt;dock">
+<meta name="keywords" content="docker,springboot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="阿里云容器服务部署SpringBoot 服务">
+<meta property="og:url" content="http://yoursite.com/2016/12/19/aliyun-docker-cluster-deploy-spring-boot/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="之前在阿里云上使用Rancher来管理容器和部署项目，但是阿里云上也有自己的容器服务，也来试试看 创建容器集群SpringBoot Build 镜像在pom.xml中引入plugin 123456789101112131415161718&amp;lt;plugin&amp;gt;	&amp;lt;groupId&amp;gt;com.spotify&amp;lt;/groupId&amp;gt;	&amp;lt;artifactId&amp;gt;dock">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-13T10:57:08.408Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="阿里云容器服务部署SpringBoot 服务">
+<meta name="twitter:description" content="之前在阿里云上使用Rancher来管理容器和部署项目，但是阿里云上也有自己的容器服务，也来试试看 创建容器集群SpringBoot Build 镜像在pom.xml中引入plugin 123456789101112131415161718&amp;lt;plugin&amp;gt;	&amp;lt;groupId&amp;gt;com.spotify&amp;lt;/groupId&amp;gt;	&amp;lt;artifactId&amp;gt;dock">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> 阿里云容器服务部署SpringBoot 服务 - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          阿里云容器服务部署SpringBoot 服务
+        
+      </h1>
+
+      <time class="post-time">
+          Dec 19 2016
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <hr>
+<p>之前在阿里云上使用Rancher来管理容器和部署项目，但是阿里云上也有自己的容器服务，也来试试看</p>
+<h5 id="创建容器集群"><a href="#创建容器集群" class="headerlink" title="创建容器集群"></a>创建容器集群</h5><h5 id="SpringBoot-Build-镜像"><a href="#SpringBoot-Build-镜像" class="headerlink" title="SpringBoot Build 镜像"></a>SpringBoot Build 镜像</h5><p>在<code>pom.xml</code>中引入plugin</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">	&lt;groupId&gt;com.spotify&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;docker-maven-plugin&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;0.4.6&lt;/version&gt;</span><br><span class="line">	&lt;configuration&gt;</span><br><span class="line">		&lt;dockerHost&gt; docker Server地址  如果本地则不需要 &lt;/dockerHost&gt;</span><br><span class="line">		&lt;dockerCertPath&gt; 证书文件路径  &lt;/dockerCertPath&gt;</span><br><span class="line">		&lt;imageName&gt;$&#123;docker.image.prefix&#125;/$&#123;project.artifactId&#125;&lt;/imageName&gt;</span><br><span class="line">		&lt;dockerDirectory&gt; Dockerfile路径 &lt;/dockerDirectory&gt;</span><br><span class="line">		&lt;resources&gt;</span><br><span class="line">			&lt;resource&gt;</span><br><span class="line">				&lt;targetPath&gt;/&lt;/targetPath&gt;</span><br><span class="line">				&lt;directory&gt;$&#123;project.build.directory&#125;&lt;/directory&gt;</span><br><span class="line">				&lt;include&gt;$&#123;project.build.finalName&#125;.jar&lt;/include&gt;</span><br><span class="line">			&lt;/resource&gt;</span><br><span class="line">		&lt;/resources&gt;</span><br><span class="line">	&lt;/configuration&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在<code>dockerDirectory</code>创建Dockerfile</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">FROM java:8-jre</span><br><span class="line">VOLUME /tmp</span><br><span class="line">ADD app.jar app.jar</span><br><span class="line">RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai  /etc/localtime</span><br><span class="line">RUN echo &quot;Asia/Shanghai&quot; &gt; /etc/timezone</span><br><span class="line">RUN bash -c &apos;touch /app.jar&apos;</span><br><span class="line">ENTRYPOINT [&quot;java&quot;,&quot;-Djava.security.egd=file:/dev/./urandom&quot;,&quot;-jar&quot;,&quot;/app.jar&quot;]</span><br><span class="line"></span><br><span class="line">#app.jar 为 $&#123;project.build.finalName&#125;</span><br></pre></td></tr></table></figure>
+
+<p>利用<code>maven</code> 打包docker 镜像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn -Dmaven.test.skip=true clean package docker:build</span><br></pre></td></tr></table></figure>
+
+<h5 id="推送镜像到阿里云镜像中心"><a href="#推送镜像到阿里云镜像中心" class="headerlink" title="推送镜像到阿里云镜像中心"></a>推送镜像到阿里云镜像中心</h5><p>登录阿里云docker registry</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker login --username=$email registry.cn-xxx.aliyuncs.com</span><br><span class="line">docker tag [ImageId] registry.cn-xxx..aliyuncs.com/$namespace/$project:[镜像版本号]</span><br><span class="line">docker push registry.cn-xxx.aliyuncs.com/$namespace/$project:[镜像版本号]</span><br></pre></td></tr></table></figure>
+
+<h6 id="启动应用"><a href="#启动应用" class="headerlink" title="启动应用"></a>启动应用</h6><p>在阿里云容器服务的应用中创建应用，选择刚刚推送到阿里云中的镜像,映射8080端口 即可创建应该，应用会自动部署相关服务到各节点。</p>
+<hr>
+<h5 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h5><ul>
+<li><a href="https://help.aliyun.com/product/25972.html?spm=5176.doc25984.3.1.S0ceHo" target="_blank" rel="noopener">https://help.aliyun.com/product/25972.html?spm=5176.doc25984.3.1.S0ceHo</a></li>
+<li><a href="https://my.oschina.net/u/3023307/blog/783544" target="_blank" rel="noopener">https://my.oschina.net/u/3023307/blog/783544</a></li>
+<li><a href="https://github.com/spotify/docker-maven-plugin" target="_blank" rel="noopener">https://github.com/spotify/docker-maven-plugin</a></li>
+</ul>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/docker-springboot/">docker,springboot</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016/12/22/linux-rinetd-port-redirect/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Linux下利用rinetd进行端口转发</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016/10/28/jenkins-github-clone-timeout/">
+        <span class="next-text nav-default">阿里云Jenkins从Github构建项目超时</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

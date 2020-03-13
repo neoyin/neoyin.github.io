@@ -1,7 +1,146 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Neo"><title>Linux 命令备忘(top) · 浮生若梦</title><meta name="description" content="linux top命令简介
-top 命令是最流行的性能监视工具之一，我们必需了解。它是一个优秀的交互式工具，用于监视性能。它提供系统整体性能，但报告进程信息才是 top 命令的长处。top 命令交互界面如下图所视：
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
 
-top 界面分为两个部份，光标上面部份显示关于系统整体性能，光标下面部份显示各进程"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title><a href="/">浮生若梦</a></h3></div></div><ul class="social-links"></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a href="https://www.caicai.me"> CaiCai </a><span>&</span><a href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/about">关于</a></li><li><a href="/archives">归档</a></li><li><a href="/links">友链</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>Linux 命令备忘(top)</a></h3></div><div class="post-content"><h3 id="linux-top命令简介"><a href="#linux-top命令简介" class="headerlink" title="linux top命令简介"></a>linux top命令简介</h3><blockquote>
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Linux 命令备忘(top)">
+
+
+
+
+  <meta name="keywords" content="Linux,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2011/08/22/linux-command-top/">
+
+
+<meta name="description" content="linux top命令简介 top 命令是最流行的性能监视工具之一，我们必需了解。它是一个优秀的交互式工具，用于监视性能。它提供系统整体性能，但报告进程信息才是 top 命令的长处。top 命令交互界面如下图所视：  top 界面分为两个部份，光标上面部份显示关于系统整体性能，光标下面部份显示各进程信息。光标所在处是用来输入操作命令的。 linux top命令界面第一行显示的内容和uptime命令">
+<meta name="keywords" content="Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 命令备忘(top)">
+<meta property="og:url" content="http://yoursite.com/2011/08/22/linux-command-top/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="linux top命令简介 top 命令是最流行的性能监视工具之一，我们必需了解。它是一个优秀的交互式工具，用于监视性能。它提供系统整体性能，但报告进程信息才是 top 命令的长处。top 命令交互界面如下图所视：  top 界面分为两个部份，光标上面部份显示关于系统整体性能，光标下面部份显示各进程信息。光标所在处是用来输入操作命令的。 linux top命令界面第一行显示的内容和uptime命令">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-13T10:06:01.960Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux 命令备忘(top)">
+<meta name="twitter:description" content="linux top命令简介 top 命令是最流行的性能监视工具之一，我们必需了解。它是一个优秀的交互式工具，用于监视性能。它提供系统整体性能，但报告进程信息才是 top 命令的长处。top 命令交互界面如下图所视：  top 界面分为两个部份，光标上面部份显示关于系统整体性能，光标下面部份显示各进程信息。光标所在处是用来输入操作命令的。 linux top命令界面第一行显示的内容和uptime命令">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Linux 命令备忘(top) - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Linux 命令备忘(top)
+        
+      </h1>
+
+      <time class="post-time">
+          Aug 22 2011
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h3 id="linux-top命令简介"><a href="#linux-top命令简介" class="headerlink" title="linux top命令简介"></a>linux top命令简介</h3><blockquote>
 <p>top 命令是最流行的性能监视工具之一，我们必需了解。它是一个优秀的交互式工具，用于监视性能。它提供系统整体性能，但报告进程信息才是 top 命令的长处。top 命令交互界面如下图所视：</p>
 </blockquote>
 <p>top 界面分为两个部份，光标上面部份显示关于系统整体性能，光标下面部份显示各进程信息。光标所在处是用来输入操作命令的。</p>
@@ -9,4 +148,128 @@ top 界面分为两个部份，光标上面部份显示关于系统整体性能�
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">top	这个没有什么意思，只是个名称而以</span><br><span class="line">01：47：56	系统当前时间</span><br><span class="line">up 1:26	系统开机到现在经过了多少时间</span><br><span class="line">2 users	当前2用户在线</span><br><span class="line">load average:0.00,0.00,0.00	系统1分钟、5分钟、15分钟的CPU负载信息</span><br><span class="line">第二行：</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line">Tasks	英文意思是工作；任务；差事。</span><br><span class="line">38 total	很好理解，就是当前有38个任务，也就是38个进程。</span><br><span class="line">1 running	1个进程正在运行</span><br><span class="line">37 sleeping	37个进程睡眠</span><br><span class="line">0 stopped	停止的进程数</span><br><span class="line">0 zombie	僵死的进程数</span><br><span class="line">Cpu(s)	表示这一行显示CPU总体信息</span><br><span class="line">0.0%us	用户态进程占用CPU时间百分比，不包含renice值为负的任务占用的CPU的时间。</span><br><span class="line">0.7%sy	内核占用CPU时间百分比</span><br><span class="line">0.0%ni	renice值为负的任务的用户态进程的CPU时间百分比。nice是优先级的意思</span><br><span class="line">99.3%id	空闲CPU时间百分比</span><br><span class="line">0.0%wa	等待I/O的CPU时间百分比</span><br><span class="line">0.0%hi	CPU硬中断时间百分比</span><br><span class="line">0.0%si	CPU软中断时间百分比</span><br><span class="line">0.0%st	我不知道</span><br><span class="line">第三行：</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">Men	内存的意思</span><br><span class="line">256412k total	物理内存总量</span><br><span class="line">30156k used	使用的物理内存量</span><br><span class="line">226256 free	空闲的物理内存量</span><br><span class="line">8176k buffers	用作内核缓存的物理内存量</span><br><span class="line">Swap	交换空间</span><br><span class="line">337356k total	交换区总量</span><br><span class="line">0k used	使用的交换区量</span><br><span class="line">337356k free	空闲的交换区量</span><br><span class="line">12160k cached	缓冲交换区总量</span><br><span class="line">第四行：</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">PID	进程的ID</span><br><span class="line">USER	进程所有者</span><br><span class="line">PR	进程的优先级别，越小越优先被执行</span><br><span class="line">NI	nice值</span><br><span class="line">VIRT	进程占用的虚拟内存</span><br><span class="line">RES	进程占用的物理内存</span><br><span class="line">SHR	进程使用的共享内存</span><br><span class="line">S	进程的状态。S表示休眠，R表示正在运行，Z表示僵死状态，N表示该进程优先值为负数</span><br><span class="line">%CPU	进程占用CPU的使用率</span><br><span class="line">%MEM	进程使用的物理内存和总内存的百分比</span><br><span class="line">TIME+	该进程启动后占用的总的CPU时间，即占用CPU使用时间的累加值。</span><br><span class="line">COMMAND	进程启动命令名称</span><br></pre></td></tr></table></figure>
 
 <h3 id="linux-top命令操作指令"><a href="#linux-top命令操作指令" class="headerlink" title="linux top命令操作指令"></a>linux top命令操作指令</h3><p>下面我列出一些常用的linux top命令操作指令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">q	退出top命令</span><br><span class="line"> 	立即刷新</span><br><span class="line">s	设置刷新时间间隔</span><br><span class="line">c	显示命令完全模式</span><br><span class="line">t	显示或隐藏进程和CPU状态信息</span><br><span class="line">m	显示或隐藏内存状态信息</span><br><span class="line">l	显示或隐藏uptime信息</span><br><span class="line">f	增加或减少进程显示标志</span><br><span class="line">S	累计模式，会把已完成或退出的子进程占用的CPU时间累计到父进程的MITE+</span><br><span class="line">P	按%CPU使用率排行</span><br><span class="line">T	按MITE+排行</span><br><span class="line">M	按%MEM排行</span><br><span class="line">u	指定显示用户进程</span><br><span class="line">r	修改进程renice值</span><br><span class="line">k	kill进程</span><br><span class="line">i	只显示正在运行的进程</span><br><span class="line">W	保存对top的设置到文件~/.toprc，下次启动将自动调用toprc文件的设置。</span><br><span class="line">h	帮助命令。</span><br></pre></td></tr></table></figure></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2011-08-22</span><i class="fa fa-tag"></i><a class="tag" href="/categories/技术流/" title="技术流">技术流 </a><a class="tag" href="/tags/Linux/" title="Linux">Linux </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" href="http://twitter.com/home?status=,http://yoursite.com/2011/08/22/linux-command-top/,浮生若梦,Linux 命令备忘(top),;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2012/03/02/mysql-outfile-write-error/" title="解决select ... into outfile '..' mysql写文件权限问题">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2011/02/08/millionof-access-web-tech-preparation/" title="百万级访问网站前期的技术准备">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">q	退出top命令</span><br><span class="line"> 	立即刷新</span><br><span class="line">s	设置刷新时间间隔</span><br><span class="line">c	显示命令完全模式</span><br><span class="line">t	显示或隐藏进程和CPU状态信息</span><br><span class="line">m	显示或隐藏内存状态信息</span><br><span class="line">l	显示或隐藏uptime信息</span><br><span class="line">f	增加或减少进程显示标志</span><br><span class="line">S	累计模式，会把已完成或退出的子进程占用的CPU时间累计到父进程的MITE+</span><br><span class="line">P	按%CPU使用率排行</span><br><span class="line">T	按MITE+排行</span><br><span class="line">M	按%MEM排行</span><br><span class="line">u	指定显示用户进程</span><br><span class="line">r	修改进程renice值</span><br><span class="line">k	kill进程</span><br><span class="line">i	只显示正在运行的进程</span><br><span class="line">W	保存对top的设置到文件~/.toprc，下次启动将自动调用toprc文件的设置。</span><br><span class="line">h	帮助命令。</span><br></pre></td></tr></table></figure>
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/">Linux</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2012/03/02/mysql-outfile-write-error/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">解决select ... into outfile '..' mysql写文件权限问题</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2011/02/08/millionof-access-web-tech-preparation/">
+        <span class="next-text nav-default">百万级访问网站前期的技术准备</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Linux FTP上传文件">
+
+
+
+
+  <meta name="keywords" content="Linux,ftp,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2016/05/28/linux-ftp-upload-file/">
+
+
+<meta name="description" content="一些小文件要上传到内部ftp服务器共享给其它同事 ，写一个简单的小脚本去处理。  简单的示例12345678910#! /bin/bashfpath=$1  //准备上传的文件fname=$&amp;#123;fpath##*/&amp;#125;  //得到文件名 详情见&amp;lt;/linux-string-split.html&amp;gt;ftp -nv &amp;lt;&amp;lt;- EOFopen 192.168.50.">
+<meta name="keywords" content="Linux,ftp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux FTP上传文件">
+<meta property="og:url" content="http://yoursite.com/2016/05/28/linux-ftp-upload-file/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="一些小文件要上传到内部ftp服务器共享给其它同事 ，写一个简单的小脚本去处理。  简单的示例12345678910#! /bin/bashfpath=$1  //准备上传的文件fname=$&amp;#123;fpath##*/&amp;#125;  //得到文件名 详情见&amp;lt;/linux-string-split.html&amp;gt;ftp -nv &amp;lt;&amp;lt;- EOFopen 192.168.50.">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-13T10:47:30.114Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux FTP上传文件">
+<meta name="twitter:description" content="一些小文件要上传到内部ftp服务器共享给其它同事 ，写一个简单的小脚本去处理。  简单的示例12345678910#! /bin/bashfpath=$1  //准备上传的文件fname=$&amp;#123;fpath##*/&amp;#125;  //得到文件名 详情见&amp;lt;/linux-string-split.html&amp;gt;ftp -nv &amp;lt;&amp;lt;- EOFopen 192.168.50.">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Linux FTP上传文件 - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Linux FTP上传文件
+        
+      </h1>
+
+      <time class="post-time">
+          May 28 2016
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <hr>
+<blockquote>
+<p>一些小文件要上传到内部ftp服务器共享给其它同事 ，写一个简单的小脚本去处理。</p>
+</blockquote>
+<h5 id="简单的示例"><a href="#简单的示例" class="headerlink" title="简单的示例"></a>简单的示例</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#! /bin/bash</span><br><span class="line">fpath=$1  //准备上传的文件</span><br><span class="line">fname=$&#123;fpath##*/&#125;  //得到文件名 详情见&lt;/linux-string-split.html&gt;</span><br><span class="line">ftp -nv &lt;&lt;- EOF</span><br><span class="line">open 192.168.50.199</span><br><span class="line">user username password</span><br><span class="line">bin</span><br><span class="line">put $fname /&#123;path&#125;/$&#123;fname&#125;</span><br><span class="line">bye</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>ftp -niv &lt;&lt;- EOF</code> 由于是脚本，因此我们要给此FTP脚本定义一个结束的符号，在这里，定义的结束符是“EOF”。你也可以自己来定义其他的。不过建议用“EOF”，这在绝大多数编程语言中，都表示结束：End Of File。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-v：显示远程服务器的所有响应信息；</span><br><span class="line">-n：限制FTP的自动登录，即不使用；</span><br><span class="line">-i：关闭多个文件传输时的交互过程；</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>open IP_ADDRESS</code> 表示连接FTP站点，这里的IP_ADDRESS就是FTP站点的IP地址。</li>
+<li><code>user USERNAME PASSWORD</code>  这是你进入该FTP站点的用户名和密码。以上两个结合起来，就相当于我们通过浏览器进入FTP站点时候，经常使用的<code>ftp://username:password@ip_address</code>的办法。</li>
+<li><code>ascii(or bin)</code> 我们都知道FTP传送有两种方式：ascii和binary。这里就是指定你要传送的方式。这很重要，因为这将决定你传送或者获取的文件是否正常可用。</li>
+<li><code>put *(or get)</code> put *表示将第一条cd进入的路径下所有的文件都传送到刚刚连接进入的FTP站点。当然，你也可以指定某一个或者几个文件，而不一定是所有的。而get则表明是将刚刚进入的FTP站点那个FTP跟目录下的文件获取到本地——第一条cd命令进入的那个路径下。当然，如果你所需要的文件不在FTP的根目录下，在使用这个命令之前，你还要使用cd命令来修改一下FTP站点的当前路径。</li>
+<li><code>bye</code> 完成应该完成的工作以后，当然就是断开和FTP站点的连接了。</li>
+<li><code>EOF</code> 这个符号之前已经讲过。当脚本遇到这个符号的时候，它就知道应该结束了。</li>
+</ul>
+<h5 id="FTP命令"><a href="#FTP命令" class="headerlink" title="FTP命令"></a>FTP命令</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">1. 查看FTP服务器上的文件</span><br><span class="line">    dir 命令：显示目录和文件列表。</span><br><span class="line">    ls 命令：显示简易的文件列表。</span><br><span class="line">    cd 命令：进入指定的目录。</span><br><span class="line">    dir命令可以使用通配符“*”和“?”，比如，显示当前目录中所有扩展名为jpg的文件，可使用命令 dir *.jpg。</span><br><span class="line">    cd命令中必须带目录名。比如 cd main 表示进入当前目录下的main子目录，cd .. 表示退回上一级子目录。</span><br><span class="line"></span><br><span class="line">2. 传输类型</span><br><span class="line">　　type 命令：查看当前的传输方式。</span><br><span class="line">　　ascii 命令：设定传输方式为ASCII码方式。</span><br><span class="line">　　binary 命令：设定传输方式为二进制方式。</span><br><span class="line"></span><br><span class="line">3. 下载/上传文件</span><br><span class="line">　　get 命令：下载指定文件。</span><br><span class="line">　　get命令的格式：get filename [newname]，filename为下载的FTP服务器上的文件名，newname为保存在本地计算机上时使用的名字，如果不指定newname，文件将以原名保存。</span><br><span class="line">　　get命令下载的文件将保存在本地计算机的工作目录下。该目录是启动FTP时在盘符C:后显示的目录。如果想修改本地计算机的工作目录，可以使用 lcd 命令。比如：lcd d:\ 表示将工作目录设定为D盘的根目录。</span><br><span class="line">　　mget 命令：下载多个文件。</span><br><span class="line">　　mget命令的格式：mget filename [filename ……]。</span><br><span class="line">　　mget命令支持通配符“*”和“?”，比如：mget *.mp3 表示下载FTP服务器当前目录下的所有扩展名为mp3的文件。</span><br><span class="line">　　put 命令：上传指定文件。</span><br><span class="line">　　put命令的格式：put filename [newname]，filename为上传的本地文件名，newname为上传至FTP服务器上时使用的名字，如果不指定newname，文件将以原名上传。</span><br><span class="line">　　上传文件前，应该根据文件的类型设置传输方式，本机的工作目录也应该设置为上传文件所在的目录。</span><br><span class="line">   mdelete命令：批量删除文件</span><br><span class="line"></span><br><span class="line">4. 结束命令</span><br><span class="line">　　close 命令：结束与服务器的FTP会话。</span><br><span class="line">　　quit 命令：结束与服务器的FTP会话并退出FTP环境。</span><br><span class="line">　　bye 命令：结束与服务器的FTP会话并退出FTP环境。</span><br><span class="line"></span><br><span class="line">5. 其它命令</span><br><span class="line">　　status 命令：显示当前ftp状态</span><br><span class="line">　　prompt 命令： 切换交互式指令，默认开启on/off(使用 mput/mget 时不用每个文件皆询yes/no)</span><br><span class="line">　　delete 命令： 删除远端主机中的文件</span><br></pre></td></tr></table></figure>
+
+<h5 id="参考引用"><a href="#参考引用" class="headerlink" title="参考引用"></a>参考引用</h5><ul>
+<li><a href="http://blog.chinaunix.net/uid-20526681-id-3549245.html" target="_blank" rel="noopener">http://blog.chinaunix.net/uid-20526681-id-3549245.html</a></li>
+</ul>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/Linux-ftp/">Linux,ftp</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016/09/05/linux-nc-command/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Linux最实用命令nc</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016/05/27/linux-string-split/">
+        <span class="next-text nav-default">Linux shell命令字符串操作</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

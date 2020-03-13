@@ -1,10 +1,399 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Neo"><title>浮生若梦</title><meta name="description" content="A Blog Powered By Hexo"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title><a href="/">浮生若梦</a></h3></div></div><ul class="social-links"></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a href="https://www.caicai.me"> CaiCai </a><span>&</span><a href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a class="current" href="/">首页</a></li><li><a href="/about">关于</a></li><li><a href="/archives">归档</a></li><li><a href="/links">友链</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)" style="display:none;"> </a></li></div><div class="avatar"><img></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post animated fadeInDown"><div class="post-title"><h3><a href="/2013/12/27/nodejs-npm-install/">安装Nodejs 和 npm</a></h3></div><div class="post-content"><p>这里 http://www.joyent.com/blog/installing-node-and-npm/ 和这里https://gist.github.com/isaacs/579814 主要就是这里
-`echo &apos;export PATH=$HOME/local/bin:$PATH&apos; &g...</p></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2013-12-27</span><i class="fa fa-tag"></i><a class="tag" href="/categories/技术流/" title="技术流">技术流 </a><a class="tag" href="/tags/nodejs/" title="nodejs">nodejs </a></div></div></div></div><div class="post animated fadeInDown"><div class="post-title"><h3><a href="/2013/12/27/idea-tips-slowly/">IDEA-tips 拥抱病毒 ?</a></h3></div><div class="post-content"><p>If you notice that IntelliJ IDEA works slowly, consider the possibilityto reduce the number of folders under antivirus protection. Eachantivirus check in you...</p></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2013-12-27</span><i class="fa fa-tag"></i><a class="tag" href="/categories/每日一译/" title="每日一译">每日一译 </a><a class="tag" href="/tags/idea/" title="idea">idea </a></div></div></div></div><div class="post animated fadeInDown"><div class="post-title"><h3><a href="/2013/12/24/input-button-event/">input中的回车事件引起的页面调转</a></h3></div><div class="post-content"><p>前两天发现一个bug，当在一个input输入框中按下回车时，页面会调转到别的页面，但是触发的keydown事件中并没有页面调转相关的操作，页面为什么会调转呢？主要原因是form表单中只有一个input输入框和一个button按钮，当input中按下回车时，不仅自身绑定的keydown事件触发，而且button的o...</p></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2013-12-24</span><i class="fa fa-tag"></i><a class="tag" href="/categories/技术流/" title="技术流">技术流 </a></div></div></div></div><div class="post animated fadeInDown"><div class="post-title"><h3><a href="/2013/12/24/solr-shard-error-of-query-createmainquery/">solr shard查询请求时createMainQuery报错</a></h3></div><div class="post-content"><p>昨天又对一个solrcore进行分片操作，结果查询请求时报错：
-[http-8983-2] ERROR org.apache.solr.core.SolrCore – java.lang.NullPointerException
-at org.apache.solr.handler.component.Query...</p></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2013-12-24</span><i class="fa fa-tag"></i><a class="tag" href="/categories/技术流/" title="技术流">技术流 </a><a class="tag" href="/tags/solr/" title="solr">solr </a></div></div></div></div><div class="post animated fadeInDown"><div class="post-title"><h3><a href="/2013/12/22/apache-mina-abstractioconnector/">apache mina 基础类分析(三):AbstractIoConnector</a></h3></div><div class="post-content"><p>AbstractIoConnector:这个类继承了AbstractIoService，实现了IoConnector接口，AbstractIoService已经介绍过了，在这个类中，主要实现了一个connect()(以及重载)方法：
-public final ConnectFuture connect(Socke...</p></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2013-12-22</span><i class="fa fa-tag"></i><a class="tag" href="/categories/技术流/" title="技术流">技术流 </a></div></div></div></div><div class="post animated fadeInDown"><div class="post-title"><h3><a href="/2013/12/19/what-if-phone-keypad/">【What if 系列】恼人的键盘</a></h3></div><div class="post-content"><p>提问：
-在一些老式的手机上输入一个英语字母时我需要按很多次同样的数字键，比如要打出“Y”我需要按3次数字9。一些单词有连续好几个字母都在同一个数字键上，因而每打完一个字母你都要等一小会儿才能输入下一个字母，这让打字变成一件恼人的事情。所以我想问的是有哪个英语单词有连续最多的字母在同一个数字键上？
-—— Stewa...</p></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2013-12-19</span><i class="fa fa-tag"></i><a class="tag" href="/categories/【What-if系列】/" title="【What if系列】">【What if系列】 </a><a class="tag" href="/tags/what-if/" title="what-if">what-if </a></div></div></div></div><div class="post animated fadeInDown"><div class="post-title"><h3><a href="/2013/12/18/idea-tips-debug/">IDEA-tips 调试菜单</a></h3></div><div class="post-content"><p>By pressing Alt+Shift+F10 you can access the Run/Debug dropdown on themain toolbar, without the need to use your mouse.按 Alt+Shift+F10 可以访问 Run/Debug 下拉菜单, 不...</p></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2013-12-18</span><i class="fa fa-tag"></i><a class="tag" href="/categories/每日一译/" title="每日一译">每日一译 </a><a class="tag" href="/tags/idea/" title="idea">idea </a></div></div></div></div><div class="post animated fadeInDown"><div class="post-title"><h3><a href="/2013/12/17/idea-tips-menu/">IDEA-tips 菜单描述</a></h3></div><div class="post-content"><p>To help you learn the purpose of each item in the main menu, its shortdescription is shown in the status bar at the bottom of the applicationframe when you p...</p></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2013-12-17</span><i class="fa fa-tag"></i><a class="tag" href="/categories/每日一译/" title="每日一译">每日一译 </a><a class="tag" href="/tags/idea/" title="idea">idea </a></div></div></div></div><div class="post animated fadeInDown"><div class="post-title"><h3><a href="/2013/12/16/idea-tips-choosed/">IDEA-tips 选中提示</a></h3></div><div class="post-content"><p>When using Code Completion, you can accept the currently highlightedselection in the popup list with the period character (.), comma (,),semicolon (;), space...</p></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2013-12-16</span><i class="fa fa-tag"></i><a class="tag" href="/categories/每日一译/" title="每日一译">每日一译 </a></div></div></div></div><div class="post animated fadeInDown"><div class="post-title"><h3><a href="/2013/12/15/apache-mina-basic-abstractioservice/">Apache mina 基础类分析（二）：AbstractIoService</a></h3></div><div class="post-content"><p>AbstractIoService:
-/*Base implementation of IoService.
-An instance of IoService contains an Executor which will handle the incoming events.
-*/上面这段英文是这个抽象类的描述...</p></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2013-12-15</span><i class="fa fa-tag"></i><a class="tag" href="/categories/技术流/" title="技术流">技术流 </a><a class="tag" href="/tags/mina/" title="mina">mina </a></div></div></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/page/8/">上一页</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/page/10/">下一页</a></li></ul></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/page/9/">
+
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="浮生若梦">
+<meta property="og:url" content="http://yoursite.com/page/9/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:locale" content="cn">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浮生若梦">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title>
+  浮生若梦
+</title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+  
+<div id="primary">
+  <section id="archive" class="archive">
+
+    
+
+      
+      
+
+      
+        
+        <div class="collection-title">
+          <h2 class="archive-year">2014</h2>
+        </div>
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          Apr 8
+        </span>
+        <span class="archive-post-title">
+          <a href="/2014/04/08/company-startup-invite/" class="archive-post-link">
+            这就是为什么创业公司找不到最优秀员工的原因
+          </a>
+        </span>
+      </div>
+    
+
+      
+      
+
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          Apr 6
+        </span>
+        <span class="archive-post-title">
+          <a href="/2014/04/06/windows-conect-github/" class="archive-post-link">
+            windows连接github
+          </a>
+        </span>
+      </div>
+    
+
+      
+      
+
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          Mar 31
+        </span>
+        <span class="archive-post-title">
+          <a href="/2014/03/31/linux-command-mutt/" class="archive-post-link">
+            Mutt 一个通过终端发送邮件的Email客户端
+          </a>
+        </span>
+      </div>
+    
+
+      
+      
+
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          Mar 27
+        </span>
+        <span class="archive-post-title">
+          <a href="/2014/03/27/haproxy-x-forwarded-for/" class="archive-post-link">
+            X-Forwarded-For引发的悬案
+          </a>
+        </span>
+      </div>
+    
+
+      
+      
+
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          Mar 2
+        </span>
+        <span class="archive-post-title">
+          <a href="/2014/03/02/solr-facet-group-fq/" class="archive-post-link">
+            Solr facet、group、fq
+          </a>
+        </span>
+      </div>
+    
+
+      
+      
+
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          Mar 1
+        </span>
+        <span class="archive-post-title">
+          <a href="/2014/03/01/regular-expression-match-multiple-of-3/" class="archive-post-link">
+            正则表达式匹配3的倍数
+          </a>
+        </span>
+      </div>
+    
+
+      
+      
+
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          Feb 26
+        </span>
+        <span class="archive-post-title">
+          <a href="/2014/02/26/url-jessionid-resolve/" class="archive-post-link">
+            解决URL中的jessionid
+          </a>
+        </span>
+      </div>
+    
+
+      
+      
+
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          Feb 24
+        </span>
+        <span class="archive-post-title">
+          <a href="/2014/02/24/byzantine-failures/" class="archive-post-link">
+            拜占庭将军问题
+          </a>
+        </span>
+      </div>
+    
+
+      
+      
+
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          Feb 24
+        </span>
+        <span class="archive-post-title">
+          <a href="/2014/02/24/gx-200-qustion/" class="archive-post-link">
+            国学常识200题（含答案），看你还会多少？
+          </a>
+        </span>
+      </div>
+    
+
+      
+      
+
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          Feb 20
+        </span>
+        <span class="archive-post-title">
+          <a href="/2014/02/20/world-of-fastest-growing-company/" class="archive-post-link">
+            全球发展最快公司的10个共同特点
+          </a>
+        </span>
+      </div>
+    
+  </section>
+ </div>
+
+  
+  <nav class="pagination">
+    
+      <a class="prev" href="/page/8/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/page/10/">
+        <span class="next-text">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

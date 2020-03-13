@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Linux系统管理员最常用的29个Nmap命令">
+
+
+
+
+  <meta name="keywords" content="linux,nmap,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2014/02/18/linux-nmap-command/">
+
+
+<meta name="description" content="The Nmap aka Network Mapper is an open source and a veryversatile tool for Linux system/network administrators. Nmap is used forexploring networks, perform security scans, network audit and findingop">
+<meta name="keywords" content="linux,nmap">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux系统管理员最常用的29个Nmap命令">
+<meta property="og:url" content="http://yoursite.com/2014/02/18/linux-nmap-command/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="The Nmap aka Network Mapper is an open source and a veryversatile tool for Linux system/network administrators. Nmap is used forexploring networks, perform security scans, network audit and findingop">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-13T10:47:01.245Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux系统管理员最常用的29个Nmap命令">
+<meta name="twitter:description" content="The Nmap aka Network Mapper is an open source and a veryversatile tool for Linux system/network administrators. Nmap is used forexploring networks, perform security scans, network audit and findingop">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Linux系统管理员最常用的29个Nmap命令 - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Linux系统管理员最常用的29个Nmap命令
+        
+      </h1>
+
+      <time class="post-time">
+          Feb 18 2014
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <blockquote>
+<p>The <strong>Nmap</strong> aka Network Mapper is an open source and a very<br>versatile tool for Linux system/network administrators. Nmap is used for<br>exploring networks, perform security scans, network audit and finding<br>open ports on remote machine. It scans for Live hosts, Operating<br>systems, packet filters and open ports running on remote hosts.</p>
+</blockquote>
+<p><strong>Nmap</strong>即网络映射器是一个开源也是一个非常通用的Linux<br>系统/网络管理员工具。<strong>Nmap</strong>用于探测网络，执行安全扫描，<br>网络审计.查找远程机开放端口。它会扫描远程在线主机，操作系统，包过滤器以及开放端口。</p>
+<blockquote>
+<p>I’ll be covering most of NMAP usage in two different parts and this is<br>the first part of nmap serious. Here in this setup, I have used two<br>servers without firewall to test the working of the Nmap command.</p>
+</blockquote>
+<p>我将会用两个不同的部分讲解<strong>NMAP</strong>的大部分功能。第一部分非常关键。这一部分，我会有两个已关闭防火墙的服务器来测试Nmap命令。</p>
+<ol>
+<li>192.168.0.100 – server1.tecmint.com</li>
+<li>192.168.0.101 – server2.tecmint.com</li>
+</ol>
+<h3 id="Nmap-command-usage"><a href="#Nmap-command-usage" class="headerlink" title="Nmap command usage"></a>Nmap command usage</h3><pre><code># nmap [Scan Type(s)] [Options] {target specification}</code></pre><a id="more"></a>
+
+<h3 id="How-to-Install-NMAP-in-Linux"><a href="#How-to-Install-NMAP-in-Linux" class="headerlink" title="How to Install NMAP in Linux"></a>How to Install NMAP in Linux</h3><blockquote>
+<p>Most of the today’s Linux distributions like Red Hat, CentOS, Fedoro,<br>Debian and Ubuntu have included Nmap in their default package<br>management repositories called Yum and APT. The both tools are used to<br>install and manage software packages and updates. To install Nmap on<br>distribution specific use the following command.</p>
+</blockquote>
+<p>目前大部分Linux发行版像<strong>Red<br>Hat</strong>,<strong>CentOS</strong>,<strong>Fedoro</strong>,<strong>Debian</strong>和<strong>Ubuntu</strong>已经在其默认的包管理安装库(<strong>Yum</strong> <strong>APT</strong>)中自带了<strong>Nmap</strong> 在各发行版上安装<strong>Nmap</strong>用如下命令:</p>
+<pre><code># yum install nmap      [on Red Hat based systems]
+$ sudo apt-get install nmap [on Debian based systems]</code></pre><blockquote>
+<p>Once you’ve install latest nmap application, you can follow the<br>example instructions provided in this article.</p>
+</blockquote>
+<p>一旦你安装了最新的Nmap程序,你将可以跟随下面的例子进行操作。</p>
+<h3 id="1-Scan-a-System-with-Hostname-and-IP-Address"><a href="#1-Scan-a-System-with-Hostname-and-IP-Address" class="headerlink" title="1. Scan a System with Hostname and IP Address"></a>1. Scan a System with Hostname and IP Address</h3><blockquote>
+<p>The Nmap tool offers various methods to scan a system. In this<br>example, I am performing a scan using hostname as server2.tecmint.com<br>to find out all open ports, services and MAC address on the system.</p>
+</blockquote>
+<p><strong>Nmap</strong><br>提供了各种方法来扫描系统。这个例子里，我会执行扫描hostname为<strong>server2.tecmint.com</strong>服务器并找出所有开放的端口,服务及MAC地址</p>
+<h3 id="Scan-using-Hostname"><a href="#Scan-using-Hostname" class="headerlink" title="Scan using Hostname"></a>Scan using Hostname</h3><pre><code>[root@server1 ~]# nmap server2.tecmint.com
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2013-11-11 15:42 EST
+Interesting ports on server2.tecmint.com (192.168.0.101):
+Not shown: 1674 closed ports
+PORT     STATE SERVICE
+22/tcp   open  ssh
+80/tcp   open  http
+111/tcp  open  rpcbind
+957/tcp  open  unknown
+3306/tcp open  mysql
+8888/tcp open  sun-answerbook
+MAC Address: 08:00:27:D9:8E:D7 (Cadmus Computer Systems)
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.415 seconds
+You have new mail in /var/spool/mail/root</code></pre><h3 id="Scan-using-IP-Address"><a href="#Scan-using-IP-Address" class="headerlink" title="Scan using IP Address"></a>Scan using IP Address</h3><pre><code>[root@server1 ~]# nmap 192.168.0.101
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2013-11-18 11:04 EST
+Interesting ports on server2.tecmint.com (192.168.0.101):
+Not shown: 1674 closed ports
+PORT     STATE SERVICE
+22/tcp   open  ssh
+80/tcp   open  http
+111/tcp  open  rpcbind
+958/tcp  open  unknown
+3306/tcp open  mysql
+8888/tcp open  sun-answerbook
+MAC Address: 08:00:27:D9:8E:D7 (Cadmus Computer Systems)
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.465 seconds
+You have new mail in /var/spool/mail/root</code></pre><h3 id="2-Scan-using-“-v”-option"><a href="#2-Scan-using-“-v”-option" class="headerlink" title="2. Scan using “-v” option"></a>2. Scan using “-v” option</h3><blockquote>
+<p>You can see that the below command with “-v” option is giving more<br>detailed information about the remote machine.</p>
+</blockquote>
+<p>你可以看到下面的命令利用<strong>-v</strong>选项可以得到远程机器更多的详细信息。</p>
+<pre><code>[root@server1 ~]# nmap -v server2.tecmint.com
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2013-11-11 15:43 EST
+Initiating ARP Ping Scan against 192.168.0.101 [1 port] at 15:43
+The ARP Ping Scan took 0.01s to scan 1 total hosts.
+Initiating SYN Stealth Scan against server2.tecmint.com (192.168.0.101) [1680 ports] at 15:43
+Discovered open port 22/tcp on 192.168.0.101
+Discovered open port 80/tcp on 192.168.0.101
+Discovered open port 8888/tcp on 192.168.0.101
+Discovered open port 111/tcp on 192.168.0.101
+Discovered open port 3306/tcp on 192.168.0.101
+Discovered open port 957/tcp on 192.168.0.101
+The SYN Stealth Scan took 0.30s to scan 1680 total ports.
+Host server2.tecmint.com (192.168.0.101) appears to be up ... good.
+Interesting ports on server2.tecmint.com (192.168.0.101):
+Not shown: 1674 closed ports
+PORT     STATE SERVICE
+22/tcp   open  ssh
+80/tcp   open  http
+111/tcp  open  rpcbind
+957/tcp  open  unknown
+3306/tcp open  mysql
+8888/tcp open  sun-answerbook
+MAC Address: 08:00:27:D9:8E:D7 (Cadmus Computer Systems)
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.485 seconds
+               Raw packets sent: 1681 (73.962KB) | Rcvd: 1681 (77.322KB)</code></pre><h3 id="3-Scan-Multiple-Hosts-扫描多台机器"><a href="#3-Scan-Multiple-Hosts-扫描多台机器" class="headerlink" title="3.Scan Multiple Hosts 扫描多台机器"></a>3.Scan Multiple Hosts 扫描多台机器</h3><blockquote>
+<p>You can scan multiple hosts by simply writing their IP addresses or<br>hostnames with Nmap.</p>
+</blockquote>
+<p>你可以用Nmap扫描多台主机。</p>
+<pre><code>[root@server1 ~]# nmap 192.168.0.101 192.168.0.102 192.168.0.103
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2013-11-11 16:06 EST
+Interesting ports on server2.tecmint.com (192.168.0.101):
+Not shown: 1674 closed ports
+PORT     STATE SERVICE
+22/tcp   open  ssh
+80/tcp   open  http
+111/tcp  open  rpcbind
+957/tcp  open  unknown
+3306/tcp open  mysql
+8888/tcp open  sun-answerbook
+MAC Address: 08:00:27:D9:8E:D7 (Cadmus Computer Systems)
+Nmap finished: 3 IP addresses (1 host up) scanned in 0.580 seconds</code></pre><h3 id="4-Scan-a-whole-Subnet-扫描整个子网"><a href="#4-Scan-a-whole-Subnet-扫描整个子网" class="headerlink" title="4. Scan a whole Subnet 扫描整个子网"></a>4. Scan a whole Subnet 扫描整个子网</h3><blockquote>
+<p>You can scan a whole subnet or IP range with Nmap by providing *<br>wildcard with it.</p>
+</blockquote>
+<p>你可以扫描整个子网或IP段利用 * 通配符。</p>
+<pre><code>[root@server1 ~]# nmap 192.168.0.*
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2013-11-11 16:11 EST
+Interesting ports on server1.tecmint.com (192.168.0.100):
+Not shown: 1677 closed ports
+PORT    STATE SERVICE
+22/tcp  open  ssh
+111/tcp open  rpcbind
+851/tcp open  unknown
+
+Interesting ports on server2.tecmint.com (192.168.0.101):
+Not shown: 1674 closed ports
+PORT     STATE SERVICE
+22/tcp   open  ssh
+80/tcp   open  http
+111/tcp  open  rpcbind
+957/tcp  open  unknown
+3306/tcp open  mysql
+8888/tcp open  sun-answerbook
+MAC Address: 08:00:27:D9:8E:D7 (Cadmus Computer Systems)
+
+Nmap finished: 256 IP addresses (2 hosts up) scanned in 5.550 seconds
+You have new mail in /var/spool/mail/root</code></pre><blockquote>
+<p>On above output you can see that nmap scanned a whole subnet and gave<br>the information about those hosts which are Up in the Network.</p>
+</blockquote>
+<p>通过上面的输出可以看出Nmap扫描了整个子网并给出来当前网中在线主机的信息。</p>
+<h3 id="5-Scan-Multiple-Servers-using-last-octet-of-IP-address-利用最后一位字节扫描多服务器"><a href="#5-Scan-Multiple-Servers-using-last-octet-of-IP-address-利用最后一位字节扫描多服务器" class="headerlink" title="5. Scan Multiple Servers using last octet of IP address 利用最后一位字节扫描多服务器"></a>5. Scan Multiple Servers using last octet of IP address 利用最后一位字节扫描多服务器</h3><blockquote>
+<p>You can perform scans on multiple IP address by simple specifying last<br>octet of IP address. For example, here I performing a scan on IP<br>addresses 192.168.0.101, 192.168.0.102 and 192.168.0.103.</p>
+</blockquote>
+<p>你可以简单的指定IP地址的最后一位字节扫描多个多台服务器，例如</p>
+<pre><code>[root@server1 ~]# nmap 192.168.0.101,102,103
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2013-11-11 16:09 EST
+Interesting ports on server2.tecmint.com (192.168.0.101):
+Not shown: 1674 closed ports
+PORT     STATE SERVICE
+22/tcp   open  ssh
+80/tcp   open  http
+111/tcp  open  rpcbind
+957/tcp  open  unknown
+3306/tcp open  mysql
+8888/tcp open  sun-answerbook
+MAC Address: 08:00:27:D9:8E:D7 (Cadmus Computer Systems)
+
+Nmap finished: 3 IP addresses (1 host up) scanned in 0.552 seconds
+You have new mail in /var/spool/mail/root</code></pre><h3 id="6-Scan-list-of-Hosts-from-a-File-从文件中扫描"><a href="#6-Scan-list-of-Hosts-from-a-File-从文件中扫描" class="headerlink" title="6. Scan list of Hosts from a File 从文件中扫描"></a>6. Scan list of Hosts from a File 从文件中扫描</h3><blockquote>
+<p>If you have more hosts to scan and all host details are written in a<br>file , you can directly ask nmap to read that file and perform scans.<br>Let’s see how to do that. Create a text file called “nmaptest.txt” and<br>define all the IP addresses or hostname of the server that you want to<br>do a scan.</p>
+</blockquote>
+<p>如果你需要扫描的多台主机写在文件中，你可以利用nmap读取此文件进行扫描。先创建一个文本文件”nmaptest.txt”，并定义你需要扫描的主机名或IP地址.让我们看一看怎么做：</p>
+<pre><code>[root@server1 ~]# cat &gt; nmaptest.txt
+
+localhost
+server2.tecmint.com
+192.168.0.101</code></pre><blockquote>
+<p>Next, run the following command with “iL” option with nmap command to<br>scan all listed IP address in the file.<br>接下来，运行带”iL”选项的命令扫描文件中的所有ip列表.</p>
+</blockquote>
+<pre><code>[root@server1 ~]# nmap -iL nmaptest.txt
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2013-11-18 10:58 EST
+Interesting ports on localhost.localdomain (127.0.0.1):
+Not shown: 1675 closed ports
+PORT    STATE SERVICE
+22/tcp  open  ssh
+25/tcp  open  smtp
+111/tcp open  rpcbind
+631/tcp open  ipp
+857/tcp open  unknown
+
+Interesting ports on server2.tecmint.com (192.168.0.101):
+Not shown: 1674 closed ports
+PORT     STATE SERVICE
+22/tcp   open  ssh
+80/tcp   open  http
+111/tcp  open  rpcbind
+958/tcp  open  unknown
+3306/tcp open  mysql
+8888/tcp open  sun-answerbook
+MAC Address: 08:00:27:D9:8E:D7 (Cadmus Computer Systems)
+
+Interesting ports on server2.tecmint.com (192.168.0.101):
+Not shown: 1674 closed ports
+PORT     STATE SERVICE
+22/tcp   open  ssh
+80/tcp   open  http
+111/tcp  open  rpcbind
+958/tcp  open  unknown
+3306/tcp open  mysql
+8888/tcp open  sun-answerbook
+MAC Address: 08:00:27:D9:8E:D7 (Cadmus Computer Systems)
+
+Nmap finished: 3 IP addresses (3 hosts up) scanned in 2.047 seconds</code></pre><h3 id="7-Scan-an-IP-Address-Range-扫描IP地址范围"><a href="#7-Scan-an-IP-Address-Range-扫描IP地址范围" class="headerlink" title="7. Scan an IP Address Range 扫描IP地址范围"></a>7. Scan an IP Address Range 扫描IP地址范围</h3><blockquote>
+<p>You can specify an IP range while performing scan with Nmap.<br>你可以用Nmap指定扫描IP范围</p>
+</blockquote>
+<pre><code>[root@server1 ~]# nmap 192.168.0.101-110
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2013-11-11 16:09 EST
+Interesting ports on server2.tecmint.com (192.168.0.101):
+Not shown: 1674 closed ports
+PORT     STATE SERVICE
+22/tcp   open  ssh
+80/tcp   open  http
+111/tcp  open  rpcbind
+957/tcp  open  unknown
+3306/tcp open  mysql
+8888/tcp open  sun-answerbook
+MAC Address: 08:00:27:D9:8E:D7 (Cadmus Computer Systems)
+
+Nmap finished: 10 IP addresses (1 host up) scanned in 0.542 seconds</code></pre><h3 id="8-Scan-Network-Excluding-Remote-Hosts-排除主机后扫描"><a href="#8-Scan-Network-Excluding-Remote-Hosts-排除主机后扫描" class="headerlink" title="8. Scan Network Excluding Remote Hosts 排除主机后扫描"></a>8. Scan Network Excluding Remote Hosts 排除主机后扫描</h3><blockquote>
+<p>You can exclude some hosts while performing a full network scan or<br>when you are scanning with wildcards with “–exclude” option.</p>
+</blockquote>
+<p>你可以在扫描全网或通过通配符扫描时利用”-exclude”排除不需要扫描的主机</p>
+<pre><code>[root@server1 ~]# nmap 192.168.0.* --exclude 192.168.0.100
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2013-11-11 16:16 EST
+Interesting ports on server2.tecmint.com (192.168.0.101):
+Not shown: 1674 closed ports
+PORT     STATE SERVICE
+22/tcp   open  ssh
+80/tcp   open  http
+111/tcp  open  rpcbind
+957/tcp  open  unknown
+3306/tcp open  mysql
+8888/tcp open  sun-answerbook
+MAC Address: 08:00:27:D9:8E:D7 (Cadmus Computer Systems)
+
+Nmap finished: 255 IP addresses (1 host up) scanned in 5.313 seconds
+You have new mail in /var/spool/mail/root</code></pre><h3 id="9-Scan-OS-information-and-Traceroute-扫描操作系统信息和路由跟踪"><a href="#9-Scan-OS-information-and-Traceroute-扫描操作系统信息和路由跟踪" class="headerlink" title="9. Scan OS information and Traceroute 扫描操作系统信息和路由跟踪."></a>9. Scan OS information and Traceroute 扫描操作系统信息和路由跟踪.</h3><blockquote>
+<p>With Nmap, you can detect which OS and version is running on the<br>remote host. To enable OS &amp; version detection, script scanning and<br>traceroute, we can use “-A” option with NMAP.</p>
+</blockquote>
+<p>利用Nmap，你可以检测远程主机的操作系统和版本。启用检测操作系统和版本,脚本扫描和路由跟踪，我们可以用选项<br>“Nmap -A”</p>
+<pre><code>[root@server1 ~]# nmap -A 192.168.0.101
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2013-11-11 16:25 EST
+Interesting ports on server2.tecmint.com (192.168.0.101):
+Not shown: 1674 closed ports
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 4.3 (protocol 2.0)
+80/tcp   open  http    Apache httpd 2.2.3 ((CentOS))
+111/tcp  open  rpcbind  2 (rpc #100000)
+957/tcp  open  status   1 (rpc #100024)
+3306/tcp open  mysql   MySQL (unauthorized)
+8888/tcp open  http    lighttpd 1.4.32
+MAC Address: 08:00:27:D9:8E:D7 (Cadmus Computer Systems)
+No exact OS matches for host (If you know what OS is running on it, see http://www.insecure.org/cgi-bin/nmap-submit.cgi).
+TCP/IP fingerprint:
+SInfo(V=4.11%P=i686-redhat-linux-gnu%D=11/11%Tm=52814B66%O=22%C=1%M=080027)
+TSeq(Class=TR%IPID=Z%TS=1000HZ)
+T1(Resp=Y%DF=Y%W=16A0%ACK=S++%Flags=AS%Ops=MNNTNW)
+T2(Resp=N)
+T3(Resp=Y%DF=Y%W=16A0%ACK=S++%Flags=AS%Ops=MNNTNW)
+T4(Resp=Y%DF=Y%W=0%ACK=O%Flags=R%Ops=)
+T5(Resp=Y%DF=Y%W=0%ACK=S++%Flags=AR%Ops=)
+T6(Resp=Y%DF=Y%W=0%ACK=O%Flags=R%Ops=)
+T7(Resp=Y%DF=Y%W=0%ACK=S++%Flags=AR%Ops=)
+PU(Resp=Y%DF=N%TOS=C0%IPLEN=164%RIPTL=148%RID=E%RIPCK=E%UCK=E%ULEN=134%DAT=E)
+
+Uptime 0.169 days (since Mon Nov 11 12:22:15 2013)
+
+Nmap finished: 1 IP address (1 host up) scanned in 22.271 seconds
+You have new mail in /var/spool/mail/root</code></pre><blockquote>
+<p>In above Output, you can see that nmap is came up with TCP/IP<br>fingerprint of the OS running on remote hosts and being more specific<br>about the port and services running on the remote hosts.</p>
+</blockquote>
+<p>通过上面的输出，我们可以看出Nmap显示了远程主机的TCP/IP指纹并更加仔细的显示了各端口及服务。</p>
+<h3 id="10-Enable-OS-Detection-with-Nmap-启用操作系统检测"><a href="#10-Enable-OS-Detection-with-Nmap-启用操作系统检测" class="headerlink" title="10. Enable OS Detection with Nmap 启用操作系统检测"></a>10. Enable OS Detection with Nmap 启用操作系统检测</h3><blockquote>
+<p>Use the option “-O” and “-osscan-guess” also helps to discover OS<br>information.</p>
+</blockquote>
+<p>用选项”-O”和”- osscan-guss” 也可以帮助探测操作系统信息</p>
+<pre><code>[root@server1 ~]# nmap -O server2.tecmint.com
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2013-11-11 17:40 EST
+Interesting ports on server2.tecmint.com (192.168.0.101):
+Not shown: 1674 closed ports
+PORT     STATE SERVICE
+22/tcp   open  ssh
+80/tcp   open  http
+111/tcp  open  rpcbind
+957/tcp  open  unknown
+3306/tcp open  mysql
+8888/tcp open  sun-answerbook
+MAC Address: 08:00:27:D9:8E:D7 (Cadmus Computer Systems)
+No exact OS matches for host (If you know what OS is running on it, see http://www.insecure.org/cgi-bin/nmap-submit.cgi).
+TCP/IP fingerprint:
+SInfo(V=4.11%P=i686-redhat-linux-gnu%D=11/11%Tm=52815CF4%O=22%C=1%M=080027)
+TSeq(Class=TR%IPID=Z%TS=1000HZ)
+T1(Resp=Y%DF=Y%W=16A0%ACK=S++%Flags=AS%Ops=MNNTNW)
+T2(Resp=N)
+T3(Resp=Y%DF=Y%W=16A0%ACK=S++%Flags=AS%Ops=MNNTNW)
+T4(Resp=Y%DF=Y%W=0%ACK=O%Flags=Option -O and -osscan-guess also helps to discover OS
+R%Ops=)
+T5(Resp=Y%DF=Y%W=0%ACK=S++%Flags=AR%Ops=)
+T6(Resp=Y%DF=Y%W=0%ACK=O%Flags=R%Ops=)
+T7(Resp=Y%DF=Y%W=0%ACK=S++%Flags=AR%Ops=)
+PU(Resp=Y%DF=N%TOS=C0%IPLEN=164%RIPTL=148%RID=E%RIPCK=E%UCK=E%ULEN=134%DAT=E)
+
+Uptime 0.221 days (since Mon Nov 11 12:22:16 2013)
+
+Nmap finished: 1 IP address (1 host up) scanned in 11.064 seconds
+You have new mail in /var/spool/mail/root</code></pre><h3 id="11-Scan-a-Host-to-Detect-Firewall-扫描主机用于探测防火墙"><a href="#11-Scan-a-Host-to-Detect-Firewall-扫描主机用于探测防火墙" class="headerlink" title="11. Scan a Host to Detect Firewall 扫描主机用于探测防火墙"></a>11. Scan a Host to Detect Firewall 扫描主机用于探测防火墙</h3><blockquote>
+<p>The below command will perform a scan on a remote host to detect if<br>any packet filters or Firewall is used by host.</p>
+</blockquote>
+<p>下面的命令将会扫描远程主机以探测该主机是否使用了包过滤器或防火墙</p>
+<pre><code>[root@server1 ~]# nmap -sA 192.168.0.101
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2013-11-11 16:27 EST
+All 1680 scanned ports on server2.tecmint.com (192.168.0.101) are UNfiltered
+MAC Address: 08:00:27:D9:8E:D7 (Cadmus Computer Systems)
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.382 seconds
+You have new mail in /var/spool/mail/root</code></pre><h3 id="12-Scan-a-Host-to-check-its-protected-by-Firewall-扫描主机检查其是否有防火墙保护"><a href="#12-Scan-a-Host-to-check-its-protected-by-Firewall-扫描主机检查其是否有防火墙保护" class="headerlink" title="12. Scan a Host to check its protected by Firewall 扫描主机检查其是否有防火墙保护"></a>12. Scan a Host to check its protected by Firewall 扫描主机检查其是否有防火墙保护</h3><blockquote>
+<p>To scan a host if it is protected by any packet filtering software or<br>Firewalls. 扫描主机检测其是否受到数据包过滤软件或防火墙的保护。</p>
+</blockquote>
+<pre><code>[root@server1 ~]# nmap -PN 192.168.0.101
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2013-11-11 16:30 EST
+Interesting ports on server2.tecmint.com (192.168.0.101):
+Not shown: 1674 closed ports
+PORT     STATE SERVICE
+22/tcp   open  ssh
+80/tcp   open  http
+111/tcp  open  rpcbind
+957/tcp  open  unknown
+3306/tcp open  mysql
+8888/tcp open  sun-answerbook
+MAC Address: 08:00:27:D9:8E:D7 (Cadmus Computer Systems)
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.399 seconds</code></pre><h3 id="13-Find-out-Live-hosts-in-a-Network-扫描网络中在线主机"><a href="#13-Find-out-Live-hosts-in-a-Network-扫描网络中在线主机" class="headerlink" title="13. Find out Live hosts in a Network 扫描网络中在线主机"></a>13. Find out Live hosts in a Network 扫描网络中在线主机</h3><blockquote>
+<p>With the help of “-sP” option we can simply check which hosts are live<br>and up in Network, with this option nmap skips port detection and<br>other things.</p>
+</blockquote>
+<p>利用选项”-<br>sP”我们可以简单的检测网络中有哪些在线主机，该选项会跳过端口和其它检测。</p>
+<pre><code>[root@server1 ~]# nmap -sP 192.168.0.*
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2013-11-18 11:01 EST
+Host server1.tecmint.com (192.168.0.100) appears to be up.
+Host server2.tecmint.com (192.168.0.101) appears to be up.
+MAC Address: 08:00:27:D9:8E:D7 (Cadmus Computer Systems)
+Nmap finished: 256 IP addresses (2 hosts up) scanned in 5.109 seconds</code></pre><h3 id="14-Perform-a-Fast-Scan-执行快速扫描"><a href="#14-Perform-a-Fast-Scan-执行快速扫描" class="headerlink" title="14. Perform a Fast Scan 执行快速扫描"></a>14. Perform a Fast Scan 执行快速扫描</h3><blockquote>
+<p>You can perform a fast scan with “-F” option to scans for the ports<br>listed in the nmap-services files and leaves all other ports.</p>
+</blockquote>
+<p>你可以执行快速扫描利用”-<br>F”选项.其会避开其它端口仅扫描nmap-services文件所列的端口</p>
+<pre><code>[root@server1 ~]# nmap -F 192.168.0.101
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2013-11-11 16:47 EST
+Interesting ports on server2.tecmint.com (192.168.0.101):
+Not shown: 1234 closed ports
+PORT     STATE SERVICE
+22/tcp   open  ssh
+80/tcp   open  http
+111/tcp  open  rpcbind
+3306/tcp open  mysql
+8888/tcp open  sun-answerbook
+MAC Address: 08:00:27:D9:8E:D7 (Cadmus Computer Systems)
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.322 seconds</code></pre><h3 id="15-Find-Nmap-version"><a href="#15-Find-Nmap-version" class="headerlink" title="15. Find Nmap version"></a>15. Find Nmap version</h3><p>You can find out Nmap version you are running on your machine with “-V”<br>option.</p>
+<pre><code>[root@server1 ~]# nmap -V
+
+Nmap version 4.11 ( http://www.insecure.org/nmap/ )
+You have new mail in /var/spool/mail/root</code></pre><h3 id="16-Scan-Ports-Consecutively-顺序扫描端口"><a href="#16-Scan-Ports-Consecutively-顺序扫描端口" class="headerlink" title="16. Scan Ports Consecutively 顺序扫描端口"></a>16. Scan Ports Consecutively 顺序扫描端口</h3><blockquote>
+<p>Use the “-r” flag to don’t randomize. 利用”- r”不随机扫描</p>
+</blockquote>
+<pre><code>[root@server1 ~]# nmap -r 192.168.0.101
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2013-11-11 16:52 EST
+Interesting ports on server2.tecmint.com (192.168.0.101):
+Not shown: 1674 closed ports
+PORT     STATE SERVICE
+22/tcp   open  ssh
+80/tcp   open  http
+111/tcp  open  rpcbind
+957/tcp  open  unknown
+3306/tcp open  mysql
+8888/tcp open  sun-answerbook
+MAC Address: 08:00:27:D9:8E:D7 (Cadmus Computer Systems)
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.363 seconds</code></pre><h3 id="17-Print-Host-interfaces-and-Routes-打印主机接口和路由信息"><a href="#17-Print-Host-interfaces-and-Routes-打印主机接口和路由信息" class="headerlink" title="17. Print Host interfaces and Routes 打印主机接口和路由信息"></a>17. Print Host interfaces and Routes 打印主机接口和路由信息</h3><blockquote>
+<p>You can find out host interface and route information with nmap by<br>using “–iflist” option.</p>
+</blockquote>
+<p>你可以用”- iflist”输出主机接口和路由信息</p>
+<pre><code>[root@server1 ~]# nmap --iflist
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2013-11-11 17:07 EST
+************************INTERFACES************************
+DEV  (SHORT) IP/MASK          TYPE     UP MAC
+lo   (lo)    127.0.0.1/8      loopback up
+eth0 (eth0)  192.168.0.100/24 ethernet up 08:00:27:11:C7:89
+
+**************************ROUTES**************************
+DST/MASK      DEV  GATEWAY
+192.168.0.0/0 eth0
+169.254.0.0/0 eth0</code></pre><blockquote>
+<p>In above output, you can see that map is listing interfaces attached<br>to your system and their respective routes.</p>
+</blockquote>
+<p>上面的输出，你可以看到nmap列出来你主机系统的接口及路由信息</p>
+<h3 id="18-Scan-for-specific-Port"><a href="#18-Scan-for-specific-Port" class="headerlink" title="18. Scan for specific Port"></a>18. Scan for specific Port</h3><blockquote>
+<p>There are various options to discover ports on remote machine with<br>Nmap. You can specify the port you want nmap to scan with “-p” option,<br>by default nmap scans only TCP ports.</p>
+</blockquote>
+<pre><code>[root@server1 ~]# nmap -p 80 server2.tecmint.com
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2013-11-11 17:12 EST
+Interesting ports on server2.tecmint.com (192.168.0.101):
+PORT   STATE SERVICE
+80/tcp open  http
+MAC Address: 08:00:27:D9:8E:D7 (Cadmus Computer Systems)
+
+Nmap finished: 1 IP address (1 host up) sca</code></pre><h3 id="19-Scan-a-TCP-Port"><a href="#19-Scan-a-TCP-Port" class="headerlink" title="19. Scan a TCP Port"></a>19. Scan a TCP Port</h3><p>You can also specify specific port types and numbers with nmap to scan.</p>
+<pre><code>[root@server1 ~]# nmap -p T:8888,80 server2.tecmint.com
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2013-11-11 17:15 EST
+Interesting ports on server2.tecmint.com (192.168.0.101):
+PORT     STATE SERVICE
+80/tcp   open  http
+8888/tcp open  sun-answerbook
+MAC Address: 08:00:27:D9:8E:D7 (Cadmus Computer Systems)
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.157 seconds</code></pre><h3 id="20-Scan-a-UDP-Port"><a href="#20-Scan-a-UDP-Port" class="headerlink" title="20. Scan a UDP Port"></a>20. Scan a UDP Port</h3><pre><code>[root@server1 ~]# nmap -sU 53 server2.tecmint.com
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2013-11-11 17:15 EST
+Interesting ports on server2.tecmint.com (192.168.0.101):
+PORT     STATE SERVICE
+53/udp   open  http
+8888/udp open  sun-answerbook
+MAC Address: 08:00:27:D9:8E:D7 (Cadmus Computer Systems)
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.157 seconds</code></pre><h3 id="21-Scan-Multiple-Ports"><a href="#21-Scan-Multiple-Ports" class="headerlink" title="21. Scan Multiple Ports"></a>21. Scan Multiple Ports</h3><p>You can also scan multiple ports using option “-p“.</p>
+<pre><code>[root@server1 ~]# nmap -p 80,443 192.168.0.101
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2013-11-18 10:56 EST
+Interesting ports on server2.tecmint.com (192.168.0.101):
+PORT    STATE  SERVICE
+80/tcp  open   http
+443/tcp closed https
+MAC Address: 08:00:27:D9:8E:D7 (Cadmus Computer Systems)
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.190 seconds</code></pre><h3 id="22-Scan-Ports-by-Network-Range"><a href="#22-Scan-Ports-by-Network-Range" class="headerlink" title="22. Scan Ports by Network Range"></a>22. Scan Ports by Network Range</h3><p>You can scan ports with ranges using expressions.</p>
+<pre><code>[root@server1 ~]#  nmap -p 80-160 192.168.0.101</code></pre><h3 id="23-Find-Host-Services-version-Numbers"><a href="#23-Find-Host-Services-version-Numbers" class="headerlink" title="23. Find Host Services version Numbers"></a>23. Find Host Services version Numbers</h3><p>We can find out service’s versions which are running on remote hosts<br>with “-sV” option.</p>
+<pre><code>[root@server1 ~]# nmap -sV 192.168.0.101
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2013-11-11 17:48 EST
+Interesting ports on server2.tecmint.com (192.168.0.101):
+Not shown: 1674 closed ports
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 4.3 (protocol 2.0)
+80/tcp   open  http    Apache httpd 2.2.3 ((CentOS))
+111/tcp  open  rpcbind  2 (rpc #100000)
+957/tcp  open  status   1 (rpc #100024)
+3306/tcp open  mysql   MySQL (unauthorized)
+8888/tcp open  http    lighttpd 1.4.32
+MAC Address: 08:00:27:D9:8E:D7 (Cadmus Computer Systems)
+
+Nmap finished: 1 IP address (1 host up) scanned in 12.624 seconds</code></pre><h3 id="24-Scan-remote-hosts-using-TCP-ACK-PA-and-TCP-Syn-PS"><a href="#24-Scan-remote-hosts-using-TCP-ACK-PA-and-TCP-Syn-PS" class="headerlink" title="24. Scan remote hosts using TCP ACK (PA) and TCP Syn (PS)"></a>24. Scan remote hosts using TCP ACK (PA) and TCP Syn (PS)</h3><p>Sometimes packet filtering firewalls blocks standard ICMP ping requests,<br>in that case, we can use TCP ACK and TCP Syn methods to scan remote<br>hosts.</p>
+<pre><code>[root@server1 ~]# nmap -PS 192.168.0.101
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2013-11-11 17:51 EST
+Interesting ports on server2.tecmint.com (192.168.0.101):
+Not shown: 1674 closed ports
+PORT     STATE SERVICE
+22/tcp   open  ssh
+80/tcp   open  http
+111/tcp  open  rpcbind
+957/tcp  open  unknown
+3306/tcp open  mysql
+8888/tcp open  sun-answerbook
+MAC Address: 08:00:27:D9:8E:D7 (Cadmus Computer Systems)
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.360 seconds
+You have new mail in /var/spool/mail/root</code></pre><h3 id="25-Scan-Remote-host-for-specific-ports-with-TCP-ACK"><a href="#25-Scan-Remote-host-for-specific-ports-with-TCP-ACK" class="headerlink" title="25. Scan Remote host for specific ports with TCP ACK"></a>25. Scan Remote host for specific ports with TCP ACK</h3><pre><code>[root@server1 ~]# nmap -PA -p 22,80 192.168.0.101
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2013-11-11 18:02 EST
+Interesting ports on server2.tecmint.com (192.168.0.101):
+PORT   STATE SERVICE
+22/tcp open  ssh
+80/tcp open  http
+MAC Address: 08:00:27:D9:8E:D7 (Cadmus Computer Systems)
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.166 seconds
+You have new mail in /var/spool/mail/root</code></pre><h3 id="26-Scan-Remote-host-for-specific-ports-with-TCP-Syn"><a href="#26-Scan-Remote-host-for-specific-ports-with-TCP-Syn" class="headerlink" title="26. Scan Remote host for specific ports with TCP Syn"></a>26. Scan Remote host for specific ports with TCP Syn</h3><pre><code>[root@server1 ~]# nmap -PS -p 22,80 192.168.0.101
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2013-11-11 18:08 EST
+Interesting ports on server2.tecmint.com (192.168.0.101):
+PORT   STATE SERVICE
+22/tcp open  ssh
+80/tcp open  http
+MAC Address: 08:00:27:D9:8E:D7 (Cadmus Computer Systems)
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.165 seconds
+You have new mail in /var/spool/mail/root</code></pre><h3 id="27-Perform-a-stealthy-Scan"><a href="#27-Perform-a-stealthy-Scan" class="headerlink" title="27. Perform a stealthy Scan"></a>27. Perform a stealthy Scan</h3><pre><code>[root@server1 ~]# nmap -sS 192.168.0.101
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2013-11-11 18:10 EST
+Interesting ports on server2.tecmint.com (192.168.0.101):
+Not shown: 1674 closed ports
+PORT     STATE SERVICE
+22/tcp   open  ssh
+80/tcp   open  http
+111/tcp  open  rpcbind
+957/tcp  open  unknown
+3306/tcp open  mysql
+8888/tcp open  sun-answerbook
+MAC Address: 08:00:27:D9:8E:D7 (Cadmus Computer Systems)
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.383 seconds
+You have new mail in /var/spool/mail/root</code></pre><h3 id="28-Check-most-commonly-used-Ports-with-TCP-Syn"><a href="#28-Check-most-commonly-used-Ports-with-TCP-Syn" class="headerlink" title="28. Check most commonly used Ports with TCP Syn"></a>28. Check most commonly used Ports with TCP Syn</h3><pre><code>[root@server1 ~]# nmap -sT 192.168.0.101
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2013-11-11 18:12 EST
+Interesting ports on server2.tecmint.com (192.168.0.101):
+Not shown: 1674 closed ports
+PORT     STATE SERVICE
+22/tcp   open  ssh
+80/tcp   open  http
+111/tcp  open  rpcbind
+957/tcp  open  unknown
+3306/tcp open  mysql
+8888/tcp open  sun-answerbook
+MAC Address: 08:00:27:D9:8E:D7 (Cadmus Computer Systems)
+
+Nmap finished: 1 IP address (1 host up) scanned in 0.406 seconds
+You have new mail in /var/spool/mail/root</code></pre><h3 id="29-Perform-a-tcp-null-scan-to-fool-a-firewall"><a href="#29-Perform-a-tcp-null-scan-to-fool-a-firewall" class="headerlink" title="29. Perform a tcp null scan to fool a firewall"></a>29. Perform a tcp null scan to fool a firewall</h3><pre><code>[root@server1 ~]# nmap -sN 192.168.0.101
+
+Starting Nmap 4.11 ( http://www.insecure.org/nmap/ ) at 2013-11-11 19:01 EST
+Interesting ports on server2.tecmint.com (192.168.0.101):
+Not shown: 1674 closed ports
+PORT     STATE         SERVICE
+22/tcp   open|filtered ssh
+80/tcp   open|filtered http
+111/tcp  open|filtered rpcbind
+957/tcp  open|filtered unknown
+3306/tcp open|filtered mysql
+8888/tcp open|filtered sun-answerbook
+MAC Address: 08:00:27:D9:8E:D7 (Cadmus Computer Systems)
+
+Nmap finished: 1 IP address (1 host up) scanned in 1.584 seconds
+You have new mail in /var/spool/mail/root</code></pre><p>That’s it with NMAP for now, I’ll be coming up more creative options of<br>NMAP in our second part of this serious. Till then, stay tuned with us<br>and don’t forget to share your valuable comments.</p>
+<p>以上就是NMAP的基本使用</p>
+<h5 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h5><ul>
+<li><a href="https://nmap.org/man/zh/index.html" target="_blank" rel="noopener">https://nmap.org/man/zh/index.html</a></li>
+</ul>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/linux-nmap/">linux,nmap</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2014/02/18/solr-service-error-1/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">solr服务器报错解决一</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2014/02/17/qrcode-generate/">
+        <span class="next-text nav-default">论二维码的原理及生成</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

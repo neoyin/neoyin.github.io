@@ -1,6 +1,146 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Neo"><title>mahout入门示例 · 浮生若梦</title><meta name="description" content="# mahout入门示例
-## 推荐系统简介### 运行第一个推荐引擎
-\1. 创建示例数据1,101,5.01,102,3.01,103,2.52,101,2.02,102,2.52,103,5.02,104,2.03,101,2.53,104,4.03,105,4.53,107,5.04,101"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title><a href="/">浮生若梦</a></h3></div></div><ul class="social-links"></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a href="https://www.caicai.me"> CaiCai </a><span>&</span><a href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/about">关于</a></li><li><a href="/archives">归档</a></li><li><a href="/links">友链</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>mahout入门示例</a></h3></div><div class="post-content"><p># mahout入门示例</p>
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="mahout入门示例">
+
+
+
+
+  <meta name="keywords" content="mahout,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2013/10/28/mahout-sample/">
+
+
+<meta name="description" content="# mahout入门示例 ## 推荐系统简介### 运行第一个推荐引擎 \1. 创建示例数据1,101,5.01,102,3.01,103,2.52,101,2.02,102,2.52,103,5.02,104,2.03,101,2.53,104,4.03,105,4.53,107,5.04,101,5.04,103,3.04,104,4.54,106,4.05,101,4.05,102,3.05">
+<meta name="keywords" content="mahout">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mahout入门示例">
+<meta property="og:url" content="http://yoursite.com/2013/10/28/mahout-sample/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="# mahout入门示例 ## 推荐系统简介### 运行第一个推荐引擎 \1. 创建示例数据1,101,5.01,102,3.01,103,2.52,101,2.02,102,2.52,103,5.02,104,2.03,101,2.53,104,4.03,105,4.53,107,5.04,101,5.04,103,3.04,104,4.54,106,4.05,101,4.05,102,3.05">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-13T10:06:01.969Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mahout入门示例">
+<meta name="twitter:description" content="# mahout入门示例 ## 推荐系统简介### 运行第一个推荐引擎 \1. 创建示例数据1,101,5.01,102,3.01,103,2.52,101,2.02,102,2.52,103,5.02,104,2.03,101,2.53,104,4.03,105,4.53,107,5.04,101,5.04,103,3.04,104,4.54,106,4.05,101,4.05,102,3.05">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> mahout入门示例 - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          mahout入门示例
+        
+      </h1>
+
+      <time class="post-time">
+          Oct 28 2013
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p># mahout入门示例</p>
 <p>## 推荐系统简介<br>### 运行第一个推荐引擎</p>
 <p>\1. 创建示例数据<br>1,101,5.0<br>1,102,3.0<br>1,103,2.5<br>2,101,2.0<br>2,102,2.5<br>2,103,5.0<br>2,104,2.0<br>3,101,2.5<br>3,104,4.0<br>3,105,4.5<br>3,107,5.0<br>4,101,5.0<br>4,103,3.0<br>4,104,4.5<br>4,106,4.0<br>5,101,4.0<br>5,102,3.0<br>5,103,2.0<br>5,104,4.0<br>5,105,3.5<br>5,106,4.0</p>
 <p>保存为文件intro.csv, 文件格式为逗号分隔的三列, 分别为user ID, item ID,<br>user对item的打分.假设这是一个用户对书本的打分记录,<br>经过一些学习之后，趋势就显现出来了。用户1和用户5具有相同的兴趣。他们都喜欢101这本书，对102的喜欢弱一些，对103的喜欢更弱。同<br>理，用户1和4具有相同的兴趣，他们都喜欢101和103，没有信息显示用户4喜欢102。另一方面，用户1和用户2的兴趣好像正好相反，用户1喜欢<br>101，但用户2讨厌101，用户1喜欢103而用户2正好相反。用户1和3的交集很少，只有101这本书显示了他们的兴趣。</p>
@@ -38,4 +178,128 @@
 <p>RandomUtils.useTestSeed();<br>RecommenderIRStatsEvaluator evaluator = new<br>GenericRecommenderIRStatsEvaluator();</p>
 <p>RecommenderBuilder builder = new RecommenderBuilder() { // B<br>public Recommender buildRecommender(DataModel model) throws<br>TasteException {<br>UserSimilarity similarity = new PearsonCorrelationSimilarity(model);<br>UserNeighborhood neighborhood = new NearestNUserNeighborhood(2,<br>similarity, model);<br>return new GenericUserBasedRecommender(model, neighborhood,<br>similarity);<br>}<br>};<br>IRStatistics stats = evaluator.evaluate(builder, null, model, null, 2,<br>GenericRecommenderIRStatsEvaluator.CHOOSE_THRESHOLD, 1.0); // A<br>System.out.println(stats.getPrecision());<br>System.out.println(stats.getRecall());<br>}</p>
 <p>评估方法最后会打印出这个推荐器的准确率和召回率.</p>
-</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2013-10-28</span><i class="fa fa-tag"></i><a class="tag" href="/categories/技术流/" title="技术流">技术流 </a><a class="tag" href="/tags/mahout/" title="mahout">mahout </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" href="http://twitter.com/home?status=,http://yoursite.com/2013/10/28/mahout-sample/,浮生若梦,mahout入门示例,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2013/10/30/hadoop-hdfs/" title="打造分布式文件系统--HDFS">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2013/10/28/hadoop-main-points/" title="打造分布式文件系统：Hadoop架构和设计要点[转]">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/mahout/">mahout</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2013/10/30/hadoop-hdfs/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">打造分布式文件系统--HDFS</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2013/10/28/hadoop-main-points/">
+        <span class="next-text nav-default">打造分布式文件系统：Hadoop架构和设计要点[转]</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

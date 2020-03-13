@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Linux下常用的12个grep命令范例">
+
+
+
+
+  <meta name="keywords" content="grep,linux,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2014/01/25/linux-grep-command/">
+
+
+<meta name="description" content="Have you ever been confronted with the task of looking for aparticular string or pattern in a file, yet have no idea where tostart looking? Well then, here is grep to the rescue!  你是否面临过查找特殊字符的文件去不知从">
+<meta name="keywords" content="grep,linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux下常用的12个grep命令范例">
+<meta property="og:url" content="http://yoursite.com/2014/01/25/linux-grep-command/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="Have you ever been confronted with the task of looking for aparticular string or pattern in a file, yet have no idea where tostart looking? Well then, here is grep to the rescue!  你是否面临过查找特殊字符的文件去不知从">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-13T10:47:23.316Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux下常用的12个grep命令范例">
+<meta name="twitter:description" content="Have you ever been confronted with the task of looking for aparticular string or pattern in a file, yet have no idea where tostart looking? Well then, here is grep to the rescue!  你是否面临过查找特殊字符的文件去不知从">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Linux下常用的12个grep命令范例 - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Linux下常用的12个grep命令范例
+        
+      </h1>
+
+      <time class="post-time">
+          Jan 25 2014
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <blockquote>
+<p>Have you ever been confronted with the task of looking for a<br>particular string or pattern in a file, yet have no idea where to<br>start looking? Well then, here is grep to the rescue!</p>
+</blockquote>
+<p>你是否面临过查找特殊字符的文件去不知从何下手?那么,就让<strong>grep</strong>命令来帮助你吧!</p>
+<blockquote>
+<p><strong>grep</strong> is a powerful file pattern searcher that comes equipped on<br>every distribution of Linux. If, for whatever reason, it is not<br>installed on your system, you can easily install it via your package<br>manager (apt-get on Debian/Ubuntu and yum on RHEL/CentOS/Fedora).</p>
+</blockquote>
+<p><strong>grep</strong><br>命令是配备在每一个Linux发行版中的功能强大的文件搜索功能.如果某种原因你的系统没有安装,你可以通过系统携带的包安装器来安装它<br>(<strong>apt-get on Debian/Ubuntu and yum on RHEL/CentOS/Fedora</strong>).</p>
+<pre><code>$ sudo apt-get install grep         #Debian/Ubuntu
+$ sudo yum install grep             #RHEL/CentOS/Fedora</code></pre><a id="more"></a>
+
+<blockquote>
+<p>I have found that the easiest way to get your feet wet with grep is to<br>just dive right in and use some real world examples.</p>
+</blockquote>
+<p>我发现在grep的世界中把脚弄湿的最简单方法就是直接去潜水….(咋翻译呀)</p>
+<ol>
+<li><h1 id="Search-and-Find-Files"><a href="#Search-and-Find-Files" class="headerlink" title="Search and Find Files"></a>Search and Find Files</h1></li>
+</ol>
+<blockquote>
+<p>Let’s say that you have just installed a fresh copy of the new Ubuntu<br>on your machine, and that you are going to give Python scripting a<br>shot. You have been scouring the web looking for tutorials, but you<br>see that there are two different versions of Python in use, and you<br>don’t know which one was installed on your system by the Ubuntu<br>installer, or if it installed any modules. Simply run this command:</p>
+</blockquote>
+<p>假设你的机器上安装了最新的Ubuntu系统,你需要给Python脚本一个快照,你一直在网上找相关的教程,但是你看到了两个不同的Python版本,你不知道哪一下是Ubuntu系统安装的.你可以运行以下命令:(翻译得太烂了)</p>
+<pre><code># dpkg –l | grep –i python
+Sample Output
+ii  python2.7                        2.7.3-0ubuntu3.4                    Interactive high-level object-oriented language (version 2.7)
+ii  python2.7-minimal                2.7.3-0ubuntu3.4                    Minimal subset of the Python language (version 2.7)
+ii  python-openssl                   0.12-1ubuntu2.1                     Python wrapper around the OpenSSL library
+ii  python-pam                       0.4.2-12.2ubuntu4                   A Python interface to the PAM library</code></pre><blockquote>
+<p>First, we ran <strong>dpkg –l</strong>, which lists installed *.deb packages on<br>your system. Second, we piped that output to <strong>grep –i</strong> python, which<br>simple states “go to grep and filter out and return everything with<br>‘python’ in it.” The –i option is there to ignore-case, as grep is<br>case-sensitive. Using the –i option is a good habit of getting into,<br>unless of course you are trying to nail down a more specific search.</p>
+</blockquote>
+<p>首先我们运行<strong>dpkg -l</strong>,会列出系统中安装过的*.deb包.<br>然后我们通过管道输出 <strong>grep –i</strong><br>python,这个意思是”通过grep过滤出含有python并返回.”<br>-i选项是忽略大小写(grep<br>命令是区分大小写的),用-i选项是一个良好的习惯,除非你在进行一个更具体的搜索</p>
+<ol start="2">
+<li><h1 id="Search-and-Filter-Files"><a href="#Search-and-Filter-Files" class="headerlink" title="Search and Filter Files"></a>Search and Filter Files</h1></li>
+</ol>
+<blockquote>
+<p>The grep can also be used to search and filter within individual files<br>or multiple files. Lets take this scenario:</p>
+</blockquote>
+<p>grep命令也可以对单个或多个文件进行搜索过滤.假设如下场景:</p>
+<blockquote>
+<p>You are having some trouble with your Apache Web Server, and you have<br>reached out to one of the many awesome forums on the net asking for<br>some help. The kind soul who replies to you has asked you to post the<br>contents of your /etc/apache2/sites-available/default-ssl file.<br>Wouldn’t it be easier for you, the guy helping you, and everyone<br>reading it, if you could remove all of the commented lines? Well you<br>can! Just run this:</p>
+</blockquote>
+<p>你的Apache Web Server 遇到了一些麻烦,你通过一些相关论坛寻找帮助.<strong>The<br>kind<br>soul</strong>(不会翻译)回复你说需要你查看你/etc/apache2/sites-available/default-ssl文件的内容.如果能去除掉文件中所有的注释行,会对这些查看文件并帮助你的人更容易些.你可以运行:</p>
+<pre><code># grep –v “#”  /etc/apache2/sites-available/default-ssl</code></pre><blockquote>
+<p>The <strong>–v</strong> option tells grep to invert its output, meaning that<br>instead of printing matching lines, do the opposite and print all of<br>the lines that don’t match the expression, in this case, the #<br>commented lines.</p>
+</blockquote>
+<p><strong>-v</strong> 选项的意思是反转输出,即输入不匹配的行.在这里就是输出不含有#的行.</p>
+<ol start="3">
+<li><h1 id="Find-all-mp3-Files-Only"><a href="#Find-all-mp3-Files-Only" class="headerlink" title="Find all .mp3 Files Only"></a>Find all .mp3 Files Only</h1></li>
+</ol>
+<blockquote>
+<p>The grep can be very useful for filtering from stdout. For example,<br>let’s say that you have an entire folder full of music files in a<br>bunch of different formats. You want to find all of the *.mp3 files<br>from the artist JayZ, but you don’t want any of the remixed tracks.<br>Using a find command with a couple of grep pipes will do the trick:</p>
+</blockquote>
+<p><strong>grep</strong>可以非常有用从标准输出中过滤.例如,你有一个音乐文件夹中含有各中不同的格式.你想找出艺术家JayZ的*.mp3文件,但是又不想要任何含有混音的曲目.你可以利用<strong>find</strong>和<strong>grep</strong>管道来处理:</p>
+<pre><code># find . –name “*.mp3” | grep –i JayZ | grep –vi “remix”</code></pre><blockquote>
+<p>In this example, we are using find to print all of the files with a<br>*.mp3 extension, piping it to grep –i to filter out and prints all<br>files with the name “JayZ” and then another pipe to grep –vi which<br>filters out and does not print all filenames with the string (in any<br>case) “remix”.</p>
+</blockquote>
+<p>这里我们先打印出所有*.mp3文件,利用grep管道过滤出名字中含有”JayZ”再利用<strong>grep<br>-vi</strong>过滤出不含有”remix”的文件</p>
+<ol start="4">
+<li><h1 id="Display-Number-of-Lines-Before-or-After-Search-String"><a href="#Display-Number-of-Lines-Before-or-After-Search-String" class="headerlink" title="Display Number of Lines Before or After Search String"></a>Display Number of Lines Before or After Search String</h1></li>
+</ol>
+<blockquote>
+<p>Another couple of options are the –A and –B switches, which displays<br>the matched line and number of lines either that come before or after<br>the search string. While the man page gives a more detailed<br>explanation, I find it easiest to remember the options as –A = after,<br>and –B = before:</p>
+</blockquote>
+<p>另外一对选项 <strong>-A -B</strong> 它会显示匹配的前或后数字行. 在man<br>page中可以查看到更多的解释.可以理解成<strong>–A = after –B =<br>before</strong>更容易一些:</p>
+<pre><code># ifconfig | grep -A4 eth0
+# ifconfig | grep -B2 UP</code></pre><ol start="5">
+<li><h1 id="Prints-Number-of-Lines-Around-Match"><a href="#Prints-Number-of-Lines-Around-Match" class="headerlink" title="Prints Number of Lines Around Match"></a>Prints Number of Lines Around Match</h1></li>
+</ol>
+<blockquote>
+<p>The grep’s –C option is similar, but instead of printing the lines<br>that come either before or after the string, it prints the lines in<br>either direction:</p>
+</blockquote>
+<p>grep的-C选项与上面-A<br>-B类似.但是此选项会同时打印出前后两个方向上的数字行:</p>
+<pre><code># ifconfig | grep -C2 lo</code></pre><ol start="6">
+<li><h1 id="Count-Number-of-Matches"><a href="#Count-Number-of-Matches" class="headerlink" title="Count Number of Matches"></a>Count Number of Matches</h1></li>
+</ol>
+<blockquote>
+<p>Similar to piping a grep string to word count (wc program) grep’s<br>built-in option can perform the same for you:</p>
+</blockquote>
+<p>类似grep管道的统计(wc) 可以执行grep的内置选项:</p>
+<pre><code># ifconfig | grep –c inet6</code></pre><ol start="7">
+<li><h1 id="Search-Files-by-Given-String"><a href="#Search-Files-by-Given-String" class="headerlink" title="Search Files by Given String"></a>Search Files by Given String</h1></li>
+</ol>
+<blockquote>
+<p>The –n option for grep is very useful when debugging files during<br>compile errors. It displays the line number in the file of the given<br>search string:</p>
+</blockquote>
+<p>在编译错误调试过程中 grep -n选项是非常有用的.它会显示搜索内容的行号:</p>
+<pre><code># grep –n “main” setup..py</code></pre><ol start="8">
+<li><h1 id="Search-a-string-Recursively-in-all-Directories"><a href="#Search-a-string-Recursively-in-all-Directories" class="headerlink" title="Search a string Recursively in all Directories"></a>Search a string Recursively in all Directories</h1></li>
+</ol>
+<blockquote>
+<p>If you would like to search for a string in the current directory<br>along with all of the subdirectories, you can specify the –r option to<br>search recursively:</p>
+</blockquote>
+<p>如果你想搜索当前文件夹和其子文件夹,你可能用-r选项上来递归搜索:</p>
+<pre><code># grep –r “function” *</code></pre><ol start="9">
+<li><h1 id="Searches-for-the-entire-pattern"><a href="#Searches-for-the-entire-pattern" class="headerlink" title="Searches for the entire pattern"></a>Searches for the entire pattern</h1></li>
+</ol>
+<blockquote>
+<p>Passing the –w option to grep searches for the entire pattern that is<br>in the string. For example, using:</p>
+</blockquote>
+<p>通过-w 选项你可以搜索字符串整个模式:(不知道怎么翻译了):</p>
+<pre><code>ifconfig | grep -w &quot;RUNNING&quot;
+ifconfig | grep -w &quot;RUN&quot;
+什么也不会返回.除非是整个单词.</code></pre><ol start="10">
+<li><h1 id="Search-a-string-in-Gzipped-Files"><a href="#Search-a-string-in-Gzipped-Files" class="headerlink" title="Search a string in Gzipped Files"></a>Search a string in Gzipped Files</h1></li>
+</ol>
+<blockquote>
+<p>Deserving some mention are grep’s derivatives. The first is zgrep,<br>which, similar to zcat, is for use on gzipped files. It takes the same<br>options as grep and is used in the same way:</p>
+</blockquote>
+<p>这里值得提出来的是grep的衍生品,第一是 <strong>zgrep</strong> ,类似 zcat,用于gzip文件.<br>操作和选项和grep是一样的:</p>
+<pre><code># zgrep –i error /var/log/syslog.2.gz</code></pre><ol start="11">
+<li><h1 id="Match-Regular-Expression-in-Files"><a href="#Match-Regular-Expression-in-Files" class="headerlink" title="Match Regular Expression in Files"></a>Match Regular Expression in Files</h1></li>
+</ol>
+<blockquote>
+<p>The egrep is another derivative that stands for “Extended Global<br>Regular Expression”. It recognizes additional expression<br>meta-characters such at + ? | and (). egrep is very useful for<br>searching source files, and other pieces of code, should the need<br>arise. It can be invoked from regular grep by specifying the –E<br>option.</p>
+</blockquote>
+<p>另一个衍生品是<strong>egrep</strong><br>其全称是”全局扩展正则表达式”,它可以识别更多的表达式和无字符.例如<strong>+ ? |<br>and ()</strong> .egrep 在搜索代码和源文件的时候非常有用.grep<br>可以通过-E选项来使用.</p>
+<pre><code># grep –E</code></pre><ol start="12">
+<li><h1 id="Search-a-Fixed-Pattern-String"><a href="#Search-a-Fixed-Pattern-String" class="headerlink" title="Search a Fixed Pattern String"></a>Search a Fixed Pattern String</h1></li>
+</ol>
+<blockquote>
+<p>The fgrep searches a file or list of files for a fixed pattern string.<br>It is the same as grep –F. A common way of using fgrep is to pass a<br>file of patterns to it:</p>
+</blockquote>
+<p><strong>fgrep</strong> 通过一个或多个文件来匹配搜索,可以如 grep<br>-F将匹配模式文件传递给它:</p>
+<pre><code># fgrep –f file_full_of_patterns.txt file_to_search.txt</code></pre><blockquote>
+<p>This is just a starting point with grep, but as you are probably able<br>to see, it is invaluable for a variety of purposes. Aside from the<br>simple one line commands we have implemented, grep can be used to<br>write powerful cron jobs, and robust shell scripts, for a start. Be<br>creative, experiment with the options in the man page, and come up<br>with grep expressions that serve your own purposes!</p>
+</blockquote>
+<p>这只是grep的一个开端,正如你可以看到的那样.它可以用在各种用途.除了我们上面简单的例子.grep可以用编写强大的cron任务和shell脚本,只要有创意.你可以通过man<br>page中的相关选项,编写出符合你自己目的的grep.</p>
+<p><a href="http://www.tecmint.com/12-practical-examples-of-linux-grep-command/" target="_blank" rel="noopener">http://www.tecmint.com/12-practical-examples-of-linux-grep-command/</a></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/grep-linux/">grep,linux</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2014/01/25/js-templet-tool/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">js 的 templet 工具</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2014/01/23/150-free-bus/">
+        <span class="next-text nav-default">150辆大巴免费乘却盈利1亿多 令人叹服的商业模式</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

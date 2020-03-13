@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Apache Nginx正向和反向代理">
+
+
+
+
+  <meta name="keywords" content="apache,nginx,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2013/12/16/apache-nginx-proxy/">
+
+
+<meta name="description" content="最近需要调试手机端与服务器端的网络通讯协议,需要对网络封包的截取和分析,所以考虑在机器上做一层代理.通过此方案来抓取分析网络包.  正向代理是一个位于客户端和原始服务器(originserver)之间的服务器，为了从原始服务器取得内容，客户端向代理发送一个请求并指定目标(原始服务器)，然后代理向原始服务器转交请求并将获得的内容返回给客户端。客户端必须要进行一些特别的设置才能使用正向代理。 正向代理">
+<meta name="keywords" content="apache,nginx">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Apache Nginx正向和反向代理">
+<meta property="og:url" content="http://yoursite.com/2013/12/16/apache-nginx-proxy/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="最近需要调试手机端与服务器端的网络通讯协议,需要对网络封包的截取和分析,所以考虑在机器上做一层代理.通过此方案来抓取分析网络包.  正向代理是一个位于客户端和原始服务器(originserver)之间的服务器，为了从原始服务器取得内容，客户端向代理发送一个请求并指定目标(原始服务器)，然后代理向原始服务器转交请求并将获得的内容返回给客户端。客户端必须要进行一些特别的设置才能使用正向代理。 正向代理">
+<meta property="og:locale" content="cn">
+<meta property="og:image" content="http://f.hiphotos.bdimg.com/album/s%3D550%3Bq%3D90%3Bc%3Dxiangce%2C100%2C100/sign=6c5cec13b119ebc4c478769cb21dbec1/0b55b319ebc4b74556c46460cdfc1e178a821577.jpg?referer=1f16e44e79f40ad14cf3f2d3532e&x=.jpg">
+<meta property="og:image" content="http://g.hiphotos.bdimg.com/album/s%3D550%3Bq%3D90%3Bc%3Dxiangce%2C100%2C100/sign=cccd856160d0f703e2b295d938c12000/622762d0f703918fe632eebc533d269758eec4e1.jpg?referer=92f4ce72369b033b759fc8ea24bf&x=.jpg">
+<meta property="og:updated_time" content="2020-03-13T10:56:01.394Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Apache Nginx正向和反向代理">
+<meta name="twitter:description" content="最近需要调试手机端与服务器端的网络通讯协议,需要对网络封包的截取和分析,所以考虑在机器上做一层代理.通过此方案来抓取分析网络包.  正向代理是一个位于客户端和原始服务器(originserver)之间的服务器，为了从原始服务器取得内容，客户端向代理发送一个请求并指定目标(原始服务器)，然后代理向原始服务器转交请求并将获得的内容返回给客户端。客户端必须要进行一些特别的设置才能使用正向代理。 正向代理">
+<meta name="twitter:image" content="http://f.hiphotos.bdimg.com/album/s%3D550%3Bq%3D90%3Bc%3Dxiangce%2C100%2C100/sign=6c5cec13b119ebc4c478769cb21dbec1/0b55b319ebc4b74556c46460cdfc1e178a821577.jpg?referer=1f16e44e79f40ad14cf3f2d3532e&x=.jpg">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Apache Nginx正向和反向代理 - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Apache Nginx正向和反向代理
+        
+      </h1>
+
+      <time class="post-time">
+          Dec 16 2013
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>最近需要调试手机端与服务器端的网络通讯协议,需要对网络封包的截取和分析,所以考虑在机器上做一层代理.通过此方案来抓取分析网络包.</p>
+<p><img src="http://f.hiphotos.bdimg.com/album/s%3D550%3Bq%3D90%3Bc%3Dxiangce%2C100%2C100/sign=6c5cec13b119ebc4c478769cb21dbec1/0b55b319ebc4b74556c46460cdfc1e178a821577.jpg?referer=1f16e44e79f40ad14cf3f2d3532e&x=.jpg" alt="image"></p>
+<p><dfn>正向代理</dfn>是一个位于客户端和<em>原始服务器(origin<br>server)</em>之间的服务器，为了从原始服务器取得内容，客户端向代理发送一个请求并指定目标(原始服务器)，然后代理向原始服务器转交请求并将获得的内容返回给客户端。客户端必须要进行一些特别的设置才能使用正向代理。</p>
+<p>正向代理的典型用途是为在防火墙内的局域网客户端提供访问Internet的途径。</p>
+<a id="more"></a>
+
+<p>可以通过如下配制Apache下正向代理</p>
+<pre><code>#Apache 正向代理 
+ProxyRequests On
+ProxyVia On
+&lt;Proxy *&gt;
+  Order deny,allow
+  Deny from all
+  Allow from all
+&lt;/Proxy&gt;</code></pre><p>Nginx 下的正向代理配置</p>
+<pre><code>#nginx实现代理上网，有三个关键点必须注意，其余的配置跟普通的nginx一样
+#1.增加dns解析resolver
+#2.增加无server_name名的server
+#3.proxy_pass指令
+http {
+    resolver 8.8.8.8;
+        server {
+            listen 8088;
+            location / {
+                proxy_pass http://$http_host$request_uri;
+            }
+    }
+}
+#重启nginx</code></pre><p><dfn>反向代理</dfn>正好相反，对于客户端而言它就像是原始服务器，并且客户端不需要进行任何特别的设置。客户端向反向代理的命名空间(name-space)中的内容发送普通请求，接着反向代理将判断向何处(原始服务器)转交请求，并将获得的内容返回给客户端，就像这些内容原本就是它自己的一样。</p>
+<p><img src="http://g.hiphotos.bdimg.com/album/s%3D550%3Bq%3D90%3Bc%3Dxiangce%2C100%2C100/sign=cccd856160d0f703e2b295d938c12000/622762d0f703918fe632eebc533d269758eec4e1.jpg?referer=92f4ce72369b033b759fc8ea24bf&x=.jpg" alt="image"></p>
+<p>反向代理的典型用途是将防火墙后面的服务器提供给Internet用户访问。反向代理还可以为后端的多台服务器提供负载平衡，或为后端较慢的服务器提供缓冲服务。另外，还可以启用高级URL策略和管理技术，从而使处于不同web服务器系统的web页面同时存在于同一个URL空间下。</p>
+<p>Nginx配置反向代码</p>
+<pre><code>upstream xxx_server_backend {
+        server 192.168.1.xx:81;
+}
+
+server {
+        listen 80;
+        access_log logs/access.www.xxx.com.log main;
+        error_log logs/error.www.xxx.com.log;
+        server_name www.xxx.com;
+
+        location / {
+#               auth_basic &quot;Restricted&quot;;
+#               auth_basic_user_file  xxx.com/xxx_test.pwd;
+
+                #limit_req zone=www_zone;
+                #more_set_headers &quot;Cache-Control&quot; &quot;no-cache&quot;;
+                proxy_cache off;
+                proxy_next_upstream http_502 http_504 error timeout invalid_header;
+                proxy_ignore_headers   Expires Cache-Control;
+        #       proxy_ignore_headers    Cache-Control   no-cache;
+                proxy_store         off;
+                proxy_set_header        Host            $host;
+                proxy_set_header        X-Real-IP       $remote_addr;
+                proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_pass http://xxx_server_backend;
+                more_clear_headers  &quot;Cache-Control&quot;;
+                add_header      Cache-Control &quot;no-cache,max-age=0&quot;;
+                #more_set_headers       &quot;Cache-Control&quot; &quot;no-cache&quot;;
+                #expires        0;
+        }
+
+}</code></pre><p>Apache配置反向代理</p>
+<pre><code>ProxyRequests Off
+&lt;Proxy *&gt;
+   Order deny,allow
+   Allow from all
+&lt;/Proxy&gt;
+
+ProxyPass /foo http://foo.example.com/bar
+ProxyPassReverse /foo http://foo.example.com/bar</code></pre><p>参考:</p>
+<p><a href="http://apache.jz123.cn/mod/mod_proxy.html" target="_blank" rel="noopener">http://apache.jz123.cn/mod/mod_proxy.html</a></p>
+<p><a href="http://www.nginx.cn/482.html" target="_blank" rel="noopener">http://www.nginx.cn/482.html</a></p>
+<p><a href="http://wiki.nginx.org/NginxChs" target="_blank" rel="noopener">http://wiki.nginx.org/NginxChs</a></p>
+<p><a href="http://lenky.info/archives/2013/01/12/2263" target="_blank" rel="noopener">http://lenky.info/archives/2013/01/12/2263</a></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/apache-nginx/">apache,nginx</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2013/12/16/idea-tips-choosed/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">IDEA-tips 选中提示</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2013/12/15/apache-mina-basic-abstractioservice/">
+        <span class="next-text nav-default">Apache mina 基础类分析（二）：AbstractIoService</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

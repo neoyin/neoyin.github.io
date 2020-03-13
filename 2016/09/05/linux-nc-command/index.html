@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Linux最实用命令nc">
+
+
+
+
+  <meta name="keywords" content="Linux,nc,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2016/09/05/linux-nc-command/">
+
+
+<meta name="description" content="我的两台电脑要简单的传输一条命令，突然想起了nc命令可以监听端口从而实现两台电脑可以简简单单的聊天功能，也特地把nc命令备忘起来。  12nc -lp 8888  #实现简单的监听nc &amp;#123;ip&amp;#125; 8888 即可打通一个链接  指令如下: 12345678910111213141516语　法：nc [-hlnruz][-g&amp;lt;网关...&amp;gt;][-G&amp;lt;指向器数目&amp;g">
+<meta name="keywords" content="Linux,nc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux最实用命令nc">
+<meta property="og:url" content="http://yoursite.com/2016/09/05/linux-nc-command/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="我的两台电脑要简单的传输一条命令，突然想起了nc命令可以监听端口从而实现两台电脑可以简简单单的聊天功能，也特地把nc命令备忘起来。  12nc -lp 8888  #实现简单的监听nc &amp;#123;ip&amp;#125; 8888 即可打通一个链接  指令如下: 12345678910111213141516语　法：nc [-hlnruz][-g&amp;lt;网关...&amp;gt;][-G&amp;lt;指向器数目&amp;g">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-13T10:47:06.010Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux最实用命令nc">
+<meta name="twitter:description" content="我的两台电脑要简单的传输一条命令，突然想起了nc命令可以监听端口从而实现两台电脑可以简简单单的聊天功能，也特地把nc命令备忘起来。  12nc -lp 8888  #实现简单的监听nc &amp;#123;ip&amp;#125; 8888 即可打通一个链接  指令如下: 12345678910111213141516语　法：nc [-hlnruz][-g&amp;lt;网关...&amp;gt;][-G&amp;lt;指向器数目&amp;g">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Linux最实用命令nc - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Linux最实用命令nc
+        
+      </h1>
+
+      <time class="post-time">
+          Sep 5 2016
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <hr>
+<p>我的两台电脑要简单的传输一条命令，突然想起了nc命令可以监听端口从而实现两台电脑可以简简单单的聊天功能，也特地把nc命令备忘起来。 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nc -lp 8888  #实现简单的监听</span><br><span class="line">nc &#123;ip&#125; 8888 即可打通一个链接</span><br></pre></td></tr></table></figure>
+
+<p>指令如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">语　法：nc [-hlnruz][-g&lt;网关...&gt;][-G&lt;指向器数目&gt;][-i&lt;延迟秒数&gt;][-o&lt;输出文件&gt;][-p&lt;通信端口&gt;][-s&lt;来源位址&gt;][-v...][-w&lt;超时秒数&gt;][主机名称][通信端口...]</span><br><span class="line">参　数：</span><br><span class="line"> -g&lt;网关&gt; 设置路由器跃程通信网关，最丢哦可设置8个。</span><br><span class="line"> -G&lt;指向器数目&gt; 设置来源路由指向器，其数值为4的倍数。</span><br><span class="line"> -h  在线帮助。</span><br><span class="line"> -i&lt;延迟秒数&gt; 设置时间间隔，以便传送信息及扫描通信端口。</span><br><span class="line"> -l  使用监听模式，管控传入的资料。</span><br><span class="line"> -n  直接使用IP地址，而不通过域名服务器。</span><br><span class="line"> -o&lt;输出文件&gt; 指定文件名称，把往来传输的数据以16进制字码倾倒成该文件保存。</span><br><span class="line"> -p&lt;通信端口&gt; 设置本地主机使用的通信端口。</span><br><span class="line"> -r  乱数指定本地与远端主机的通信端口。</span><br><span class="line"> -s&lt;来源位址&gt; 设置本地主机送出数据包的IP地址。</span><br><span class="line"> -u  使用UDP传输协议。</span><br><span class="line"> -v 详细输出--用两个-v可得到更详细的内容</span><br><span class="line"> -w&lt;超时秒数&gt; 设置等待连线的时间。</span><br><span class="line">  -z  使用0输入/输出模式，只在扫描通信端口时使用。</span><br></pre></td></tr></table></figure>
+
+<p>也可以进行文件传输</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@10:~# nc -l -p 1234 &gt; test.txt        #开10.1.1.180:1234端口监听，并将socket传输过来的数据重定向到test.txt文件 test 43 nc</span><br><span class="line">root@10.1.1.43:~#cat test.txt    </span><br><span class="line">root@10.1.1.43:~# nc  10.1.1.180 1234 &lt; test.txt    #连接远程的10.1.1.180，从test.txt的路径从定向到socket，从而将文件传输到远方。</span><br><span class="line">root@10:~# cat test.txt</span><br><span class="line">test 43 nc</span><br></pre></td></tr></table></figure>
+
+<p>目录传输</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@10:~# nc -l -p 1234 | tar xzvf -</span><br><span class="line">root@10.1.1.43:~# tar czvf -  python_program | nc 10.1.1.180 1234</span><br><span class="line">python_program/</span><br><span class="line">python_program/1.py</span><br><span class="line">python_program/4.py</span><br><span class="line">python_program/3.py</span><br></pre></td></tr></table></figure>
+
+<hr>
+<ul>
+<li><a href="http://netcat.sourceforge.net/" target="_blank" rel="noopener">http://netcat.sourceforge.net/</a></li>
+</ul>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/Linux-nc/">Linux,nc</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016/09/07/ubuntu-ffmpeg-install/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Ubuntu下安装FFmpeg</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016/05/28/linux-ftp-upload-file/">
+        <span class="next-text nav-default">Linux FTP上传文件</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

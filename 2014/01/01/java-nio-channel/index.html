@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="java nio为什么是通道(一)：通往nio的云梯">
+
+
+
+
+  <meta name="keywords" content="channel,java, nio,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2014/01/01/java-nio-channel/">
+
+
+<meta name="description" content="java nio的通道是一个全新的I/O实现，没有扩展或者继承其它的类或者包。通过只能在字节缓冲区上操作，因此Channel是面向字节的接口，为什么要这样设计呢？主要是因为通道直接会和操作系统的I/O服务通信，而操作系统都是以字节的形式实现底层I/O接口的。1.打开一个通道 在通道界主要用的有四个类：FileChannel,SocketChannel,ServerSocketChannel,Dat">
+<meta name="keywords" content="channel,java, nio">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java nio为什么是通道(一)：通往nio的云梯">
+<meta property="og:url" content="http://yoursite.com/2014/01/01/java-nio-channel/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="java nio的通道是一个全新的I/O实现，没有扩展或者继承其它的类或者包。通过只能在字节缓冲区上操作，因此Channel是面向字节的接口，为什么要这样设计呢？主要是因为通道直接会和操作系统的I/O服务通信，而操作系统都是以字节的形式实现底层I/O接口的。1.打开一个通道 在通道界主要用的有四个类：FileChannel,SocketChannel,ServerSocketChannel,Dat">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-13T10:49:15.269Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java nio为什么是通道(一)：通往nio的云梯">
+<meta name="twitter:description" content="java nio的通道是一个全新的I/O实现，没有扩展或者继承其它的类或者包。通过只能在字节缓冲区上操作，因此Channel是面向字节的接口，为什么要这样设计呢？主要是因为通道直接会和操作系统的I/O服务通信，而操作系统都是以字节的形式实现底层I/O接口的。1.打开一个通道 在通道界主要用的有四个类：FileChannel,SocketChannel,ServerSocketChannel,Dat">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> java nio为什么是通道(一)：通往nio的云梯 - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          java nio为什么是通道(一)：通往nio的云梯
+        
+      </h1>
+
+      <time class="post-time">
+          Jan 1 2014
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>java nio的通道是一个全新的I/O实现，没有扩展或者继承其它的类或者包。<br>通过只能在字节缓冲区上操作，因此Channel是面向字节的接口，为什么要这样设计呢？主要是因为通道直接会和操作系统的I/O服务通信，而操作系统都是以字节的形式实现底层I/O接口的。<br>1.打开一个通道 在通道界主要用的有四个类：FileChannel,SocketChannel,<br>ServerSocketChannel,DatagramChannel<br>socket通道可以直接创建新socket通道通过工厂方法，但是FileChannel的对象创建，只能通过打开一个RandomAccessFile,FileInputStream,FileOutputStream对象上的getChannel()方法来获取。</p>
+<p></p>
+    SocketChannel sc = SocketChannel.open();
+    sc.connect(new InetSocketAddress(host,port));
+    ServerSocketChannel ssc = ServerSocketChannel.open();
+    ssc.socket().bind(new InetSocketAddress(host,port));
+    DatagramChannel dc = DatagramChannel.open();
+
+<pre><code>RandomAccessFile raf = new RandomAccessFile(host,port);
+
+FileChannel fc = raf.getChannel();</code></pre><p>为什么是RandomAccessFile类而不是其它的IO类呢？我认为，这是可能因为只有RandomAccessFile类可以处理只读文件，并且可以随意访问文件的任何位置</p>
+<a id="more"></a> 2.通道的实现
+<p>有两个接口实现了通道，即ReadableByteChannel和WriteByteChannel类</p>
+<pre><code>public interface ReadableByteChannel extends Channel {
+
+public int read(ByteBuffer dst) throws IOException;
+
+}
+
+public interface WritableByteChannel extends Channel {
+
+public int write(ByteBuffer src) throws IOException;
+
+}
+
+public interface ByteChannel extends ReadableByteChannel,WritableByteChannel {}</code></pre><p>可以看到,ByteChannel实现了两个接口read和write,因此，ByteChannel接口是双向的，也就是说，实现ByteChannel接口的其它接口或者类也将是双向的，但是对于file来说，它的双向只是语义上的，实际的实现可能并不都是可读可写，比如，你使用一个FileInputStream获取了一个FileChannel，那么你如果调用write方法，则会抛出NonWritableChannelException异常。</p>
+<pre><code>FileInputStream input = new FileInputStream(filename);
+
+FileChannel channel = input.getChannel();
+
+channel.write(buffer);  //这里将抛出异常
+
+package com.nio.channel;
+
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.WritableByteChannel;
+
+public class ChannelCopy {
+
+/**
+* @param args
+*/
+public static void main(String[] args) throws IOException{
+ReadableByteChannel source = Channels.newChannel(System.in);
+WritableByteChannel dest = Channels.newChannel(System.out);
+
+channelCopy(source, dest);
+source.close();
+
+dest.close();
+
+}
+
+private static void channelCopy(ReadableByteChannel src, WritableByteChannel dest) throws IOException{
+ByteBuffer buffer = ByteBuffer.allocateDirect(16*1024);
+while(src.read(buffer) != -1) {
+buffer.flip();
+dest.write(buffer);
+buffer.compact();
+}
+buffer.flip();
+while(buffer.hasRemaining()) {  //由于调用了compact方法，为防止还有剩下的数据，则再读取一次
+dest.write(buffer);
+}
+}
+
+private static void channelCopy2(ReadableByteChannel src, WritableByteChannel dest) throws IOException {
+ByteBuffer buffer = ByteBuffer.allocateDirect(16*1024);
+while(src.read(buffer) != -2) {
+buffer.flip();
+while(buffer.hasRemaining()) {
+dest.write(buffer);
+}
+buffer.clear();
+}
+}
+}</code></pre><p>通道可以以阻塞或者非阻塞模式运行，非阻塞模式的通道永远不会让调用的线程休眠，请求的操作要么立即完成，要儿返回一个结果表明未进行任何操作。只有面向流的通道，如sockets何pipes才能使用非阻塞模式。可以看到上面的例子我使用了直接缓冲区，因为在非阻塞模式下，I/O是直接跟操作系统的I/O服务交互的，使用直接缓冲区性能会更好一些。</p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/channel-java-nio/">channel,java, nio</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2014/01/07/java-nio-channel-3/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">java nio为什么是通道(三):文件通道</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2014/01/01/java-nio-buffer-2/">
+        <span class="next-text nav-default">你不知道的java nio缓冲区(二)</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

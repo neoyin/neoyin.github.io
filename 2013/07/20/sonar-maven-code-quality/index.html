@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="利用Sonar及Maven 插件 进行代码质量检测管理">
+
+
+
+
+  <meta name="keywords" content="maven,sonar,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2013/07/20/sonar-maven-code-quality/">
+
+
+<meta name="description" content="Sonar 是一个用于代码质量管理的开放平台。通过插件机制，Sonar可以集成不同的测试工具，代码分析工具，以及持续集成工具。 与持续集成工具（例如 Hudson/Jenkins 等）不同，Sonar并不是简单地把不同的代码检查工具结果（例如 FindBugs，PMD 等）直接显示在 Web页面上，而是通过不同的插件对这些结果进行再加工处理，通过量化的方式度量代码质量的变化，从而可以方便地对不同规">
+<meta name="keywords" content="maven,sonar">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用Sonar及Maven 插件 进行代码质量检测管理">
+<meta property="og:url" content="http://yoursite.com/2013/07/20/sonar-maven-code-quality/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="Sonar 是一个用于代码质量管理的开放平台。通过插件机制，Sonar可以集成不同的测试工具，代码分析工具，以及持续集成工具。 与持续集成工具（例如 Hudson/Jenkins 等）不同，Sonar并不是简单地把不同的代码检查工具结果（例如 FindBugs，PMD 等）直接显示在 Web页面上，而是通过不同的插件对这些结果进行再加工处理，通过量化的方式度量代码质量的变化，从而可以方便地对不同规">
+<meta property="og:locale" content="cn">
+<meta property="og:image" content="http://d.hiphotos.bdimg.com/album/s%3D550%3Bq%3D90%3Bc%3Dxiangce%2C100%2C100/sign=2ba889158418367aa9897fd81e48fae9/f9198618367adab4d1145f7f89d4b31c8601e4c2.jpg?referer=bd6e28e23f6d55fb9cd1421644c0&x=.jpg">
+<meta property="og:image" content="http://c.hiphotos.bdimg.com/album/s%3D550%3Bq%3D90%3Bc%3Dxiangce%2C100%2C100/sign=968ffe5896eef01f491418c0d0c5e818/8d5494eef01f3a290ff592f29b25bc315c607cc8.jpg?referer=8586bb1b7d3e6709e71770cfbcc6&x=.jpg">
+<meta property="og:updated_time" content="2020-03-13T10:41:26.381Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="利用Sonar及Maven 插件 进行代码质量检测管理">
+<meta name="twitter:description" content="Sonar 是一个用于代码质量管理的开放平台。通过插件机制，Sonar可以集成不同的测试工具，代码分析工具，以及持续集成工具。 与持续集成工具（例如 Hudson/Jenkins 等）不同，Sonar并不是简单地把不同的代码检查工具结果（例如 FindBugs，PMD 等）直接显示在 Web页面上，而是通过不同的插件对这些结果进行再加工处理，通过量化的方式度量代码质量的变化，从而可以方便地对不同规">
+<meta name="twitter:image" content="http://d.hiphotos.bdimg.com/album/s%3D550%3Bq%3D90%3Bc%3Dxiangce%2C100%2C100/sign=2ba889158418367aa9897fd81e48fae9/f9198618367adab4d1145f7f89d4b31c8601e4c2.jpg?referer=bd6e28e23f6d55fb9cd1421644c0&x=.jpg">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> 利用Sonar及Maven 插件 进行代码质量检测管理 - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          利用Sonar及Maven 插件 进行代码质量检测管理
+        
+      </h1>
+
+      <time class="post-time">
+          Jul 20 2013
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>Sonar 是一个用于代码质量管理的开放平台。通过插件机制，Sonar<br>可以集成不同的测试工具，代码分析工具，以及持续集成工具。</p>
+<p>与持续集成工具（例如 Hudson/Jenkins 等）不同，Sonar<br>并不是简单地把不同的代码检查工具结果（例如 FindBugs，PMD 等）直接显示在 Web<br>页面上，而是通过不同的插件对这些结果进行再加工处理，通过量化的方式度量代码质量的变化，从而可以方便地对不同规模和种类的工程进行代码质量管理。</p>
+<p><strong>Sonar安装</strong></p>
+<p>可以到官方网站下载最新版本:<br><a href="http://www.sonarqube.org/downloads/" target="_blank" rel="noopener">http://www.sonarqube.org/downloads/</a></p>
+<p>直接解压，不需要进行额外的安装</p>
+<pre><code>到bin目录下对应的系统执行脚本启动即可
+bin/
+|-- jsw-license
+|-- linux-ppc-64
+|-- linux-x86-32
+|-- linux-x86-64
+|-- macosx-universal-32
+|-- macosx-universal-64
+|-- solaris-sparc-32
+|-- solaris-sparc-64
+|-- solaris-x86-32
+|-- windows-x86-32
+`-- windows-x86-64</code></pre><p>项目默认端口为9000 在浏览器中访问：<a href="http://localhost:9000/" target="_blank" rel="noopener">http://localhost:9000/</a></p>
+<p><img src="http://d.hiphotos.bdimg.com/album/s%3D550%3Bq%3D90%3Bc%3Dxiangce%2C100%2C100/sign=2ba889158418367aa9897fd81e48fae9/f9198618367adab4d1145f7f89d4b31c8601e4c2.jpg?referer=bd6e28e23f6d55fb9cd1421644c0&x=.jpg" alt="image003"></p>
+<a id="more"></a>
+
+<p><strong>数据库设置</strong></p>
+<p>Sonar 默认使用的是 Derby<br>数据库，但这个数据库一般用于评估版本或者测试用途。商用及对数据库要求较高时，建议使用其他数据库。Sonar<br>可以支持大多数主流关系型数据库（例如 Microsoft SQL Server, MySQL, Oracle,<br>PostgreSQL 等）</p>
+<p>在conf/sonar.properties 中修改相关配置</p>
+<pre><code>sonar.jdbc.username: sonar
+sonar.jdbc.password: sonar
+sonar.jdbc.driverClassName: com.mysql.jdbc.Driver
+sonar.jdbc.url:
+其端口号也可以在这里配置
+sonar.web.port: 9000</code></pre><p><strong>Maven 插件及配置</strong></p>
+<p>Maven 插件会自动把所需数据（如单元测试结果、静态检测结果等）上传到 Sonar<br>服务器上，需要说明的是，关于 Sonar 的配置并不在每个工程的 pom.xml<br>文件里，而是在 Maven 的配置文件 settings.xml 文件里，具体配置如下</p>
+<pre><code>在maven  sittings.xml 中添加：
+&lt;profile&gt;
+     &lt;id&gt;sonar&lt;/id&gt;
+     &lt;activation&gt;
+         &lt;activeByDefault&gt;true&lt;/activeByDefault&gt;
+     &lt;/activation&gt;
+     &lt;properties&gt;
+          &lt;sonar.jdbc.url&gt;
+          jdbc:mysql://localhost:3306/sonar?useUnicode=true&amp;characterEncoding=utf8
+          &lt;/sonar.jdbc.url&gt;
+          &lt;sonar.jdbc.driver&gt;com.mysql.jdbc.Driver&lt;/sonar.jdbc.driver&gt;
+          &lt;sonar.jdbc.username&gt;sonar&lt;/sonar.jdbc.username&gt;
+          &lt;sonar.jdbc.password&gt;sonar&lt;/sonar.jdbc.password&gt;
+         &lt;sonar.host.url&gt;http://localhost:9000&lt;/sonar.host.url&gt;
+     &lt;/properties&gt;
+  &lt;/profile&gt;
+
+maven 项目中添加插件
+
+&lt;plugin&gt;
+    &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+    &lt;artifactId&gt;sonar-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;2.0&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;sonarHostURL&gt;http://192.168.1.100:8082&lt;/sonarHostURL&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;</code></pre><p>maven 项目编译后运行</p>
+<pre><code>mvn sonar:sonar</code></pre><p>将 Soanr 所需要的数据上传到 Sonar 服务器上之后，Sonar<br>安装的插件会对这些数据进行分析和处理，并以各种方式显示给用户，从而使用户方便地对代码质量的监测和管理。<br>例如 Radiator 插件可以根据项目的规模进行排序，并用不同演示显示代码质量：</p>
+<p><img src="http://c.hiphotos.bdimg.com/album/s%3D550%3Bq%3D90%3Bc%3Dxiangce%2C100%2C100/sign=968ffe5896eef01f491418c0d0c5e818/8d5494eef01f3a290ff592f29b25bc315c607cc8.jpg?referer=8586bb1b7d3e6709e71770cfbcc6&x=.jpg" alt="image013"></p>
+<p>Sonar 为代码的质量管理提供了一个平台，对传统的代码静态检测如<br>PMD、FindBugs 等工具进行整合，可以说是目前最强大的代码质量管理工具之一。</p>
+<p>参考：</p>
+<p><a href="http://www.ibm.com/developerworks/cn/java/j-lo-sonar/" target="_blank" rel="noopener">http://www.ibm.com/developerworks/cn/java/j-lo-sonar/</a></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/maven-sonar/">maven,sonar</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2013/07/20/ubuntu-vpn/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Ubuntu中快速搭建VPN服务器</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2013/06/21/memcache-linux-install/">
+        <span class="next-text nav-default">缓存的重要性（Linux下安装Memcache）</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

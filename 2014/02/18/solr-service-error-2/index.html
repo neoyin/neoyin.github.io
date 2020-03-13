@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="solr服务器报错解决二">
+
+
+
+
+  <meta name="keywords" content="lucene,solr,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2014/02/18/solr-service-error-2/">
+
+
+<meta name="description" content="查看solr管理页面logging时发现报错： 1366030227 [http-bio-8080-exec-8770] ERROR org.apache.solr.handler.dataimport.EntityProcessorBase – getNext() failed for query &amp;apos;select ...(SQL查询语句)&amp;apos;:org.apache.solr.h">
+<meta name="keywords" content="lucene,solr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="solr服务器报错解决二">
+<meta property="og:url" content="http://yoursite.com/2014/02/18/solr-service-error-2/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="查看solr管理页面logging时发现报错： 1366030227 [http-bio-8080-exec-8770] ERROR org.apache.solr.handler.dataimport.EntityProcessorBase – getNext() failed for query &amp;apos;select ...(SQL查询语句)&amp;apos;:org.apache.solr.h">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-13T10:41:49.849Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="solr服务器报错解决二">
+<meta name="twitter:description" content="查看solr管理页面logging时发现报错： 1366030227 [http-bio-8080-exec-8770] ERROR org.apache.solr.handler.dataimport.EntityProcessorBase – getNext() failed for query &amp;apos;select ...(SQL查询语句)&amp;apos;:org.apache.solr.h">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> solr服务器报错解决二 - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          solr服务器报错解决二
+        
+      </h1>
+
+      <time class="post-time">
+          Feb 18 2014
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>查看solr管理页面logging时发现报错：</p>
+<pre><code>1366030227 [http-bio-8080-exec-8770] ERROR org.apache.solr.handler.dataimport.EntityProcessorBase – getNext() failed for query &apos;select ...(SQL查询语句)&apos;:org.apache.solr.handler.dataimport.DataImportHandlerException:com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure o-8080-exec-8770] ERROR org.apache.solr.handler.dataimport.DocBuilder – Exception while processing: account document : SolrInputDocument(fields: []):org.apache.solr.handler.dataimport.DataImportHandlerException:com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure The last packet successfully received from the server was 2 milliseconds ago. The last packet sent successfully to the server was 750,660 milliseconds ago.</code></pre><p>主要就是Communications link<br>failure的原因，这是mysql连接出了问题，google下发现解释的最多的是DB的该连接已经断开而程序端还在使用该连接，将DB的连接等待超时时间增大即可，可我分析我这里的情况并不是需要改DB的wait_timeout参数，因为DB的参数没有改动过，而我的solr服务器之前没有这样的报错，于是仔细查看服务器记录的日志发现还有如下报错：</p>
+<pre><code>1366030244 [http-bio-8080-exec-8770] ERROR org.apache.solr.handler.dataimport.JdbcDataSource – Ignoring Error when closing connection java.sql.SQLException: Streaming result set com.mysql.jdbc.RowDataDynamic@5a82a36f is still active. No statements may be issued when any streaming result sets are open and in use on a given connection. Ensure that you have called .close() on any active streaming result sets before attempting more queries.</code></pre><p>查看solr源码发现这是由于statements未能正常关闭引起,solr中的mysql连接未能正常关闭，分析发现原因是由于几个core全量更新时间间隔太小导致。在服务器端引入了定时操作，用于在夜间对数据进行全量更新，不久前将几个core更新时间改变了，使更新时间间隔变小，而引起报错的core全量更新所用的时间要大于这个时间间隔，也就是说该core更新还未完成另一个core的更新请求就发起了，使得该core未能正常更新成功，mysql连接也未断开。将core间的更新时间间隔改大，重新部署服务器后，几天下来不再报错，ok一切又正常了。</p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/lucene-solr/">lucene,solr</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2014/02/18/solr-service-error-3/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">solr服务器报错解决三</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2014/02/18/solr-service-error-1/">
+        <span class="next-text nav-default">solr服务器报错解决一</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

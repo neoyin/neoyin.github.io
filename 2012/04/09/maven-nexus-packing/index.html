@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Nexus搭建Maven私服(四) Maven 相关打包插件">
+
+
+
+
+  <meta name="keywords" content="maven,nexus,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2012/04/09/maven-nexus-packing/">
+
+
+<meta name="description" content="Maven 相关打包插件Packaging的含义任何一个Maven项目都需要定义POM元素packaging（如果不写则默认值为jar）。顾名思义，该元素决定了项目的打包方式。实际的情形中，如果你不声明该元素，Maven会帮你生成一个JAR包；如果你定义该元素的值为war，那你会得到一个WAR包；如果定义其值为POM（比如是一个父模块），那什么包都不会生成。除此之外，Maven默认还支持一些其他的">
+<meta name="keywords" content="maven,nexus">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nexus搭建Maven私服(四) Maven 相关打包插件">
+<meta property="og:url" content="http://yoursite.com/2012/04/09/maven-nexus-packing/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="Maven 相关打包插件Packaging的含义任何一个Maven项目都需要定义POM元素packaging（如果不写则默认值为jar）。顾名思义，该元素决定了项目的打包方式。实际的情形中，如果你不声明该元素，Maven会帮你生成一个JAR包；如果你定义该元素的值为war，那你会得到一个WAR包；如果定义其值为POM（比如是一个父模块），那什么包都不会生成。除此之外，Maven默认还支持一些其他的">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-13T10:45:52.367Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nexus搭建Maven私服(四) Maven 相关打包插件">
+<meta name="twitter:description" content="Maven 相关打包插件Packaging的含义任何一个Maven项目都需要定义POM元素packaging（如果不写则默认值为jar）。顾名思义，该元素决定了项目的打包方式。实际的情形中，如果你不声明该元素，Maven会帮你生成一个JAR包；如果你定义该元素的值为war，那你会得到一个WAR包；如果定义其值为POM（比如是一个父模块），那什么包都不会生成。除此之外，Maven默认还支持一些其他的">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Nexus搭建Maven私服(四) Maven 相关打包插件 - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Nexus搭建Maven私服(四) Maven 相关打包插件
+        
+      </h1>
+
+      <time class="post-time">
+          Apr 9 2012
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h3 id="Maven-相关打包插件"><a href="#Maven-相关打包插件" class="headerlink" title="Maven 相关打包插件"></a>Maven 相关打包插件</h3><h4 id="Packaging的含义"><a href="#Packaging的含义" class="headerlink" title="Packaging的含义"></a>Packaging的含义</h4><p>任何一个Maven项目都需要定义POM元素packaging（如果不写则默认值为jar）。顾名思义，该元素决定了项目的打包方式。实际的情形中，如果你不声明该元素，Maven会帮你生成一个JAR包；如果你定义该元素的值为war，那你会得到一个WAR包；如果定义其值为POM（比如是一个父模块），那什么包都不会生成。除此之外，Maven默认还支持一些其他的流行打包格式，例如ejb3和ear。你不需要了解具体的打包细节，你所需要做的就是告诉Maven，”我是个什么类型的项目“，这就是约定优于配置的力量。</p>
+<a id="more"></a>
+
+<p>为了更好的理解Maven的默认打包方式，我们不妨来看看简单的声明背后发生了什么，对一个jar项目执行mvn package操作，会看到如下的输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[INFO] --- maven-jar-plugin:2.3.1:jar (default-jar) @ git-demo ---</span><br><span class="line">[INFO] Building jar: /home/juven/git_juven/git-demo/target/git-demo-1.2-SNAPSHOT.jar</span><br><span class="line">相比之下，对一个war项目执行mvn package操作，输出是这样的：</span><br><span class="line">[INFO] --- maven-war-plugin:2.1:war (default-war) @ webapp-demo ---</span><br><span class="line">[INFO] Packaging webapp</span><br><span class="line">[INFO] Assembling webapp [webapp-demo] in [/home/juven/git_juven/webapp-demo/target/webapp-demo-1.0-SNAPSHOT]</span><br><span class="line">[INFO] Processing war project</span><br><span class="line">[INFO] Copying webapp resources [/home/juven/git_juven/webapp-demo/src/main/webapp]</span><br><span class="line">[INFO] Webapp assembled in [90 msecs]</span><br><span class="line">[INFO] Building war: /home/juven/git_juven/webapp-demo/target/webapp-demo-1.0-SNAPSHOT.war</span><br></pre></td></tr></table></figure>
+
+<p>对应于同样的package生命周期阶段，Maven为jar项目调用了maven-jar-plugin，为war项目调用了maven-war-plugin，换言之，packaging直接影响Maven的构建生命周期。了解这一点非常重要，特别是当你需要自定义打包行为的时候，你就必须知道去配置哪个插件。一个常见的例子就是在打包war项目的时候排除某些web资源文件，这时就应该配置maven-war-plugin如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line"> &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line"> &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;</span><br><span class="line"> &lt;version&gt;2.1.1&lt;/version&gt;</span><br><span class="line"> &lt;configuration&gt;</span><br><span class="line"> &lt;webResources&gt;</span><br><span class="line"> &lt;resource&gt;</span><br><span class="line"> &lt;directory&gt;src/main/webapp&lt;/directory&gt;</span><br><span class="line"> &lt;excludes&gt;</span><br><span class="line"> &lt;exclude&gt;**/*.jpg&lt;/exclude&gt;</span><br><span class="line"> &lt;/excludes&gt;</span><br><span class="line"> &lt;/resource&gt;</span><br><span class="line"> &lt;/webResources&gt;</span><br><span class="line"> &lt;/configuration&gt;</span><br><span class="line"> &lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
+
+<p>一个Maven项目只生成一个主构件，当需要生成其他附属构件的时候，就需要用上classifier。源码包和Javadoc包就是附属构件的极佳例子。它们有着广泛的用途，尤其是源码包，当你使用一个第三方依赖的时候，有时候会希望在IDE中直接进入该依赖的源码查看其实现的细节，如果该依赖将源码包发布到了Maven仓库，那么像Eclipse就能通过m2eclipse插件解析下载源码包并关联到你的项目中，十分方便。由于生成源码包是极其常见的需求，因此Maven官方提供了一个插件来帮助用户完成这个任务：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"> &lt;plugin&gt;</span><br><span class="line"> &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line"> &lt;artifactId&gt;maven-source-plugin&lt;/artifactId&gt;</span><br><span class="line"> &lt;version&gt;2.1.2&lt;/version&gt;</span><br><span class="line"> &lt;executions&gt;</span><br><span class="line"> &lt;execution&gt;</span><br><span class="line"> &lt;id&gt;attach-sources&lt;/id&gt;</span><br><span class="line"> &lt;phase&gt;verify&lt;/phase&gt;</span><br><span class="line"> &lt;goals&gt;</span><br><span class="line"> &lt;goal&gt;jar-no-fork&lt;/goal&gt;</span><br><span class="line"> &lt;/goals&gt;</span><br><span class="line"> &lt;/execution&gt;</span><br><span class="line"> &lt;/executions&gt;</span><br><span class="line"> &lt;/plugin&gt;</span><br><span class="line">类似的，生成Javadoc包只需要配置插件如下：</span><br><span class="line"> &lt;plugin&gt; </span><br><span class="line"> &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line"> &lt;artifactId&gt;maven-javadoc-plugin&lt;/artifactId&gt;</span><br><span class="line"> &lt;version&gt;2.7&lt;/version&gt;</span><br><span class="line"> &lt;executions&gt;</span><br><span class="line"> &lt;execution&gt;</span><br><span class="line"> &lt;id&gt;attach-javadocs&lt;/id&gt;</span><br><span class="line"> &lt;goals&gt;</span><br><span class="line"> &lt;goal&gt;jar&lt;/goal&gt;</span><br><span class="line"> &lt;/goals&gt;</span><br><span class="line"> &lt;/execution&gt;</span><br><span class="line"> &lt;/executions&gt;</span><br><span class="line"> &lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
+
+<p>为了帮助所有Maven用户更方便的使用Maven中央库中海量的资源，中央仓库的维护者强制要求开源项目提交构件的时候同时提供源码包和Javadoc包。</p>
+<p>可执行CLI包(maven-shade-plugin)<br>除了前面提到了常规JAR包、WAR包，源码包和Javadoc包，另一种常被用到的包是在命令行可直接运行的CLI（Command Line）包。默认Maven生成的JAR包只包含了编译生成的.class文件和项目资源文件，而要得到一个可以直接在命令行通过java命令运行的JAR文件，还要满足两个条件：<br>JAR包中的/META-INF/MANIFEST.MF元数据文件必须包含Main-Class信息。<br>项目所有的依赖都必须在Classpath中。<br>Maven有好几个插件能帮助用户完成上述任务，不过用起来最方便的还是maven-shade-plugin，它可以让用户配置Main-Class的值，然后在打包的时候将值填入/META-INF/MANIFEST.MF文件。关于项目的依赖，它很聪明地将依赖JAR文件全部解压后，再将得到的.class文件连同当前项目的.class文件一起合并到最终的CLI包中，这样，在执行CLI JAR文件的时候，所有需要的类就都在Classpath中了。下面是一个配置样例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">&lt;artifactId&gt;maven-shade-plugin&lt;/artifactId&gt;</span><br><span class="line">&lt;version&gt;1.4&lt;/version&gt;</span><br><span class="line">&lt;executions&gt;</span><br><span class="line">&lt;execution&gt;</span><br><span class="line">&lt;phase&gt;package&lt;/phase&gt;</span><br><span class="line">&lt;goals&gt;</span><br><span class="line">&lt;goal&gt;shade&lt;/goal&gt;</span><br><span class="line">&lt;/goals&gt;</span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">&lt;transformers&gt;</span><br><span class="line">&lt;transformer implementation=&quot;org.apache.maven.plugins.shade.resource.ManifestResourceTransformer&quot;&gt;</span><br><span class="line">&lt;mainClass&gt;com.juvenxu.mavenbook.HelloWorldCli&lt;/mainClass&gt;</span><br><span class="line">&lt;/transformer&gt;</span><br><span class="line">&lt;/transformers&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br><span class="line">&lt;/execution&gt;</span><br><span class="line">&lt;/executions&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
+
+<p>上述例子中的，我的Main-Class是com.juvenxu.mavenbook.HelloWorldCli，构建完成后，对应于一个常规的hello-world-1.0.jar文件，我还得到了一个hello-world-1.0-cli.jar文件。细心的读者可能已经注意到了，这里用的是cli这个classifier。最后，我可以通过java -jar hello-world-1.0-cli.jar命令运行程序。</p>
+<p>自定义格式包(maven-assembly-plugin)<br>实际的软件项目常常会有更复杂的打包需求，例如我们可能需要为客户提供一份产品的分发包，这个包不仅仅包含项目的字节码文件，还得包含依赖以及相关脚本文件以方便客户解压后就能运行，此外分发包还得包含一些必要的文档。这时项目的源码目录结构大致是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">pom.xml</span><br><span class="line">src/main/java/</span><br><span class="line">src/main/resources/</span><br><span class="line">src/test/java/</span><br><span class="line">src/test/resources/</span><br><span class="line">src/main/scripts/</span><br><span class="line">src/main/assembly/</span><br><span class="line">README.txt</span><br></pre></td></tr></table></figure>
+
+<p>除了基本的pom.xml和一般Maven目录之外，这里还有一个src/main/scripts/目录，该目录会包含一些脚本文件如run.sh和run.bat，src/main/assembly/会包含一个assembly.xml，这是打包的描述文件，稍后介绍，最后的README.txt是份简单的文档。<br>我们希望最终生成一个zip格式的分发包，它包含如下的一个结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bin/</span><br><span class="line">lib/</span><br><span class="line">README.txt</span><br></pre></td></tr></table></figure>
+
+<p>其中bin/目录包含了可执行脚本run.sh和run.bat，lib/目录包含了项目JAR包和所有依赖JAR，README.txt就是前面提到的文档。<br>描述清楚需求后，我们就要搬出Maven最强大的打包插件：maven-assembly-plugin。它支持各种打包文件格式，包括zip、tar.gz、tar.bz2等等，通过一个打包描述文件（该例中是src/main/assembly.xml），它能够帮助用户选择具体打包哪些文件集合、依赖、模块、和甚至本地仓库文件，每个项的具体打包路径用户也能自由控制。如下就是对应上述需求的打包描述文件src/main/assembly.xml：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&lt;assembly&gt;</span><br><span class="line"> &lt;id&gt;bin&lt;/id&gt;</span><br><span class="line"> &lt;formats&gt; </span><br><span class="line"> &lt;format&gt;zip&lt;/format&gt; 设置打包的最终文件格式为zip. 支持的其他格式还有gz,tar,tar.gz,tar.bz2。</span><br><span class="line"> &lt;/formats&gt;</span><br><span class="line"> &lt;dependencySets&gt;</span><br><span class="line"> &lt;dependencySet&gt;  依赖包打包到lib目录下。</span><br><span class="line"> &lt;useProjectArtifact&gt;true&lt;/useProjectArtifact&gt;</span><br><span class="line"> &lt;outputDirectory&gt;lib&lt;/outputDirectory&gt;</span><br><span class="line"> &lt;/dependencySet&gt;</span><br><span class="line"> &lt;/dependencySets&gt;</span><br><span class="line"> &lt;fileSets&gt;</span><br><span class="line"> &lt;fileSet&gt;</span><br><span class="line"> &lt;outputDirectory&gt;/&lt;/outputDirectory&gt;</span><br><span class="line"> &lt;includes&gt;</span><br><span class="line"> &lt;include&gt;README.txt&lt;/include&gt;</span><br><span class="line"> &lt;/includes&gt;</span><br><span class="line"> &lt;/fileSet&gt;</span><br><span class="line"> &lt;fileSet&gt;</span><br><span class="line"> &lt;directory&gt;src/main/scripts&lt;/directory&gt;</span><br><span class="line"> &lt;outputDirectory&gt;/bin&lt;/outputDirectory&gt;</span><br><span class="line"> &lt;includes&gt;</span><br><span class="line"> &lt;include&gt;run.sh&lt;/include&gt;</span><br><span class="line"> &lt;include&gt;run.bat&lt;/include&gt;</span><br><span class="line"> &lt;/includes&gt;</span><br><span class="line"> &lt;/fileSet&gt;</span><br><span class="line"> &lt;/fileSets&gt;</span><br><span class="line">&lt;/assembly&gt;</span><br></pre></td></tr></table></figure>
+
+<p>首先这个assembly.xml文件的id对应了其最终生成文件的classifier。<br>其次formats定义打包生成的文件格式，这里是zip。因此结合id我们会得到一个名为hello-world-1.0-bin.zip的文件。（假设artifactId为hello-world，version为1.0）<br>dependencySets用来定义选择依赖并定义最终打包到什么目录，这里我们声明的一个depenencySet默认包含所有所有依赖，而useProjectArtifact表示将项目本身生成的构件也包含在内，最终打包至输出包内的lib路径下（由outputDirectory指定）。<br>fileSets允许用户通过文件或目录的粒度来控制打包。这里的第一个fileSet打包README.txt文件至包的根目录下，第二个fileSet则将src/main/scripts下的run.sh和run.bat文件打包至输出包的bin目录下。<br>打包描述文件所支持的配置远超出本文所能覆盖的范围，为了避免读者被过多细节扰乱思维，这里不再展开，读者若有需要可以去参考这份文档。<br>最后，我们需要配置maven-assembly-plugin使用打包描述文件，并绑定生命周期阶段使其自动执行打包操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"> &lt;plugin&gt;</span><br><span class="line"> &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line"> &lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt;</span><br><span class="line"> &lt;version&gt;2.2.1&lt;/version&gt;</span><br><span class="line"> &lt;configuration&gt;</span><br><span class="line"></span><br><span class="line">&lt;appendAssemblyId&gt;false&lt;/appendAssemblyId&gt; 控制是否在生成的打包文件的文件名中包含assembly id</span><br><span class="line"> &lt;descriptors&gt;</span><br><span class="line"> &lt;descriptor&gt;src/main/assembly/assembly.xml&lt;/descriptor&gt;</span><br><span class="line"> &lt;/descriptors&gt;</span><br><span class="line"> &lt;/configuration&gt;</span><br><span class="line"> &lt;executions&gt;</span><br><span class="line"> &lt;execution&gt;</span><br><span class="line"> &lt;id&gt;make-assembly&lt;/id&gt;</span><br><span class="line"> &lt;phase&gt;package&lt;/phase&gt;</span><br><span class="line"> &lt;goals&gt;</span><br><span class="line"> &lt;goal&gt;single&lt;/goal&gt;</span><br><span class="line"> &lt;/goals&gt;</span><br><span class="line"> &lt;/execution&gt;</span><br><span class="line"> &lt;/executions&gt;</span><br><span class="line"> &lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
+
+<p>execution的设置是为了将maven-assembly-plugin继承到标准的maven打包过程中，这样在运行maven-package时就会执行maven-assembly-plugin的操作，从而实现我们需要的自定义打包<br>运行mvn clean package之后，我们就能在target/目录下得到名为hello-world-1.0-bin.zip的分发包了。</p>
+<ul>
+<li>引用：<a href="http://svn.apache.org/viewvc/maven/maven-3/trunk/apache-maven/src/main/assembly/" target="_blank" rel="noopener">http://svn.apache.org/viewvc/maven/maven-3/trunk/apache-maven/src/main/assembly/</a></li>
+</ul>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/maven-nexus/">maven,nexus</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2012/07/09/mysql-date-time/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Mysql日期和时间函数</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2012/04/01/linux-command-lsof-ulimit/">
+        <span class="next-text nav-default">Linux 命令备忘 (lsof,ulimit)</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

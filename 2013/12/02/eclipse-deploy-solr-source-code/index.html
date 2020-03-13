@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="eclipse部署solr源码调试">
+
+
+
+
+  <meta name="keywords" content="Lucene,solr,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2013/12/02/eclipse-deploy-solr-source-code/">
+
+
+<meta name="description" content="项目中需要需要对solr中的一些类进行定制，于是将solr源码部署在eclipse下调试。1.Apache官网下载solr源码，这里用的是4.6.0版本，解压到自己指定的目录；2.ant eclipse用ant工具生成eclipse加载需要的文件，即生成eclipse的工程   如果本地没有安装ant，需先安装，Apache官网找，下载后解压，这里解压到了/opt/ant目录下，在/etc/pro">
+<meta name="keywords" content="Lucene,solr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="eclipse部署solr源码调试">
+<meta property="og:url" content="http://yoursite.com/2013/12/02/eclipse-deploy-solr-source-code/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="项目中需要需要对solr中的一些类进行定制，于是将solr源码部署在eclipse下调试。1.Apache官网下载solr源码，这里用的是4.6.0版本，解压到自己指定的目录；2.ant eclipse用ant工具生成eclipse加载需要的文件，即生成eclipse的工程   如果本地没有安装ant，需先安装，Apache官网找，下载后解压，这里解压到了/opt/ant目录下，在/etc/pro">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-13T10:55:20.754Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="eclipse部署solr源码调试">
+<meta name="twitter:description" content="项目中需要需要对solr中的一些类进行定制，于是将solr源码部署在eclipse下调试。1.Apache官网下载solr源码，这里用的是4.6.0版本，解压到自己指定的目录；2.ant eclipse用ant工具生成eclipse加载需要的文件，即生成eclipse的工程   如果本地没有安装ant，需先安装，Apache官网找，下载后解压，这里解压到了/opt/ant目录下，在/etc/pro">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> eclipse部署solr源码调试 - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          eclipse部署solr源码调试
+        
+      </h1>
+
+      <time class="post-time">
+          Dec 2 2013
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>项目中需要需要对solr中的一些类进行定制，于是将solr源码部署在eclipse下调试。<br>1.Apache官网下载solr源码，这里用的是4.6.0版本，解压到自己指定的目录；<br>2.ant eclipse用ant工具生成eclipse加载需要的文件，即生成eclipse的工程  </p>
+<p>如果本地没有安装ant，需先安装，Apache官网找，下载后解压，这里解压到了/opt/ant目录下，在/etc/profile中增加ANT_HOME的环境变量：<br>export ANT_HOME=/opt/ant/apache-ant-1.9.2<br>PATH=$PATH:$ANT_HOME/bin<br>export ANT_HOME #设不设置都行<br>export PATH #若有这一行无需添加<br>保存后退出，执行source /etc/profile，ant<br>-version显示ant版本，ant安装成功。<br>安装完ant后需要安装ivy，执行命令ant ivy-bootstrap，等待提示成功。<br>现在到solr的源码的根目录下执行ant<br>eclipse命令了，ant会加载xml文件生成项目，这个过程ivy会下载所需的jar包，可能需要等一段时间，终端提示出现ivy-fail不用担心，只是所需依赖包没有，ivy会自动去下载，耐心等待，最后successful。<br>3.eclipse导入solr源码，进行调试  </p>
+<p>eclipse导入solr源码，找到StartSolrJetty.java，更改connector.setPort(8983)为设置的端口（这里是8983），bb.setContextPath(“/solr”)中参数说明在浏览器访问的URI路径，bb.setWar(“webapp/web”)这里设置solr源码下的solr/webapp/web目录的绝对路径。接下来设置solrhome，右键点击StartSolrJetty类，run<br>as选项下的run configurations选项，在Arguments中的VM<br>arguments中添加-Dsolr.solr.home=solrhome目录，run as<br>application启动，成功后在页面访问<a href="http://localhost:8983/solr即可访问到。" target="_blank" rel="noopener">http://localhost:8983/solr即可访问到。</a><br>solr源码中加入了jetty，所以run as application其实是在jetty中部署了solr。</p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/Lucene-solr/">Lucene,solr</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2013/12/02/solr-queryconverter-custom/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">solr QueryConverter的定制</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2013/12/01/zookeeperzkserver-sh-status-error/">
+        <span class="next-text nav-default">zookeeper使用命令zkServer.sh status时出现错误提示问题</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

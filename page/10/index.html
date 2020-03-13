@@ -1,20 +1,399 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Neo"><title>浮生若梦</title><meta name="description" content="A Blog Powered By Hexo"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title><a href="/">浮生若梦</a></h3></div></div><ul class="social-links"></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a href="https://www.caicai.me"> CaiCai </a><span>&</span><a href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a class="current" href="/">首页</a></li><li><a href="/about">关于</a></li><li><a href="/archives">归档</a></li><li><a href="/links">友链</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)" style="display:none;"> </a></li></div><div class="avatar"><img></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post animated fadeInDown"><div class="post-title"><h3><a href="/2013/12/15/apache-mina-basic-ioService/">apache mina 基础类研究(一):IoService方法详解</a></h3></div><div class="post-content"><p>IoService:/*Base interface for all IoAcceptor and IoConnector that provide I/Oservice and manage IoSession.*/  
-上面的英文是这个接口的描述，大概意思是：这是个一IoAcceptor和IoConnecto...</p></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2013-12-15</span><i class="fa fa-tag"></i><a class="tag" href="/categories/技术流/" title="技术流">技术流 </a></div></div></div></div><div class="post animated fadeInDown"><div class="post-title"><h3><a href="/2013/12/15/apache-mina-basic-client-init/">apache mina系列 client初始化分析(三)</a></h3></div><div class="post-content"><p>距离上一次更新mina好长时间了，今晚把mina的client初始化补上了，快来一睹为快吧…..
-先调用NioSocketConnector类的构造方法，然后在这个构造方法中又初始化父类AbstractPollingIoConnector的构造方法AbstractPollingIoConnector(IoSess...</p></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2013-12-15</span><i class="fa fa-tag"></i><a class="tag" href="/categories/技术流/" title="技术流">技术流 </a></div></div></div></div><div class="post animated fadeInDown"><div class="post-title"><h3><a href="/2013/12/12/eclipse-maven-tools-jar/">eclipse中pom报错 tools.jar</a></h3></div><div class="post-content"><p>eclipse中pom报错 tools.jar
-Missing artifact com.sun:tools:jar:1.5.0:system
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
 
-原因，ecliple的java跟想用的java不是一个版本  
-123$ which java  /usr/bin/java -\&gt; /usr/lib/jvm/j...</p></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2013-12-12</span><i class="fa fa-tag"></i><a class="tag" href="/categories/技术流/" title="技术流">技术流 </a><a class="tag" href="/tags/maven/" title="maven">maven </a></div></div></div></div><div class="post animated fadeInDown"><div class="post-title"><h3><a href="/2013/12/11/idea-tips-evaluate/">IDEA-tips 计算表达式</a></h3></div><div class="post-content"><p>To easily evaluate the value of any expression while debugging theprogram, select its text in the editor (you may pressa Ctrl+W a few times to efficientlyper...</p></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2013-12-11</span><i class="fa fa-tag"></i><a class="tag" href="/categories/每日一译/" title="每日一译">每日一译 </a><a class="tag" href="/tags/idea/" title="idea">idea </a></div></div></div></div><div class="post animated fadeInDown"><div class="post-title"><h3><a href="/2013/12/10/solr-multicore-single-machine-index-search/">solr Multicore实现单服务器索引分片搜索</a></h3></div><div class="post-content"><p>今天先记录下solr的Multicore实现多个分片索引的查询，之后再记录solr的分布式，使用solr版本1.4。  
-solr的Multicore是一个很好的功能，其目地是一个solr实例实现多个搜索应用。我们现在用的就是一个solr服务器上使用Multicore实现多个搜索的应用，各个应用之间相互独立，互不...</p></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2013-12-10</span><i class="fa fa-tag"></i><a class="tag" href="/categories/技术流/" title="技术流">技术流 </a><a class="tag" href="/tags/solr/" title="solr">solr </a></div></div></div></div><div class="post animated fadeInDown"><div class="post-title"><h3><a href="/2013/12/09/idea-tips-clipboard/">IDEA-tips 剪贴板</a></h3></div><div class="post-content"><p>Use the Ctrl+Shift+V shortcut to choose and insert recent clipboardcontents into the text.
-用 Ctrl＋Shilt＋V 可以选择剪贴板的内容并插入当前文本中
-</p></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2013-12-09</span><i class="fa fa-tag"></i><a class="tag" href="/categories/每日一译/" title="每日一译">每日一译 </a><a class="tag" href="/tags/idea/" title="idea">idea </a></div></div></div></div><div class="post animated fadeInDown"><div class="post-title"><h3><a href="/2013/12/06/what-if-soda-planet/">【What if 系列】饮料星球</a></h3></div><div class="post-content"><p>提问：
-地球上目前存在的水有多少曾经被做成过饮料？ —— Brian Roelofs
 
-回答：
-00000005%。首先先介绍一点背景：在饮料界，“软饮料”专指任何不含酒精的包装饮料，但通常来说人们用它来称呼碳酸饮料。[1]碳酸水（又称苏打水）在18世纪首次被生产出来，后来变得十分流行，人称“开胃水”（将奎宁粉末...</p></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2013-12-06</span><i class="fa fa-tag"></i><a class="tag" href="/categories/【What-if系列】/" title="【What if系列】">【What if系列】 </a><a class="tag" href="/tags/what-if/" title="what-if">what-if </a></div></div></div></div><div class="post animated fadeInDown"><div class="post-title"><h3><a href="/2013/12/06/apache-mina-socket-init/">apache mina初学，绘制的socket初始化时依赖的类图</a></h3></div><div class="post-content"><p>
-eval(function(p,a,c,k,e,d){e=function(c){return(c35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--)d[e(c)]=k[c]||e(c);k=[f...</p></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2013-12-06</span><i class="fa fa-tag"></i><a class="tag" href="/categories/技术流/" title="技术流">技术流 </a></div></div></div></div><div class="post animated fadeInDown"><div class="post-title"><h3><a href="/2013/12/05/idea-tips-shortcut/">IDEA-TIPS 合并行</a></h3></div><div class="post-content"><p>Ctrl+Shift+J shortcut joins twolines into one and removes unnecessary space to match your code style.
-Ctrl+Shift+J把两行合并为一行并且移除不需要的空格使之符合你的代码风格.
-</p></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2013-12-05</span><i class="fa fa-tag"></i><a class="tag" href="/categories/每日一译/" title="每日一译">每日一译 </a><a class="tag" href="/tags/idea/" title="idea">idea </a></div></div></div></div><div class="post animated fadeInDown"><div class="post-title"><h3><a href="/2013/12/02/solr-queryconverter-custom/">solr QueryConverter的定制</a></h3></div><div class="post-content"><p>
-其实我这里没有定制QueryConverter，只是基于此解决了一个问题。我在solr中引入suggest功能，Solr默认的QueryConverter为SpellQueryConvert，它是根据空格对查询参数做分隔，导致
-“nokia
-e”这样的字符被当作“nokia”，“e”这样的两个字符处理，不符合要...</p></div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2013-12-02</span><i class="fa fa-tag"></i><a class="tag" href="/categories/技术流/" title="技术流">技术流 </a><a class="tag" href="/tags/solr/" title="solr">solr </a></div></div></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/page/9/">上一页</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/page/11/">下一页</a></li></ul></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/page/10/">
+
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="浮生若梦">
+<meta property="og:url" content="http://yoursite.com/page/10/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:locale" content="cn">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浮生若梦">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title>
+  浮生若梦
+</title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+  
+<div id="primary">
+  <section id="archive" class="archive">
+
+    
+
+      
+      
+
+      
+        
+        <div class="collection-title">
+          <h2 class="archive-year">2014</h2>
+        </div>
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          Feb 18
+        </span>
+        <span class="archive-post-title">
+          <a href="/2014/02/18/solr-service-error-3/" class="archive-post-link">
+            solr服务器报错解决三
+          </a>
+        </span>
+      </div>
+    
+
+      
+      
+
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          Feb 18
+        </span>
+        <span class="archive-post-title">
+          <a href="/2014/02/18/solr-service-error-2/" class="archive-post-link">
+            solr服务器报错解决二
+          </a>
+        </span>
+      </div>
+    
+
+      
+      
+
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          Feb 18
+        </span>
+        <span class="archive-post-title">
+          <a href="/2014/02/18/solr-service-error-1/" class="archive-post-link">
+            solr服务器报错解决一
+          </a>
+        </span>
+      </div>
+    
+
+      
+      
+
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          Feb 18
+        </span>
+        <span class="archive-post-title">
+          <a href="/2014/02/18/linux-nmap-command/" class="archive-post-link">
+            Linux系统管理员最常用的29个Nmap命令
+          </a>
+        </span>
+      </div>
+    
+
+      
+      
+
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          Feb 17
+        </span>
+        <span class="archive-post-title">
+          <a href="/2014/02/17/qrcode-generate/" class="archive-post-link">
+            论二维码的原理及生成
+          </a>
+        </span>
+      </div>
+    
+
+      
+      
+
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          Feb 11
+        </span>
+        <span class="archive-post-title">
+          <a href="/2014/02/11/linux-server-performance/" class="archive-post-link">
+            Linux服务器性能评估(转)
+          </a>
+        </span>
+      </div>
+    
+
+      
+      
+
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          Feb 8
+        </span>
+        <span class="archive-post-title">
+          <a href="/2014/02/08/regex-html-tags/" class="archive-post-link">
+            使用正则表达式匹配嵌套Html标签
+          </a>
+        </span>
+      </div>
+    
+
+      
+      
+
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          Feb 7
+        </span>
+        <span class="archive-post-title">
+          <a href="/2014/02/07/maven-mirror/" class="archive-post-link">
+            Maven私服中的mirror
+          </a>
+        </span>
+      </div>
+    
+
+      
+      
+
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          Feb 7
+        </span>
+        <span class="archive-post-title">
+          <a href="/2014/02/07/my201314/" class="archive-post-link">
+            我的201314
+          </a>
+        </span>
+      </div>
+    
+
+      
+      
+
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          Feb 7
+        </span>
+        <span class="archive-post-title">
+          <a href="/2014/02/07/diao-restaurant-core-secret/" class="archive-post-link">
+            雕爷亲述：餐饮业要想活，有一个最核心的秘密
+          </a>
+        </span>
+      </div>
+    
+  </section>
+ </div>
+
+  
+  <nav class="pagination">
+    
+      <a class="prev" href="/page/9/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/page/11/">
+        <span class="next-text">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

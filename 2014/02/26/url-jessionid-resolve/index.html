@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="解决URL中的jessionid">
+
+
+
+
+  <meta name="keywords" content="jessionid,tomcat,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2014/02/26/url-jessionid-resolve/">
+
+
+<meta name="description" content="最近在网站上加了通过二维码分享微信功能,但是发现用户通过二维码分享页面的时候时不时链接中会带上jessionid=xxxxxx,这样的URL极不友好，对搜索引擎不利，而且也会带来安全隐患。 jessionid是什么可以看这里jsessionid释疑解惑 产生的原因当第一次访问服务器的时候，服务端并不知道你的客户端浏览器是否支持cookie，因此，第一次请求发起的时候，服务端会默认url重写，也就是">
+<meta name="keywords" content="jessionid,tomcat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="解决URL中的jessionid">
+<meta property="og:url" content="http://yoursite.com/2014/02/26/url-jessionid-resolve/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="最近在网站上加了通过二维码分享微信功能,但是发现用户通过二维码分享页面的时候时不时链接中会带上jessionid=xxxxxx,这样的URL极不友好，对搜索引擎不利，而且也会带来安全隐患。 jessionid是什么可以看这里jsessionid释疑解惑 产生的原因当第一次访问服务器的时候，服务端并不知道你的客户端浏览器是否支持cookie，因此，第一次请求发起的时候，服务端会默认url重写，也就是">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-13T10:39:40.351Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="解决URL中的jessionid">
+<meta name="twitter:description" content="最近在网站上加了通过二维码分享微信功能,但是发现用户通过二维码分享页面的时候时不时链接中会带上jessionid=xxxxxx,这样的URL极不友好，对搜索引擎不利，而且也会带来安全隐患。 jessionid是什么可以看这里jsessionid释疑解惑 产生的原因当第一次访问服务器的时候，服务端并不知道你的客户端浏览器是否支持cookie，因此，第一次请求发起的时候，服务端会默认url重写，也就是">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> 解决URL中的jessionid - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          解决URL中的jessionid
+        
+      </h1>
+
+      <time class="post-time">
+          Feb 26 2014
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>最近在网站上加了通过<a href="http://www.floatinglife.cn/qrcode-generate" target="_blank" rel="noopener">二维码</a>分享微信功能,但是发现用户通过二维码分享页面的时候时不时链接中会带上jessionid=xxxxxx,这样的URL极不友好，对搜索引擎不利，而且也会带来安全隐患。</p>
+<p>jessionid是什么可以看这里<a href="http://www.blogjava.net/zhaozhenlin1224/archive/2010/02/03/311807.html" target="_blank" rel="noopener">jsessionid释疑解惑</a></p>
+<h2 id="产生的原因"><a href="#产生的原因" class="headerlink" title="产生的原因"></a>产生的原因</h2><p>当第一次访问服务器的时候，服务端并不知道你的客户端浏览器是否支持cookie，因此，第一次请求发起的时候，服务端会默认url重写，也就是将sessionid写到url中传递;在请求过后，服务器会根据你提交的客户端浏览器信息自动检查客户端是否启用了cookie，如果启用，将不再进行url重写。如果没有，则还是进行url重写</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><ol>
+<li>通过加入 Filter 的方式过滤掉 URL 中包含的 jsessionid，再重新包装<br>Response</li>
+</ol>
+<a id="more"></a>
+
+<pre><code>import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+
+/**
+ * Servlet filter which disables URL-encoded session identifiers.
+ * 
+* 
+
+ * Copyright (c) 2006, Craig Condit. All rights reserved.
+ *
+* Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+*   * Redistributions of source code must retain the above copyright notice,
+ *     this list of conditions and the following disclaimer.
+ *   * Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
+ *     and/or other materials provided with the distribution.
+ * 
+
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot;
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ * 
+ */
+@SuppressWarnings(&quot;deprecation&quot;)
+public class DisableUrlSessionFilter implements Filter {
+
+    /**
+     * Filters requests to disable URL-based session identifiers.
+     */
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        // skip non-http requests
+        if (!(request instanceof HttpServletRequest)) {
+            chain.doFilter(request, response);
+            return;
+        }
+
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
+
+        // clear session if session id in URL
+        if (httpRequest.isRequestedSessionIdFromURL()) {
+            HttpSession session = httpRequest.getSession();
+            if (session != null) session.invalidate();
+        }
+
+        // wrap response to remove URL encoding
+        HttpServletResponseWrapper wrappedResponse = new HttpServletResponseWrapper(httpResponse) {
+            @Override
+            public String encodeRedirectUrl(String url) {
+                return url;
+            }
+
+            @Override
+            public String encodeRedirectURL(String url) {
+                return url;
+            }
+
+            @Override
+            public String encodeUrl(String url) {
+                return url;
+            }
+
+            @Override
+            public String encodeURL(String url) {
+                return url;
+            }
+        };
+
+        // process next request in chain
+        chain.doFilter(request, wrappedResponse);
+    }
+
+    /**
+     * Unused.
+     */
+    public void init(FilterConfig config) throws ServletException {
+    }
+
+    /**
+     * Unused.
+     */
+    public void destroy() {
+    }</code></pre><p>2.tomcat中配置(version在6.0.30以上)</p>
+<pre><code>&lt;?xml version=&apos;1.0&apos; encoding=&apos;utf-8&apos;?&gt;
+&lt;Context docBase=&quot;PATH_TO_WEBAPP&quot; path=&quot;/CONTEXT&quot; disableURLRewriting=&quot;true&quot;&gt;
+&lt;/Context&gt;</code></pre><p>3.如果引入了<a href="http://urlrewritefilter.googlecode.com/svn/trunk/src/doc/manual/3.2/guide.html" target="_blank" rel="noopener">rewrite<br>filter</a></p>
+<pre><code>&lt;outbound-rule encodefirst=&quot;true&quot;&gt;
+  &lt;name&gt;Strip URL Session ID&apos;s&lt;/name&gt;
+  &lt;from&gt;^(.*?)(?:\;jsessionid=[^\?#]*)?(\?[^#]*)?(#.*)?$&lt;/from&gt;
+  &lt;to&gt;$1$2$3&lt;/to&gt;
+&lt;/outbound-rule&gt;</code></pre><p>4.Tomcat7中web.xml中配置</p>
+<pre><code>&lt;session-config&gt;
+    &lt;tracking-mode&gt;COOKIE&lt;/tracking-mode&gt;
+&lt;/session-config&gt;</code></pre><h2 id="参考"><a href="#参考" class="headerlink" title="参考:"></a>参考:</h2><p><a href="https://randomcoder.org/articles/jsessionid-considered-harmful" target="_blank" rel="noopener">https://randomcoder.org/articles/jsessionid-considered-harmful</a></p>
+<p><a href="http://www.oschina.net/question/12_19181" target="_blank" rel="noopener">http://www.oschina.net/question/12_19181</a></p>
+<p><a href="http://www.blogjava.net/freeman1984/archive/2010/09/09/331501.html" target="_blank" rel="noopener">http://www.blogjava.net/freeman1984/archive/2010/09/09/331501.html</a></p>
+<p><a href="http://www.cnblogs.com/BearsTaR/archive/2010/08/24/URL_SESSION_ID_LEEK.html" target="_blank" rel="noopener">URL中允许携带sessionid带来的安全隐患</a></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/jessionid-tomcat/">jessionid,tomcat</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2014/03/01/regular-expression-match-multiple-of-3/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">正则表达式匹配3的倍数</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2014/02/24/byzantine-failures/">
+        <span class="next-text nav-default">拜占庭将军问题</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

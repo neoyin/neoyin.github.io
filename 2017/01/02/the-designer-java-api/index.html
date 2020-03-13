@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="设计师项目后端API">
+
+
+
+
+  <meta name="keywords" content="docker,springboot,react-native,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2017/01/02/the-designer-java-api/">
+
+
+<meta name="description" content="数据准备搭建Wordpress做为CMS系统1234apt-get install nginx  apt-get install php5-fpmapt-get install php5-mysqlapt-get install php5-gd  配置Nginx1234567891011121314151617181920212223242526server &amp;#123;	listen 80 d">
+<meta name="keywords" content="docker,springboot,react-native">
+<meta property="og:type" content="article">
+<meta property="og:title" content="设计师项目后端API">
+<meta property="og:url" content="http://yoursite.com/2017/01/02/the-designer-java-api/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="数据准备搭建Wordpress做为CMS系统1234apt-get install nginx  apt-get install php5-fpmapt-get install php5-mysqlapt-get install php5-gd  配置Nginx1234567891011121314151617181920212223242526server &amp;#123;	listen 80 d">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-13T10:40:52.266Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="设计师项目后端API">
+<meta name="twitter:description" content="数据准备搭建Wordpress做为CMS系统1234apt-get install nginx  apt-get install php5-fpmapt-get install php5-mysqlapt-get install php5-gd  配置Nginx1234567891011121314151617181920212223242526server &amp;#123;	listen 80 d">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> 设计师项目后端API - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          设计师项目后端API
+        
+      </h1>
+
+      <time class="post-time">
+          Jan 2 2017
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <hr>
+<h5 id="数据准备"><a href="#数据准备" class="headerlink" title="数据准备"></a>数据准备</h5><h6 id="搭建Wordpress做为CMS系统"><a href="#搭建Wordpress做为CMS系统" class="headerlink" title="搭建Wordpress做为CMS系统"></a>搭建Wordpress做为CMS系统</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">apt-get install nginx  </span><br><span class="line">apt-get install php5-fpm</span><br><span class="line">apt-get install php5-mysql</span><br><span class="line">apt-get install php5-gd</span><br></pre></td></tr></table></figure>
+
+<h6 id="配置Nginx"><a href="#配置Nginx" class="headerlink" title="配置Nginx"></a>配置Nginx</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">	listen 80 default_server;</span><br><span class="line">	listen [::]:80 default_server ipv6only=on;</span><br><span class="line"></span><br><span class="line">	root /data/www/wordpress;</span><br><span class="line">	index index.html index.htm index.php;</span><br><span class="line">	access_log /var/log/nginx/access.www.designer.l99.com.log;</span><br><span class="line">	server_name localhost designer.l99.com;</span><br><span class="line"></span><br><span class="line">	location / &#123;</span><br><span class="line">		try_files $uri $uri/ =404;</span><br><span class="line">	&#125;</span><br><span class="line">	location ~ \.php$ &#123;</span><br><span class="line">             try_files $uri =404;</span><br><span class="line">             fastcgi_pass unix:/var/run/php5-fpm.sock;</span><br><span class="line">             fastcgi_index index.php;</span><br><span class="line">             fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;</span><br><span class="line">             include fastcgi_params;</span><br><span class="line">    &#125;</span><br><span class="line">	location ~.*\.(gif|jpg|jpeg|png|bmp|swf|ico)$ &#123;</span><br><span class="line">        	expires       15d;</span><br><span class="line">   	&#125;</span><br><span class="line">   	location ~.*\.(js|css)?$ &#123;</span><br><span class="line">        	expires       7d;</span><br><span class="line">   	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="安装wordpress生成数据库"><a href="#安装wordpress生成数据库" class="headerlink" title="安装wordpress生成数据库"></a>安装wordpress生成数据库</h6><p>wordpress安装不在这里写了</p>
+<h6 id="爬取数据到wordpress数据库"><a href="#爬取数据到wordpress数据库" class="headerlink" title="爬取数据到wordpress数据库"></a>爬取数据到wordpress数据库</h6><blockquote>
+<p>这里先不介绍爬虫项目了,有很多JAVA的开源项目可以用。这里是参照了。<a href="https://github.com/CrawlScript/WebCollector" target="_blank" rel="noopener">WebCollector</a> 写了一个简单的.</p>
+</blockquote>
+<hr>
+<h6 id="wordpress到Mongodb"><a href="#wordpress到Mongodb" class="headerlink" title="wordpress到Mongodb"></a>wordpress到Mongodb</h6><blockquote>
+<p>写了一个简单的JAVA程序加脚本去定时按修改时间更新数据</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ps aux | grep lifeix-designer-w2m | grep -v &apos;grep&apos; |awk &apos;&#123;print $2&#125;&apos;|xargs kill</span><br><span class="line">cd /data/shell</span><br><span class="line">nohup java -jar lifeix-designer-w2m-1.0-SNAPSHOT.jar &amp;</span><br><span class="line"></span><br><span class="line">#每二分钟执行一次</span><br><span class="line">*/2 * * * * dw-to-mongo.sh</span><br></pre></td></tr></table></figure>
+
+<h5 id="SpringBoot-项目"><a href="#SpringBoot-项目" class="headerlink" title="SpringBoot 项目"></a>SpringBoot 项目</h5><p><a href="https://start.spring.io/" target="_blank" rel="noopener">https://start.spring.io/</a> 可以利用spring官网直接生成项目结构，定义好<code>group</code>和<code>Artifact</code> 并选择所需要的依赖，生成即可。我在这里使用了<code>jersey</code>做<code>rest</code>构架</p>
+<p>生成结构如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">├── mvnw</span><br><span class="line">├── mvnw.cmd</span><br><span class="line">├── pom.xml</span><br><span class="line">├── src</span><br><span class="line">│   ├── main</span><br><span class="line">│   │   ├── java</span><br><span class="line">│   │   │   └── com</span><br><span class="line">│   │   │       └── lifeix</span><br><span class="line">│   │   │           └── designer</span><br><span class="line">│   │   │               ├── LifeixDesignerPostApplication.java</span><br><span class="line">│   │   └── resources</span><br><span class="line">│   │       └── application.properties</span><br><span class="line">│   └── test</span><br><span class="line">│       └── java</span><br><span class="line">│           └── com</span><br><span class="line">│               └── lifeix</span><br><span class="line">│                   └── designer</span><br><span class="line">│                       └── LifeixDesignerPostApplicationTests.java</span><br></pre></td></tr></table></figure>
+
+<p>可以直接运行<code>LifeixDesignerPostApplication</code></p>
+<h5 id="项目docker-打包镜像"><a href="#项目docker-打包镜像" class="headerlink" title="项目docker 打包镜像"></a>项目docker 打包镜像</h5><p>跳过项目逻辑，在项目main 文件目录创建<code>docker/Dockerfile</code></p>
+<p><code>Dockerfile</code>如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FROM java:8-jre VOLUME /tmp ADD app.jar app.jar RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai  /etc/localtime RUN echo &quot;Asia/Shanghai&quot; &gt; /etc/timezone RUN bash -c &apos;touch /app.jar&apos; ENTRYPOINT [&quot;java&quot;,&quot;-Djava.security.egd=file:/dev/./urandom&quot;,&quot;-jar&quot;,&quot;/app.jar&quot;]</span><br></pre></td></tr></table></figure>
+
+<p>直接利用<code>maven</code> 打docker包需要引入<a href="https://github.com/spotify/docker-maven-plugin" target="_blank" rel="noopener">docker-maven-plugin</a><br>在<code>pom.xml</code>添加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt; 	&lt;groupId&gt;com.spotify&lt;/groupId&gt; 	&lt;artifactId&gt;docker-maven-plugin&lt;/artifactId&gt; 	&lt;version&gt;0.4.6&lt;/version&gt; 	&lt;configuration&gt; 		&lt;dockerHost&gt;$&#123;dockerHost&#125;&lt;/dockerHost&gt; 		&lt;dockerCertPath&gt;$&#123;dockerCertPath&#125;&lt;/dockerCertPath&gt; 		&lt;imageName&gt;$&#123;docker.image.prefix&#125;/$&#123;project.artifactId&#125;&lt;/imageName&gt; 		&lt;dockerDirectory&gt;src/main/docker&lt;/dockerDirectory&gt; 		&lt;resources&gt; 			&lt;resource&gt; 				&lt;targetPath&gt;/&lt;/targetPath&gt; 				&lt;directory&gt;$&#123;project.build.directory&#125;&lt;/directory&gt; 				&lt;include&gt;$&#123;project.build.finalName&#125;.jar&lt;/include&gt; 			&lt;/resource&gt; 		&lt;/resources&gt; 	&lt;/configuration&gt; &lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
+
+<p>由于使用了阿里云的容器集群所以在dockerHost 及dockerCertPath加入了相关信息</p>
+<h5 id="镜像及发布"><a href="#镜像及发布" class="headerlink" title="镜像及发布"></a>镜像及发布</h5><p>添加完成后使用maven 命令打包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mvn clean -Dmaven.test.skip=true -P prod package docker:build -DpushImagetags -DdockerImagetags=$tagnum</span><br><span class="line">//推送镜像到阿里云镜像仓库</span><br><span class="line">docker push registry-internal.cn-beijing.aliyuncs.com/designer/lifeix-designer-post:$tagnum</span><br></pre></td></tr></table></figure>
+
+<p>推送至阿里云镜像仓库后在其容器服务的应用列表中创建应用,选择对应的镜像，注意打开对应的端口映射，<code>springboot</code>默认的端口号是8080，点击创建，阿里云会自动将应用部署成服务. </p>
+<p>在 容器服务的服务列表中可以看到此服务对应的容器信息。你可以根据暴露的ip测试了。</p>
+<h5 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h5><p>阿里云在创建集群的时候也会创建一个负载均衡，在域名的解析中添加至负载均衡的ip，你就可以使用域名访问啦(当然域名是需要备案的)</p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/docker-springboot-react-native/">docker,springboot,react-native</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2017/01/03/the-designer-mobile-nodejs/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">设计师项目Nodejs前端项目</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2017/01/01/the-designer-get-ready-to/">
+        <span class="next-text nav-default">设计师项目前期技术准备</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

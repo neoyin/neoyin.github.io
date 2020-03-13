@@ -1,6 +1,146 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Neo"><title>MySQL启多个实例进行主从复制 · 浮生若梦</title><meta name="description" content="最近开发过程中服务器紧缺，但又需要一些mysql服务器来做测试，没办法只好在一台服务器上run 多个Mysql 实例来做了。
-首先需要了解一下mysqld读取my.cnf的顺序：
-１首先读取/etc/my.cnf，多实例这个配置文件不会存在。２$datadir/my.cnf，在data目录下寻找此配"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title><a href="/">浮生若梦</a></h3></div></div><ul class="social-links"></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a href="https://www.caicai.me"> CaiCai </a><span>&</span><a href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/about">关于</a></li><li><a href="/archives">归档</a></li><li><a href="/links">友链</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>MySQL启多个实例进行主从复制</a></h3></div><div class="post-content"><p>最近开发过程中服务器紧缺，但又需要一些mysql<br>服务器来做测试，没办法只好在一台服务器上run 多个Mysql 实例来做了。</p>
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="MySQL启多个实例进行主从复制">
+
+
+
+
+  <meta name="keywords" content="mysql,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2013/04/29/mysql-multiple-instances-master-slave/">
+
+
+<meta name="description" content="最近开发过程中服务器紧缺，但又需要一些mysql服务器来做测试，没办法只好在一台服务器上run 多个Mysql 实例来做了。 首先需要了解一下mysqld读取my.cnf的顺序： １首先读取/etc/my.cnf，多实例这个配置文件不会存在。２$datadir/my.cnf，在data目录下寻找此配置文件。３defaultfile=/path/my.cnf 通常写在命令行上，mysqld_safe">
+<meta name="keywords" content="mysql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL启多个实例进行主从复制">
+<meta property="og:url" content="http://yoursite.com/2013/04/29/mysql-multiple-instances-master-slave/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="最近开发过程中服务器紧缺，但又需要一些mysql服务器来做测试，没办法只好在一台服务器上run 多个Mysql 实例来做了。 首先需要了解一下mysqld读取my.cnf的顺序： １首先读取/etc/my.cnf，多实例这个配置文件不会存在。２$datadir/my.cnf，在data目录下寻找此配置文件。３defaultfile=/path/my.cnf 通常写在命令行上，mysqld_safe">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-13T10:06:01.980Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL启多个实例进行主从复制">
+<meta name="twitter:description" content="最近开发过程中服务器紧缺，但又需要一些mysql服务器来做测试，没办法只好在一台服务器上run 多个Mysql 实例来做了。 首先需要了解一下mysqld读取my.cnf的顺序： １首先读取/etc/my.cnf，多实例这个配置文件不会存在。２$datadir/my.cnf，在data目录下寻找此配置文件。３defaultfile=/path/my.cnf 通常写在命令行上，mysqld_safe">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> MySQL启多个实例进行主从复制 - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          MySQL启多个实例进行主从复制
+        
+      </h1>
+
+      <time class="post-time">
+          Apr 29 2013
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>最近开发过程中服务器紧缺，但又需要一些mysql<br>服务器来做测试，没办法只好在一台服务器上run 多个Mysql 实例来做了。</p>
 <p>首先需要了解一下<strong>mysqld读取my.cnf的顺序：</strong></p>
 <p><strong>１首先读取/etc/my.cnf，多实例这个配置文件不会存在。<br>２$datadir/my.cnf，在data目录下寻找此配置文件。<br>３defaultfile=/path/my.cnf 通常写在命令行上，mysqld_safe<br>defaultfile=/tmp/my.cnf &amp;等执行。<br>４~/my.cnf 当前用户下的配置文件。</strong></p>
 <p><strong>mysqld多进程运行的必要条件，<br>pid文件，datadir，socket，port是独立分开的。</strong></p>
@@ -18,4 +158,128 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">[mysqld_multi]</span><br><span class="line">mysqld = /usr/bin/mysqld_safe</span><br><span class="line">mysqladmin = /usr/bin/mysqladmin</span><br><span class="line">user = root</span><br><span class="line">log = /kvm/192.168.2.6/data/mysql_mult/mysqld_mult.log</span><br><span class="line"></span><br><span class="line">[mysqld]</span><br><span class="line">datadir=/kvm/192.168.2.6/data/mysql</span><br><span class="line">socket=/kvm/192.168.2.6/data/mysql/mysql.sock</span><br><span class="line">user=mysql</span><br><span class="line"># Default to using old password format for compatibility with mysql 3.x</span><br><span class="line"># clients (those using the mysqlclient10 compatibility package).</span><br><span class="line">old_passwords=1</span><br><span class="line"></span><br><span class="line"># Disabling symbolic-links is recommended to prevent assorted security risks;</span><br><span class="line"># to do so, uncomment this line:</span><br><span class="line"># symbolic-links=0</span><br><span class="line"></span><br><span class="line">[mysqld1]</span><br><span class="line">socket  = /lamp/mysql-multi/33dd07/mysql.sock</span><br><span class="line">socket = /kvm/192.168.2.6/data/mysql_mult/3301/mysql_3301.sock</span><br><span class="line">port = 3301</span><br><span class="line">pid-file = /var/run/mysqld/mysql_3301.pid</span><br><span class="line">datadir = /kvm/192.168.2.6/data/mysql_mult/3301</span><br><span class="line">log = /var/log/mysqld_3301.log</span><br><span class="line">user = mysql</span><br><span class="line"></span><br><span class="line">default-character-set=utf8</span><br><span class="line">skip-name-resolve</span><br><span class="line"></span><br><span class="line">#about master slave</span><br><span class="line">server-id=1</span><br><span class="line">log-bin=mysql-bin</span><br><span class="line">binlog-do-db=lifeix_app</span><br><span class="line">binlog-ignore-db=mysql,test</span><br><span class="line"></span><br><span class="line">[mysqld2]</span><br><span class="line">socket = /kvm/192.168.2.6/data/mysql_mult/3302/mysql_3302.sock</span><br><span class="line">port = 3302</span><br><span class="line">pid-file = /var/run/mysqld/mysql_3302.pid</span><br><span class="line">datadir = /kvm/192.168.2.6/data/mysql_mult/3302</span><br><span class="line">log = /var/log/mysqld_3302.log</span><br><span class="line">user = mysql</span><br><span class="line"></span><br><span class="line">default-character-set=utf8</span><br><span class="line">skip-name-resolve</span><br><span class="line">#skip-grant-tables</span><br><span class="line"></span><br><span class="line">server-id=2</span><br><span class="line">master-port=3302                           # 同步所用端口</span><br><span class="line">master-connect-retry=60                    # 断点从新连接时间</span><br><span class="line">replicate-ignore-db=mysql,test             # 屏蔽对mysql库的同步</span><br><span class="line">replicate-do-db=lifeix_app                 # 同步的数据库的名称</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[mysqld_safe]</span><br><span class="line">log-error=/var/log/mysqld.log</span><br><span class="line">pid-file=/var/run/mysqld/mysqld.pid</span><br><span class="line"></span><br><span class="line">[client]</span><br><span class="line">#socket=/kvm/192.168.2.6/data/mysql/mysql.sock</span><br><span class="line">socket=/kvm/192.168.2.6/data/mysql_mult/3301/mysql_3301.sock</span><br></pre></td></tr></table></figure>
 
 <p>其它master-slave 配置雷同，就不一一陈列。</p>
-</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2013-04-29</span><i class="fa fa-tag"></i><a class="tag" href="/categories/技术流/" title="技术流">技术流 </a><a class="tag" href="/tags/mysql/" title="mysql">mysql </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" href="http://twitter.com/home?status=,http://yoursite.com/2013/04/29/mysql-multiple-instances-master-slave/,浮生若梦,MySQL启多个实例进行主从复制,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2013/04/29/wait-for-the-truth-of-life/" title="用尽生命的坚持 坚持等到真相">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2013/04/25/coder-must-say-no/" title="程序员要勇于说不">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/mysql/">mysql</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2013/04/29/wait-for-the-truth-of-life/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">用尽生命的坚持 坚持等到真相</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2013/04/26/ubuntu-sublime-text-open-by-default/">
+        <span class="next-text nav-default">Ubuntu下Sublime Text 2默认打开文本</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

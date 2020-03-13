@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="solr服务器报错解决三">
+
+
+
+
+  <meta name="keywords" content="lucene,solr,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2014/02/18/solr-service-error-3/">
+
+
+<meta name="description" content="继上次报错后服务器很久都处于正常状态，今天查看solr管理发现又报错getNext()…Communicationslinkfailure,而且这次不止一个core报这样的错，直接登录服务器查看log4j打印的日志: 1366030244 [http-bio-8080-exec-8770] ERROR org.apache.solr.handler.dataimport.JdbcDataSourc">
+<meta name="keywords" content="lucene,solr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="solr服务器报错解决三">
+<meta property="og:url" content="http://yoursite.com/2014/02/18/solr-service-error-3/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="继上次报错后服务器很久都处于正常状态，今天查看solr管理发现又报错getNext()…Communicationslinkfailure,而且这次不止一个core报这样的错，直接登录服务器查看log4j打印的日志: 1366030244 [http-bio-8080-exec-8770] ERROR org.apache.solr.handler.dataimport.JdbcDataSourc">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-13T10:41:37.686Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="solr服务器报错解决三">
+<meta name="twitter:description" content="继上次报错后服务器很久都处于正常状态，今天查看solr管理发现又报错getNext()…Communicationslinkfailure,而且这次不止一个core报这样的错，直接登录服务器查看log4j打印的日志: 1366030244 [http-bio-8080-exec-8770] ERROR org.apache.solr.handler.dataimport.JdbcDataSourc">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> solr服务器报错解决三 - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          solr服务器报错解决三
+        
+      </h1>
+
+      <time class="post-time">
+          Feb 18 2014
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>继上次报错后服务器很久都处于正常状态，今天查看solr管理发现又报错getNext()…Communications<br>link<br>failure,而且这次不止一个core报这样的错，直接登录服务器查看log4j打印的日志:</p>
+<pre><code>1366030244 [http-bio-8080-exec-8770] ERROR org.apache.solr.handler.dataimport.JdbcDataSource – Ignoring Error when closing connection java.sql.SQLException: Streaming result set com.mysql.jdbc.RowDataDynamic@5a82a36f is still active. No statements may be issued when any streaming result sets are open and in use on a given connection. Ensure that you have called .close() on any active streaming result sets before attempting more queries.</code></pre><p>还是未能正常关闭数据库连接所致。执行导入数据查看发现导入数据操作非常缓慢，查看服务器内存发现内存已被占满，solr服务器管理界面中内存的显示也很不乐观，正常不执行导入数据情况下solr能够再使用分配的内存还有1G多，可是现在能使用内存非常少，内存小会影响导入数据的速度，这也就出现了指定时间间隔内不能更新完指定core，多个core更新会更加消耗内存，最后导致mysql连接报错。solr服务器运行期间会将一些缓存，常用的数据等写到内存中，长时间运行下，一些缓存信息写入内存增加了内存开销，导入数据时也会消耗相应内存，而服务器内存又不怎&gt;么大，最终导致出现问题，这种情况下最好能够相应增大服务器内存，重启服务器后，这几天服务器一直都运行正常。</p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/lucene-solr/">lucene,solr</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2014/02/20/world-of-fastest-growing-company/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">全球发展最快公司的10个共同特点</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2014/02/18/solr-service-error-2/">
+        <span class="next-text nav-default">solr服务器报错解决二</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

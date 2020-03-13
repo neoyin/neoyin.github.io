@@ -1,6 +1,148 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Neo"><title>Centos 安装gitlab · 浮生若梦</title><meta name="description" content="Centos 安装gitlab下载下载页面下载centos版本对应的rpm包https://www.gitlab.com/downloads/
-###安装
-sudo yum install openssh-server sudo yum install postfix # sendmail or e"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title><a href="/">浮生若梦</a></h3></div></div><ul class="social-links"></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a href="https://www.caicai.me"> CaiCai </a><span>&</span><a href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/about">关于</a></li><li><a href="/archives">归档</a></li><li><a href="/links">友链</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>Centos 安装gitlab</a></h3></div><div class="post-content"><h1 id="Centos-安装gitlab"><a href="#Centos-安装gitlab" class="headerlink" title="Centos 安装gitlab"></a>Centos 安装gitlab</h1><h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>下载页面下载centos版本对应的rpm包<br><a href="https://www.gitlab.com/downloads/" target="_blank" rel="noopener">https://www.gitlab.com/downloads/</a></p>
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Centos 安装gitlab">
+
+
+
+
+  <meta name="keywords" content="git,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2014/05/06/centos-install-gitlab/">
+
+
+<meta name="description" content="Centos 安装gitlab下载下载页面下载centos版本对应的rpm包https://www.gitlab.com/downloads/ ###安装 sudo yum install openssh-server sudo yum install postfix # sendmail or exim is also OK sudo rpm -i gitlab-x.y.z_omnibus-x.">
+<meta name="keywords" content="git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Centos 安装gitlab">
+<meta property="og:url" content="http://yoursite.com/2014/05/06/centos-install-gitlab/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="Centos 安装gitlab下载下载页面下载centos版本对应的rpm包https://www.gitlab.com/downloads/ ###安装 sudo yum install openssh-server sudo yum install postfix # sendmail or exim is also OK sudo rpm -i gitlab-x.y.z_omnibus-x.">
+<meta property="og:locale" content="cn">
+<meta property="og:image" content="http://yoursite.com/2014/05/06/centos-install-gitlab/doc/images/omnibus-documentation-version.png">
+<meta property="og:updated_time" content="2020-03-13T10:06:01.909Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Centos 安装gitlab">
+<meta name="twitter:description" content="Centos 安装gitlab下载下载页面下载centos版本对应的rpm包https://www.gitlab.com/downloads/ ###安装 sudo yum install openssh-server sudo yum install postfix # sendmail or exim is also OK sudo rpm -i gitlab-x.y.z_omnibus-x.">
+<meta name="twitter:image" content="http://yoursite.com/2014/05/06/centos-install-gitlab/doc/images/omnibus-documentation-version.png">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Centos 安装gitlab - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Centos 安装gitlab
+        
+      </h1>
+
+      <time class="post-time">
+          May 6 2014
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h1 id="Centos-安装gitlab"><a href="#Centos-安装gitlab" class="headerlink" title="Centos 安装gitlab"></a>Centos 安装gitlab</h1><h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>下载页面下载centos版本对应的rpm包<br><a href="https://www.gitlab.com/downloads/" target="_blank" rel="noopener">https://www.gitlab.com/downloads/</a></p>
 <p>###安装</p>
 <p><code>sudo yum install openssh-server sudo yum install postfix # sendmail or exim is also OK sudo rpm -i gitlab-x.y.z_omnibus-x.el6.x86_64.rpm # this is the .rpm you downloaded sudo gitlab-ctl reconfigure sudo lokkit -s http -s ssh # open up the firewall for HTTP and SSH requests</code></p>
 <p>就O了</p>
@@ -142,4 +284,128 @@ sudo yum install openssh-server sudo yum install postfix # sendmail or e"><meta 
 <h3 id="Building-your-own-package"><a href="#Building-your-own-package" class="headerlink" title="Building your own package"></a>Building your own package</h3><p>See <a href="doc/build.md">the separate build documentation</a>.</p>
 <h3 id="Running-a-custom-GitLab-version"><a href="#Running-a-custom-GitLab-version" class="headerlink" title="Running a custom GitLab version"></a>Running a custom GitLab version</h3><p>It is not recommended to make changes to any of the files in<br><code>/opt/gitlab</code> after installing omnibus-gitlab: they will either conflict<br>with or be overwritten by future updates. If you want to run a custom<br>version of GitLab you can <a href="doc/build.md">build your own package</a> or use<br><a href="https://gitlab.com/gitlab-org/gitlab-ce/blob/master/README.md" target="_blank" rel="noopener">another installation<br>method</a>.</p>
 <h3 id="Acknowledgments"><a href="#Acknowledgments" class="headerlink" title="Acknowledgments"></a>Acknowledgments</h3><p>This omnibus installer project is based on the awesome work done by Chef<br>in<br><a href="https://github.com/opscode/omnibus-chef-server" target="_blank" rel="noopener">omnibus-chef-server</a>.</p>
-</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2014-05-06</span><i class="fa fa-tag"></i><a class="tag" href="/categories/技术流/" title="技术流">技术流 </a><a class="tag" href="/tags/git/" title="git">git </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" href="http://twitter.com/home?status=,http://yoursite.com/2014/05/06/centos-install-gitlab/,浮生若梦,Centos 安装gitlab,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2014/05/10/upgrade-eclipse-import-plugins/" title="升级 Eclipse 4.3, 导入老版本安装的plugins">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2014/04/25/weinre-remote-debug-web-page/" title="用weinre远程调试web页面">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/git/">git</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2014/05/10/upgrade-eclipse-import-plugins/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">升级 Eclipse 4.3, 导入老版本安装的plugins</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2014/04/25/weinre-remote-debug-web-page/">
+        <span class="next-text nav-default">用weinre远程调试web页面</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Ubuntu下Sublime Text 2默认打开文本">
+
+
+
+
+  <meta name="keywords" content="sublime,ubuntu,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2013/04/26/ubuntu-sublime-text-open-by-default/">
+
+
+<meta name="description" content="Ubuntu Sublime Text 2 是个不错的编辑神器。但是在Linux SublimeText并不是需要安装，直接解压即可使用，所以缺少Ubuntu桌面运行的一些基本配置。Ubuntu上也没有快捷方式，选择Openwith other Application 也找不到它。所以需要进行一些配置 先 cd 到/usr/share/applications 目录下创建文件 sublime.de">
+<meta name="keywords" content="sublime,ubuntu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu下Sublime Text 2默认打开文本">
+<meta property="og:url" content="http://yoursite.com/2013/04/26/ubuntu-sublime-text-open-by-default/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="Ubuntu Sublime Text 2 是个不错的编辑神器。但是在Linux SublimeText并不是需要安装，直接解压即可使用，所以缺少Ubuntu桌面运行的一些基本配置。Ubuntu上也没有快捷方式，选择Openwith other Application 也找不到它。所以需要进行一些配置 先 cd 到/usr/share/applications 目录下创建文件 sublime.de">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-13T10:39:53.476Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ubuntu下Sublime Text 2默认打开文本">
+<meta name="twitter:description" content="Ubuntu Sublime Text 2 是个不错的编辑神器。但是在Linux SublimeText并不是需要安装，直接解压即可使用，所以缺少Ubuntu桌面运行的一些基本配置。Ubuntu上也没有快捷方式，选择Openwith other Application 也找不到它。所以需要进行一些配置 先 cd 到/usr/share/applications 目录下创建文件 sublime.de">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Ubuntu下Sublime Text 2默认打开文本 - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Ubuntu下Sublime Text 2默认打开文本
+        
+      </h1>
+
+      <time class="post-time">
+          Apr 26 2013
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>Ubuntu Sublime Text 2 是个不错的编辑神器。但是在Linux Sublime<br>Text并不是需要安装，直接解压即可使用，所以缺少Ubuntu桌面运行的一些基本配置。Ubuntu上也没有快捷方式，选择Open<br>with other Application 也找不到它。所以需要进行一些配置 先 cd 到<br>/usr/share/applications 目录下创建文件 sublime.desktop 配置代码如下：</p>
+<pre><code>#!/usr/bin/env xdg-open
+    [Desktop Entry]
+    Name=Sublime Text 2
+    Comment=Sublime Text 2
+    Exec=/../${path}/sublime_text
+    Icon=/../${path}/Icon/48x48/sublime_text.png
+    Terminal=false
+    Type=Application
+    Categories=Application;Development;
+    StartupNotify=true
+退出保存</code></pre><ul>
+<li>Name:名称描述</li>
+<li>Comment：相当于注释</li>
+<li>Exec：可执行文件的路径</li>
+<li>Icon：图标路径,需要绝对路径 编辑<br>~/.local/share/applications/mimeapps.list 文件</li>
+</ul>
+<!-- -->
+
+<pre><code>text/plain=sublime.desktop;gedit.desktop;
+退出保存</code></pre><hr>
+<p>参考：</p>
+<p><a href="http://www.mypaomian.com/%E8%AE%BE%E7%BD%AEubuntu-%E9%BB%98%E8%AE%A4%E8%BD%AF%E4%BB%B6%E6%89%93%E5%BC%80%E6%96%B9%E5%BC%8F/" target="_blank" rel="noopener"></a><br><a href="http://www.ibm.com/developerworks/cn/linux/l-cn-dtef/" target="_blank" rel="noopener">http://www.mypaomian.com/设置ubuntu-默认软件打开方式</a><br><a href="http://www.ibm.com/developerworks/cn/linux/l-cn-dtef/" target="_blank" rel="noopener">http://www.ibm.com/developerworks/cn/linux/l-cn-dtef/</a></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/sublime-ubuntu/">sublime,ubuntu</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2013/04/29/mysql-multiple-instances-master-slave/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">MySQL启多个实例进行主从复制</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2013/04/25/coder-must-say-no/">
+        <span class="next-text nav-default">程序员要勇于说不</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="设计师项目前期技术准备">
+
+
+
+
+  <meta name="keywords" content="docker,springboot,react-native,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2017/01/01/the-designer-get-ready-to/">
+
+
+<meta name="description" content="需求简单的描述一下项目第一个版本的需求：  展示文章分类，根据分类展示文章列表 展示推荐的设计师相关的精品文章列表及详情. 展示设计师编辑列表，以及设计师发表的文章 运营可添加修改文章内容  以上是一些简单的基本需求。第一个版本很简单，基本就是读读数据.  服务器及部署考虑到后期的运维及扩展，服务器使用了阿里的EC2.及容器服务。  介绍可以看一下链https://help.aliyun.com">
+<meta name="keywords" content="docker,springboot,react-native">
+<meta property="og:type" content="article">
+<meta property="og:title" content="设计师项目前期技术准备">
+<meta property="og:url" content="http://yoursite.com/2017/01/01/the-designer-get-ready-to/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="需求简单的描述一下项目第一个版本的需求：  展示文章分类，根据分类展示文章列表 展示推荐的设计师相关的精品文章列表及详情. 展示设计师编辑列表，以及设计师发表的文章 运营可添加修改文章内容  以上是一些简单的基本需求。第一个版本很简单，基本就是读读数据.  服务器及部署考虑到后期的运维及扩展，服务器使用了阿里的EC2.及容器服务。  介绍可以看一下链https://help.aliyun.com">
+<meta property="og:locale" content="cn">
+<meta property="og:image" content="http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/pic/25977/cn_zh/1477721882579/1.png">
+<meta property="og:updated_time" content="2020-03-13T10:40:56.821Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="设计师项目前期技术准备">
+<meta name="twitter:description" content="需求简单的描述一下项目第一个版本的需求：  展示文章分类，根据分类展示文章列表 展示推荐的设计师相关的精品文章列表及详情. 展示设计师编辑列表，以及设计师发表的文章 运营可添加修改文章内容  以上是一些简单的基本需求。第一个版本很简单，基本就是读读数据.  服务器及部署考虑到后期的运维及扩展，服务器使用了阿里的EC2.及容器服务。  介绍可以看一下链https://help.aliyun.com">
+<meta name="twitter:image" content="http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/pic/25977/cn_zh/1477721882579/1.png">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> 设计师项目前期技术准备 - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          设计师项目前期技术准备
+        
+      </h1>
+
+      <time class="post-time">
+          Jan 1 2017
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <hr>
+<h5 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h5><p>简单的描述一下项目第一个版本的需求：</p>
+<ol>
+<li>展示文章分类，根据分类展示文章列表</li>
+<li>展示推荐的设计师相关的精品文章列表及详情.</li>
+<li>展示设计师编辑列表，以及设计师发表的文章</li>
+<li>运营可添加修改文章内容</li>
+</ol>
+<p>以上是一些简单的基本需求。<br>第一个版本很简单，基本就是读读数据. </p>
+<h5 id="服务器及部署"><a href="#服务器及部署" class="headerlink" title="服务器及部署"></a>服务器及部署</h5><p>考虑到后期的运维及扩展，服务器使用了阿里的EC2.及容器服务。</p>
+<p><img src="http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/pic/25977/cn_zh/1477721882579/1.png" alt></p>
+<p>介绍可以看一下链<a href="https://help.aliyun.com/document_detail/25977.html?spm=5176.2020520152.201.2.Nt26UB" target="_blank" rel="noopener">https://help.aliyun.com/document_detail/25977.html?spm=5176.2020520152.201.2.Nt26UB</a><br>这里简单用到了<br>负载均衡，应用发布，服务调度，镜像仓库</p>
+<p>目前只有一个节点</p>
+<h5 id="数据的抓取及管理"><a href="#数据的抓取及管理" class="headerlink" title="数据的抓取及管理"></a>数据的抓取及管理</h5><p>项目需要抓取相关的数据并做修改，我不可能自己写一个管理后台，就用<code>Wordpress</code>做CMR系统，把所抓取的数据写入Wordpress Mysql系统中去处理. </p>
+<h5 id="生产数据及更新"><a href="#生产数据及更新" class="headerlink" title="生产数据及更新"></a>生产数据及更新</h5><p>生产数据这里并不想用Wordpress的Mysql，决定采用<code>Mongodb</code>做为生产数据库，<br>虽然避免了自己写管理系统，但是有数据更新的问题，写了一个定时任务，每一分钟同步一次更新过的数据.</p>
+<h5 id="后端API"><a href="#后端API" class="headerlink" title="后端API"></a>后端API</h5><p>后端API 微服务化，而且用了<code>docker</code>容器服务，所以Java的架构用了<code>Spring-boot</code>快速开发，部署及测试也比较方便。</p>
+<h5 id="前端mobile"><a href="#前端mobile" class="headerlink" title="前端mobile"></a>前端mobile</h5><p>没有用<code>springmvc</code> 而且前后端做了分离。本来想采用<code>Angular2</code>编写，但是前几个月才会Angular2做了一个项目，回过头来看官网发现Angular2升级改动太大了，而且网站SEO也需要去处理。 所以这里采用了nodejs的MVC框架，简单快速。</p>
+<h5 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h5><p><code>React-native</code>是首选了。</p>
+<hr>
+<p>基本上整个项目的简单架构如此，接下来就是进入实施阶段了。</p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/docker-springboot-react-native/">docker,springboot,react-native</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2017/01/02/the-designer-java-api/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">设计师项目后端API</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016/12/31/2016-summary-of-tech/">
+        <span class="next-text nav-default">2016年技术积累总结</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

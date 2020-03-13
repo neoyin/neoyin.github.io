@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="https证书验证失败">
+
+
+
+
+  <meta name="keywords" content="https,openssl,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2016/10/24/https-ca-openssl-verify/">
+
+
+<meta name="description" content="App使用了deeplink 需要访问网站https下apple-app-site-association文件https配置成功 但是客户端访问此文件却提示非安全  利用curl命令返回如下: 12345678910curl performs SSL certificate verification by default, using a &amp;quot;bundle&amp;quot; of Certif">
+<meta name="keywords" content="https,openssl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="https证书验证失败">
+<meta property="og:url" content="http://yoursite.com/2016/10/24/https-ca-openssl-verify/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="App使用了deeplink 需要访问网站https下apple-app-site-association文件https配置成功 但是客户端访问此文件却提示非安全  利用curl命令返回如下: 12345678910curl performs SSL certificate verification by default, using a &amp;quot;bundle&amp;quot; of Certif">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-13T10:54:42.940Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="https证书验证失败">
+<meta name="twitter:description" content="App使用了deeplink 需要访问网站https下apple-app-site-association文件https配置成功 但是客户端访问此文件却提示非安全  利用curl命令返回如下: 12345678910curl performs SSL certificate verification by default, using a &amp;quot;bundle&amp;quot; of Certif">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> https证书验证失败 - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          https证书验证失败
+        
+      </h1>
+
+      <time class="post-time">
+          Oct 24 2016
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <hr>
+<p>App使用了deeplink 需要访问网站https下<code>apple-app-site-association</code>文件<br>https配置成功 但是客户端访问此文件却提示非安全 </p>
+<p>利用<code>curl</code>命令返回如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">curl performs SSL certificate verification by default, using a &quot;bundle&quot;</span><br><span class="line"> of Certificate Authority (CA) public keys (CA certs). If the default</span><br><span class="line"> bundle file isn&apos;t adequate, you can specify an alternate file</span><br><span class="line"> using the --cacert option.</span><br><span class="line">If this HTTPS server uses a certificate signed by a CA represented in</span><br><span class="line"> the bundle, the certificate verification probably failed due to a</span><br><span class="line"> problem with the certificate (it might be expired, or the name might</span><br><span class="line"> not match the domain name in the URL).</span><br><span class="line">If you&apos;d like to turn off curl&apos;s verification of the certificate, use</span><br><span class="line"> the -k (or --insecure) option.</span><br></pre></td></tr></table></figure>
+
+<p>一直找不到原因<br>利用<code>openssl s_client -connect www.domain.com:443 -bugs</code><br>如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">SSL-Session:</span><br><span class="line">    Protocol  : TLSv1</span><br><span class="line">    Cipher    : AES128-SHA</span><br><span class="line">    Session-ID: B5016090D3291093F6DAC2D83F0E511C0E9656039C2DAF4A35C84B69F942961A</span><br><span class="line">    Session-ID-ctx:</span><br><span class="line">    Master-Key: 177D215DA16D9D73B449B400F7526E8522CC1E4EA41D65AE819F1AD25FF922896330D26A2996FF3C93F6DF563A02E6A2</span><br><span class="line">    Key-Arg   : None</span><br><span class="line">    Start Time: 1477389543</span><br><span class="line">    Timeout   : 300 (sec)</span><br><span class="line">    Verify return code: 21 (unable to verify the first certificate)</span><br></pre></td></tr></table></figure>
+
+<h5 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h5><ul>
+<li><a href="http://serverfault.com/questions/509158/unable-to-locally-verify-the-issuers-authority-for-geotrust-ssl-ca" target="_blank" rel="noopener">http://serverfault.com/questions/509158/unable-to-locally-verify-the-issuers-authority-for-geotrust-ssl-ca</a></li>
+<li><a href="http://www.blogjava.net/ycyk168/archive/2009/11/27/303946.html" target="_blank" rel="noopener">http://www.blogjava.net/ycyk168/archive/2009/11/27/303946.html</a></li>
+<li><a href="http://www.doxer.org/resolved-unable-to-locally-verify-the-issuers-authority/" target="_blank" rel="noopener">http://www.doxer.org/resolved-unable-to-locally-verify-the-issuers-authority/</a></li>
+<li><a href="https://www.virtualmin.com/node/41060" target="_blank" rel="noopener">https://www.virtualmin.com/node/41060</a></li>
+</ul>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/https-openssl/">https,openssl</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016/10/25/aliyun-docker-rancher/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">阿里云搭建Rancher服务</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016/10/14/mac-os-any-resource/">
+        <span class="next-text nav-default">Mac 10.12 无法允许“任何来源” 的应用</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

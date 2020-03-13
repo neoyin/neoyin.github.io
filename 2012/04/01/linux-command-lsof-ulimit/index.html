@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Linux 命令备忘 (lsof,ulimit)">
+
+
+
+
+  <meta name="keywords" content="Linux,lsof,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2012/04/01/linux-command-lsof-ulimit/">
+
+
+<meta name="description" content="lsof（list open files）是一个列出当前系统打开文件的工具。在linux环境下，任何事物都以文件的形式存在，通过文件不仅仅可以访问常规数据，还可以访问网络连接和硬件。  常用的参数列表：  1234567891011121314lsof filename 显示打开指定文件的所有进程lsof -a 表示两个参数都必须满足时才显示结果lsof -c string 显示COMMAND列">
+<meta name="keywords" content="Linux,lsof">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 命令备忘 (lsof,ulimit)">
+<meta property="og:url" content="http://yoursite.com/2012/04/01/linux-command-lsof-ulimit/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="lsof（list open files）是一个列出当前系统打开文件的工具。在linux环境下，任何事物都以文件的形式存在，通过文件不仅仅可以访问常规数据，还可以访问网络连接和硬件。  常用的参数列表：  1234567891011121314lsof filename 显示打开指定文件的所有进程lsof -a 表示两个参数都必须满足时才显示结果lsof -c string 显示COMMAND列">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-13T10:48:34.889Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux 命令备忘 (lsof,ulimit)">
+<meta name="twitter:description" content="lsof（list open files）是一个列出当前系统打开文件的工具。在linux环境下，任何事物都以文件的形式存在，通过文件不仅仅可以访问常规数据，还可以访问网络连接和硬件。  常用的参数列表：  1234567891011121314lsof filename 显示打开指定文件的所有进程lsof -a 表示两个参数都必须满足时才显示结果lsof -c string 显示COMMAND列">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Linux 命令备忘 (lsof,ulimit) - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Linux 命令备忘 (lsof,ulimit)
+        
+      </h1>
+
+      <time class="post-time">
+          Apr 1 2012
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <blockquote>
+<p>lsof（list open files）是一个列出当前系统打开文件的工具。在linux环境下，任何事物都以文件的形式存在，通过文件不仅仅可以访问常规数据，还可以访问网络连接和硬件。</p>
+</blockquote>
+<p>常用的参数列表： </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">lsof filename 显示打开指定文件的所有进程</span><br><span class="line">lsof -a 表示两个参数都必须满足时才显示结果</span><br><span class="line">lsof -c string 显示COMMAND列中包含指定字符的进程所有打开的文件</span><br><span class="line">lsof -u username 显示所属user进程打开的文件</span><br><span class="line">lsof -g gid 显示归属gid的进程情况</span><br><span class="line">lsof +d /DIR/ 显示目录下被进程打开的文件</span><br><span class="line">lsof +D /DIR/ 同上，但是会搜索目录下的所有目录，时间相对较长</span><br><span class="line">lsof -d FD 显示指定文件描述符的进程</span><br><span class="line">lsof -n 不将IP转换为hostname，缺省是不加上-n参数</span><br><span class="line">lsof -i 用以显示符合条件的进程情况</span><br><span class="line"></span><br><span class="line">查看22端口现在运行的情况 lsof -i :22</span><br><span class="line"> </span><br><span class="line">查看所属root用户进程所打开的文件类型为txt的文件 lsof -a -u root -d txt</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>ulimit用于shell启动进程所占用的资源.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">,参数介绍:</span><br><span class="line">-H 设置硬件资源限制.</span><br><span class="line">-S 设置软件资源限制.</span><br><span class="line">-a 显示当前所有的资源限制.</span><br><span class="line">-c size:设置core文件的最大值.单位:blocks</span><br><span class="line">-d size:设置数据段的最大值.单位:kbytes</span><br><span class="line">-f size:设置创建文件的最大值.单位:blocks</span><br><span class="line">-l size:设置在内存中锁定进程的最大值.单位:kbytes</span><br><span class="line">-m size:设置可以使用的常驻内存的最大值.单位:kbytes</span><br><span class="line">-n size:设置内核可以同时打开的文件描述符的最大值.单位:n</span><br><span class="line">-p size:设置管道缓冲区的最大值.单位:kbytes</span><br><span class="line">-s size:设置堆栈的最大值.单位:kbytes</span><br><span class="line">-t size:设置CPU使用时间的最大上限.单位:seconds</span><br><span class="line">-v size:设置虚拟内存的最大值.单位:kbytes</span><br></pre></td></tr></table></figure>
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/Linux-lsof/">Linux,lsof</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2012/04/09/maven-nexus-packing/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Nexus搭建Maven私服(四) Maven 相关打包插件</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2012/03/22/maven-nexus-revesion/">
+        <span class="next-text nav-default">Nexus搭建Maven私服(三) 版本控制</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

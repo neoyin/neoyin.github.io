@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="阿里云Jenkins从Github构建项目超时">
+
+
+
+
+  <meta name="keywords" content="jenkins,github,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2016/10/28/jenkins-github-clone-timeout/">
+
+
+<meta name="description" content="之前阿里云Ecs 的带宽是按流量计费，官网上给出的最大峰值为100M/s 但是从阿里云上clone Github代理经常性的最大速度5kb/s  而Jenkins在拉取代码时设置了10分钟就会超时 12Fetching changes from the remote Git repository &amp;gt; git config remote.origin.url github.com/xx.gi">
+<meta name="keywords" content="jenkins,github">
+<meta property="og:type" content="article">
+<meta property="og:title" content="阿里云Jenkins从Github构建项目超时">
+<meta property="og:url" content="http://yoursite.com/2016/10/28/jenkins-github-clone-timeout/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="之前阿里云Ecs 的带宽是按流量计费，官网上给出的最大峰值为100M/s 但是从阿里云上clone Github代理经常性的最大速度5kb/s  而Jenkins在拉取代码时设置了10分钟就会超时 12Fetching changes from the remote Git repository &amp;gt; git config remote.origin.url github.com/xx.gi">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-13T10:48:56.874Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="阿里云Jenkins从Github构建项目超时">
+<meta name="twitter:description" content="之前阿里云Ecs 的带宽是按流量计费，官网上给出的最大峰值为100M/s 但是从阿里云上clone Github代理经常性的最大速度5kb/s  而Jenkins在拉取代码时设置了10分钟就会超时 12Fetching changes from the remote Git repository &amp;gt; git config remote.origin.url github.com/xx.gi">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> 阿里云Jenkins从Github构建项目超时 - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          阿里云Jenkins从Github构建项目超时
+        
+      </h1>
+
+      <time class="post-time">
+          Oct 28 2016
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <hr>
+<p>之前阿里云Ecs 的带宽是按流量计费，官网上给出的最大峰值为100M/s 但是从阿里云上clone Github代理经常性的最大速度5kb/s  而Jenkins在拉取代码时设置了10分钟就会超时</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Fetching changes from the remote Git repository</span><br><span class="line"> &gt; git config remote.origin.url github.com/xx.git # timeout=10</span><br></pre></td></tr></table></figure>
+
+<p>这是一个非常蛋疼的问题，虽然可以配置一些VPN来解决这个问题，但是太过麻烦，<br>项目仅第一次拉取时花费时间会长，所以还是换个别的解决方案</p>
+<p>可以在Jenkins启动时添加一些设置<br><code>java -Dorg.jenkinsci.plugins.gitclient.Git.timeOut=60 -jar jenkins.war</code><br>让它的超时时间变长，这样暂时解决此问题<br>可以在 <code>/etc/default/jenkins</code>文件中修改</p>
+<ul>
+<li>不知道为什么阿里云访问github会这些慢，我在家里的网络clone github代码都比阿里要快，是不是阿里做了些什么设置？</li>
+</ul>
+<hr>
+<h5 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h5><ul>
+<li><a href="https://issues.jenkins-ci.org/browse/JENKINS-20445" target="_blank" rel="noopener">https://issues.jenkins-ci.org/browse/JENKINS-20445</a></li>
+<li><a href="https://yq.aliyun.com/articles/36744" target="_blank" rel="noopener">https://yq.aliyun.com/articles/36744</a></li>
+</ul>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/jenkins-github/">jenkins,github</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016/12/19/aliyun-docker-cluster-deploy-spring-boot/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">阿里云容器服务部署SpringBoot 服务</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2016/10/26/python-install-pip/">
+        <span class="next-text nav-default">Python安装pip</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="35个实用Linux Find命令">
+
+
+
+
+  <meta name="keywords" content="find,linux,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2013/11/23/linux-find-command/">
+
+
+<meta name="description" content="Linux Find 命令是Linux系统中最常用也是最重要的命令之一,Find命令基于用户输入参数和条件匹配搜索本地目录和文件.可以根据类型,权限,用户,用户组,时间,大小或者可能的其它条件.通过这篇文件我们分享每天Linux命令:通过实用例子来使用Find命令的一些经验.这篇文件中我们会把这35个Find命令分成5个部分,从基本逐步推进介绍给大家.    Part I: 通过文件name查找.">
+<meta name="keywords" content="find,linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="35个实用Linux Find命令">
+<meta property="og:url" content="http://yoursite.com/2013/11/23/linux-find-command/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="Linux Find 命令是Linux系统中最常用也是最重要的命令之一,Find命令基于用户输入参数和条件匹配搜索本地目录和文件.可以根据类型,权限,用户,用户组,时间,大小或者可能的其它条件.通过这篇文件我们分享每天Linux命令:通过实用例子来使用Find命令的一些经验.这篇文件中我们会把这35个Find命令分成5个部分,从基本逐步推进介绍给大家.    Part I: 通过文件name查找.">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-13T10:47:35.544Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="35个实用Linux Find命令">
+<meta name="twitter:description" content="Linux Find 命令是Linux系统中最常用也是最重要的命令之一,Find命令基于用户输入参数和条件匹配搜索本地目录和文件.可以根据类型,权限,用户,用户组,时间,大小或者可能的其它条件.通过这篇文件我们分享每天Linux命令:通过实用例子来使用Find命令的一些经验.这篇文件中我们会把这35个Find命令分成5个部分,从基本逐步推进介绍给大家.    Part I: 通过文件name查找.">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> 35个实用Linux Find命令 - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          35个实用Linux Find命令
+        
+      </h1>
+
+      <time class="post-time">
+          Nov 23 2013
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>Linux Find 命令是Linux<br>系统中最常用也是最重要的命令之一,Find命令基于用户输入参数和条件匹配搜索本地目录和文件.可以根据类型,权限,用户,用户组,时间,大小或者可能的其它条件.<br>通过这篇文件我们分享每天Linux<br>命令:通过实用例子来使用Find命令的一些经验.这篇文件中我们会把这35个Find命令分成5个部分,从基本逐步推进介绍给大家.  </p>
+<ol>
+<li><strong>Part I</strong>: 通过文件name查找.  </li>
+<li><strong>Part II</strong>: 通过文件属性权限查找.  </li>
+<li><strong>Part III</strong>: 通过文件所用者和用户组查找.  </li>
+<li><strong>Part IV</strong>: 通过时间查找文件或文件夹.  </li>
+<li><strong>Part V</strong>: 通过大小查找文件或文件夹.</li>
+</ol>
+<h4 id><a href="#" class="headerlink" title></a><a id="more"></a></h4><h4 id="1-在当前目录根据文件名查找"><a href="#1-在当前目录根据文件名查找" class="headerlink" title="1. 在当前目录根据文件名查找"></a>1. 在当前目录根据文件名查找</h4><pre><code>#在当前目录查找文件名为tecmint.txt的文件或文件夹
+# find . -name tecmint.txt
+./tecmint.txt</code></pre><h4 id="2-查找-home目录下文件或文件夹"><a href="#2-查找-home目录下文件或文件夹" class="headerlink" title="2. 查找/home目录下文件或文件夹"></a>2. 查找/home目录下文件或文件夹</h4><pre><code>#查找/home目录下名为tecmint.txt 的文件
+# find /home -name tecmint.txt
+/home/tecmint.txt</code></pre><h4 id="3-查找文件并忽略大小写"><a href="#3-查找文件并忽略大小写" class="headerlink" title="3.查找文件并忽略大小写"></a>3.查找文件并忽略大小写</h4><pre><code>#查找文件名为tecmint.txt的文件(包含大小写)
+# find /home -iname tecmint.txt
+./tecmint.txt
+./Tecmint.txt</code></pre><h4 id="4-根据名字查找目录"><a href="#4-根据名字查找目录" class="headerlink" title="4. 根据名字查找目录"></a>4. 根据名字查找目录</h4><pre><code>#查找根目录下名为Tecmint的目录
+# find / -type d -name Tecmint
+/Tecmint</code></pre><h4 id="5-查找php文件"><a href="#5-查找php文件" class="headerlink" title="5. 查找php文件"></a>5. 查找php文件</h4><pre><code>#查找当前目录下名为tecmint.php的文件
+ find . -type f -name tecmint.php
+./tecmint.php</code></pre><h4 id="6-在目录下查找所有php文件"><a href="#6-在目录下查找所有php文件" class="headerlink" title="6. 在目录下查找所有php文件"></a>6. 在目录下查找所有php文件</h4><pre><code># find . -type f -name &quot;*.php&quot;
+./tecmint.php
+./login.php
+./index.php</code></pre><h4 id="7-查找权限为777的文件"><a href="#7-查找权限为777的文件" class="headerlink" title="7. 查找权限为777的文件"></a>7. 查找权限为777的文件</h4><pre><code>#查找目录下所有777的文件
+# find . -type f -perm 0777 -print</code></pre><h4 id="8-查找权限不为777的文件"><a href="#8-查找权限不为777的文件" class="headerlink" title="8. 查找权限不为777的文件"></a>8. 查找权限不为777的文件</h4><pre><code># find / -type f ! -perm 777</code></pre><h4 id="9-Find-SGID-Files-with-644-Permissions-Find-all-the"><a href="#9-Find-SGID-Files-with-644-Permissions-Find-all-the" class="headerlink" title="9. Find SGID Files with 644 Permissions Find all the"></a>9. Find SGID Files with 644 Permissions Find all the</h4><p><strong>SGID bit</strong> files whose permissions set to <strong>644</strong>.</p>
+<pre><code># find / -perm 2644</code></pre><h4 id="10-Find-Sticky-Bit-Files-with-551-Permissions-Find-all-the"><a href="#10-Find-Sticky-Bit-Files-with-551-Permissions-Find-all-the" class="headerlink" title="10. Find Sticky Bit Files with 551 Permissions Find all the"></a>10. Find Sticky Bit Files with 551 Permissions Find all the</h4><p><strong>Sticky Bit</strong> set files whose permission are <strong>551</strong>.</p>
+<pre><code># find / -perm 1551</code></pre><h4 id="11-查找-SUID-文件"><a href="#11-查找-SUID-文件" class="headerlink" title="11. 查找 SUID 文件"></a>11. 查找 SUID 文件</h4><pre><code># find / -perm /u=s</code></pre><h4 id="12-查找-SGID-文件"><a href="#12-查找-SGID-文件" class="headerlink" title="12. 查找 SGID 文件"></a>12. 查找 SGID 文件</h4><pre><code># find / -perm /g+s</code></pre><h4 id="13-查找只读文件"><a href="#13-查找只读文件" class="headerlink" title="13. 查找只读文件"></a>13. 查找只读文件</h4><pre><code># find / -perm /u=r</code></pre><h4 id="14-查找可执行文件"><a href="#14-查找可执行文件" class="headerlink" title="14. 查找可执行文件"></a>14. 查找可执行文件</h4><pre><code># find / -perm /a=x</code></pre><h4 id="15-查找权限为777文件并修改为644"><a href="#15-查找权限为777文件并修改为644" class="headerlink" title="15. 查找权限为777文件并修改为644"></a>15. 查找权限为777文件并修改为644</h4><pre><code># find / -type f -perm 0777 -print -exec chmod 644 {} \;</code></pre><h4 id="16-查找权限为777的目录并修改为755"><a href="#16-查找权限为777的目录并修改为755" class="headerlink" title="16. 查找权限为777的目录并修改为755"></a>16. 查找权限为777的目录并修改为755</h4><pre><code># find / -type d -perm 777 -print -exec chmod 755 {} \;</code></pre><h4 id="17-查找并删除一个文件"><a href="#17-查找并删除一个文件" class="headerlink" title="17. 查找并删除一个文件"></a>17. 查找并删除一个文件</h4><pre><code># find . -type f -name &quot;tecmint.txt&quot; -exec rm -f {} \;</code></pre><h4 id="18-查找并删除多个文件"><a href="#18-查找并删除多个文件" class="headerlink" title="18.查找并删除多个文件"></a>18.查找并删除多个文件</h4><pre><code># find . -type f -name &quot;*.txt&quot; -exec rm -f {} \;
+OR
+# find . -type f -name &quot;*.mp3&quot; -exec rm -f {} \;</code></pre><h4 id="19-查找空文件"><a href="#19-查找空文件" class="headerlink" title="19. 查找空文件"></a>19. 查找空文件</h4><pre><code># find /tmp -type f -empty</code></pre><h4 id="20-查找空目录"><a href="#20-查找空目录" class="headerlink" title="20.查找空目录"></a>20.查找空目录</h4><pre><code># find /tmp -type d -empty</code></pre><h4 id="21-查找隐藏文件"><a href="#21-查找隐藏文件" class="headerlink" title="21. 查找隐藏文件"></a>21. 查找隐藏文件</h4><pre><code># find /tmp -type f -name &quot;.*&quot; </code></pre><h4 id="22-基于用户查找"><a href="#22-基于用户查找" class="headerlink" title="22. 基于用户查找"></a>22. 基于用户查找</h4><pre><code># find / -user root -name tecmint.txt</code></pre><h4 id="23"><a href="#23" class="headerlink" title="23."></a>23.</h4><pre><code># find /home -user tecmint</code></pre><h4 id="24-根据用户组查找"><a href="#24-根据用户组查找" class="headerlink" title="24. 根据用户组查找"></a>24. 根据用户组查找</h4><pre><code># find /home -group developer</code></pre><h4 id="25-根据用户特殊查找"><a href="#25-根据用户特殊查找" class="headerlink" title="25.根据用户特殊查找"></a>25.根据用户特殊查找</h4><pre><code># find /home -user tecmint -iname &quot;*.txt&quot;</code></pre><h4 id="26-查找过去50天修改过的文件"><a href="#26-查找过去50天修改过的文件" class="headerlink" title="26.查找过去50天修改过的文件"></a>26.查找过去50天修改过的文件</h4><pre><code># find / -mtime 50</code></pre><h4 id="27-查找过去50天访问过的文件"><a href="#27-查找过去50天访问过的文件" class="headerlink" title="27. 查找过去50天访问过的文件"></a>27. 查找过去50天访问过的文件</h4><pre><code># find / -atime 50</code></pre><h4 id="28-查找过去50-100天内修改过的文件"><a href="#28-查找过去50-100天内修改过的文件" class="headerlink" title="28. 查找过去50-100天内修改过的文件"></a>28. 查找过去50-100天内修改过的文件</h4><pre><code>#To find all the files which are modified more than 50 days back and less than 100 days.
+# find / -mtime +50 –mtime -100</code></pre><h4 id="29-查找１个小时以前修改过的文件"><a href="#29-查找１个小时以前修改过的文件" class="headerlink" title="29.查找１个小时以前修改过的文件"></a>29.查找１个小时以前修改过的文件</h4><pre><code>#To find all the files which are changed in last 1 hour. 
+#find / -cmin -60</code></pre><h4 id="30-查找过去１个小时之内修改过的文件"><a href="#30-查找过去１个小时之内修改过的文件" class="headerlink" title="30.查找过去１个小时之内修改过的文件"></a>30.查找过去１个小时之内修改过的文件</h4><pre><code>#To find all the files which are modified in last 1 hour. 
+#find / -mmin -60</code></pre><h4 id="31-查找１个小时以前修改过的文件"><a href="#31-查找１个小时以前修改过的文件" class="headerlink" title="31. 查找１个小时以前修改过的文件"></a>31. 查找１个小时以前修改过的文件</h4><pre><code>#To find all the files which are accessed in last 1 hour
+find / -amin -60</code></pre><h4 id="32-查找大小为50M的文件"><a href="#32-查找大小为50M的文件" class="headerlink" title="32. 查找大小为50M的文件"></a>32. 查找大小为50M的文件</h4><pre><code># find / -size 50M</code></pre><h4 id="33-查找大小为-50MB-–-100MB的文件"><a href="#33-查找大小为-50MB-–-100MB的文件" class="headerlink" title="33. 查找大小为 50MB – 100MB的文件"></a>33. 查找大小为 50MB – 100MB的文件</h4><pre><code># find / -size +50M -size -100M</code></pre><h4 id="34-查找大小为100Mb的文件并删除"><a href="#34-查找大小为100Mb的文件并删除" class="headerlink" title="34. 查找大小为100Mb的文件并删除"></a>34. 查找大小为100Mb的文件并删除</h4><pre><code># find / -size +100M -exec rm -rf {} \;</code></pre><h4 id="35-Find-Specific-Files-and-Delete"><a href="#35-Find-Specific-Files-and-Delete" class="headerlink" title="35. Find Specific Files and Delete"></a>35. Find Specific Files and Delete</h4><pre><code># find / -type f -name *.mp3 -size +10M -exec rm {} \;</code></pre><p><a href="http://www.tecmint.com/35-practical-examples-of-linux-find-command/" target="_blank" rel="noopener">http://www.tecmint.com/35-practical-examples-of-linux-find-command/</a></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/find-linux/">find,linux</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2013/11/23/idea-tips-smart-comletion/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Intellij Idea tips--智能类型补全</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2013/11/22/apple-os-nfs-server/">
+        <span class="next-text nav-default">Apple OS X 开启NFS server</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

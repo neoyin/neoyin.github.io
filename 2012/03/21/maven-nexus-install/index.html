@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Nexus搭建Maven私服(一) Maven安装">
+
+
+
+
+  <meta name="keywords" content="maven,nexus,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2012/03/21/maven-nexus-install/">
+
+
+<meta name="description" content="Maven安装 下载地址：http://maven.apache.org/download.html 下载(此版本为3.0.4)：wget http://mirror.bjtu.edu.cn/apache/maven/binaries/apache-maven-3.0.4-bin.tar.gz 解压安装：tar -xvzf apache-maven-3.0.4-bin.tar.gz maven的环">
+<meta name="keywords" content="maven,nexus">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nexus搭建Maven私服(一) Maven安装">
+<meta property="og:url" content="http://yoursite.com/2012/03/21/maven-nexus-install/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="Maven安装 下载地址：http://maven.apache.org/download.html 下载(此版本为3.0.4)：wget http://mirror.bjtu.edu.cn/apache/maven/binaries/apache-maven-3.0.4-bin.tar.gz 解压安装：tar -xvzf apache-maven-3.0.4-bin.tar.gz maven的环">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-13T10:45:58.620Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nexus搭建Maven私服(一) Maven安装">
+<meta name="twitter:description" content="Maven安装 下载地址：http://maven.apache.org/download.html 下载(此版本为3.0.4)：wget http://mirror.bjtu.edu.cn/apache/maven/binaries/apache-maven-3.0.4-bin.tar.gz 解压安装：tar -xvzf apache-maven-3.0.4-bin.tar.gz maven的环">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Nexus搭建Maven私服(一) Maven安装 - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Nexus搭建Maven私服(一) Maven安装
+        
+      </h1>
+
+      <time class="post-time">
+          Mar 21 2012
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h3 id="Maven安装"><a href="#Maven安装" class="headerlink" title="Maven安装"></a>Maven安装</h3><ul>
+<li>下载地址：<a href="http://maven.apache.org/download.html" target="_blank" rel="noopener">http://maven.apache.org/download.html</a></li>
+<li>下载(此版本为3.0.4)：wget <a href="http://mirror.bjtu.edu.cn/apache/maven/binaries/apache-maven-3.0.4-bin.tar.gz" target="_blank" rel="noopener">http://mirror.bjtu.edu.cn/apache/maven/binaries/apache-maven-3.0.4-bin.tar.gz</a></li>
+<li>解压安装：<code>tar -xvzf apache-maven-3.0.4-bin.tar.gz</code></li>
+<li>maven的环境配置: vim /etc/profile 中 添加<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> export M2_HOME=../apache-maven-3.0.4</span><br><span class="line"> export PATH=$PATH:$M2_HOME/bin</span><br><span class="line"></span><br><span class="line">使环境生效 source /etc/profile</span><br><span class="line">测试maven 安装成功 mvn -v</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<a id="more"></a>
+<h3 id="Nexus安装"><a href="#Nexus安装" class="headerlink" title="Nexus安装"></a>Nexus安装</h3><ul>
+<li>Nexus 网站 <a href="http://www.sonatype.org/nexus/" target="_blank" rel="noopener">http://www.sonatype.org/nexus/</a></li>
+<li>下载 <a href="http://nexus.sonatype.org/downloads/" target="_blank" rel="noopener">http://nexus.sonatype.org/downloads/</a></li>
+</ul>
+<p>Nexus提供了两种安装方式，一种是内嵌Jetty的bundle，只要你有JRE就能直接运行。第二种方式是WAR，你只须简单的将其发布到web容器中即可使用.</p>
+<ul>
+<li>解压 <code>tar xvzf nexus-2.0-bundle.tar.gz</code></li>
+</ul>
+<p>进入 cd …bin/jsw/linux-x86-64/中 运行 ./nexus start 即可。</p>
+<p><a href="http://localhost:8081/nexus" target="_blank" rel="noopener">http://localhost:8081/nexus</a> 进入. 默认用户名密码为admin/admin123.</p>
+<p>nexus默认是关闭远程索引下载功能的，主要是担心会造成对服务器的巨大负担，需要我们手工开启。 </p>
+<p>开启的方式： </p>
+<blockquote>
+<p>点击Administration菜单下面的Repositories，将这三个仓库Apache Snapshots，Codehaus Snapshots，Maven Central的Download Remote Indexes修改为true。然后在这三个仓库上分别右键，选择Re-index，这样Nexus就会去下载远程的索引文件。</p>
+</blockquote>
+<p>要让maven使用nexus作为私服，需要做一些设置，使用和原来设置artifactory相似的方法。修改~/.m2/settings.xml. </p>
+<h4 id="增加nexus的profile："><a href="#增加nexus的profile：" class="headerlink" title="增加nexus的profile："></a>增加nexus的profile：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;profiles&gt;</span><br><span class="line"></span><br><span class="line">&lt;profile&gt;</span><br><span class="line">&lt;id&gt;nexus&lt;/id&gt;</span><br><span class="line">&lt;repositories&gt;</span><br><span class="line">&lt;repository&gt;</span><br><span class="line">&lt;id&gt;nexus&lt;/id&gt;</span><br><span class="line">&lt;name&gt;Nexus&lt;/name&gt;</span><br><span class="line">&lt;url&gt;http://ip:8081/nexus/content/groups/public/&lt;/url&gt;</span><br><span class="line">&lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/releases&gt;</span><br><span class="line">&lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/snapshots&gt;</span><br><span class="line">&lt;/repository&gt;</span><br><span class="line">&lt;/repositories&gt;</span><br><span class="line">&lt;pluginRepositories&gt;</span><br><span class="line">&lt;pluginRepository&gt;</span><br><span class="line">&lt;id&gt;nexus&lt;/id&gt;</span><br><span class="line">&lt;name&gt;Nexus&lt;/name&gt;</span><br><span class="line">&lt;url&gt;http://ip:8081/nexus/content/groups/public/&lt;/url&gt;</span><br><span class="line">&lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/releases&gt;</span><br><span class="line">&lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt; &lt;/snapshots&gt;</span><br><span class="line">&lt;/pluginRepository&gt;</span><br><span class="line">&lt;/pluginRepositories&gt;</span><br><span class="line"></span><br><span class="line">&lt;/profile&gt;</span><br><span class="line"></span><br><span class="line">&lt;/profiles&gt;</span><br><span class="line">&lt;activeProfiles&gt;</span><br><span class="line">&lt;activeProfile&gt;nexus&lt;/activeProfile&gt;</span><br><span class="line">&lt;/activeProfiles&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="镜像"><a href="#镜像" class="headerlink" title="镜像:"></a>镜像:</h4><p>如果你的地理位置附近有一个速度更快的central镜像，或者你想覆盖central仓库配置，或者你想为所有POM使用唯一的一个远程仓库（这个远程仓库代理的所有必要的其它仓库），你可以使用settings.xml中的mirror配置。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&lt;mirror&gt;</span><br><span class="line">&lt;id&gt;nexus&lt;/id&gt;</span><br><span class="line">&lt;mirrorOf&gt;*&lt;/mirrorOf&gt;</span><br><span class="line">&lt;name&gt;Nexus&lt;/name&gt;</span><br><span class="line">&lt;url&gt;http://IP:8081/nexus/content/groups/public/&lt;/url&gt;</span><br><span class="line">&lt;/mirror&gt;</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line">&lt;profile&gt;</span><br><span class="line">&lt;id&gt;nexus&lt;/id&gt;</span><br><span class="line">&lt;repositories&gt;</span><br><span class="line">&lt;repository&gt;</span><br><span class="line">&lt;id&gt;central&lt;/id&gt;</span><br><span class="line">&lt;name&gt;Nexus&lt;/name&gt;</span><br><span class="line">&lt;url&gt;http://central&lt;/url&gt;</span><br><span class="line">&lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/releases&gt;</span><br><span class="line">&lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/snapshots&gt;</span><br><span class="line">&lt;/repository&gt;</span><br><span class="line">&lt;/repositories&gt;</span><br><span class="line">&lt;pluginRepositories&gt;</span><br><span class="line">&lt;pluginRepository&gt;</span><br><span class="line">&lt;id&gt;central&lt;/id&gt;</span><br><span class="line">&lt;name&gt;Nexus&lt;/name&gt;</span><br><span class="line">&lt;url&gt;http://central&lt;/url&gt;</span><br><span class="line">&lt;releases&gt;&lt;enabled&gt;true&lt;/enabled&gt;&lt;/releases&gt;</span><br><span class="line">&lt;snapshots&gt;&lt;enabled&gt;true&lt;/enabled&gt; &lt;/snapshots&gt;</span><br><span class="line">&lt;/pluginRepository&gt;</span><br><span class="line">&lt;/pluginRepositories&gt;</span><br><span class="line"></span><br><span class="line">&lt;/profile&gt;</span><br></pre></td></tr></table></figure>
+
+<p>此配置用Ｍaven私服覆盖central仓库配置 这样Ｍaven对任何仓库的构件下载请求都会转到私服中.</p>
+<h4 id="需要开机启动maven私服服务"><a href="#需要开机启动maven私服服务" class="headerlink" title="需要开机启动maven私服服务"></a>需要开机启动maven私服服务</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/rc.d/rc.local 中加入 nexus/bin/jsw/linux-x86-64/nexus start</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>相关地址: <a href="http://maven.apache.org/pom.html#Quick_Overview" target="_blank" rel="noopener">http://maven.apache.org/pom.html#Quick_Overview</a></li>
+</ul>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/maven-nexus/">maven,nexus</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2012/03/21/maven-nexus-remote-repository/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Nexus搭建Maven私服(二) 分发构件至远程仓库</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2012/03/02/mysql-outfile-write-error/">
+        <span class="next-text nav-default">解决select ... into outfile '..' mysql写文件权限问题</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="(Linux命令) nicstat 网络流量统计利器">
+
+
+
+
+  <meta name="keywords" content="Linux,nicstat,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2013/02/27/linux-command-nicstat/">
+
+
+<meta name="description" content="前段时间看到brendangregg的 Linux Performance Analysis and Tools PPT里面提到的nicstat，研究了下是个不错的东西，分享给大家。 1nicstat is to network interfaces as “iostat” is to disks, or “prstat” is to processes.  nicstat原本是Solaris平">
+<meta name="keywords" content="Linux,nicstat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="(Linux命令) nicstat 网络流量统计利器">
+<meta property="og:url" content="http://yoursite.com/2013/02/27/linux-command-nicstat/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="前段时间看到brendangregg的 Linux Performance Analysis and Tools PPT里面提到的nicstat，研究了下是个不错的东西，分享给大家。 1nicstat is to network interfaces as “iostat” is to disks, or “prstat” is to processes.  nicstat原本是Solaris平">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-13T10:48:10.521Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="(Linux命令) nicstat 网络流量统计利器">
+<meta name="twitter:description" content="前段时间看到brendangregg的 Linux Performance Analysis and Tools PPT里面提到的nicstat，研究了下是个不错的东西，分享给大家。 1nicstat is to network interfaces as “iostat” is to disks, or “prstat” is to processes.  nicstat原本是Solaris平">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> (Linux命令) nicstat 网络流量统计利器 - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          (Linux命令) nicstat 网络流量统计利器
+        
+      </h1>
+
+      <time class="post-time">
+          Feb 27 2013
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <hr>
+<p>前段时间看到brendangregg的 Linux Performance Analysis and Tools PPT里面提到的nicstat，研究了下是个不错的东西，分享给大家。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nicstat is to network interfaces as “iostat” is to disks, or “prstat” is to processes.</span><br></pre></td></tr></table></figure>
+
+<p>nicstat原本是Solaris平台下显示网卡流量的工具，Tim Cook将它移植到linux平台，官方网站见 这里。 相比netstat, 他有以下关键特性：</p>
+<ul>
+<li>Reports bytes in &amp; out as well as packets.</li>
+<li>Normalizes these values to per-second rates.</li>
+<li>Reports on all interfaces (while iterating)</li>
+<li>Reports Utilization (rough calculation as of now)</li>
+<li>Reports Saturation (also rough)</li>
+<li>Prefixes statistics with the current time</li>
+</ul>
+<p>我们来体验下，首先安装之，源码在 这里 下， 目前最新的版本是1.92。<br>解开后，由于这个版本默认是在32位linux下编译，所以需要改下Makefile.Linux：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ diff Makefile.Linux64 Makefile.Linux</span><br><span class="line">17c17</span><br><span class="line">&lt; CFLAGS = $(COPT) -m32</span><br><span class="line">---</span><br><span class="line">&gt; CFLAGS = $(COPT)</span><br><span class="line"></span><br><span class="line">$ sudo make -f Makefile.Linux install</span><br></pre></td></tr></table></figure>
+
+<p>就安装好了。</p>
+<p>使用文档在这里： <code>man nicstat</code><br>由于在linux下需要获取网卡的speed等信息，需要要以特权用户运行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ sudo enicstat -l</span><br><span class="line">Int      Loopback   Mbit/s Duplex State</span><br><span class="line">lo        Yes        -   unkn    up</span><br><span class="line">eth0        No     1000   full    up</span><br><span class="line">bond0        No        0   unkn    up</span><br><span class="line"></span><br><span class="line">$ sudo enicstat</span><br><span class="line">    Time      Int   rKB/s   wKB/s   rPk/s   wPk/s    rAvs    wAvs %Util    Sat</span><br><span class="line">13:04:10       lo   161.1   161.1   489.2   489.2   337.3   337.3  0.00   0.00</span><br><span class="line">13:04:10     eth0   601.9   589.1  1868.1  1894.1   330.0   318.5  0.98   0.00</span><br><span class="line">13:04:10    bond0   601.9   589.1  1868.1  1894.1   330.0   318.5  0.00   0.00</span><br></pre></td></tr></table></figure>
+
+<p>上面很特色的一个选项就是网卡的Util（利用率）以及Saturation（This the number of errors/second seen for the interface）在实践中用途挺大的。</p>
+<p>通过strace和源码进行简单的分析：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">open(“/proc/net/dev”, O_RDONLY) = 3</span><br><span class="line">open(“/proc/net/snmp”, O_RDONLY) = 5</span><br><span class="line">open(“/proc/net/netstat”, O_RDONLY) = 6</span><br><span class="line">open(“/proc/uptime”, O_RDONLY) = 9</span><br></pre></td></tr></table></figure>
+
+<p>大部分统计信息是从上面3个文件获取到的，snmp提供了tcp和udp的统计信息。</p>
+<p>默认统计信息 以KB为单位，-M选项可以更改为以M为单位。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ sudo enicstat -M</span><br><span class="line">    Time      Int   rMbps   wMbps   rPk/s   wPk/s    rAvs    wAvs %Util    Sat</span><br><span class="line">13:14:51       lo    1.26    1.26   489.1   489.1   337.3   337.3  0.00   0.00</span><br><span class="line">13:14:51     eth0    4.70    4.60  1868.0  1894.0   330.0   318.5  0.98   0.00</span><br><span class="line">13:14:51    bond0    4.70    4.60  1868.0  1894.0   330.0   318.5  0.00   0.00</span><br></pre></td></tr></table></figure>
+
+<p>nicstat提供了tcp链接外联和内联的个数，重置，Drops信息还有包重传率等信息，这些信息对于诊断tcp问题挺有用的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo enicstat -t</span><br><span class="line">13:09:40    InKB   OutKB   InSeg  OutSeg Reset  AttF %ReTX InConn OutCon Drops</span><br><span class="line">TCP        0.00    0.00  2123.7  2251.7  1.84  0.79 0.000   7.16   2.95  0.00</span><br></pre></td></tr></table></figure>
+
+<p>最后需要注意的是, 解读输出信息的时候：</p>
+<blockquote>
+<p>NOTES<br>On Linux, the NoCP, Defer, TCP InKB, and TCP OutKB statistics are always reported as zero.<br>The way that saturation is reported is a best effort, as there is no standardized naming to capture<br>all errors related to an interface’s inability to receive or transmit a packet. Monitoring %Util and<br>packet rates, along with an understanding of the specific NICs may be more useful in judging whether<br>you are nearing saturation.</p>
+</blockquote>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/Linux-nicstat/">Linux,nicstat</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2013/03/03/the-body-is-tired-how-free-soul/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">身体倦怠，灵魂何以自由</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2013/02/26/the-story-of-three-generations-of-chinese-women/">
+        <span class="next-text nav-default">鸿：三代中国女人的故事（一）</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

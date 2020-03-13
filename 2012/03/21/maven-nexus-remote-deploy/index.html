@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Nexus搭建Maven私服(五) Maven远程部署web工程">
+
+
+
+
+  <meta name="keywords" content="maven,nexus,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2012/03/21/maven-nexus-remote-deploy/">
+
+
+<meta name="description" content="Maven远程部署web工程在Maven项目中添加  tomcat-maven-plugin 插件pom.xml 配置如下: 12345678910&amp;lt;plugin&amp;gt;&amp;lt;groupId&amp;gt;org.codehaus.mojo&amp;lt;/groupId&amp;gt;&amp;lt;artifactId&amp;gt;tomcat-maven-plugin&amp;lt;/artifactId&amp;gt;&amp;lt;vers">
+<meta name="keywords" content="maven,nexus">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nexus搭建Maven私服(五) Maven远程部署web工程">
+<meta property="og:url" content="http://yoursite.com/2012/03/21/maven-nexus-remote-deploy/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="Maven远程部署web工程在Maven项目中添加  tomcat-maven-plugin 插件pom.xml 配置如下: 12345678910&amp;lt;plugin&amp;gt;&amp;lt;groupId&amp;gt;org.codehaus.mojo&amp;lt;/groupId&amp;gt;&amp;lt;artifactId&amp;gt;tomcat-maven-plugin&amp;lt;/artifactId&amp;gt;&amp;lt;vers">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-13T10:45:46.894Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nexus搭建Maven私服(五) Maven远程部署web工程">
+<meta name="twitter:description" content="Maven远程部署web工程在Maven项目中添加  tomcat-maven-plugin 插件pom.xml 配置如下: 12345678910&amp;lt;plugin&amp;gt;&amp;lt;groupId&amp;gt;org.codehaus.mojo&amp;lt;/groupId&amp;gt;&amp;lt;artifactId&amp;gt;tomcat-maven-plugin&amp;lt;/artifactId&amp;gt;&amp;lt;vers">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Nexus搭建Maven私服(五) Maven远程部署web工程 - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Nexus搭建Maven私服(五) Maven远程部署web工程
+        
+      </h1>
+
+      <time class="post-time">
+          Mar 21 2012
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h3 id="Maven远程部署web工程"><a href="#Maven远程部署web工程" class="headerlink" title="Maven远程部署web工程"></a>Maven远程部署web工程</h3><p>在Maven项目中添加  tomcat-maven-plugin 插件<br>pom.xml 配置如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">&lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;</span><br><span class="line">&lt;artifactId&gt;tomcat-maven-plugin&lt;/artifactId&gt;</span><br><span class="line">&lt;version&gt;1.2-SNAPSHOT&lt;/version&gt;</span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">&lt;url&gt;http://IP:port/manager/html&lt;/url&gt;</span><br><span class="line">&lt;server&gt;tomcat&lt;/server&gt;</span><br><span class="line">&lt;warFile&gt;$&#123;project.build.directory&#125;/$&#123;project.build.finalName&#125;.$&#123;project.packaging&#125;&lt;/warFile&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="tomcat配置如下"><a href="#tomcat配置如下" class="headerlink" title="tomcat配置如下:"></a>tomcat配置如下:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">conf/tomcat-user.xml</span><br><span class="line">&lt;tomcat-users&gt;</span><br><span class="line">&lt;role rolename=&quot;manager&quot;/&gt;</span><br><span class="line">&lt;user username=&quot;tomcat&quot; password=&quot;****&quot; roles=&quot;manager&quot;/&gt;</span><br><span class="line">&lt;/tomcat-users&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="maven-配置如下"><a href="#maven-配置如下" class="headerlink" title="maven 配置如下"></a>maven 配置如下</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">~/.m2/setting.xml</span><br><span class="line">&lt;server&gt;</span><br><span class="line">&lt;id&gt;tomcat&lt;/id&gt;</span><br><span class="line">&lt;username&gt;tomcat&lt;/username&gt;</span><br><span class="line">&lt;password&gt;****&lt;/password&gt;</span><br><span class="line">&lt;/server&gt;</span><br></pre></td></tr></table></figure>
+
+<p>maven 命令: mvn tomcat:deploy  </p>
+<p>注: 打war包如果想去除掉version 可在</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;build&gt;&lt;/build&gt; 中添加&lt;finalName&gt;&#123;finalname&#125;&lt;/finalName&gt;</span><br></pre></td></tr></table></figure>
+
+<p>刚最后生成的war包名为finalName名.</p>
+<ul>
+<li>参考: <a href="http://mojo.codehaus.org/tomcat-maven-plugin/index.html" target="_blank" rel="noopener">http://mojo.codehaus.org/tomcat-maven-plugin/index.html</a> </li>
+</ul>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/maven-nexus/">maven,nexus</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2012/03/22/maven-nexus-revesion/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Nexus搭建Maven私服(三) 版本控制</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2012/03/21/maven-nexus-remote-repository/">
+        <span class="next-text nav-default">Nexus搭建Maven私服(二) 分发构件至远程仓库</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/henryhuang/hexo-theme-polarbearsimple">Polar Bear Simple</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>
