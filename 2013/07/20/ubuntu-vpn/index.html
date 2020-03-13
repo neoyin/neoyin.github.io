@@ -17,7 +17,7 @@
 
 
 
-  <meta name="keywords" content="vpn,ubuntu,">
+  <meta name="keywords" content="ubuntu,vpn,">
 
 
 
@@ -36,14 +36,14 @@
 
 
 <meta name="description" content="点对点隧道协议（PPTP）是VPN服务的一种最简单的实现协议，其它常见的VPN类型还有：使用IPsec的第2层隧道协议（L2TP/IPsec）、安全套接字隧道协议（SSLVPN）。本文主要讨论PPTP VPN服务在Ubuntu上的安装和配置。 直接上： sudo apt-get install pptpd修改相关配置文件： sudo vi /etc/pptpd.conf #确保如下选项的配置 op">
-<meta name="keywords" content="vpn,ubuntu">
+<meta name="keywords" content="ubuntu,vpn">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ubuntu中快速搭建VPN服务器">
 <meta property="og:url" content="http://yoursite.com/2013/07/20/ubuntu-vpn/index.html">
 <meta property="og:site_name" content="浮生若梦">
 <meta property="og:description" content="点对点隧道协议（PPTP）是VPN服务的一种最简单的实现协议，其它常见的VPN类型还有：使用IPsec的第2层隧道协议（L2TP/IPsec）、安全套接字隧道协议（SSLVPN）。本文主要讨论PPTP VPN服务在Ubuntu上的安装和配置。 直接上： sudo apt-get install pptpd修改相关配置文件： sudo vi /etc/pptpd.conf #确保如下选项的配置 op">
 <meta property="og:locale" content="cn">
-<meta property="og:updated_time" content="2020-03-13T10:39:47.803Z">
+<meta property="og:updated_time" content="2020-03-13T14:33:53.514Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ubuntu中快速搭建VPN服务器">
 <meta name="twitter:description" content="点对点隧道协议（PPTP）是VPN服务的一种最简单的实现协议，其它常见的VPN类型还有：使用IPsec的第2层隧道协议（L2TP/IPsec）、安全套接字隧道协议（SSLVPN）。本文主要讨论PPTP VPN服务在Ubuntu上的安装和配置。 直接上： sudo apt-get install pptpd修改相关配置文件： sudo vi /etc/pptpd.conf #确保如下选项的配置 op">
@@ -188,7 +188,9 @@ sudo iptables -I FORWARD -s 192.168.0.0/24 -p tcp --syn -i ppp+ -j TCPMSS --set-
       <footer class="post-footer">
         <div class="post-tags">
           
-            <a href="/tags/vpn-ubuntu/">vpn,ubuntu</a>
+            <a href="/tags/ubuntu/">ubuntu</a>
+          
+            <a href="/tags/vpn/">vpn</a>
           
         </div>
 

@@ -43,7 +43,7 @@
 <meta property="og:site_name" content="浮生若梦">
 <meta property="og:description" content="前面已经提过，FileChannel对象不能直接创建，而是在一个打开的file对象(RandomAccessFile,FileInputStream或者FileOutputStream)上调用getChannel()方法获取。需要注意的是，只要有可能，FileChannel都会尝试使用本地I/O服务。FileChannel对象是线程安全的，多个进程可以再同一个实例上并发调用方法而不会引起任何问题，">
 <meta property="og:locale" content="cn">
-<meta property="og:updated_time" content="2020-03-13T10:49:20.889Z">
+<meta property="og:updated_time" content="2020-03-13T14:33:53.291Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java nio为什么是通道(三):文件通道">
 <meta name="twitter:description" content="前面已经提过，FileChannel对象不能直接创建，而是在一个打开的file对象(RandomAccessFile,FileInputStream或者FileOutputStream)上调用getChannel()方法获取。需要注意的是，只要有可能，FileChannel都会尝试使用本地I/O服务。FileChannel对象是线程安全的，多个进程可以再同一个实例上并发调用方法而不会引起任何问题，">
@@ -215,7 +215,9 @@ return string.getBytes(&quot;UTF-8&quot;);
       <footer class="post-footer">
         <div class="post-tags">
           
-            <a href="/tags/java-nio/">java,nio</a>
+            <a href="/tags/java/">java</a>
+          
+            <a href="/tags/nio/">nio</a>
           
         </div>
 
