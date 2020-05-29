@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Pyflink使用JAVAUDF">
+
+
+
+
+  <meta name="keywords" content="docker,flink,python,pyflink,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2020/03/20/pyflink-java-udf/">
+
+
+<meta name="description" content="##  虽然pyflink里支持python的UDF 但是有一定的局限性,比如groupby聚合算子,没法使用python 所以需要开发一下javaudf  源码定义如下 只能是ScalarFunction TableFunction AggregateFunction 12345def register_java_function(self, name, function_class_name)">
+<meta name="keywords" content="docker,flink,python,pyflink">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pyflink使用JAVAUDF">
+<meta property="og:url" content="http://yoursite.com/2020/03/20/pyflink-java-udf/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="##  虽然pyflink里支持python的UDF 但是有一定的局限性,比如groupby聚合算子,没法使用python 所以需要开发一下javaudf  源码定义如下 只能是ScalarFunction TableFunction AggregateFunction 12345def register_java_function(self, name, function_class_name)">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-03-21T16:14:21.572Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Pyflink使用JAVAUDF">
+<meta name="twitter:description" content="##  虽然pyflink里支持python的UDF 但是有一定的局限性,比如groupby聚合算子,没法使用python 所以需要开发一下javaudf  源码定义如下 只能是ScalarFunction TableFunction AggregateFunction 12345def register_java_function(self, name, function_class_name)">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Pyflink使用JAVAUDF - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Pyflink使用JAVAUDF
+        
+      </h1>
+
+      <time class="post-time">
+          Mar 20 2020
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>## </p>
+<p>虽然pyflink里支持python的UDF 但是有一定的局限性,比如groupby聚合算子,没法使用python 所以需要开发一下javaudf </p>
+<p>源码定义如下 只能是<code>ScalarFunction</code> <code>TableFunction</code> <code>AggregateFunction</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">register_java_function</span><span class="params">(self, name, function_class_name)</span>:</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">Registers a java user defined function under a unique name. Replaces already existing</span></span><br><span class="line"><span class="string">user-defined functions under this name. The acceptable function type contains</span></span><br><span class="line"><span class="string">**ScalarFunction**, **TableFunction** and **AggregateFunction**.</span></span><br></pre></td></tr></table></figure>
+
+<p>我们需要一个聚合算子 所以需要继承 AggregateFunction</p>
+<p>新建一个JAVA工程 地址 <a href="https://git.chinawayltd.com/rdp/pyflink-adapter" target="_blank" rel="noopener">https://git.chinawayltd.com/rdp/pyflink-adapter</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.g7.rdp.pyflink.adapter;</span><br><span class="line"><span class="keyword">import</span> org.apache.flink.table.functions.AggregateFunction;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConcatAggregateFunction</span> <span class="keyword">extends</span> <span class="title">AggregateFunction</span>&lt;<span class="title">String</span>,<span class="title">StrConcatAcc</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">2678065132752935739L</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String DELIMITER = <span class="string">","</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">accumulate</span><span class="params">(StrConcatAcc acc, String value)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (value != <span class="keyword">null</span>) &#123;</span><br><span class="line">            acc.list.add(value);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">merge</span><span class="params">(StrConcatAcc acc, Iterable&lt;StrConcatAcc&gt; its)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (StrConcatAcc otherAcc : its) &#123;</span><br><span class="line">            Iterable&lt;String&gt; accList = otherAcc.list.get();</span><br><span class="line">            <span class="keyword">if</span> (accList != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">for</span> (String value : accList) &#123;</span><br><span class="line">                        acc.list.add(value);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> StrConcatAcc <span class="title">createAccumulator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> StrConcatAcc();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getValue</span><span class="params">(StrConcatAcc acc)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Iterable&lt;String&gt; accList = acc.list.get();</span><br><span class="line">            <span class="keyword">if</span> (accList == <span class="keyword">null</span> || !accList.iterator().hasNext()) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                StringBuilder builder = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">                <span class="keyword">boolean</span> isFirst = <span class="keyword">true</span>;</span><br><span class="line">                <span class="keyword">for</span> (String value : accList) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (!isFirst) &#123;</span><br><span class="line">                        builder.append(DELIMITER);</span><br><span class="line">                    &#125;</span><br><span class="line">                    builder.append(value);</span><br><span class="line">                    isFirst = <span class="keyword">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> builder.toString();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e.getMessage(), e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p> 对于datastream bounded over aggregate操作，要求实现restract方法，该方法接收ACC,T等参数，返回void；对于datastream session window grouping aggregate以及dataset grouping aggregate操作，要求实现merge方法，该方法接收ACC,java.lang.Iterable<t>两个参数，返回void；对于dataset grouping aggregate操作，要求实现resetAccumulator方法，该方法接收ACC参数，返回void</t></p>
+</blockquote>
+<p>开发完成后将项目打成jar包 放入 $pyflink_home/lib 下</p>
+<p>代码中加入 <code>register_java_function(&#39;methond&#39;,&#39;classpath&#39;)</code>  python中定义调用method 和java class路径即可</p>
+<p><a href="https://segmentfault.com/a/1190000018109879" target="_blank" rel="noopener">https://segmentfault.com/a/1190000018109879</a></p>
+<p><a href="https://www.alibabacloud.com/help/zh/doc-detail/69553.htm" target="_blank" rel="noopener">https://www.alibabacloud.com/help/zh/doc-detail/69553.htm</a></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/docker/">docker</a>
+          
+            <a href="/tags/flink/">flink</a>
+          
+            <a href="/tags/python/">python</a>
+          
+            <a href="/tags/pyflink/">pyflink</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+    
+      <a class="next" href="/2020/03/17/pyflink-link/">
+        <span class="next-text nav-default">Pyflink参考资料</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>

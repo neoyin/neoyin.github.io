@@ -43,7 +43,7 @@
 <meta property="og:site_name" content="浮生若梦">
 <meta property="og:description" content="前言由于公司项目主要模块为python开发，最好项目都能跑在python环境下 公司虽然有flink平台,如果需要公司平台来支持pyflink 不一定有能力和资源去推动做这件事我们需要自己来维护一个小集群flink环境 满足我们项目需求即可最好的方案是实现部署在docker环境中.管理方便,资源最小化 PyFlink环境准备 JDK 1.8+ Python 3.5+ Flink-1.10.0">
 <meta property="og:locale" content="cn">
-<meta property="og:updated_time" content="2020-03-13T14:33:53.407Z">
+<meta property="og:updated_time" content="2020-03-21T12:57:41.926Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Pyflink开发-环境部署">
 <meta name="twitter:description" content="前言由于公司项目主要模块为python开发，最好项目都能跑在python环境下 公司虽然有flink平台,如果需要公司平台来支持pyflink 不一定有能力和资源去推动做这件事我们需要自己来维护一个小集群flink环境 满足我们项目需求即可最好的方案是实现部署在docker环境中.管理方便,资源最小化 PyFlink环境准备 JDK 1.8+ Python 3.5+ Flink-1.10.0">
@@ -180,6 +180,8 @@
 <p>访问http://$ip:8081验证成功</p>
 <h3 id="5-部署"><a href="#5-部署" class="headerlink" title="5. 部署"></a>5. 部署</h3><p>在本地Flink目录</p>
 <p><code>./flink run -m $ip:8081 -py $path/deploy_demo.py</code></p>
+<h5 id="6-K8S"><a href="#6-K8S" class="headerlink" title="6. K8S"></a>6. K8S</h5><p><a href="https://ci.apache.org/projects/flink/flink-docs-stable/ops/deployment/kubernetes.html" target="_blank" rel="noopener">https://ci.apache.org/projects/flink/flink-docs-stable/ops/deployment/kubernetes.html</a></p>
+<p><a href="https://ci.apache.org/projects/flink/flink-docs-stable/ops/config.html#taskmanager-memory-jvm-metaspace-size" target="_blank" rel="noopener">https://ci.apache.org/projects/flink/flink-docs-stable/ops/config.html#taskmanager-memory-jvm-metaspace-size</a></p>
 <h2 id="遇到问题"><a href="#遇到问题" class="headerlink" title="遇到问题"></a>遇到问题</h2><ol>
 <li><strong>[本地环境]</strong>ModuleNotFoundError: No module named ‘grpc’<br>本地python环境有点问题 重新配置了python环境和pip</li>
 <li><strong>[本地环境]</strong>google/protobuf/<a href="http://descriptor_database.cc/" target="_blank" rel="noopener">descriptor_database.cc</a>:58] file already exists in database:<br>暂时将pyarrow从0.14.1 升级至pip install pyarrow==0.15.1 (可能有潜在问题)<br>Some synt  actic constructs of Python 3 are not yet fully supported by Apache Beam.</li>
