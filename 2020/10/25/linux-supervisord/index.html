@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Linux下Supervisor进程守护监控">
+
+
+
+
+  <meta name="keywords" content="linux,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2020/10/25/linux-supervisord/">
+
+
+<meta name="description" content="supervisord 运行 Supervisor 时会启动一个进程 supervisord，它负责启动所管理的进程，并将所管理的进程作为自己的子进程来启动，而且可以在所管理的进程出现崩溃时自动重启。  supervisorctl 是命令行管理工具，可以用来执行 stop、start、restart 等命令，来对这些子进程进行管理。    supervisor是所有进程的父进程，管理着启动的子进展">
+<meta name="keywords" content="linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux下Supervisor进程守护监控">
+<meta property="og:url" content="http://yoursite.com/2020/10/25/linux-supervisord/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="supervisord 运行 Supervisor 时会启动一个进程 supervisord，它负责启动所管理的进程，并将所管理的进程作为自己的子进程来启动，而且可以在所管理的进程出现崩溃时自动重启。  supervisorctl 是命令行管理工具，可以用来执行 stop、start、restart 等命令，来对这些子进程进行管理。    supervisor是所有进程的父进程，管理着启动的子进展">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-10-30T03:39:00.138Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux下Supervisor进程守护监控">
+<meta name="twitter:description" content="supervisord 运行 Supervisor 时会启动一个进程 supervisord，它负责启动所管理的进程，并将所管理的进程作为自己的子进程来启动，而且可以在所管理的进程出现崩溃时自动重启。  supervisorctl 是命令行管理工具，可以用来执行 stop、start、restart 等命令，来对这些子进程进行管理。    supervisor是所有进程的父进程，管理着启动的子进展">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Linux下Supervisor进程守护监控 - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Linux下Supervisor进程守护监控
+        
+      </h1>
+
+      <time class="post-time">
+          Oct 25 2020
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h5 id="supervisord"><a href="#supervisord" class="headerlink" title="supervisord"></a>supervisord</h5><blockquote>
+<p>运行 Supervisor 时会启动一个进程 supervisord，它负责启动所管理的进程，并将所管理的进程作为自己的子进程来启动，而且可以在所管理的进程出现崩溃时自动重启。</p>
+</blockquote>
+<h5 id="supervisorctl"><a href="#supervisorctl" class="headerlink" title="supervisorctl"></a>supervisorctl</h5><blockquote>
+<p>是命令行管理工具，可以用来执行 stop、start、restart 等命令，来对这些子进程进行管理。</p>
+</blockquote>
+<blockquote>
+<p> supervisor是所有进程的父进程，管理着启动的子进展，supervisor以子进程的PID来管理子进程，当子进程异常退出时supervisor可以收到相应的信号量。</p>
+</blockquote>
+<h4 id="安装supervisord"><a href="#安装supervisord" class="headerlink" title="安装supervisord"></a>安装supervisord</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pip安装supervisord</span></span><br><span class="line">pip install supervisor</span><br><span class="line"><span class="comment"># 查看安装是否成功</span></span><br><span class="line">echo_supervisord_conf</span><br><span class="line"><span class="comment"># 生成配置文件</span></span><br><span class="line">echo_supervisord_conf &gt; /etc/supervisord.conf</span><br><span class="line"><span class="comment"># 载入配置文件</span></span><br><span class="line">supervisorctl  -c /etc/supervisord.conf</span><br></pre></td></tr></table></figure>
+
+<h4 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">supervisorctl stop program_name  # 停止某一个进程，program_name 为 [program:x] 里的 x</span><br><span class="line">supervisorctl start program_name  # 启动某个进程</span><br><span class="line">supervisorctl restart program_name  # 重启某个进程</span><br><span class="line">supervisorctl stop groupworker:  # 结束所有属于名为 groupworker 这个分组的进程 (start，restart 同理)</span><br><span class="line">supervisorctl stop groupworker:name1  # 结束 groupworker:name1 这个进程 (start，restart 同理)</span><br><span class="line">supervisorctl stop all  # 停止全部进程，注：start、restartUnlinking stale socket /tmp/supervisor.sock</span><br><span class="line">、stop 都不会载入最新的配置文件</span><br><span class="line">supervisorctl reload  # 载入最新的配置文件，停止原有进程并按新的配置启动、管理所有进程</span><br><span class="line">supervisorctl update  # 根据最新的配置文件，启动新配置或有改动的进程，配置没有改动的进程不会受影响而重启</span><br></pre></td></tr></table></figure>
+
+<h4 id="echo-supervisord-conf详解："><a href="#echo-supervisord-conf详解：" class="headerlink" title="echo_supervisord_conf详解："></a>echo_supervisord_conf详解：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br></pre></td><td class="code"><pre><span class="line">[root@centos-011 ~ 07:50:00]#cat /etc/supervisord.conf.bak</span><br><span class="line">; Sample supervisor config file.</span><br><span class="line"> </span><br><span class="line">[unix_http_server]</span><br><span class="line">file=/var/run/supervisor/supervisor.sock   ; socket 路径</span><br><span class="line"> </span><br><span class="line">;chmod=0700                 ; socket 文件的权限</span><br><span class="line">;chown=nobody:nogroup       ; socket 所属用户及组</span><br><span class="line">;username=user              ; 用户名</span><br><span class="line">;password=123               ; 密码</span><br><span class="line"> </span><br><span class="line">;[inet_http_server]         ; 是否启用服务，默认是关闭的（启用的话可以看到supervisor 管理的服务状态）</span><br><span class="line">;port=127.0.0.1:9001        ; 监听的IP及端口</span><br><span class="line">;username=user              ; 用户名</span><br><span class="line">;password=123               ; 密码</span><br><span class="line"> </span><br><span class="line">[supervisord]               ; supervisord 全局配置</span><br><span class="line">logfile=/var/log/supervisor/supervisord.log  ; supervisor 日志路径</span><br><span class="line">logfile_maxbytes=50MB       ; 单个日志文件最大数</span><br><span class="line">logfile_backups=10          ; 保留多少个日志文件（默认10个）</span><br><span class="line">loglevel=info               ; (log level;default info; others: debug,warn,trace)</span><br><span class="line">pidfile=/var/run/supervisord.pid ; pid 文件路径</span><br><span class="line">nodaemon=false              ; 启动是否丢到前台，设置为false ，表示以daemon 的方式启动</span><br><span class="line">minfds=1024                 ; 最小文件打开数，对应系统limit.conf 中的nofile ,默认最小为1024，最大为4096</span><br><span class="line">minprocs=200                ; 最小的进程打开数，对应系统的limit.conf 中的nproc,默认为200</span><br><span class="line">;umask=022                  ; (process file creation umask;default 022)</span><br><span class="line">;user=chrism                 ; 启动supervisord 服务的用户，默认为root</span><br><span class="line">;identifier=supervisor       ; (supervisord identifier, default is &apos;supervisor&apos;)</span><br><span class="line">;directory=/tmp              ; 这里的目录指的是服务的工作目录</span><br><span class="line">;nocleanup=true              ; (don&apos;t clean up tempfiles at start;default false)</span><br><span class="line">;childlogdir=/tmp            ; (&apos;AUTO&apos; child log dir, default $TEMP)</span><br><span class="line">;environment=KEY=value       ; (key value pairs to add to environment)</span><br><span class="line">;strip_ansi=false            ; (strip ansi escape codes in logs; def. false)</span><br><span class="line"> </span><br><span class="line">; the below section must remain in the config file for RPC</span><br><span class="line">; (supervisorctl/web interface) to work, additional interfaces may be</span><br><span class="line">; added by defining them in separate rpcinterface: sections</span><br><span class="line">[rpcinterface:supervisor]</span><br><span class="line">supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface</span><br><span class="line"> </span><br><span class="line">[supervisorctl]</span><br><span class="line">serverurl=unix:///var/run/supervisor/supervisor.sock ; use a unix:// URL  for a unix socket</span><br><span class="line">;serverurl=http://127.0.0.1:9001 ; use an http:// url to specify an inet socket</span><br><span class="line">;username=chris              ; should be same as http_username if set</span><br><span class="line">;password=123                ; should be same as http_password if set</span><br><span class="line">;prompt=mysupervisor         ; cmd line prompt (default &quot;supervisor&quot;)</span><br><span class="line">;history_file=~/.sc_history  ; use readline history if available</span><br><span class="line"> </span><br><span class="line">; The below sample program section shows all possible program subsection values,</span><br><span class="line">; create one or more &apos;real&apos; program: sections to be able to control them under</span><br><span class="line">; supervisor.</span><br><span class="line"> </span><br><span class="line">;[program:theprogramname]      ; 定义一个守护进程 ，比如下面的elasticsearch </span><br><span class="line">;command=/bin/cat              ; 启动程序使用的命令，可以是绝对路径或者相对路径</span><br><span class="line">;process_name=%(program_name)s ; 一个python字符串表达式，用来表示supervisor进程启动的这个的名称，默认值是%(program_name)s</span><br><span class="line">;numprocs=1                    ; Supervisor启动这个程序的多个实例，如果numprocs&gt;1，则process_name的表达式必须包含%(process_num)s，默认是1</span><br><span class="line">;directory=/tmp                ; supervisord在生成子进程的时候会切换到该目录</span><br><span class="line">;umask=022                     ; umask for process (default None)</span><br><span class="line">;priority=999                  ; 权重，可以控制程序启动和关闭时的顺序，权重越低：越早启动，越晚关闭。默认值是999</span><br><span class="line">;autostart=true                ; 如果设置为true，当supervisord启动的时候，进程会自动启动</span><br><span class="line">;autorestart=true              ; 设置为随 supervisord 重启而重启，值可以是false、true、unexpected。false：进程不会自动重启</span><br><span class="line">;startsecs=10                  ; 程序启动后等待多长时间后才认为程序启动成功，默认是10秒</span><br><span class="line">;startretries=3                ; supervisord尝试启动一个程序时尝试的次数。默认是3</span><br><span class="line">;exitcodes=0,2                 ; 一个预期的退出返回码，默认是0,2。</span><br><span class="line">;stopsignal=QUIT               ; 当收到stop请求的时候，发送信号给程序，默认是TERM信号，也可以是 HUP, INT, QUIT, KILL, USR1, or USR2</span><br><span class="line">;stopwaitsecs=10               ; 在操作系统给supervisord发送SIGCHILD信号时等待的时间</span><br><span class="line">;user=chrism                   ; 如果supervisord以root运行，则会使用这个设置用户启动子程序</span><br><span class="line">;redirect_stderr=true          ; 如果设置为true，进程则会把标准错误输出到supervisord后台的标准输出文件描述符</span><br><span class="line">;stdout_logfile=/a/path        ; 把进程的标准输出写入文件中，如果stdout_logfile没有设置或者设置为AUTO，则supervisor会自动选择一个文件位置</span><br><span class="line">;stdout_logfile_maxbytes=1MB   ; 标准输出log文件达到多少后自动进行轮转，单位是KB、MB、GB。如果设置为0则表示不限制日志文件大小</span><br><span class="line">;stdout_logfile_backups=10     ; 标准输出日志轮转备份的数量，默认是10，如果设置为0，则不备份</span><br><span class="line">;stdout_capture_maxbytes=1MB   ; 当进程处于stderr capture mode模式的时候，写入FIFO队列的最大bytes值，单位可以是KB、MB、GB</span><br><span class="line">;stdout_events_enabled=false   ; 如果设置为true，当进程在写它的stderr</span><br><span class="line">;stderr_logfile=/a/path        ; 把进程的错误日志输出一个文件中，除非redirect_stderr参数被设置为true</span><br><span class="line">;stderr_logfile_maxbytes=1MB   ; 错误log文件达到多少后自动进行轮转，单位是KB、MB、GB。如果设置为0则表示不限制日志文件大小</span><br><span class="line">;stderr_logfile_backups=10     ; 错误日志轮转备份的数量，默认是10，如果设置为0，则不备份</span><br><span class="line">;stderr_capture_maxbytes=1MB   ; 当进程处于stderr capture mode模式的时候，写入FIFO队列的最大bytes值，单位可以是KB、MB、GB</span><br><span class="line">;stderr_events_enabled=false   ; 如果设置为true，当进程在写它的stderr到文件描述符的时候，PROCESS_LOG_STDERR事件会被触发</span><br><span class="line">;environment=A=1,B=2           ; 一个k/v对的list列表</span><br><span class="line">;serverurl=AUTO                ; 是否允许子进程和内部的HTTP服务通讯，如果设置为AUTO，supervisor会自动的构造一个url</span><br><span class="line"> </span><br><span class="line">; The below sample eventlistener section shows all possible</span><br><span class="line">; eventlistener subsection values, create one or more &apos;real&apos;</span><br><span class="line">; eventlistener: sections to be able to handle event notifications</span><br><span class="line">; sent by supervisor.</span><br><span class="line"> #这个地方是自定义一个守护进程</span><br><span class="line">[program:elasticsearch]                       ; 定义一个守护进程 elasticsearch</span><br><span class="line">environment=ES_HOME=/usr/local/elasticsearch  ; 设置ES_HOME 环境变量</span><br><span class="line">user=elk                                      ; 启动elasticsearch 的用户</span><br><span class="line">directory=/usr/local/elasticsearch            ; 进入到这个目录中</span><br><span class="line">command=/usr/local/elasticsearch/bin/elasticsearch ; 执行启动命令</span><br><span class="line">numprocs=1                                    ; Supervisor启动这个程序的多个实例，如果numprocs&gt;1，则process_name的表达式必须包含%(process_num)s，默认是1</span><br><span class="line">autostart=true                                ; 设置为随 supervisord 启动而启动</span><br><span class="line">autorestart=true                              ; 设置为随 supervisord 重启而重启</span><br><span class="line">startretries=3                                ; 设置elasticsearch 重启的重试次数</span><br><span class="line">priority=1                                    ; 权重，可以控制程序启动和关闭时的顺序，权重越低：越早启动，越晚关闭。默认值是999  </span><br><span class="line"> </span><br><span class="line">;[eventlistener:theeventlistenername]</span><br><span class="line">;command=/bin/eventlistener    ; the program (relative uses PATH, can take args)</span><br><span class="line">;process_name=%(program_name)s ; process_name expr (default %(program_name)s)</span><br><span class="line">;numprocs=1                    ; number of processes copies to start (def 1)</span><br><span class="line">;events=EVENT                  ; event notif. types to subscribe to (req&apos;d)</span><br><span class="line">;buffer_size=10                ; event buffer queue size (default 10)</span><br><span class="line">;directory=/tmp                ; directory to cwd to before exec (def no cwd)</span><br><span class="line">;umask=022                     ; umask for process (default None)</span><br><span class="line">;priority=-1                   ; the relative start priority (default -1)</span><br><span class="line">;autostart=true                ; start at supervisord start (default: true)</span><br><span class="line">;autorestart=unexpected        ; restart at unexpected quit (default: unexpected)</span><br><span class="line">;startsecs=10                  ; number of secs prog must stay running (def. 1)</span><br><span class="line">;startretries=3                ; max # of serial start failures (default 3)</span><br><span class="line">;exitcodes=0,2                 ; &apos;expected&apos; exit codes for process (default 0,2)</span><br><span class="line">;stopsignal=QUIT               ; signal used to kill process (default TERM)</span><br><span class="line">;stopwaitsecs=10               ; max num secs to wait b4 SIGKILL (default 10)</span><br><span class="line">;user=chrism                   ; setuid to this UNIX account to run the program</span><br><span class="line">;redirect_stderr=true          ; redirect proc stderr to stdout (default false)</span><br><span class="line">;stdout_logfile=/a/path        ; stdout log path, NONE for none; default AUTO</span><br><span class="line">;stdout_logfile_maxbytes=1MB   ; max # logfile bytes b4 rotation (default 50MB)</span><br><span class="line">;stdout_logfile_backups=10     ; # of stdout logfile backups (default 10)</span><br><span class="line">;stdout_events_enabled=false   ; emit events on stdout writes (default false)</span><br><span class="line">;stderr_logfile=/a/path        ; stderr log path, NONE for none; default AUTO</span><br><span class="line">;stderr_logfile_maxbytes=1MB   ; max # logfile bytes b4 rotation (default 50MB)</span><br><span class="line">;stderr_logfile_backups        ; # of stderr logfile backups (default 10)</span><br><span class="line">;stderr_events_enabled=false   ; emit events on stderr writes (default false)</span><br><span class="line">;environment=A=1,B=2           ; process environment additions</span><br><span class="line">;serverurl=AUTO                ; override serverurl computation (childutils)</span><br><span class="line"> </span><br><span class="line">; The below sample group section shows all possible group values,</span><br><span class="line">; create one or more &apos;real&apos; group: sections to create &quot;heterogeneous&quot;</span><br><span class="line">; process groups.</span><br><span class="line"> </span><br><span class="line">;[group:thegroupname]          ; 服务组管理，可以将多个服务名写到这里管理(组名自定义）</span><br><span class="line">;programs=progname1,progname2  ; 上面配置好的服务名，比如elasticsearch,kibana,logstash</span><br><span class="line">;priority=999                  ; the relative start priority (default 999)</span><br><span class="line"> </span><br><span class="line">; The [include] section can just contain the &quot;files&quot; setting.  This</span><br><span class="line">; setting can list multiple files (separated by whitespace or</span><br><span class="line">; newlines).  It can also contain wildcards.  The filenames are</span><br><span class="line">; interpreted as relative to this file.  Included files *cannot*</span><br><span class="line">; include files themselves.</span><br><span class="line"> </span><br><span class="line">[include]</span><br><span class="line">files = supervisord.d/*.ini</span><br></pre></td></tr></table></figure>
+
+<h5 id="监听程序相关配置"><a href="#监听程序相关配置" class="headerlink" title="监听程序相关配置"></a>监听程序相关配置</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">[program:test_one]</span><br><span class="line">command=java -jar /data/smallvideo/supervisor/taskApp-exec.jar TaskTestOne  ; 被监控的进程路径</span><br><span class="line">priority=1                    ; 数字越高，优先级越高</span><br><span class="line">numprocs=1                    ; 启动几个进程</span><br><span class="line">autostart=true                ; 随着supervisord的启动而启动</span><br><span class="line">autorestart=true              ; 自动重启</span><br><span class="line">startretries=10               ; 启动失败时的最多重试次数</span><br><span class="line">exitcodes=0                   ; 正常退出代码</span><br><span class="line">stopsignal=KILL               ; 用来杀死进程的信号</span><br><span class="line">stopwaitsecs=10               ; 发送SIGKILL前的等待时间</span><br><span class="line">redirect_stderr=true          ; 重定向stderr到stdout</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">command：启动程序使用的命令，可以是绝对路径或者相对路径</span><br><span class="line">process_name：一个python字符串表达式，用来表示supervisor进程启动的这个的名称，默认值是%(program_name)s</span><br><span class="line">numprocs：Supervisor启动这个程序的多个实例，如果numprocs&gt;1，则process_name的表达式必须包含%(process_num)s，默认是1</span><br><span class="line">numprocs_start：一个int偏移值，当启动实例的时候用来计算numprocs的值</span><br><span class="line">priority：权重，可以控制程序启动和关闭时的顺序，权重越低：越早启动，越晚关闭。默认值是999</span><br><span class="line">autostart：如果设置为true，当supervisord启动的时候，进程会自动重启。</span><br><span class="line">autorestart：值可以是false、true、unexpected。false：进程不会自动重启，unexpected：当程序退出时的退出码不是exitcodes中定义的时，进程会重启，true：进程会无条件重启当退出的时候。</span><br><span class="line">startsecs：程序启动后等待多长时间后才认为程序启动成功</span><br><span class="line">startretries：supervisord尝试启动一个程序时尝试的次数。默认是3</span><br><span class="line">exitcodes：一个预期的退出返回码，默认是0,2。</span><br><span class="line">stopsignal：当收到stop请求的时候，发送信号给程序，默认是TERM信号，也可以是 HUP, INT, QUIT, KILL, USR1, or USR2。</span><br><span class="line">stopwaitsecs：在操作系统给supervisord发送SIGCHILD信号时等待的时间</span><br><span class="line">stopasgroup：如果设置为true，则会使supervisor发送停止信号到整个进程组</span><br><span class="line">killasgroup：如果设置为true，则在给程序发送SIGKILL信号的时候，会发送到整个进程组，它的子进程也会受到影响。</span><br><span class="line">user：如果supervisord以root运行，则会使用这个设置用户启动子程序</span><br><span class="line">redirect_stderr：如果设置为true，进程则会把标准错误输出到supervisord后台的标准输出文件描述符。</span><br><span class="line">stdout_logfile：把进程的标准输出写入文件中，如果stdout_logfile没有设置或者设置为AUTO，则supervisor会自动选择一个文件位置。</span><br><span class="line">stdout_logfile_maxbytes：标准输出log文件达到多少后自动进行轮转，单位是KB、MB、GB。如果设置为0则表示不限制日志文件大小</span><br><span class="line">stdout_logfile_backups：标准输出日志轮转备份的数量，默认是10，如果设置为0，则不备份</span><br><span class="line">stdout_capture_maxbytes：当进程处于stderr capture mode模式的时候，写入FIFO队列的最大bytes值，单位可以是KB、MB、GB</span><br><span class="line">stdout_events_enabled：如果设置为true，当进程在写它的stderr到文件描述符的时候，PROCESS_LOG_STDERR事件会被触发</span><br><span class="line">stderr_logfile：把进程的错误日志输出一个文件中，除非redirect_stderr参数被设置为true</span><br><span class="line">stderr_logfile_maxbytes：错误log文件达到多少后自动进行轮转，单位是KB、MB、GB。如果设置为0则表示不限制日志文件大小</span><br><span class="line">stderr_logfile_backups：错误日志轮转备份的数量，默认是10，如果设置为0，则不备份</span><br><span class="line">stderr_capture_maxbytes：当进程处于stderr capture mode模式的时候，写入FIFO队列的最大bytes值，单位可以是KB、MB、GB</span><br><span class="line">stderr_events_enabled：如果设置为true，当进程在写它的stderr到文件描述符的时候，PROCESS_LOG_STDERR事件会被触发</span><br><span class="line">environment：一个k/v对的list列表</span><br><span class="line">directory：supervisord在生成子进程的时候会切换到该目录</span><br><span class="line">umask：设置进程的umask</span><br><span class="line">serverurl：是否允许子进程和内部的HTTP服务通讯，如果设置为AUTO，supervisor会自动的构造一个url</span><br></pre></td></tr></table></figure>
+
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><ul>
+<li><a href="https://www.jianshu.com/p/32de18156617" target="_blank" rel="noopener">https://www.jianshu.com/p/32de18156617</a></li>
+<li><a href="https://www.cnblogs.com/toutou/p/supervisor.html" target="_blank" rel="noopener">https://www.cnblogs.com/toutou/p/supervisor.html</a></li>
+</ul>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/linux/">linux</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+    
+      <a class="next" href="/2020/03/20/pyflink-java-udf/">
+        <span class="next-text nav-default">Pyflink使用JAVAUDF</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>
