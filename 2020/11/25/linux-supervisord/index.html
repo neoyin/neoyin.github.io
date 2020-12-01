@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Supervisor 管理进程服务重启报警">
+
+
+
+
+  <meta name="keywords" content="linux,supervisor,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2020/11/25/linux-supervisord/">
+
+
+<meta name="description" content="Supervisor EventEvent 是在 Supervisor 3.0 引入的一个高级特性，如果只简单使用 Supervisor 管理进程，则不需要了解 Event。但如果希望监控 Supervisor 管理的进程的各种状态（如: 启动、退出、失败、退出状态码 …）并支持告警，才需要了解Event。 该机制主要通过一个 event listener 订阅 event 通知实现。当被 Sup">
+<meta name="keywords" content="linux,supervisor">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Supervisor 管理进程服务重启报警">
+<meta property="og:url" content="http://yoursite.com/2020/11/25/linux-supervisord/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="Supervisor EventEvent 是在 Supervisor 3.0 引入的一个高级特性，如果只简单使用 Supervisor 管理进程，则不需要了解 Event。但如果希望监控 Supervisor 管理的进程的各种状态（如: 启动、退出、失败、退出状态码 …）并支持告警，才需要了解Event。 该机制主要通过一个 event listener 订阅 event 通知实现。当被 Sup">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2020-12-01T05:56:30.197Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Supervisor 管理进程服务重启报警">
+<meta name="twitter:description" content="Supervisor EventEvent 是在 Supervisor 3.0 引入的一个高级特性，如果只简单使用 Supervisor 管理进程，则不需要了解 Event。但如果希望监控 Supervisor 管理的进程的各种状态（如: 启动、退出、失败、退出状态码 …）并支持告警，才需要了解Event。 该机制主要通过一个 event listener 订阅 event 通知实现。当被 Sup">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Supervisor 管理进程服务重启报警 - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Supervisor 管理进程服务重启报警
+        
+      </h1>
+
+      <time class="post-time">
+          Nov 25 2020
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h4 id="Supervisor-Event"><a href="#Supervisor-Event" class="headerlink" title="Supervisor Event"></a>Supervisor Event</h4><p>Event 是在 Supervisor 3.0 引入的一个高级特性，如果只简单使用 Supervisor 管理进程，则不需要了解 Event。但如果希望监控 Supervisor 管理的进程的各种状态（如: 启动、退出、失败、退出状态码 …）并支持告警，才需要了解Event。</p>
+<p>该机制主要通过一个 event listener 订阅 event 通知实现。当被 Supervisor 管理的进程有特定行为的时候，supervisor 就会自动发出对应类型的 event。即使没有配置 listener，这些 event 也是会发的；如果配置了 listener 并监听该类型的 event，那么这个 listener 就会接收到该 event。 event listener 需要自己实现，并像 program 一样，作为 superviosr 的子进程运行。</p>
+<h4 id="Event-Types"><a href="#Event-Types" class="headerlink" title="Event Types"></a>Event Types</h4><table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PROCESS_STATE</td>
+<td>进程状态发生改变</td>
+</tr>
+<tr>
+<td>PROCESS_STATE_STARTING</td>
+<td>进程状态从其他状态转换为正在启动(Supervisord的配置项中有startsecs配置项，是指程序启动时需要程序至少稳定运行x秒才认为程序运行正常，在这x秒中程序状态为正在启动)</td>
+</tr>
+<tr>
+<td>PROCESS_STATE_RUNNING</td>
+<td>进程从正在启动状态转换为正在运行状态</td>
+</tr>
+<tr>
+<td>PROCESS_STATE_BACKOFF</td>
+<td>进程从正在启动状态转换为启动失败状态，Supervisor 正在重启该进程</td>
+</tr>
+<tr>
+<td>PROCESS_STATE_STOPPING</td>
+<td>进程从正在运行状态或正在启动状态转换为正在停止状态</td>
+</tr>
+<tr>
+<td>PROCESS_STATE_EXITED</td>
+<td>进程从正在运行状态转换为退出状态，expected 退出码，如果是 0 表示进程异常退出，1 表示进程正常退出。</td>
+</tr>
+<tr>
+<td>PROCESS_STATE_STOPPED</td>
+<td>进程从正在停止状态转换为已停止状态</td>
+</tr>
+<tr>
+<td>PROCESS_STATE_FATAL</td>
+<td>进程从启动失败状态(BACKOFF)转换为失败状态(FATAL). 意味着 startretries 尝试次数已达上限，Supervisor 已放弃重启该进程。</td>
+</tr>
+<tr>
+<td>PROCESS_LOG</td>
+<td>进程产生日志输出，被管理的进程需配置，stdout_events_enabled=true or stderr_events_enabled=true 这个事件通知才会生效。</td>
+</tr>
+<tr>
+<td>PROCESS_LOG_STDOUT</td>
+<td>进程产生标准输出，被管理的进程需配置，stdout_events_enabled=true</td>
+</tr>
+<tr>
+<td>PROCESS_LOG_STDERR</td>
+<td>进程产生错误输出，被管理的进程需配置，stderr_events_enabled=true</td>
+</tr>
+</tbody></table>
+<p>这里以其中一个类型为例<code>PROCESS_STATE_EXITED</code>，顾名思义，当被管理的子进程退出的时候，就会产生该 event。（关于进程状态请参考 <a href="http://supervisord.org/subprocess.html#process-states" target="_blank" rel="noopener">http://supervisord.org/subprocess.html#process-states</a> ）</p>
+<p>当 supervisord 发送一个 event 到 listener 时，会先发送一个“header”过去，类似这样</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ver:<span class="number">3.0</span> server:supervisor serial:<span class="number">21</span> pool:listener poolserial:<span class="number">10</span> eventname:PROCESS_COMMUNICATION_STDOUT len:<span class="number">54</span></span><br></pre></td></tr></table></figure>
+
+<p>header 中每项的含义：</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>var</td>
+<td>event 协议类型，目前 3.0</td>
+</tr>
+<tr>
+<td>server</td>
+<td>supervisor 的标识符，对应配置文件中[supervisord]块的 identifier</td>
+</tr>
+<tr>
+<td>serial</td>
+<td>event 的序列号</td>
+</tr>
+<tr>
+<td>pool</td>
+<td>listener 的 pool 的名字，如果 listener 只启动了一个进程，也就没有 pool 的概念了</td>
+</tr>
+<tr>
+<td>poolserial</td>
+<td>eventpool 给发送到我这个 pool 过来的 event 编的号，有点绕，只要知道与上边的 serial 不同就行了</td>
+</tr>
+<tr>
+<td>eventname</td>
+<td>event 类型名称</td>
+</tr>
+<tr>
+<td>len</td>
+<td>header 后面的 payload 部分的长度，又称<code>PAYLOAD_LENGTH</code></td>
+</tr>
+</tbody></table>
+<p>对于不同的 event type，header 的结构都是一样的，而 payload 的数据结果与类型相关。<br><code>PROCESS_STATE_EXITED</code>的 payload 结构如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">processname:cat groupname:cat from_state:RUNNING expected:0 pid:2766Copy</span><br></pre></td></tr></table></figure>
+
+<p>该 payload 中每项的含义：</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>processname</td>
+<td>进程名 cat [program:cat]</td>
+</tr>
+<tr>
+<td>groupname</td>
+<td>进程组名</td>
+</tr>
+<tr>
+<td>from_state</td>
+<td>进程在退出前是什么状态</td>
+</tr>
+<tr>
+<td>expected</td>
+<td>默认情况下 exitcodes=0,2，当退出码为 0 或 2 时，是 expected 的，此时该值为 1；其它的退出码，也就是 unexpected 了，该值为 0</td>
+</tr>
+<tr>
+<td>pid</td>
+<td>退出的进程的 pid</td>
+</tr>
+</tbody></table>
+<h4 id="Event-Listener"><a href="#Event-Listener" class="headerlink" title="Event Listener"></a>Event Listener</h4><p>编写 listener 之前，先了解一下 listener states 以及 listener 与 event 的通信协议。</p>
+<h5 id="Event-Listener-States"><a href="#Event-Listener-States" class="headerlink" title="Event Listener States"></a>Event Listener States</h5><p>一个 listener 进程可能会处于以下三种状态：</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ACKNOWLEDGED</td>
+<td>确认，相当于注册上了这个 listener</td>
+</tr>
+<tr>
+<td>READY</td>
+<td>就绪，event 可以被发送到这个 listener</td>
+</tr>
+<tr>
+<td>BUSY</td>
+<td>忙碌，event 不能被发送到这个 listener</td>
+</tr>
+</tbody></table>
+<p>当一个 listener 启动后，会进入<code>ACKNOWLEDGED</code>状态。然后它会向自己的 stdout 写一个<code>READY\n</code>，进入<code>READY</code>状态。supervisor 向<code>READY</code>状态的 listener 发一个 event 后，listener 进入<code>BUSY</code>状态。listener 返回<code>OK</code>或<code>FAIL</code>后，回到<code>ACKNOWLEDGED</code>状态。</p>
+<h5 id="Event-Listener-Notification-Protocol"><a href="#Event-Listener-Notification-Protocol" class="headerlink" title="Event Listener Notification Protocol"></a>Event Listener Notification Protocol</h5><ol>
+<li>listener 处于<code>READY</code>时，当 supervisord 产生的 event 在 listener 的配置的可接受的 events 中时，supervisord 就会把该 event 发送给该 listener，并将其状态置为<code>BUSY</code>。</li>
+<li>listener 先处理<code>header</code>获取<code>len</code>并据其读取<code>payload</code>，处理<code>payload</code>中的数据，这时候如果有相同类型的 event 产生，supersivor 会将该 event 发给相同 listener pool 中的其他 listener。</li>
+<li>listerner 处理完数据后，要向自己的 stdout 中写一条消息以告诉 supervisor 处理结果，例如<code>RESULT 2\nOK</code>或<code>RESULT 4\nFAIL</code></li>
+<li>supervisor 收到 listener 返回的结果，若为<code>OK</code>就认为处理成功；若为<code>FAIL</code>，认为 event 处理失败，会把那个 event 再次放入缓存队列并稍后再次发送。不管收到<code>OK</code>还是<code>FAIL</code>，这个 listener 都会被置为<code>ACKNOWLEDGED</code>状态。</li>
+<li>listener 被置为<code>ACKNOWLEDGED</code>状态后，这个 listener 进程可以退出并稍后自启（配置中<code>autorestart=true</code>的话），也可以继续运行。如果要继续运行，则它必须立即向自己的 stdout 中发送<code>READY</code>以让 supervisor 将其状态置为<code>READY</code>。</li>
+</ol>
+<h5 id="Writing-an-Event-Listener"><a href="#Writing-an-Event-Listener" class="headerlink" title="Writing an Event Listener"></a>Writing an Event Listener</h5><p>官方demo </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">write_stdout</span><span class="params">(s)</span>:</span></span><br><span class="line">    sys.stdout.write(s)</span><br><span class="line">    sys.stdout.flush()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">write_stderr</span><span class="params">(s)</span>:</span></span><br><span class="line">    sys.stderr.write(s)</span><br><span class="line">    sys.stderr.flush()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">        write_stdout(<span class="string">'READY\n'</span>) <span class="comment"># transition from ACKNOWLEDGED to READY</span></span><br><span class="line">        line = sys.stdin.readline()  <span class="comment"># read header line from stdin</span></span><br><span class="line">        write_stderr(line) <span class="comment"># print it out to stderr</span></span><br><span class="line">        headers = dict([ x.split(<span class="string">':'</span>) <span class="keyword">for</span> x <span class="keyword">in</span> line.split() ])</span><br><span class="line">        data = sys.stdin.read(int(headers[<span class="string">'len'</span>])) <span class="comment"># read the event payload</span></span><br><span class="line">        write_stderr(data) <span class="comment"># print the event payload to stderr</span></span><br><span class="line">        write_stdout(<span class="string">'RESULT 2\nOK'</span>) <span class="comment"># transition from READY to ACKNOWLEDGED</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br><span class="line">    <span class="keyword">import</span> sys</span><br></pre></td></tr></table></figure>
+
+<p>监控进程退出并发报警邮件的 listener:（改自 <a href="https://pypi.python.org/pypi/superlance" target="_blank" rel="noopener">superlance</a> 中的 crashmail.py）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># A event listener meant to be subscribed to PROCESS_STATE_CHANGE</span></span><br><span class="line"><span class="comment"># events.  It will send mail when processes that are children of</span></span><br><span class="line"><span class="comment"># supervisord transition unexpectedly to the EXITED state.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> supervisor <span class="keyword">import</span> childutils</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">usage</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">print</span> doc</span><br><span class="line">    sys.exit(<span class="number">255</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CrashMail</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, programs, any, email, sendmail, optionalheader)</span>:</span></span><br><span class="line"></span><br><span class="line">        self.programs = programs</span><br><span class="line">        self.any = any</span><br><span class="line">        self.email = email</span><br><span class="line">        self.sendmail = sendmail</span><br><span class="line">        self.optionalheader = optionalheader</span><br><span class="line">        self.stdin = sys.stdin</span><br><span class="line">        self.stdout = sys.stdout</span><br><span class="line">        self.stderr = sys.stderr</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">runforever</span><span class="params">(self, test=False)</span>:</span></span><br><span class="line">        <span class="comment"># 死循环, 处理完 event 不退出继续处理下一个</span></span><br><span class="line">        <span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">            <span class="comment"># 使用 self.stdin, self.stdout, self.stderr 代替 sys.* 以便单元测试</span></span><br><span class="line">            headers, payload = childutils.listener.wait(self.stdin, self.stdout)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> test:</span><br><span class="line">                self.stderr.write(str(headers) + <span class="string">'\n'</span>)</span><br><span class="line">                self.stderr.write(payload + <span class="string">'\n'</span>)</span><br><span class="line">                self.stderr.flush()</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> headers[<span class="string">'eventname'</span>] == <span class="string">'PROCESS_STATE_EXITED'</span>:</span><br><span class="line">                <span class="comment"># 如果不是 PROCESS_STATE_EXITED 类型的 event, 不处理, 直接向 stdout 写入"RESULT\nOK"</span></span><br><span class="line">                childutils.listener.ok(self.stdout)</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">            <span class="comment"># 解析 payload, 这里我们只用这个 pheaders.</span></span><br><span class="line">            <span class="comment"># pdata 在 PROCESS_LOG_STDERR 和 PROCESS_COMMUNICATION_STDOUT 等类型的 event 中才有</span></span><br><span class="line">            pheaders, pdata = childutils.eventdata(payload + <span class="string">'\n'</span>)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 过滤掉 expected 的 event, 仅处理 unexpected 的</span></span><br><span class="line">            <span class="comment"># 当 program 的退出码为对应配置中的 exitcodes 值时, expected=1; 否则为0</span></span><br><span class="line">            <span class="keyword">if</span> int(pheaders[<span class="string">'expected'</span>]):</span><br><span class="line">                childutils.listener.ok(self.stdout)</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">            hostname = socket.gethostname()</span><br><span class="line">            ip = socket.gethostbyname(hostname)</span><br><span class="line">            <span class="comment"># 构造报警内容</span></span><br><span class="line">            msg = <span class="string">"Host: %s(%s)\nProcess: %s\nPID: %s\nEXITED unexpectedly from state: %s"</span> % \</span><br><span class="line">                  (hostname, ip, pheaders[<span class="string">'processname'</span>], pheaders[<span class="string">'pid'</span>], pheaders[<span class="string">'from_state'</span>])</span><br><span class="line"></span><br><span class="line">            subject = <span class="string">' %s crashed at %s'</span> % (pheaders[<span class="string">'processname'</span>],</span><br><span class="line">                                             childutils.get_asctime())</span><br><span class="line">            <span class="keyword">if</span> self.optionalheader:</span><br><span class="line">                subject = <span class="string">'['</span> + self.optionalheader + <span class="string">']'</span> + subject</span><br><span class="line"></span><br><span class="line">            self.stderr.write(<span class="string">'unexpected exit, mailing\n'</span>)</span><br><span class="line">            self.stderr.flush()</span><br><span class="line"></span><br><span class="line">            self.mail(self.email, subject, msg)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 向 stdout 写入"RESULT\nOK"，并进入下一次循环</span></span><br><span class="line">            childutils.listener.ok(self.stdout)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 发送邮件, 可以用自己的, 也可以抽出来作为一个 module 复用</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">mail</span><span class="params">(self, email, subject, msg)</span>:</span></span><br><span class="line">        body = <span class="string">'To: %s\n'</span> % self.email</span><br><span class="line">        body += <span class="string">'Subject: %s\n'</span> % subject</span><br><span class="line">        body += <span class="string">'\n'</span></span><br><span class="line">        body += msg</span><br><span class="line">        m = os.popen(self.sendmail, <span class="string">'w'</span>)</span><br><span class="line">        m.write(body)</span><br><span class="line">        m.close()</span><br><span class="line">        self.stderr.write(<span class="string">'Mailed:\n\n%s'</span> % body)</span><br><span class="line">        self.mailed = body</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(argv=sys.argv)</span>:</span></span><br><span class="line">    <span class="comment"># 参数解析</span></span><br><span class="line">    <span class="keyword">import</span> getopt</span><br><span class="line">    short_args = <span class="string">"hp:ao:s:m:"</span></span><br><span class="line">    long_args = [</span><br><span class="line">        <span class="string">"help"</span>,</span><br><span class="line">        <span class="string">"program="</span>,</span><br><span class="line">        <span class="string">"any"</span>,</span><br><span class="line">        <span class="string">"optionalheader="</span></span><br><span class="line">        <span class="string">"sendmail_program="</span>,</span><br><span class="line">        <span class="string">"email="</span>,</span><br><span class="line">    ]</span><br><span class="line">    arguments = argv[<span class="number">1</span>:]</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        opts, args = getopt.getopt(arguments, short_args, long_args)</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        usage()</span><br><span class="line"></span><br><span class="line">    programs = []</span><br><span class="line">    any = <span class="literal">False</span></span><br><span class="line">    sendmail = <span class="string">'/usr/sbin/sendmail -t -i'</span></span><br><span class="line">    email = <span class="literal">None</span></span><br><span class="line">    optionalheader = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> option, value <span class="keyword">in</span> opts:</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> option <span class="keyword">in</span> (<span class="string">'-h'</span>, <span class="string">'--help'</span>):</span><br><span class="line">            usage()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> option <span class="keyword">in</span> (<span class="string">'-p'</span>, <span class="string">'--program'</span>):</span><br><span class="line">            programs.append(value)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> option <span class="keyword">in</span> (<span class="string">'-a'</span>, <span class="string">'--any'</span>):</span><br><span class="line">            any = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> option <span class="keyword">in</span> (<span class="string">'-s'</span>, <span class="string">'--sendmail_program'</span>):</span><br><span class="line">            sendmail = value</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> option <span class="keyword">in</span> (<span class="string">'-m'</span>, <span class="string">'--email'</span>):</span><br><span class="line">            email = value</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> option <span class="keyword">in</span> (<span class="string">'-o'</span>, <span class="string">'--optionalheader'</span>):</span><br><span class="line">            optionalheader = value</span><br><span class="line"></span><br><span class="line">    <span class="comment"># listener 必须交由 supervisor 管理, 自己运行是不行的</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> <span class="string">'SUPERVISOR_SERVER_URL'</span> <span class="keyword">in</span> os.environ:</span><br><span class="line">        sys.stderr.write(<span class="string">'crashmail must be run as a supervisor event '</span></span><br><span class="line">                         <span class="string">'listener\n'</span>)</span><br><span class="line">        sys.stderr.flush()</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    prog = CrashMail(programs, any, email, sendmail, optionalheader)</span><br><span class="line">    prog.runforever(test=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## Usage</span></span><br><span class="line">doc = <span class="string">"""\</span></span><br><span class="line"><span class="string">crashmail.py [-p processname] [-a] [-o string] [-m mail_address]</span></span><br><span class="line"><span class="string">             [-s sendmail] URL</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Options:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">-p -- specify a supervisor process_name.  Send mail when this process</span></span><br><span class="line"><span class="string">      transitions to the EXITED state unexpectedly. If this process is</span></span><br><span class="line"><span class="string">      part of a group, it can be specified using the</span></span><br><span class="line"><span class="string">      'process_name:group_name' syntax.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">-a -- Send mail when any child of the supervisord transitions</span></span><br><span class="line"><span class="string">      unexpectedly to the EXITED state unexpectedly.  Overrides any -p</span></span><br><span class="line"><span class="string">      parameters passed in the same crashmail process invocation.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">-o -- Specify a parameter used as a prefix in the mail subject header.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">-s -- the sendmail command to use to send email</span></span><br><span class="line"><span class="string">      (e.g. "/usr/sbin/sendmail -t -i").  Must be a command which accepts</span></span><br><span class="line"><span class="string">      header and message data on stdin and sends mail.  Default is</span></span><br><span class="line"><span class="string">      "/usr/sbin/sendmail -t -i".</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">-m -- specify an email address.  The script will send mail to this</span></span><br><span class="line"><span class="string">      address when crashmail detects a process crash.  If no email</span></span><br><span class="line"><span class="string">      address is specified, email will not be sent.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">The -p option may be specified more than once, allowing for</span></span><br><span class="line"><span class="string">specification of multiple processes.  Specifying -a overrides any</span></span><br><span class="line"><span class="string">selection of -p.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">A sample invocation:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">crashmail.py -p program1 -p group1:program2 -m dev@example.com</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="坑-amp-爬坑"><a href="#坑-amp-爬坑" class="headerlink" title="坑 &amp; 爬坑"></a>坑 &amp; 爬坑</h4><p>虽然 eventlistener 在配置文件中的地位上和 program 是相同的，但是待遇那可是不一样的。在使用的过程中我就遇到了两个坑，现记录如下。</p>
+<h5 id="1-号坑"><a href="#1-号坑" class="headerlink" title="1 号坑"></a>1 号坑</h5><p><strong>1 号坑属性：</strong><br>如果修改修改一个 program 的配置，使用<code>supervisorctl update</code>即可载入最新的配置并按需重启对应的 program，在终端里的表现如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ supervisorctl update</span><br><span class="line">TestCrashMail: stopped</span><br><span class="line">TestCrashMail: updated process group</span><br><span class="line">$Copy</span><br></pre></td></tr></table></figure>
+
+<p>但是对于一个 eventlistener，当修改完对应的配置后，使用<code>supervisorctl update</code>是毫无反应的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">supervisorctl updateCopy</span><br></pre></td></tr></table></figure>
+
+<p><code>restart</code>一下这个 listener？图样图森破，<code>start</code>、<code>restart</code>、<code>stop</code>这三个命令都是不会载入最新的配置文件的！</p>
+<p>瞅了全部的<code>supervisorctl</code>的命令，发现只有一个能让 listener “满血复活”的——<code>reload</code>。但是这个命令是重启 supervisord 的，被其管理的所有程序当然会全部重启，如果你只有一两个程序是用 supervisord 管理的，还能忍受；但是如果像我这样有几十个程序的，显然这么做不合适。那怎么办？</p>
+<p><strong>爬坑攻略：</strong><br>首先该方法只适用于配置分离的情况（至于把 eventlistener 直接写到 supervisord 的配置文件中是否有这个坑还不确定）。</p>
+<p>比如我的 supervisord.conf 文件中有如下配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[include]</span><br><span class="line">files = /opt/supervisor/conf.d/*.confCopy</span><br></pre></td></tr></table></figure>
+
+<p><code>/opt/supervisor/conf.d/</code>文件夹下有一个 listener 的配置<code>crashmail.conf</code>，那么通过以下命令即可顺利爬出坑：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ mv crashmail.conf crashmail.bak</span><br><span class="line">$ supervisorctl update</span><br><span class="line">crashmail: stopped</span><br><span class="line">crashmail: removed process group</span><br><span class="line">$ mv crashmail.bak crashmail.conf</span><br><span class="line">$ supervisorctl update</span><br><span class="line">crashmail: added process groupCopy</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-号坑"><a href="#2-号坑" class="headerlink" title="2 号坑"></a>2 号坑</h5><p>坑前提示：只有始终运行的 listener 会遇到该坑；运行一次后退出并自动重启的 listener 无视此坑。</p>
+<p><strong>2 号坑属性：</strong><br>一般配置 program 的时候，我们会配置<code>redirect_stderr=true</code>选项以使<code>stderr</code>重定向到<code>stdout</code>中，这样可以少一个 log 文件，方便查看。<br>但是如果 listener 中配置<code>redirect_stderr=true</code>就可能会出问题——取决于你的 listener 在处理的过程中会不会向<code>stderr</code>中有输出。<br>具体现象就是该 listener 只能处理一个 event，然后就卡在那里了，如果你重启了该 listener，它还会接收到上次的那个 event，进行处理后如此循环。</p>
+<p><strong>爬坑攻略：</strong><br>对于 eventlistener，不要配置<code>redirect_stderr=true</code>。supervisor 的 event 通信协议比较特殊，需要从<code>stdout</code>中的输出来判断 listener 的状态（详见上文中的详解），所以<code>stderr</code>重定向到<code>stdout</code>的输出可能会干扰 supervisor 对 listener 状态的判断。</p>
+<p><strong>2015-12-24 更新</strong>：3.2.0 版本中已经把<code>[eventlistener:x]</code>中的<code>redirect_stderr=true</code>设置禁用了，如果设置了的话会在启动 supervisord 时出错：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ supervisord -c /etc/supervisord.conf</span><br><span class="line">Error: [eventlistener:listener-crashmail] section sets redirect_stderr=true but this is not allowed because it will interfere with the eventlistener protocol</span><br><span class="line">For help, use /usr/local/bin/supervisord -hCopy</span><br></pre></td></tr></table></figure>
+
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><ul>
+<li><a href="http://supervisord.org/events.html" target="_blank" rel="noopener">http://supervisord.org/events.html</a></li>
+<li><a href="https://www.haoyizebo.com/posts/7f55f825/" target="_blank" rel="noopener">https://www.haoyizebo.com/posts/7f55f825/</a></li>
+<li><a href="https://www.cnblogs.com/linxiyue/p/8121982.html" target="_blank" rel="noopener">https://www.cnblogs.com/linxiyue/p/8121982.html</a></li>
+<li><a href="https://blog.csdn.net/fgf00/article/details/104579788" target="_blank" rel="noopener">https://blog.csdn.net/fgf00/article/details/104579788</a></li>
+</ul>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/linux/">linux</a>
+          
+            <a href="/tags/supervisor/">supervisor</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+    
+      <a class="next" href="/2020/10/25/linux-supervisord/">
+        <span class="next-text nav-default">Linux下Supervisor进程守护监控</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2020
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>
