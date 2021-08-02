@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Python中任务调度模块APScheduler">
+
+
+
+
+  <meta name="keywords" content="python,APScheduler,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2021/03/04/python-apscheduler/">
+
+
+<meta name="description" content="APScheduler是基于Quartz的一个Python定时任务框架。提供了基于日期、固定时间间隔以及crontab类型的任务，并且可以持久化任务。在线文档：https://apscheduler.readthedocs.io/en/latest/userguide.html  安装APSchedulerpip install apscheduler 基本架构 触发器 triggers：设定触">
+<meta name="keywords" content="python,APScheduler">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python中任务调度模块APScheduler">
+<meta property="og:url" content="http://yoursite.com/2021/03/04/python-apscheduler/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="APScheduler是基于Quartz的一个Python定时任务框架。提供了基于日期、固定时间间隔以及crontab类型的任务，并且可以持久化任务。在线文档：https://apscheduler.readthedocs.io/en/latest/userguide.html  安装APSchedulerpip install apscheduler 基本架构 触发器 triggers：设定触">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2021-08-02T10:21:46.333Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python中任务调度模块APScheduler">
+<meta name="twitter:description" content="APScheduler是基于Quartz的一个Python定时任务框架。提供了基于日期、固定时间间隔以及crontab类型的任务，并且可以持久化任务。在线文档：https://apscheduler.readthedocs.io/en/latest/userguide.html  安装APSchedulerpip install apscheduler 基本架构 触发器 triggers：设定触">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Python中任务调度模块APScheduler - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Python中任务调度模块APScheduler
+        
+      </h1>
+
+      <time class="post-time">
+          Mar 4 2021
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <blockquote>
+<p>APScheduler是基于Quartz的一个Python定时任务框架。提供了基于日期、固定时间间隔以及crontab类型的任务，并且可以持久化任务。<br>在线文档：<a href="https://apscheduler.readthedocs.io/en/latest/userguide.html" target="_blank" rel="noopener">https://apscheduler.readthedocs.io/en/latest/userguide.html</a></p>
+</blockquote>
+<h5 id="安装APScheduler"><a href="#安装APScheduler" class="headerlink" title="安装APScheduler"></a>安装APScheduler</h5><p><code>pip install apscheduler</code></p>
+<h5 id="基本架构"><a href="#基本架构" class="headerlink" title="基本架构"></a>基本架构</h5><ol>
+<li><p>触发器 triggers：设定触发任务的条件</p>
+<blockquote>
+<p>描述一个任务何时被触发，按日期或按时间间隔或按 cronjob 表达式三种方式触发</p>
+</blockquote>
+</li>
+<li><p>任务存储器 job stores：存放任务，可以放内存(默认)或数据库</p>
+<blockquote>
+<p>注：调度器之间不能共享任务存储器</p>
+</blockquote>
+</li>
+<li><p>执行器 executors：用于执行任务，可设定执行模式</p>
+<blockquote>
+<p>将指定的作业提交到线程池或者进程池中运行，任务完成通知调度器触发相应的事件。</p>
+</blockquote>
+</li>
+<li><p>调度器 schedulers：将上方三个组件作为参数，创建调度器实例执行。</p>
+<blockquote>
+<p>协调三个组件的运行。</p>
+</blockquote>
+</li>
+</ol>
+<h5 id="调度器组件-schedulers"><a href="#调度器组件-schedulers" class="headerlink" title="调度器组件(schedulers)"></a>调度器组件(schedulers)</h5><ul>
+<li><code>BlockingScheduler</code>阻塞式调度器</li>
+</ul>
+<blockquote>
+<p>调度程序是进程中唯一运行的进程，调用start函数会阻塞当前线程，不能立即返回</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.blocking <span class="keyword">import</span> BlockingScheduler</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">scheduler = BlockingScheduler()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">job1</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">print</span> <span class="string">"%s: 执行任务"</span>  % time.asctime()</span><br><span class="line"></span><br><span class="line">scheduler.add_job(job1, <span class="string">'interval'</span>, seconds=<span class="number">3</span>)</span><br><span class="line">scheduler.start()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>BackgroundScheduler</code>后台调度器</p>
+<blockquote>
+<p>当前线程不会阻塞，调度器后台执行</p>
+</blockquote>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">scheduler = BackgroundScheduler()</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">job1</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">print</span> <span class="string">"%s: 执行任务"</span>  % time.asctime()</span><br><span class="line"></span><br><span class="line">scheduler.add_job(job1, <span class="string">'interval'</span>, seconds=<span class="number">3</span>)</span><br><span class="line">scheduler.start()</span><br><span class="line">time.sleep(<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>AsyncIOScheduler</code>AsyncIO调度器</p>
+<blockquote>
+<p>适用于使用了asyncio的情况</p>
+</blockquote>
+</li>
+<li><p><code>GeventScheduler</code>Gevent调度器</p>
+<blockquote>
+<p>使用了Gevent的情况</p>
+</blockquote>
+</li>
+<li><p><code>TornadoScheduler</code>Tornado调度器</p>
+<blockquote>
+<p>适用于构建Tornado应用</p>
+</blockquote>
+</li>
+<li><p><code>TwistedScheduler</code> Twisted调度器</p>
+<blockquote>
+<p>适用于构建Twisted应用</p>
+</blockquote>
+</li>
+<li><p><code>QtScheduler</code> Qt调度器</p>
+<blockquote>
+<p>适用于构建Qt应用</p>
+</blockquote>
+</li>
+</ul>
+<h5 id="触发器组件-trigger"><a href="#触发器组件-trigger" class="headerlink" title="触发器组件(trigger)"></a>触发器组件(trigger)</h5><ol>
+<li><p><code>date</code>：只在某个时间点执行一次，具体日期</p>
+<blockquote>
+<p><code>run_date(datetime|str)</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; Copyscheduler.add_job(my_job, <span class="string">'date'</span>, run_date=datetime(<span class="number">2019</span>, <span class="number">7</span>, <span class="number">12</span>, <span class="number">15</span>, <span class="number">30</span>, <span class="number">5</span>), args=[])</span><br><span class="line">&gt; scheduler.add_job(my_job, <span class="string">'date'</span>, run_date=<span class="string">"2019-07-12"</span>, args=[])</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p><code>timezone</code> 指定时区</p>
+</blockquote>
+</li>
+<li><p><code>interval</code>：每隔一段时间允许一次，时间间隔</p>
+<blockquote>
+<p><code>weeks=0 | days=0 | hours=0 | minutes=0 | seconds=0, start_date=None, end_date=None, timezone=None</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; Copyscheduler.add_job(my_job, <span class="string">'interval'</span>, hours=<span class="number">2</span>)</span><br><span class="line">&gt; scheduler.add_job(my_job, <span class="string">'interval'</span>, hours=<span class="number">2</span>, start_date=<span class="string">'2017-9-8 21:30:00'</span>, end_date=<span class="string">'2018-06-15 21:30:00)</span></span><br><span class="line"><span class="string">&gt;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p><code>cron</code>：任务的运行周期</p>
+<blockquote>
+<p><code>(year=None, month=None, day=None, week=None, day_of_week=None, hour=None, minute=None, second=None, start_date=None, end_date=None, timezone=None)</code></p>
+<p>除了week和 day_of_week，它们的默认值是<code>*</code></p>
+<p>例如<code>day=1, minute=20</code>，这就等于<code>year=&#39;*&#39;, month=&#39;*&#39;, day=1, week=&#39;*&#39;, day_of_week=&#39;*&#39;, hour=&#39;*&#39;, minute=20, second=0</code>，工作将在每个月的第一天以每小时20分钟的时间执行</p>
+</blockquote>
+</li>
+<li><p>表达式</p>
+<table>
+<thead>
+<tr>
+<th>表达式</th>
+<th>参数类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*</td>
+<td>所有</td>
+<td>通配符。例：<code>minutes=*</code>即每分钟触发</td>
+</tr>
+<tr>
+<td>*/a</td>
+<td>所有</td>
+<td>可被a整除的通配符。</td>
+</tr>
+<tr>
+<td>a-b</td>
+<td>所有</td>
+<td>范围a-b触发</td>
+</tr>
+<tr>
+<td>a-b/c</td>
+<td>所有</td>
+<td>范围a-b，且可被c整除时触发</td>
+</tr>
+<tr>
+<td>xth y</td>
+<td>日</td>
+<td>第几个星期几触发。x为第几个，y为星期几</td>
+</tr>
+<tr>
+<td>last x</td>
+<td>日</td>
+<td>一个月中，最后个星期几触发</td>
+</tr>
+<tr>
+<td>last</td>
+<td>日</td>
+<td>一个月最后一天触发</td>
+</tr>
+<tr>
+<td>x,y,z</td>
+<td>所有</td>
+<td>组合表达式，可以组合确定值或上方的表达式</td>
+</tr>
+</tbody></table>
+</li>
+</ol>
+<blockquote>
+<p>注：当设置的时间间隔小于，任务的执行时间，线程会阻塞住，等待执行完了才能执行下一个任务，可以设置<code>max_instance</code>指定一个任务同一时刻有多少个实例在运行，默认为1</p>
+</blockquote>
+<h5 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h5><ol>
+<li><p><a href="https://www.cnblogs.com/mangM/p/11187015.html" target="_blank" rel="noopener">https://www.cnblogs.com/mangM/p/11187015.html</a></p>
+</li>
+<li><p><a href="https://www.cnblogs.com/gdjlc/p/11432526.html" target="_blank" rel="noopener">https://www.cnblogs.com/gdjlc/p/11432526.html</a></p>
+</li>
+</ol>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/python/">python</a>
+          
+            <a href="/tags/APScheduler/">APScheduler</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+    
+      <a class="next" href="/2021/03/01/python-retrying/">
+        <span class="next-text nav-default">Python中重试模块retrying</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2021
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  
+  </body>
+</html>
