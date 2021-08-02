@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Python中重试模块retrying">
+
+
+
+
+  <meta name="keywords" content="python,retrying,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2021/03/01/python-retrying/">
+
+
+<meta name="description" content="利用Python Requests做网络请求时，经常有超时的问题，需要在超时的时候做一些重试机制。Python有一个重试的 retrying模块  模块安装如下: 1pip install retrying    retrying是一个 Python的重试包，可以用来自动重试一些可能运行失败的程序段。retrying提供一个装饰器函数retry，被装饰的函数就会在运行失败的条件下重新执行，默认只要">
+<meta name="keywords" content="python,retrying">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python中重试模块retrying">
+<meta property="og:url" content="http://yoursite.com/2021/03/01/python-retrying/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="利用Python Requests做网络请求时，经常有超时的问题，需要在超时的时候做一些重试机制。Python有一个重试的 retrying模块  模块安装如下: 1pip install retrying    retrying是一个 Python的重试包，可以用来自动重试一些可能运行失败的程序段。retrying提供一个装饰器函数retry，被装饰的函数就会在运行失败的条件下重新执行，默认只要">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2021-08-02T07:30:59.510Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python中重试模块retrying">
+<meta name="twitter:description" content="利用Python Requests做网络请求时，经常有超时的问题，需要在超时的时候做一些重试机制。Python有一个重试的 retrying模块  模块安装如下: 1pip install retrying    retrying是一个 Python的重试包，可以用来自动重试一些可能运行失败的程序段。retrying提供一个装饰器函数retry，被装饰的函数就会在运行失败的条件下重新执行，默认只要">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Python中重试模块retrying - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Python中重试模块retrying
+        
+      </h1>
+
+      <time class="post-time">
+          Mar 1 2021
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>利用Python Requests做网络请求时，经常有超时的问题，需要在超时的时候做一些重试机制。Python有一个重试的 retrying模块 </p>
+<p>模块安装如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install retrying</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p> retrying是一个 Python的重试包，可以用来自动重试一些可能运行失败的程序段。retrying提供一个装饰器函数retry，被装饰的函数就会在运行失败的条件下重新执行，默认只要一直报错就会不断重试。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 示例如下</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">from</span> retrying <span class="keyword">import</span> retry</span><br><span class="line"><span class="meta">@retry</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">do_something_unreliable</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">if</span> random.randint(<span class="number">0</span>, <span class="number">10</span>) &gt; <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">raise</span> IOError(<span class="string">"Broken sauce, everything is hosed!!!111one"</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Awesome sauce!"</span></span><br><span class="line">print(do_something_unreliable())</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>stop_max_attempt_number：用来设定最大的尝试次数，超过该次数就停止重试</p>
+</li>
+<li><p>stop_max_delay：比如设置成10000，那么从被装饰的函数开始执行的时间点开始，到函数成功运行结束或者失败报错中止的时间点，只要这段时间超过10秒，函数就不会再执行了</p>
+</li>
+<li><p>wait_fixed：设置在两次retrying之间的停留时间</p>
+</li>
+<li><p>wait_random_min和wait_random_max：用随机的方式产生两次retrying之间的停留时间</p>
+</li>
+<li><p>wait_exponential_multiplier和wait_exponential_max：以指数的形式产生两次retrying之间的停留时间，产生的值为2^previous_attempt_number * wait_exponential_multiplier，previous_attempt_number是前面已经retry的次数，如果产生的这个值超过了wait_exponential_max的大小，那么之后两个retrying之间的停留值都为wait_exponential_max。这个设计迎合了exponential backoff算法，可以减轻阻塞的情况。</p>
+</li>
+<li><p>我们可以指定要在出现哪些异常的时候再去retry，这个要用retry_on_exception传入一个函数对象：</p>
+<p>在执行read_a_file函数的过程中，如果报出异常，那么这个异常会以形参exception传入retry_if_io_error函数中，如果exception是IOError那么就进行retry，如果不是就停止运行并抛出异常。示例如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">retry_if_io_error</span><span class="params">(exception)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> isinstance(exception, IOError)</span><br><span class="line"><span class="meta">@retry(retry_on_exception=retry_if_io_error)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_a_file</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">"file"</span>, <span class="string">"r"</span>) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">return</span> f.read()</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这种方法只能判断单一的异常，而且扩展性不够高</p>
+<p>我们可以指定要在得到哪些结果的时候去retry，这个要用retry_on_result传入一个函数对象：</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 通过返回值判断是否重试</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">retry_if_result_none</span><span class="params">(result)</span>:</span></span><br><span class="line">        <span class="string">"""Return True if we should retry (in this case when result is None), False otherwise"""</span></span><br><span class="line">        <span class="comment"># return result is None</span></span><br><span class="line">        <span class="keyword">if</span> result ==<span class="string">"111"</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @retry(stop_max_attempt_number=5,retry_on_result=retry_if_result_none)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">might_return_none</span><span class="params">()</span>:</span></span><br><span class="line">        print(<span class="string">"Retry forever ignoring Exceptions with no wait if return value is None"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"111"</span></span><br><span class="line"></span><br><span class="line">    might_return_none()</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h5 id="参考"><a href="#参考" class="headerlink" title="参考:"></a>参考:</h5><ol>
+<li><p><a href="https://www.cnblogs.com/mangM/p/11207202.html" target="_blank" rel="noopener">https://www.cnblogs.com/mangM/p/11207202.html</a></p>
+</li>
+<li><p><a href="https://github.com/rholder/retrying" target="_blank" rel="noopener">https://github.com/rholder/retrying</a></p>
+</li>
+</ol>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/python/">python</a>
+          
+            <a href="/tags/retrying/">retrying</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+    
+      <a class="next" href="/2020/11/25/linux-supervisord/">
+        <span class="next-text nav-default">Supervisor 管理进程服务重启报警</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2021
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  <script type="application/ld+json">
+  {
+  "@context": "http://www.schema.org",
+  "@type": "Person",
+  "@id": "https://huangyijie.com/about/",
+  "name": "黄奕杰",
+  "alternateName": "Henry Huang",
+  "nationality": "中国",
+  "birthPlace" : {
+    "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+      "addressLocality": "汕头市",
+      "addressRegion": "广东省",
+          "addressCountry": "中国"
+    }
+  },
+  "gender": "Male",
+  "Description": "Software Engineer",
+  "disambiguatingDescription": "Full stack software engineer, focus on Java and JavaScript.",
+  "jobTitle": "Software Engineer",
+  "url": "https://huangyijie.com",
+  "image": "https://s.gravatar.com/avatar/4e0e61fdf1b2bcfb4ee31da27601fe6b?s=512&r=g",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "深圳市",
+    "addressRegion": "广东省",
+    "addressCountry": "中国"
+  },
+  "sameAs": [
+    "http://weibo.com/626242034",
+    "https://github.com/henryhuang",
+    "https://unsplash.com/@henryhh"
+    ]
+  }
+  </script>
+  </body>
+</html>
