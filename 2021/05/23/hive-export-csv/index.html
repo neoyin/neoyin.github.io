@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Hive命令导出数据">
+
+
+
+
+  <meta name="keywords" content="python,pandas,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2021/05/23/hive-export-csv/">
+
+
+<meta name="description" content="Hive 导出csv文件  1Hive -e &apos;select * from your_Table&apos; | sed &apos;s/[\t]/,/g&apos;  &amp;gt; /home/yourfile.csv  可以在SELECT之前指定属性set Hive.cli.print.header=true，以确保创建标头以及数据并将其复制到文件中。例如： 1Hive -e &apos;set Hive.cli.print.heade">
+<meta name="keywords" content="python,pandas">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hive命令导出数据">
+<meta property="og:url" content="http://yoursite.com/2021/05/23/hive-export-csv/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="Hive 导出csv文件  1Hive -e &apos;select * from your_Table&apos; | sed &apos;s/[\t]/,/g&apos;  &amp;gt; /home/yourfile.csv  可以在SELECT之前指定属性set Hive.cli.print.header=true，以确保创建标头以及数据并将其复制到文件中。例如： 1Hive -e &apos;set Hive.cli.print.heade">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2021-09-02T02:10:43.625Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hive命令导出数据">
+<meta name="twitter:description" content="Hive 导出csv文件  1Hive -e &apos;select * from your_Table&apos; | sed &apos;s/[\t]/,/g&apos;  &amp;gt; /home/yourfile.csv  可以在SELECT之前指定属性set Hive.cli.print.header=true，以确保创建标头以及数据并将其复制到文件中。例如： 1Hive -e &apos;set Hive.cli.print.heade">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Hive命令导出数据 - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Hive命令导出数据
+        
+      </h1>
+
+      <time class="post-time">
+          May 23 2021
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>Hive 导出csv文件 </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hive -e '<span class="keyword">select</span> * <span class="keyword">from</span> your_Table<span class="string">' | sed '</span>s/[\t]/,/g<span class="string">'  &gt; /home/yourfile.csv</span></span><br></pre></td></tr></table></figure>
+
+<p>可以在<code>SELECT</code>之前指定属性<code>set Hive.cli.print.header=true</code>，以确保创建标头以及数据并将其复制到文件中。例如：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hive -e '<span class="keyword">set</span> Hive.cli.print.header=<span class="literal">true</span>; <span class="keyword">select</span> * <span class="keyword">from</span> your_Table<span class="string">' | sed '</span>s/[\t]/,/g<span class="string">'  &gt; /home/yourfile.csv</span></span><br></pre></td></tr></table></figure>
+
+<p>如果您使用的是Hive 11或更高版本，则可以将<code>INSERT</code>语句与<code>LOCAL</code>关键字一起使用。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> overwrite <span class="keyword">local</span> <span class="keyword">directory</span> <span class="string">'/home/carter/staging'</span> <span class="keyword">row</span> <span class="keyword">format</span> <span class="keyword">delimited</span> <span class="keyword">fields</span> <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">','</span> <span class="keyword">select</span> * <span class="keyword">from</span> hugetable;</span><br><span class="line"><span class="comment"># 这里会生成大量的随机文件 需要合并 </span></span><br><span class="line">cat /LocalPath<span class="comment">/* &gt; /LocalPath/table.csv</span></span><br></pre></td></tr></table></figure>
+
+<p>或者利用Beeline</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">beeline -u &quot;jdbc:hive2://$&#123;ip&#125;&quot; -n anbao -p Algorithm_at_g7 --silent=true --outputformat=csv2 --incremental=true -e &apos;select geohash,course,road_class,province,city,county from dwd_device.dwd_roadtype_baidu_fixed_geohash_f_p_weekly where geohash_type=&quot;bd_7&quot;;&apos; &gt;  /data/roadtype_data/db/bd_10_cource.csv</span><br></pre></td></tr></table></figure>
+
+<h5 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h5><ol>
+<li><a href="https://www.it-swarm.cn/zh/csv/%E5%A6%82%E4%BD%95%E5%B0%86hive%E8%A1%A8%E5%AF%BC%E5%87%BA%E5%88%B0csv%E6%96%87%E4%BB%B6%EF%BC%9F/1073244602/" target="_blank" rel="noopener">https://www.it-swarm.cn/zh/csv/%E5%A6%82%E4%BD%95%E5%B0%86hive%E8%A1%A8%E5%AF%BC%E5%87%BA%E5%88%B0csv%E6%96%87%E4%BB%B6%EF%BC%9F/1073244602/</a></li>
+<li><a href="https://www.docs4dev.com/docs/zh/apache-hive/3.1.1/reference/LanguageManual_WindowingAndAnalytics.html" target="_blank" rel="noopener">https://www.docs4dev.com/docs/zh/apache-hive/3.1.1/reference/LanguageManual_WindowingAndAnalytics.html</a></li>
+</ol>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/python/">python</a>
+          
+            <a href="/tags/pandas/">pandas</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+    
+      <a class="next" href="/2021/05/21/pika-save-bigdata/">
+        <span class="next-text nav-default">利用Pika存储查询大数据</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2021
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  
+  </body>
+</html>
