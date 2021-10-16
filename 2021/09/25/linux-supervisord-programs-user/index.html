@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Supervisor以某用户启动program">
+
+
+
+
+  <meta name="keywords" content="linux,supervisor,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2021/09/25/linux-supervisord-programs-user/">
+
+
+<meta name="description" content="Supervisor 配置以某用户启动 supervisor使用root启动，但是program 为非root 用户 添加user后不能生效，  123456789101112[program:jupyter]; 用哪个用户启动user= jupyter; 程序的启动目录directory = /home/jupyter/.jupyter; 启动命令command = /home/jupyter/">
+<meta name="keywords" content="linux,supervisor">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Supervisor以某用户启动program">
+<meta property="og:url" content="http://yoursite.com/2021/09/25/linux-supervisord-programs-user/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="Supervisor 配置以某用户启动 supervisor使用root启动，但是program 为非root 用户 添加user后不能生效，  123456789101112[program:jupyter]; 用哪个用户启动user= jupyter; 程序的启动目录directory = /home/jupyter/.jupyter; 启动命令command = /home/jupyter/">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2021-10-15T13:16:36.241Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Supervisor以某用户启动program">
+<meta name="twitter:description" content="Supervisor 配置以某用户启动 supervisor使用root启动，但是program 为非root 用户 添加user后不能生效，  123456789101112[program:jupyter]; 用哪个用户启动user= jupyter; 程序的启动目录directory = /home/jupyter/.jupyter; 启动命令command = /home/jupyter/">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Supervisor以某用户启动program - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Supervisor以某用户启动program
+        
+      </h1>
+
+      <time class="post-time">
+          Sep 25 2021
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h6 id="Supervisor-配置以某用户启动"><a href="#Supervisor-配置以某用户启动" class="headerlink" title="Supervisor 配置以某用户启动"></a>Supervisor 配置以某用户启动</h6><blockquote>
+<p>supervisor使用root启动，但是program 为非root 用户</p>
+<p>添加user后不能生效，</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[program:jupyter]</span><br><span class="line">; 用哪个用户启动</span><br><span class="line">user= jupyter</span><br><span class="line"></span><br><span class="line">; 程序的启动目录</span><br><span class="line">directory = /home/jupyter/.jupyter</span><br><span class="line">; 启动命令</span><br><span class="line">command = /home/jupyter/.jupyter/start.sh</span><br><span class="line"></span><br><span class="line">; stdout 日志文件，需要注意当指定目录不存在时无法正常启动，所以需要手动创建目录（supervisord 会自动创建日志文件）</span><br><span class="line">stdout_logfile = /data/app_log/jupyter_stdout.log</span><br><span class="line">stderr_logfile = /data/app_log/jupyter_stderr.log</span><br></pre></td></tr></table></figure>
+
+<h6 id="需配置environment"><a href="#需配置environment" class="headerlink" title="需配置environment"></a>需配置environment</h6><blockquote>
+<p><a href="http://supervisord.org/subprocess.html#subprocess-environment" target="_blank" rel="noopener">http://supervisord.org/subprocess.html#subprocess-environment</a></p>
+<p>No shell is executed by supervisord when it runs a subprocess, so environment variables such as USER, PATH, HOME, SHELL, LOGNAME, etc. are not changed from their defaults or otherwise reassigned. This is particularly important to note when you are running a program from a supervisord run as root with a user= stanza in the configuration. Unlike cron, supervisord does not attempt to divine and override “fundamental” environment variables like USER, PATH, HOME, and LOGNAME when it performs a setuid to the user defined within the user= program config option. If you need to set environment variables for a particular program that might otherwise be set by a shell invocation for a particular user, you must do it explicitly within the environment= program config option. An example of setting these enviroment variables is as below.</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">environment=HOME="/home/jupyter",USER="jupyter"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 示例</span><br><span class="line">[program:apache2]</span><br><span class="line">command=/home/chrism/bin/httpd -c "ErrorLog</span><br><span class="line">/dev/stdout" -DFOREGROUND user=chrism</span><br><span class="line">environment=HOME="/home/chrism",USER="chrism"</span><br></pre></td></tr></table></figure>
+
+<h6 id="报错-child-process-was-not-spawned"><a href="#报错-child-process-was-not-spawned" class="headerlink" title="报错 child process was not spawned"></a>报错 <code>child process was not spawned</code></h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">supervisor: couldn't exec /tmp/start_queue.sh: ENOEXEC</span><br><span class="line">supervisor: child process was not spawned</span><br><span class="line"><span class="meta">#</span>## 解决 需要添加</span><br><span class="line">Add #!/bin/sh at the beginning of script.</span><br></pre></td></tr></table></figure>
+
+<h6 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h6><ol>
+<li><a href="https://stackoverflow.com/questions/27291448/supervisor-config-user-option-in-program-section" target="_blank" rel="noopener">https://stackoverflow.com/questions/27291448/supervisor-config-user-option-in-program-section</a></li>
+<li><a href="https://stackoverflow.com/questions/18869925/supervisord-error-child-process-was-not-spawned" target="_blank" rel="noopener">https://stackoverflow.com/questions/18869925/supervisord-error-child-process-was-not-spawned</a></li>
+</ol>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/linux/">linux</a>
+          
+            <a href="/tags/supervisor/">supervisor</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+    
+      <a class="next" href="/2021/09/04/nginx-python-jupyter/">
+        <span class="next-text nav-default">Nginx配置Jupyter子路径</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2021
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  
+  </body>
+</html>

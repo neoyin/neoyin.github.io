@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Nginx配置Jupyter子路径">
+
+
+
+
+  <meta name="keywords" content="python,nginx,jupyter,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2021/09/04/nginx-python-jupyter/">
+
+
+<meta name="description" content="#####Jupter 相关配置 1234567# ~/.jupyter/jupyter_notebook_config.pyc.NotebookApp.port = 8878c.NotebookApp.base_url = &apos;/groot&apos;# 去除jupter密码设置c.NotebookApp.password_required = Falsec.NotebookApp.token = &apos;&apos;c.">
+<meta name="keywords" content="python,nginx,jupyter">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx配置Jupyter子路径">
+<meta property="og:url" content="http://yoursite.com/2021/09/04/nginx-python-jupyter/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="#####Jupter 相关配置 1234567# ~/.jupyter/jupyter_notebook_config.pyc.NotebookApp.port = 8878c.NotebookApp.base_url = &apos;/groot&apos;# 去除jupter密码设置c.NotebookApp.password_required = Falsec.NotebookApp.token = &apos;&apos;c.">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2021-10-15T14:11:40.384Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nginx配置Jupyter子路径">
+<meta name="twitter:description" content="#####Jupter 相关配置 1234567# ~/.jupyter/jupyter_notebook_config.pyc.NotebookApp.port = 8878c.NotebookApp.base_url = &apos;/groot&apos;# 去除jupter密码设置c.NotebookApp.password_required = Falsec.NotebookApp.token = &apos;&apos;c.">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Nginx配置Jupyter子路径 - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Nginx配置Jupyter子路径
+        
+      </h1>
+
+      <time class="post-time">
+          Sep 4 2021
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>#####Jupter 相关配置</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ~/.jupyter/jupyter_notebook_config.py</span></span><br><span class="line">c.NotebookApp.port = <span class="number">8878</span></span><br><span class="line">c.NotebookApp.base_url = <span class="string">'/groot'</span></span><br><span class="line"><span class="comment"># 去除jupter密码设置</span></span><br><span class="line">c.NotebookApp.password_required = <span class="literal">False</span></span><br><span class="line">c.NotebookApp.token = <span class="string">''</span></span><br><span class="line">c.NotebookApp.password = <span class="string">u''</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="Nginx相关配置"><a href="#Nginx相关配置" class="headerlink" title="Nginx相关配置"></a>Nginx相关配置</h5><p>添加相关配置</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 添加一个upstream</span></span><br><span class="line"> upstream upstream_groot &#123;</span><br><span class="line">   server localhost:<span class="number">8888</span>;</span><br><span class="line">   keepalive <span class="number">32</span>;</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> location = /groot &#123;</span><br><span class="line">     rewrite ^/(.*)$ $<span class="number">1</span>/ permanent;</span><br><span class="line">   &#125;</span><br><span class="line">   location /groot &#123;</span><br><span class="line">     error_page <span class="number">403</span> = @proxy_groot;</span><br><span class="line">     deny <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>;</span><br><span class="line">     allow all;</span><br><span class="line">     <span class="comment"># set a webroot, if there is one</span></span><br><span class="line">     root /some-webroot;</span><br><span class="line">     try_files $uri @proxy_groot;</span><br><span class="line">   &#125;</span><br><span class="line">   location @proxy_groot &#123;</span><br><span class="line">     <span class="comment">#rewrite /groot(.*) $1  break;</span></span><br><span class="line">     proxy_read_timeout <span class="number">300</span>s;</span><br><span class="line">     proxy_pass http://upstream_groot;</span><br><span class="line">     <span class="comment"># pass some extra stuff to the backend</span></span><br><span class="line">     proxy_set_header Host $host;</span><br><span class="line">     proxy_set_header X-Real-Ip $remote_addr;</span><br><span class="line">     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">   &#125;</span><br><span class="line">   location ~ /groot/api/kernels/ &#123;</span><br><span class="line">           proxy_pass            http://upstream_groot;</span><br><span class="line">           proxy_set_header      Host $host;</span><br><span class="line">           <span class="comment"># websocket support</span></span><br><span class="line">           proxy_http_version    <span class="number">1.1</span>;</span><br><span class="line">           proxy_set_header      Upgrade <span class="string">"websocket"</span>;</span><br><span class="line">           proxy_set_header      Connection <span class="string">"Upgrade"</span>;</span><br><span class="line">           proxy_read_timeout    <span class="number">86400</span>;</span><br><span class="line">       &#125;</span><br><span class="line">   location ~ /groot/terminals/ &#123;</span><br><span class="line">           proxy_pass            http://upstream_groot;</span><br><span class="line">           proxy_set_header      Host $host;</span><br><span class="line">           <span class="comment"># websocket support</span></span><br><span class="line">           proxy_http_version    <span class="number">1.1</span>;</span><br><span class="line">           proxy_set_header      Upgrade <span class="string">"websocket"</span>;</span><br><span class="line">           proxy_set_header      Connection <span class="string">"Upgrade"</span>;</span><br><span class="line">           proxy_read_timeout    <span class="number">86400</span>;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h5><ol>
+<li><p><a href="https://www.nathantsoi.com/blog/run-jupyter-notebook-behind-a-nginx-reverse-proxy-subpath/index.html" target="_blank" rel="noopener">https://www.nathantsoi.com/blog/run-jupyter-notebook-behind-a-nginx-reverse-proxy-subpath/index.html</a></p>
+</li>
+<li><p><a href="https://www.pianshen.com/article/1434301772/" target="_blank" rel="noopener">https://www.pianshen.com/article/1434301772/</a></p>
+</li>
+</ol>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/python/">python</a>
+          
+            <a href="/tags/nginx/">nginx</a>
+          
+            <a href="/tags/jupyter/">jupyter</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2021/09/25/linux-supervisord-programs-user/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Supervisor以某用户启动program</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2021/06/04/pandas-process-data-basic/">
+        <span class="next-text nav-default">Pandas处理数据的基本操作</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2021
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  
+  </body>
+</html>
