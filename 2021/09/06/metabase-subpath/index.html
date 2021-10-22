@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="Metabase配置子路径">
+
+
+
+
+  <meta name="keywords" content="nginx,metabase,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2021/09/06/metabase-subpath/">
+
+
+<meta name="description" content="##### 之前在服务器上安装了metabase 但是需要实现子路径访问 如 http://ip/metabase 通过nginx 配置proxy_path 后并不能很好的实现，需要对一些静态资源等也同时处理 解决方案12# 启动时添加系统参数 MB_BASE_HREF=/metabase/  nginx中配置： 123location /metabase/ &amp;#123;    proxy_pas">
+<meta name="keywords" content="nginx,metabase">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Metabase配置子路径">
+<meta property="og:url" content="http://yoursite.com/2021/09/06/metabase-subpath/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="##### 之前在服务器上安装了metabase 但是需要实现子路径访问 如 http://ip/metabase 通过nginx 配置proxy_path 后并不能很好的实现，需要对一些静态资源等也同时处理 解决方案12# 启动时添加系统参数 MB_BASE_HREF=/metabase/  nginx中配置： 123location /metabase/ &amp;#123;    proxy_pas">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2021-10-16T12:09:49.817Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Metabase配置子路径">
+<meta name="twitter:description" content="##### 之前在服务器上安装了metabase 但是需要实现子路径访问 如 http://ip/metabase 通过nginx 配置proxy_path 后并不能很好的实现，需要对一些静态资源等也同时处理 解决方案12# 启动时添加系统参数 MB_BASE_HREF=/metabase/  nginx中配置： 123location /metabase/ &amp;#123;    proxy_pas">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Metabase配置子路径 - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Metabase配置子路径
+        
+      </h1>
+
+      <time class="post-time">
+          Sep 6 2021
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>#####</p>
+<p>之前在服务器上安装了<a href="https://www.metabase.com/" target="_blank" rel="noopener">metabase</a> 但是需要实现子路径访问 如 <code>http://ip/metabase</code></p>
+<p>通过nginx 配置<code>proxy_path</code> 后并不能很好的实现，需要对一些静态资源等也同时处理</p>
+<h6 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 启动时添加系统参数 </span><br><span class="line">MB_BASE_HREF=/metabase/</span><br></pre></td></tr></table></figure>
+
+<p>nginx中配置：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> /metabase/ &#123;</span><br><span class="line">    <span class="attribute">proxy_pass</span> http://localhost:3000/;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h6><ol>
+<li><p><a href="https://github.com/metabase/metabase/pull/2393" target="_blank" rel="noopener">https://github.com/metabase/metabase/pull/2393</a></p>
+</li>
+<li><p><a href="https://stackoverflow.com/questions/1889076/what-are-the-recommendations-for-html-base-tag" target="_blank" rel="noopener">https://stackoverflow.com/questions/1889076/what-are-the-recommendations-for-html-base-tag</a></p>
+</li>
+</ol>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/nginx/">nginx</a>
+          
+            <a href="/tags/metabase/">metabase</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2021/09/25/linux-supervisord-programs-user/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Supervisor以某用户启动program</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2021/09/04/nginx-python-jupyter/">
+        <span class="next-text nav-default">Nginx配置Jupyter子路径</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2021
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  
+  </body>
+</html>
