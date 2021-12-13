@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang>
+  <head><meta name="generator" content="Hexo 3.9.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="description" content="使用Java-Cipher解密js-crypto">
+
+
+
+
+  <meta name="keywords" content="crypto-js,java-cipher,">
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦">
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1">
+
+
+
+<link rel="canonical" href="http://yoursite.com/2021/10/23/java-cipher-decrypt-crypto-js/">
+
+
+<meta name="description" content="开发用有时前后端会对一些信息进行加解密，如一些API需要对一些敏感信息做加密，html端使用crypto-js做解密如下： 12345678// JS 使用 crypto-js 对秘文解密var decrypted = CryptoJS.AES.decrypt(CryptoJS.enc.Base64.stringify(CryptoJS.enc.Hex.parse(string)),">
+<meta name="keywords" content="crypto-js,java-cipher">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Java-Cipher解密js-crypto">
+<meta property="og:url" content="http://yoursite.com/2021/10/23/java-cipher-decrypt-crypto-js/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="开发用有时前后端会对一些信息进行加解密，如一些API需要对一些敏感信息做加密，html端使用crypto-js做解密如下： 12345678// JS 使用 crypto-js 对秘文解密var decrypted = CryptoJS.AES.decrypt(CryptoJS.enc.Base64.stringify(CryptoJS.enc.Hex.parse(string)),">
+<meta property="og:locale" content="cn">
+<meta property="og:updated_time" content="2021-12-10T06:52:56.702Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Java-Cipher解密js-crypto">
+<meta name="twitter:description" content="开发用有时前后端会对一些信息进行加解密，如一些API需要对一些敏感信息做加密，html端使用crypto-js做解密如下： 12345678// JS 使用 crypto-js 对秘文解密var decrypted = CryptoJS.AES.decrypt(CryptoJS.enc.Base64.stringify(CryptoJS.enc.Hex.parse(string)),">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> 使用Java-Cipher解密js-crypto - 浮生若梦 </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          使用Java-Cipher解密js-crypto
+        
+      </h1>
+
+      <time class="post-time">
+          Oct 23 2021
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>开发用有时前后端会对一些信息进行加解密，如一些API需要对一些敏感信息做加密，html端使用<code>crypto-js</code>做解密如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// JS 使用 crypto-js 对秘文解密</span></span><br><span class="line"><span class="keyword">var</span> decrypted = CryptoJS.AES.decrypt(CryptoJS.enc.Base64.stringify(CryptoJS.enc.Hex.parse(string)),</span><br><span class="line">            CryptoJS.enc.Utf8.parse(kkk), &#123;</span><br><span class="line">                mode: CryptoJS.mode.CBC,</span><br><span class="line">                padding: CryptoJS.pad.Pkcs7,</span><br><span class="line">                iv: CryptoJS.enc.Utf8.parse(vvv),</span><br><span class="line">            &#125;);</span><br><span class="line"><span class="keyword">return</span> decrypted.toString(CryptoJS.enc.Utf8).toString()</span><br></pre></td></tr></table></figure>
+
+<p>使用JAVA代码实现如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * AES解密</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> encryptStr 密文</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> decryptKey 秘钥，必须为16个字符组成</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> 明文</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">aesDecrypt</span><span class="params">(String encryptStr, String decryptKey,String vectorKey)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (StringUtils.isEmpty(encryptStr) || StringUtils.isEmpty(decryptKey)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">byte</span>[] bytes = Hex.decodeHex(encryptStr.toCharArray());</span><br><span class="line">    SecretKey secretKey = <span class="keyword">new</span> SecretKeySpec(decryptKey.getBytes(), <span class="string">"AES"</span>);</span><br><span class="line">    IvParameterSpec iv = <span class="keyword">new</span> IvParameterSpec(vectorKey.getBytes());</span><br><span class="line">    Cipher cipher = Cipher.getInstance(<span class="string">"AES/CBC/PKCS5Padding"</span>);</span><br><span class="line">    cipher.init(Cipher.DECRYPT_MODE, secretKey, iv);</span><br><span class="line">    <span class="keyword">byte</span>[] decryptBytes = cipher.doFinal(bytes);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> String(decryptBytes);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="Cipher类提供了加密和解密的功能。"><a href="#Cipher类提供了加密和解密的功能。" class="headerlink" title="Cipher类提供了加密和解密的功能。"></a>Cipher类提供了加密和解密的功能。</h5><p>该项目使用Cipher类完成aes，des，des3和rsa加密.</p>
+<blockquote>
+<p>获取Cipher类的对象：<code>Cipher cipher = Cipher.getInstance(&quot;DES/CBC/PKCS5Padding&quot;);</code> 参数按”算法/模式/填充模式”，有以下的参数</p>
+</blockquote>
+<ul>
+<li>AES/CBC/NoPadding (128)</li>
+<li>AES/CBC/PKCS5Padding (128)</li>
+<li>AES/ECB/NoPadding (128)</li>
+<li>AES/ECB/PKCS5Padding (128)</li>
+<li>DES/CBC/NoPadding (56)</li>
+<li>DES/CBC/PKCS5Padding (56)</li>
+<li>DES/ECB/NoPadding (56)</li>
+<li>DES/ECB/PKCS5Padding (56)</li>
+<li>DESede/CBC/NoPadding (168)</li>
+<li>DESede/CBC/PKCS5Padding (168)</li>
+<li>DESede/ECB/NoPadding (168)</li>
+<li>DESede/ECB/PKCS5Padding (168)</li>
+<li>RSA/ECB/PKCS1Padding (1024, 2048)</li>
+<li>RSA/ECB/OAEPWithSHA-1AndMGF1Padding (1024, 2048)</li>
+<li>RSA/ECB/OAEPWithSHA-256AndMGF1Padding (1024, 2048)</li>
+</ul>
+<ol>
+<li>加密算法有：AES，DES，DESede(DES3)和RSA 四种</li>
+<li>模式有CBC(有向量模式)和ECB(无向量模式)，向量模式可以简单理解为偏移量，使用CBC模式需要定义一个IvParameterSpec对象</li>
+<li>填充模式:</li>
+</ol>
+<ul>
+<li>NoPadding: 加密内容不足8位用0补足8位, Cipher类不提供补位功能，需自己实现代码给加密内容添加0, 如{65,65,65,0,0,0,0,0}</li>
+<li>PKCS5Padding: 加密内容不足8位用余位数补足8位, 如{65,65,65,5,5,5,5,5}或{97,97,97,97,97,97,2,2}; 刚好8位补8位8</li>
+</ul>
+<h5 id="Cipher对象需要初始化"><a href="#Cipher对象需要初始化" class="headerlink" title="Cipher对象需要初始化"></a>Cipher对象需要初始化</h5><p><code>init(int opmode, Key key, AlgorithmParameterSpec params)</code></p>
+<ol>
+<li>opmode ：Cipher.ENCRYPT_MODE(加密模式)和 Cipher.DECRYPT_MODE(解密模式)</li>
+<li>key ：密匙，使用传入的盐构造出一个密匙，可以使用SecretKeySpec、KeyGenerator和KeyPairGenerator创建密匙，其中</li>
+</ol>
+<ul>
+<li>SecretKeySpec和KeyGenerator支持AES，DES，DESede三种加密算法创建密匙</li>
+<li>KeyPairGenerator支持RSA加密算法创建密匙</li>
+</ul>
+<ol start="3">
+<li>params ：使用CBC模式时必须传入该参数，该项目使用IvParameterSpec创建iv 对象</li>
+</ol>
+<h5 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h5><ol>
+<li><a href="https://www.cnblogs.com/caizhaokai/p/10944667.html" target="_blank" rel="noopener">https://www.cnblogs.com/caizhaokai/p/10944667.html</a></li>
+</ol>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/crypto-js/">crypto-js</a>
+          
+            <a href="/tags/java-cipher/">java-cipher</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+    
+      <a class="next" href="/2021/10/23/apache-bench-httpd-tool/">
+        <span class="next-text nav-default">ApacheBench(ab)压力测试工具</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2021
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  
+  </body>
+</html>
