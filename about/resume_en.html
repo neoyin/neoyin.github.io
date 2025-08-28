@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wei Yin - Resume</title>
+    <style>
+        /* Global Styles - Minimalist */
+        :root {
+            --text-color: #333;
+            --text-light: #666;
+            --background-color: #fff;
+            --border-color: #eee;
+            --accent-color: #3498db;
+            --spacing-unit: 0.85rem;  /* Reduced base spacing unit */
+            --spacing-unit-sm: 0.7rem; /* Reduced small spacing unit */
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --card-border-radius: 8px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.45;  /* Further reduced line height */
+            color: var(--text-color);
+            background-color: var(--background-color);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: calc(var(--spacing-unit) * 2);
+        }
+        
+        /* Website Header Styles */
+        #masthead {
+            margin-bottom: calc(var(--spacing-unit) * 2);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: var(--spacing-unit);
+        }
+        
+        .site-header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .site-title {
+            font-size: 1.8rem;
+            margin: 0;
+            padding: 0;
+            border: none;
+        }
+        
+        .logo {
+            border: none;
+            font-weight: 700;
+            color: var(--text-color);
+            text-decoration: none;
+        }
+        
+        .logo:hover {
+            color: var(--accent-color);
+        }
+        
+        #nav-top {
+            margin-top: var(--spacing-unit-sm);
+        }
+        
+        .nav-top-items {
+            list-style: none;
+            display: flex;
+            gap: calc(var(--spacing-unit) * 1.5);
+            margin: 0;
+            padding: 0;
+        }
+        
+        .menu-item a {
+            text-decoration: none;
+            color: var(--text-color);
+            border: none;
+            transition: color 0.2s ease;
+        }
+        
+        .menu-item a:hover {
+            color: var(--accent-color);
+        }
+        
+        /* Heading Styles */
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: calc(var(--spacing-unit) * 1.0);  /* Further reduced spacing */
+            letter-spacing: -0.02em;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: calc(var(--spacing-unit) * 0.3);  /* Further reduced spacing */
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: calc(var(--spacing-unit) * 1.2) 0 calc(var(--spacing-unit) * 0.8);  /* Further reduced spacing */
+            letter-spacing: -0.01em;
+        }
+        
+        h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: calc(var(--spacing-unit) * 1.0) 0 calc(var(--spacing-unit) * 0.5);  /* Further reduced spacing */
+            letter-spacing: -0.01em;
+        }
+        
+        /* Paragraphs and Text */
+        p {
+            margin-bottom: var(--spacing-unit);
+        }
+        
+        /* Link Styles */
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border-color);
+            transition: border-color 0.2s ease;
+        }
+        
+        a:hover {
+            border-color: var(--accent-color);
+        }
+        
+        /* Header Information */
+        header {
+            margin-bottom: calc(var(--spacing-unit) * 1.5);  /* Reduced spacing */
+        }
+        
+        .profile-card {
+            background-color: var(--background-color);
+            border-radius: var(--card-border-radius);
+            padding: calc(var(--spacing-unit) * 0.8);  /* Reduced spacing */
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            margin-bottom: calc(var(--spacing-unit) * 1.5);  /* Reduced spacing */
+        }
+        
+        .profile-card h2 {
+            margin: 0 0 calc(var(--spacing-unit) * 0.8) 0;  /* Reduced spacing */
+        }
+        
+        .profile-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: calc(var(--spacing-unit) * 1.5);  /* Reduced spacing */
+            align-items: start;
+        }
+        
+        .contact {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: calc(var(--spacing-unit) * 0.5);
+            margin-top: 0;
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
+        
+        .profile-photo {
+            width: 100%;
+            min-height: 180px;
+            background-color: #f0f0f0;
+            border-radius: var(--card-border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+        
+        .profile-photo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            padding: calc(var(--spacing-unit-sm) * 0.25) 0;
+        }
+        
+        /* Section Styles */
+        section {
+            margin-bottom: calc(var(--spacing-unit) * 1.2);  /* Reduced spacing */
+        }
+        
+        /* Timeline Styles */
+        .timeline-container {
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--border-color);
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: -36px;
+            top: 36px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            z-index: 1;
+        }
+        
+        /* Work Experience Styles */
+        .job {
+            margin-bottom: calc(var(--spacing-unit) * 1.0);  /* Further reduced spacing */
+            padding-bottom: calc(var(--spacing-unit) * 1.0);  /* Further reduced spacing */
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+        
+        .job:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        
+        .job-header {
+            margin-bottom: calc(var(--spacing-unit) * 0.7);  /* Further reduced spacing */
+        }
+        
+        .period {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: calc(var(--spacing-unit) * 0.3);  /* Further reduced spacing */
+        }
+        
+        .position {
+            font-size: 0.95rem;
+            margin-bottom: calc(var(--spacing-unit) * 0.7);  /* Further reduced spacing */
+            color: var(--text-light);
+        }
+        
+        /* Projects */
+        .project {
+            margin-bottom: calc(var(--spacing-unit) * 0.7);  /* Further reduced spacing */
+        }
+        
+        .project-title {
+            font-weight: 600;
+            margin-bottom: calc(var(--spacing-unit) * 0.3);  /* Further reduced spacing */
+        }
+        
+        /* Lists */
+        ul {
+            margin-left: calc(var(--spacing-unit) * 1.2);  /* Kept the same */
+            margin-bottom: calc(var(--spacing-unit) * 0.8);  /* Further reduced spacing */
+        }
+        
+        li {
+            margin-bottom: calc(var(--spacing-unit) * 0.35);  /* Further reduced spacing */
+        }
+        
+        /* Achievements */
+        .achievements {
+            margin-top: calc(var(--spacing-unit) * 0.4);  /* Reduced spacing */
+            padding: calc(var(--spacing-unit-sm) * 0.8);  /* Reduced spacing */
+            background-color: #f9f9f9;
+            font-size: 0.95rem;
+        }
+        
+        .achievements p {
+            margin: 0;
+            font-style: italic;
+        }
+        
+        /* Skills Section */
+        .skills {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: calc(var(--spacing-unit) * 1.2);  /* Reduced spacing */
+            margin-top: calc(var(--spacing-unit) * 0.8);  /* Reduced spacing */
+        }
+        
+        .skill-category h3 {
+            margin-top: 0;
+            margin-bottom: calc(var(--spacing-unit) * 0.8);  /* Reduced spacing */
+            font-size: 1.1rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: calc(var(--spacing-unit-sm) * 0.4);  /* Reduced spacing */
+        }
+        
+        .skill-category ul {
+            margin-left: calc(var(--spacing-unit) * 1.2);
+            list-style-type: none;
+        }
+        
+        .skill-category li {
+            position: relative;
+            padding-left: calc(var(--spacing-unit) * 0.5);
+            margin-bottom: calc(var(--spacing-unit) * 0.6);  /* Reduced spacing */
+            line-height: 1.4;  /* Slightly reduced line height */
+        }
+        
+        .skill-category li::before {
+            content: '•';
+            color: var(--accent-color);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        /* Self Evaluation */
+        .self-evaluation {
+            padding: calc(var(--spacing-unit) * 1.2);  /* Reduced spacing */
+            background-color: #f9f9f9;
+            border-left: 3px solid var(--accent-color);
+        }
+        
+        .self-evaluation p:last-child {
+            font-style: italic;
+        }
+        
+        /* Footer */
+        footer {
+            margin-top: calc(var(--spacing-unit) * 4);  /* Reduced spacing */
+            padding-top: calc(var(--spacing-unit) * 1.5);  /* Reduced spacing */
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            color: var(--text-light);
+            text-align: center;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            body {
+                padding: var(--spacing-unit);
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.3rem;
+            }
+            
+            .contact {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-unit);
+            }
+            
+            .timeline-container {
+                padding-left: 1.5rem;
+            }
+            
+            .skills {
+                grid-template-columns: 1fr;
+            }
+            
+            .site-header-inner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .nav-top-items {
+                flex-direction: column;
+                gap: var(--spacing-unit);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Website Header Section - id="masthead" -->
+    <header id="masthead">
+        <div class="site-header-inner">
+            <h1 class="site-title">
+                <a href="https://yuan0224.space/." class="logo" target="_blank">浮生若梦</a>
+            </h1>
+
+            <nav id="nav-top">
+                <ul id="menu-top" class="nav-top-items">
+                    <li class="menu-item">
+                        <a href="https://yuan0224.space/archives" target="_blank">
+                            Archives
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="https://yuan0224.space/about" target="_blank">
+                            About
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <header class="personal-info-section">
+        <div class="profile-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2>Personal Information</h2>
+                <a href="/about" target="_self" style="font-size: 0.9rem; margin-right: 10px;">中文版</a>
+            </div>
+            <div class="profile-content">
+                <div class="contact">
+                    <div class="contact-item">Wei Yin</div>
+                    <div class="contact-item">👨 Male / Born in 1984</div>
+                    <div class="contact-item">🎓 Bachelor's Degree / Donghu College of Wuhan University / Electronic Science and Technology (2003-2007)</div>
+                    <div class="contact-item">📱 +65 80844221　|　✉️ <a href="mailto:neoyin2012@outlook.com">neoyin2012@outlook.com</a></div>
+                    <div class="contact-item">🔗 <a href="https://neoyin.github.io" target="_blank">https://neoyin.github.io</a></div>
+                </div>
+                <div class="profile-photo">
+                    <!-- Photo placeholder, replace with actual photo -->
+                    <img src="resume.jpg" alt="Profile Photo" placeholder="Add profile photo">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section>
+        <h2>Professional Summary</h2>
+        <p>10+ years of full-stack technical expert with expertise spanning Java backend, big data, algorithms, frontend development, and team management. Extensive experience in distributed system design, microservices architecture, and big data processing. Proficient in transforming complex business problems into efficient technical solutions, creating significant business value through data-driven approaches and algorithm optimization.</p>
+    </section>
+
+    <section>
+        <h2>Work Experience</h2>
+        
+        <!-- Work Experience Content - Using unified timeline container -->
+        <div class="timeline-container">
+            <div class="job">
+                <div class="timeline-dot"></div>
+                <div class="job-header">
+                    <div class="company"><a href="http://www.g7.com.cn" target="_blank">Beijing G7 Link Logistics Technology Co., Ltd.</a></div>
+                    <div class="period">Jul 2019 - Jul 2025</div>
+                </div>
+                <div class="position">Data Algorithm Engineer</div>
+                
+                <div class="project">
+                    <div class="project-title">Real-time Vehicle Risk Project</div>
+                    <ul>
+                        <li>Built millisecond-level risk detection system based on Apache Flink to achieve real-time monitoring and early warning of truck driving behavior</li>
+                        <li>Designed sliding window + Event Time mechanism to accurately calculate risk levels, covering multi-dimensional vehicle data within 30 minutes</li>
+                        <li>Constructed Kafka-Python data pipeline to realize millisecond-level delivery of risk assessment results to vehicle terminals</li>
+                    </ul>
+                    <div class="achievements">
+                        <p>After project implementation, vehicle accident rate per 1,000 kilometers decreased by 25%, benefiting over 100,000 truck drivers</p>
+                    </div>
+                </div>
+                
+                <div class="project">
+                    <div class="project-title">Vehicle Insurance Scoring Project</div>
+                    <ul>
+                        <li>Led processing solutions for millions of vehicle historical trajectory data to support insurance scoring system construction</li>
+                        <li>Processed hundreds of billions of data using Hive clusters, implementing multi-dimensional feature engineering through HiveSQL and Python</li>
+                        <li>Integrated map data and operational data to mine road characteristics and driving behavior features</li>
+                    </ul>
+                    <div class="achievements">
+                        <p>Built a 10-level insurance scoring model, improving pricing accuracy by 40%</p>
+                    </div>
+                </div>
+                
+                <div class="project">
+                    <div class="project-title">Digital Capacity Center Project</div>
+                    <ul>
+                        <li>Designed intelligent capacity recommendation engine, integrating vehicle data platform and AI algorithm models</li>
+                        <li>Realized intelligent matching of capacity resources and transportation needs, covering over 500,000 vehicles and 40,000+ freight customers</li>
+                        <li>Optimized system architecture to support efficient processing of 200,000+ daily waybills</li>
+                    </ul>
+                    <div class="achievements">
+                        <p>Direct procurement matching efficiency improved by 35%, platform transaction volume increased by 60%+</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="job">
+                <div class="timeline-dot"></div>
+                <div class="job-header">
+                    <div class="company">JD.com</div>
+                    <div class="period">May 2017 - May 2019</div>
+                </div>
+                <div class="position">Senior Java Developer</div>
+                
+                <div class="project">
+                    <div class="project-title">JD Power Data Visualization Platform</div>
+                    <ul>
+                        <li>Designed unified access framework for multiple data sources, supporting heterogeneous data sources such as MySQL, Kylin, Presto, Impala, Elasticsearch</li>
+                        <li>Built interactive data visualization platform similar to Tableau, empowering product managers and data analysts with self-service analysis</li>
+                    </ul>
+                    <div class="achievements">
+                        <p>Data acquisition efficiency improved by 80%, business decision speed increased by 50%, supporting 100+ business scenarios</p>
+                    </div>
+                </div>
+                
+                <div class="project">
+                    <div class="project-title">JD Mall Frontend User Business Products</div>
+                    <ul>
+                        <li>Responsible for end-to-end optimization of first-order and selected business processes to enhance user shopping experience</li>
+                        <li>Led backend architecture restructuring for JD Selected products, achieving platform management (React+SpringBoot)</li>
+                        <li>Designed and implemented new user coupon system, realizing MySQL sharding and HBase hot-cold data separation</li>
+                    </ul>
+                    <div class="achievements">
+                        <p>User conversion rate increased by 15%, system supported 300% business volume growth, and coupon redemption rate improved by 22%</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="job">
+                <div class="timeline-dot"></div>
+                <div class="job-header">
+                    <div class="company">Time Space Creative (Beijing) Technology Culture Development Co., Ltd.</div>
+                    <div class="period">Nov 2012 - May 2017</div>
+                </div>
+                <div class="position">Technical Director (15 team members)</div>
+                
+                <div class="project">
+                    <div class="project-title">Football Project</div>
+                    <ul>
+                        <li>Responsible for overall technical architecture design and implementation, building highly available distributed systems based on Alibaba Cloud ECS</li>
+                        <li>Introduced Kong API Gateway and Alibaba Cloud LoadBalancer to ensure system stability</li>
+                        <li>Built Docker+SpringBoot microservices architecture to achieve full-process DevOps automation</li>
+                    </ul>
+                    <div class="achievements">
+                        <p>Development efficiency improved by 40%, system availability reached 99.9%, supporting millions of user visits</p>
+                    </div>
+                </div>
+                
+                <div class="project">
+                    <div class="project-title">Designer App</div>
+                    <ul>
+                        <li>Designed WebCollector+SeimiAgent crawler system to collect multi-source content</li>
+                        <li>Built WordPress+MySQL+Nginx CMS system to support content management and publishing</li>
+                        <li>Led React Native cross-platform App development, supporting both iOS and Android platforms</li>
+                    </ul>
+                    <div class="achievements">
+                        <p>App user base exceeded 500,000, daily content updates increased by 300%, development costs reduced by 45%</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="job">
+                <div class="timeline-dot"></div>
+                <div class="job-header">
+                    <div class="company">Beijing Lifang Network Information Technology Co., Ltd.</div>
+                    <div class="period">Jan 2008 - Nov 2012</div>
+                </div>
+                <div class="position">Project Manager (20+ team members)</div>
+                
+                <div class="project">
+                    <div class="project-title">Lifang Network Technical Architecture</div>
+                    <ul>
+                        <li>Responsible for core architecture design and optimization of SNS social networking site, supporting maximum PV of 25 million+</li>
+                        <li>Introduced memcached-session-manager to achieve Tomcat cluster Session sharing</li>
+                        <li>Designed and implemented Dubbo distributed service framework to achieve service decoupling and horizontal scaling</li>
+                        <li>Built Lucene+Solr search engine, improving content retrieval efficiency by 90%</li>
+                    </ul>
+                    <div class="achievements">
+                        <p>System concurrent processing capability increased by 200%, user satisfaction improved to 92%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Technical Skills</h2>
+        <div class="skills">
+            <div class="skill-category">
+                <h3>Backend Development</h3>
+                <ul>
+                    <li>Java, SpringBoot, SpringCloud</li>
+                    <li>Dubbo, Zookeeper, MyBatis</li>
+                    <li>Microservices Architecture, Service Governance and Monitoring</li>
+                </ul>
+            </div>
+            
+            <div class="skill-category">
+                <h3>Big Data Technology</h3>
+                <ul>
+                    <li>Apache Flink, Hive, Kafka</li>
+                    <li>Elasticsearch, Lucene, Solr</li>
+                    <li>Python, Data Analysis, Architecture and Performance Optimization</li>
+                </ul>
+            </div>
+            
+            <div class="skill-category">
+                <h3>Database and Storage</h3>
+                <ul>
+                    <li>MySQL, MongoDB, Redis, HBase</li>
+                    <li>Database Optimization, Database Sharding</li>
+                    <li>Cache Strategy Design, Read-Write Separation</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Self Evaluation</h2>
+        <div class="self-evaluation">
+            <p>With 10+ years of technical career, I have always adhered to the philosophy of "technology serves business, innovation drives value". From monolithic applications to distributed systems, from traditional development to big data and AI, I continuously break through my boundaries.</p>
+            <p>I am good at abstracting complex business problems into technical models and providing systematic solutions through architectural design and algorithm optimization. At the same time, I focus on team building and technical inheritance, committed to creating efficient and collaborative technical teams.</p>
+            <p><strong>Life's a long road, with rain and wind that blows. Keep your head up high, let your spirit grow. After all these years, may your heart still glow!</strong></p>
+        </div>
+    </section>
+
+    <footer>
+        <p>Resume Last Updated: August 2025</p>
+    </footer>
+</body>
+</html>
