@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,8 +11,8 @@
             --background-color: #fff;
             --border-color: #eee;
             --accent-color: #3498db;
-            --spacing-unit: 0.85rem;  /* Reduced base spacing unit */
-            --spacing-unit-sm: 0.7rem; /* Reduced small spacing unit */
+            --spacing-unit: 0.85rem;  /* 减小基础间距单位 */
+            --spacing-unit-sm: 0.7rem; /* 减小小号间距单位 */
             --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             --card-border-radius: 8px;
         }
@@ -26,7 +25,7 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.45;  /* Further reduced line height */
+            line-height: 1.45;  /* 进一步减小行高 */
             color: var(--text-color);
             background-color: var(--background-color);
             max-width: 800px;
@@ -34,82 +33,27 @@
             padding: calc(var(--spacing-unit) * 2);
         }
         
-        /* Website Header Styles */
-        #masthead {
-            margin-bottom: calc(var(--spacing-unit) * 2);
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: var(--spacing-unit);
-        }
-        
-        .site-header-inner {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        
-        .site-title {
-            font-size: 1.8rem;
-            margin: 0;
-            padding: 0;
-            border: none;
-        }
-        
-        .logo {
-            border: none;
-            font-weight: 700;
-            color: var(--text-color);
-            text-decoration: none;
-        }
-        
-        .logo:hover {
-            color: var(--accent-color);
-        }
-        
-        #nav-top {
-            margin-top: var(--spacing-unit-sm);
-        }
-        
-        .nav-top-items {
-            list-style: none;
-            display: flex;
-            gap: calc(var(--spacing-unit) * 1.5);
-            margin: 0;
-            padding: 0;
-        }
-        
-        .menu-item a {
-            text-decoration: none;
-            color: var(--text-color);
-            border: none;
-            transition: color 0.2s ease;
-        }
-        
-        .menu-item a:hover {
-            color: var(--accent-color);
-        }
-        
         /* Heading Styles */
         h1 {
             font-size: 2.5rem;
             font-weight: 700;
-            margin-bottom: calc(var(--spacing-unit) * 1.0);  /* Further reduced spacing */
+            margin-bottom: calc(var(--spacing-unit) * 1.0);  /* 进一步减小间距 */
             letter-spacing: -0.02em;
             border-bottom: 1px solid var(--border-color);
-            padding-bottom: calc(var(--spacing-unit) * 0.3);  /* Further reduced spacing */
+            padding-bottom: calc(var(--spacing-unit) * 0.3);  /* 进一步减小间距 */
         }
         
         h2 {
             font-size: 1.5rem;
             font-weight: 600;
-            margin: calc(var(--spacing-unit) * 1.2) 0 calc(var(--spacing-unit) * 0.8);  /* Further reduced spacing */
+            margin: calc(var(--spacing-unit) * 1.2) 0 calc(var(--spacing-unit) * 0.8);  /* 进一步减小间距 */
             letter-spacing: -0.01em;
         }
         
         h3 {
             font-size: 1.2rem;
             font-weight: 600;
-            margin: calc(var(--spacing-unit) * 1.0) 0 calc(var(--spacing-unit) * 0.5);  /* Further reduced spacing */
+            margin: calc(var(--spacing-unit) * 1.0) 0 calc(var(--spacing-unit) * 0.5);  /* 进一步减小间距 */
             letter-spacing: -0.01em;
         }
         
@@ -132,49 +76,71 @@
         
         /* Header Information */
         header {
-            margin-bottom: calc(var(--spacing-unit) * 1.5);  /* Reduced spacing */
+            margin-bottom: calc(var(--spacing-unit) * 1.5);  /* 减小间距 */
         }
         
         .profile-card {
             background-color: var(--background-color);
             border-radius: var(--card-border-radius);
-            padding: calc(var(--spacing-unit) * 0.8);  /* Reduced spacing */
+            padding: calc(var(--spacing-unit) * 1.2);  /* 适当增加内边距 */
             box-shadow: var(--card-shadow);
             border: 1px solid var(--border-color);
-            margin-bottom: calc(var(--spacing-unit) * 1.5);  /* Reduced spacing */
+            margin-bottom: calc(var(--spacing-unit) * 1.5);
         }
         
         .profile-card h2 {
-            margin: 0 0 calc(var(--spacing-unit) * 0.8) 0;  /* Reduced spacing */
+            margin: 0 0 calc(var(--spacing-unit) * 1.0) 0;
+            text-align: center;
+            font-size: 1.4rem;
+            color: var(--accent-color);
         }
         
         .profile-content {
             display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: calc(var(--spacing-unit) * 1.5);  /* Reduced spacing */
-            align-items: start;
+            grid-template-columns: 1.5fr 1fr;
+            gap: calc(var(--spacing-unit) * 1.5);
+            align-items: center; /* 垂直居中对齐 */
+            min-height: 240px;
         }
         
         .contact {
             display: grid;
             grid-template-columns: 1fr;
-            gap: calc(var(--spacing-unit) * 0.5);
+            gap: calc(var(--spacing-unit) * 0.4);
             margin-top: 0;
             font-size: 0.95rem;
-            color: var(--text-light);
+            color: var(--text-color);
+        }
+        
+        .contact-item.name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            padding: calc(var(--spacing-unit-sm) * 0.3) 0;
+            line-height: 1.5;
+        }
+        
+        .contact-item:first-child {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--text-color);
         }
         
         .profile-photo {
             width: 100%;
-            min-height: 180px;
-            aspect-ratio: 1/1;
+            aspect-ratio: 1/1; /* 保持正方形比例 */
             border-radius: var(--card-border-radius);
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border: 2px solid var(--border-color);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* 减小阴影效果，减轻左右两侧阴影 */
         }
         
         .profile-photo img {
@@ -191,7 +157,7 @@
         
         /* Section Styles */
         section {
-            margin-bottom: calc(var(--spacing-unit) * 1.2);  /* Reduced spacing */
+            margin-bottom: calc(var(--spacing-unit) * 1.2);  /* 减小间距 */
         }
         
         /* Timeline Styles */
@@ -223,8 +189,8 @@
         
         /* Work Experience Styles */
         .job {
-            margin-bottom: calc(var(--spacing-unit) * 1.0);  /* Further reduced spacing */
-            padding-bottom: calc(var(--spacing-unit) * 1.0);  /* Further reduced spacing */
+            margin-bottom: calc(var(--spacing-unit) * 1.0);  /* 进一步减小间距 */
+            padding-bottom: calc(var(--spacing-unit) * 1.0);  /* 进一步减小间距 */
             border-bottom: 1px solid var(--border-color);
             position: relative;
         }
@@ -235,45 +201,50 @@
         }
         
         .job-header {
-            margin-bottom: calc(var(--spacing-unit) * 0.7);  /* Further reduced spacing */
+            margin-bottom: calc(var(--spacing-unit) * 0.7);  /* 进一步减小间距 */
+        }
+        
+        .company {
+            font-weight: 600;
+            font-size: 1.1rem;
         }
         
         .period {
             font-size: 0.9rem;
             color: var(--text-light);
-            margin-bottom: calc(var(--spacing-unit) * 0.3);  /* Further reduced spacing */
+            margin-bottom: calc(var(--spacing-unit) * 0.3);  /* 进一步减小间距 */
         }
         
         .position {
             font-size: 0.95rem;
-            margin-bottom: calc(var(--spacing-unit) * 0.7);  /* Further reduced spacing */
+            margin-bottom: calc(var(--spacing-unit) * 0.7);  /* 进一步减小间距 */
             color: var(--text-light);
         }
         
         /* Projects */
         .project {
-            margin-bottom: calc(var(--spacing-unit) * 0.7);  /* Further reduced spacing */
+            margin-bottom: calc(var(--spacing-unit) * 0.7);  /* 进一步减小间距 */
         }
         
         .project-title {
             font-weight: 600;
-            margin-bottom: calc(var(--spacing-unit) * 0.3);  /* Further reduced spacing */
+            margin-bottom: calc(var(--spacing-unit) * 0.3);  /* 进一步减小间距 */
         }
         
         /* Lists */
         ul {
-            margin-left: calc(var(--spacing-unit) * 1.2);  /* Kept the same */
-            margin-bottom: calc(var(--spacing-unit) * 0.8);  /* Further reduced spacing */
+            margin-left: calc(var(--spacing-unit) * 1.2);  /* 保持不变 */
+            margin-bottom: calc(var(--spacing-unit) * 0.8);  /* 进一步减小间距 */
         }
         
         li {
-            margin-bottom: calc(var(--spacing-unit) * 0.35);  /* Further reduced spacing */
+            margin-bottom: calc(var(--spacing-unit) * 0.35);  /* 进一步减小间距 */
         }
         
         /* Achievements */
         .achievements {
-            margin-top: calc(var(--spacing-unit) * 0.4);  /* Reduced spacing */
-            padding: calc(var(--spacing-unit-sm) * 0.8);  /* Reduced spacing */
+            margin-top: calc(var(--spacing-unit) * 0.4);  /* 减小间距 */
+            padding: calc(var(--spacing-unit-sm) * 0.8);  /* 减小间距 */
             background-color: #f9f9f9;
             font-size: 0.95rem;
         }
@@ -287,16 +258,16 @@
         .skills {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: calc(var(--spacing-unit) * 1.2);  /* Reduced spacing */
-            margin-top: calc(var(--spacing-unit) * 0.8);  /* Reduced spacing */
+            gap: calc(var(--spacing-unit) * 1.2);  /* 减小间距 */
+            margin-top: calc(var(--spacing-unit) * 0.8);  /* 减小间距 */
         }
         
         .skill-category h3 {
             margin-top: 0;
-            margin-bottom: calc(var(--spacing-unit) * 0.8);  /* Reduced spacing */
+            margin-bottom: calc(var(--spacing-unit) * 0.8);  /* 减小间距 */
             font-size: 1.1rem;
             border-bottom: 2px solid var(--accent-color);
-            padding-bottom: calc(var(--spacing-unit-sm) * 0.4);  /* Reduced spacing */
+            padding-bottom: calc(var(--spacing-unit-sm) * 0.4);  /* 减小间距 */
         }
         
         .skill-category ul {
@@ -307,8 +278,8 @@
         .skill-category li {
             position: relative;
             padding-left: calc(var(--spacing-unit) * 0.5);
-            margin-bottom: calc(var(--spacing-unit) * 0.6);  /* Reduced spacing */
-            line-height: 1.4;  /* Slightly reduced line height */
+            margin-bottom: calc(var(--spacing-unit) * 0.6);  /* 减小间距 */
+            line-height: 1.4;  /* 稍微减小行高 */
         }
         
         .skill-category li::before {
@@ -321,7 +292,7 @@
         
         /* Self Evaluation */
         .self-evaluation {
-            padding: calc(var(--spacing-unit) * 1.2);  /* Reduced spacing */
+            padding: calc(var(--spacing-unit) * 1.2);  /* 减小间距 */
             background-color: #f9f9f9;
             border-left: 3px solid var(--accent-color);
         }
@@ -332,8 +303,8 @@
         
         /* Footer */
         footer {
-            margin-top: calc(var(--spacing-unit) * 4);  /* Reduced spacing */
-            padding-top: calc(var(--spacing-unit) * 1.5);  /* Reduced spacing */
+            margin-top: calc(var(--spacing-unit) * 4);  /* 减小间距 */
+            padding-top: calc(var(--spacing-unit) * 1.5);  /* 减小间距 */
             border-top: 1px solid var(--border-color);
             font-size: 0.9rem;
             color: var(--text-light);
@@ -354,9 +325,21 @@
                 font-size: 1.3rem;
             }
             
+            .profile-content {
+                grid-template-columns: 1fr;
+                gap: calc(var(--spacing-unit) * 1.0);
+                min-height: auto;
+            }
+            
             .contact {
                 grid-template-columns: 1fr;
                 gap: var(--spacing-unit);
+            }
+            
+            .profile-photo {
+                width: 180px;
+                height: 180px;
+                margin: 0 auto;
             }
             
             .timeline-container {
@@ -366,54 +349,18 @@
             .skills {
                 grid-template-columns: 1fr;
             }
-            
-            .site-header-inner {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .nav-top-items {
-                flex-direction: column;
-                gap: var(--spacing-unit);
-            }
         }
     </style>
 </head>
 <body>
-    <!-- Website Header Section - id="masthead" -->
-    <header id="masthead">
-        <div class="site-header-inner">
-            <h1 class="site-title">
-                <a href="https://yuan0224.space/." class="logo" target="_blank">浮生若梦</a>
-            </h1>
-
-            <nav id="nav-top">
-                <ul id="menu-top" class="nav-top-items">
-                    <li class="menu-item">
-                        <a href="https://yuan0224.space/archives">
-                            Archives
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="https://yuan0224.space/about">
-                            About
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
     <header class="personal-info-section">
         <div class="profile-card">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h2>Personal Information</h2>
-                <a href="/about/" target="_self" style="font-size: 0.9rem; margin-right: 10px;">中文版</a>
-            </div>
+            <h2>Personal Information</h2>
             <div class="profile-content">
                 <div class="contact">
-                    <div class="contact-item">Neo Yin</div>
+                    <div class="contact-item name">Neo Yin</div>
                     <div class="contact-item">🎓 Bachelor's Degree / Donghu College of Wuhan University / Electronic Science and Technology (2003-2007)</div>
+                    <div class="contact-item">💼 Data Algorithm / Full-Stack Development / Technical Management</div>
                     <div class="contact-item">📱 +65 80844221　|　✉️ <a href="mailto:neoyin2012@outlook.com">neoyin2012@outlook.com</a></div>
                     <div class="contact-item">🔗 <a href="https://neoyin.github.io" target="_blank">https://neoyin.github.io</a></div>
                 </div>
