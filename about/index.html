@@ -158,10 +158,16 @@
         .contact {
             display: grid;
             grid-template-columns: 1fr;
-            gap: calc(var(--spacing-unit) * 0.5);
+            gap: calc(var(--spacing-unit) * 1.2);
             margin-top: 0;
             font-size: 0.95rem;
             color: var(--text-light);
+        }
+
+        .contact-item.name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-color);
         }
         
         .profile-photo {
@@ -407,10 +413,12 @@
             </div>
             <div class="profile-content">
                 <div class="contact">
-                    <div class="contact-item">尹威</div>
+                    <div class="contact-item name">尹威</div>
                     <div class="contact-item">🎓 本科 / 武汉大学东湖学院 / 电子科学与技术（2003-2007）</div>
                     <div class="contact-item">📱 18601217515　|　✉️ <a href="mailto:neoyin2012@outlook.com">neoyin2012@outlook.com</a></div>
                     <div class="contact-item">🔗 <a href="https://neoyin.github.io" target="_blank">https://neoyin.github.io</a></div>
+                    <div class="contact-item">💼 数据算法 / 全栈开发 / 技术管理</div>
+
                 </div>
                 <div class="profile-photo">
                     <!-- 照片位置，用户可替换为实际照片 -->
