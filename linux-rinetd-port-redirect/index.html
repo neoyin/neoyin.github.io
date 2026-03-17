@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="Linux下利用rinetd进行端口转发"/>
+
+
+
+
+  <meta name="keywords" content="linux,rinetd," />
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦" >
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=1.1"/>
+
+
+
+<link rel="canonical" href="http://yoursite.com/linux-rinetd-port-redirect/"/>
+
+
+<meta name="description" content="最近用使用Aliyun数据库时需要使用公网直接连接数据库,发现其文档中是使用了rinetd，虽然之前一直知道rinetd，却未用过，现在给记录下来. 相关地址 https:&#x2F;&#x2F;boutell.com&#x2F;rinetd&#x2F;  下载安装12345wget http:&#x2F;&#x2F;www.boutell.com&#x2F;rinetd&#x2F;http&#x2F;rinetd.tar.gztar -xvf rinetd.tar.gz&amp;&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux下利用rinetd进行端口转发">
+<meta property="og:url" content="http://yoursite.com/linux-rinetd-port-redirect/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="最近用使用Aliyun数据库时需要使用公网直接连接数据库,发现其文档中是使用了rinetd，虽然之前一直知道rinetd，却未用过，现在给记录下来. 相关地址 https:&#x2F;&#x2F;boutell.com&#x2F;rinetd&#x2F;  下载安装12345wget http:&#x2F;&#x2F;www.boutell.com&#x2F;rinetd&#x2F;http&#x2F;rinetd.tar.gztar -xvf rinetd.tar.gz&amp;&amp;">
+<meta property="og:locale">
+<meta property="article:published_time" content="2016-12-22T07:34:00.000Z">
+<meta property="article:modified_time" content="2026-03-16T14:04:02.396Z">
+<meta property="article:author" content="Neo">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="rinetd">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1"/>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Linux下利用rinetd进行端口转发 - 浮生若梦 </title>
+  <meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Linux下利用rinetd进行端口转发
+        
+      </h1>
+
+      <time class="post-time">
+          Dec 22 2016
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <hr>
+<p>最近用使用Aliyun数据库时需要使用公网直接连接数据库,发现其文档中是使用了<code>rinetd</code>，虽然之前一直知道<code>rinetd</code>，却未用过，现在给记录下来.</p>
+<h5 id="相关地址"><a href="#相关地址" class="headerlink" title="相关地址"></a>相关地址</h5><ul>
+<li><a href="https://boutell.com/rinetd/">https://boutell.com/rinetd/</a></li>
+</ul>
+<h5 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget http://www.boutell.com/rinetd/http/rinetd.tar.gz</span><br><span class="line">tar -xvf rinetd.tar.gz&amp;&amp;cd rinetd</span><br><span class="line">#(修改端口范围)</span><br><span class="line">sed -i &#x27;s/65536/65535/g&#x27; rinetd.c </span><br><span class="line">mkdir /usr/man&amp;&amp;make&amp;&amp;make install</span><br></pre></td></tr></table></figure>
+
+<h5 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/rinetd.conf</span><br><span class="line">#将所有发往本机的8080端口的请求转发到192.168.1.x的80端口</span><br><span class="line">0.0.0.0 8080 192.168.1.x 80</span><br><span class="line">logfile /var/log/rinetd.log</span><br><span class="line">#格式说明</span><br><span class="line">#bindaddress bindport connectaddress connectport</span><br><span class="line">#绑定的地址  绑定的端口  转发的地址  转发的端口</span><br></pre></td></tr></table></figure>
+
+<h5 id="启动及关闭"><a href="#启动及关闭" class="headerlink" title="启动及关闭"></a>启动及关闭</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pkill rinetd  ##关闭进程</span><br><span class="line">rinetd -c /etc/rinetd.conf  ##启动转发</span><br><span class="line">echo rinetd &gt;&gt;/etc/rc.local里面就可以开机自动运行</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h5><ul>
+<li><a href="https://help.aliyun.com/knowledge_detail/39952.html">https://help.aliyun.com/knowledge_detail/39952.html</a></li>
+<li><a href="https://boutell.com/rinetd/">https://boutell.com/rinetd/</a></li>
+</ul>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/linux/">linux</a>
+          
+            <a href="/tags/rinetd/">rinetd</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2016-summary-of-tech/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">2016年技术积累总结</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/aliyun-docker-cluster-deploy-spring-boot/">
+        <span class="next-text nav-default">阿里云容器服务部署SpringBoot 服务</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2026
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  </script>
+  </body>
+</html>

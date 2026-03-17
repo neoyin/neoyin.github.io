@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="mysql表字段存在关键字造成保存数据时异常的问题"/>
+
+
+
+
+  <meta name="keywords" content="mysql," />
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦" >
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=1.1"/>
+
+
+
+<link rel="canonical" href="http://yoursite.com/mysql-keepword-save-error/"/>
+
+
+<meta name="description" content="遇到了一个这样的问题，修改好长时间，无果，遂google，翻山越岭之后，终于发现，原来是因为我的表中存在mysql的关键字造成的，一下是抛出的异常，而错误原因是因为我使用了desc关键字造成的。因此，以后建表的字段时，尽量不要使用单个单词创建，多用组合形式或者驼峰形式 1234567891011[SNS] 2013-11-2822:36:44[org.hibernate.util.JDBCExce">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql表字段存在关键字造成保存数据时异常的问题">
+<meta property="og:url" content="http://yoursite.com/mysql-keepword-save-error/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="遇到了一个这样的问题，修改好长时间，无果，遂google，翻山越岭之后，终于发现，原来是因为我的表中存在mysql的关键字造成的，一下是抛出的异常，而错误原因是因为我使用了desc关键字造成的。因此，以后建表的字段时，尽量不要使用单个单词创建，多用组合形式或者驼峰形式 1234567891011[SNS] 2013-11-2822:36:44[org.hibernate.util.JDBCExce">
+<meta property="og:locale">
+<meta property="article:published_time" content="2013-11-28T15:52:00.000Z">
+<meta property="article:modified_time" content="2026-03-16T14:04:02.397Z">
+<meta property="article:author" content="Neo">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1"/>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> mysql表字段存在关键字造成保存数据时异常的问题 - 浮生若梦 </title>
+  <meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          mysql表字段存在关键字造成保存数据时异常的问题
+        
+      </h1>
+
+      <time class="post-time">
+          Nov 28 2013
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>遇到了一个这样的问题，修改好长时间，无果，遂google，翻山越岭之后，终于发现，原来是因为我的表中存在mysql的关键字造成的，一下是抛出的异常，而错误原因是因为我使用了desc关键字造成的。因此，以后建表的字段时，尽量不要使用单个单词创建，多用组合形式或者驼峰形式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[SNS] 2013-11-28</span><br><span class="line">22:36:44[org.hibernate.util.JDBCExceptionReporter][ERROR]You have an</span><br><span class="line">error in your SQL syntax; check the manual that corresponds to your</span><br><span class="line">MySQL server version for the right syntax to use near &#x27;desc, is\_locked,</span><br><span class="line">creater, create\_time, id) values (1, 6, &#x27;11&#x27;, &#x27;1111&#x27;, 0, 2, &#x27;20&#x27; at</span><br><span class="line">line 1  </span><br><span class="line">[SNS] 2013-11-28</span><br><span class="line">22:36:44[org.hibernate.event.def.AbstractFlushingEventListener][ERROR]Could</span><br><span class="line">not synchronize database state with session  </span><br><span class="line">org.hibernate.exception.SQLGrammarException: Could not execute JDBC</span><br><span class="line">batch update</span><br></pre></td></tr></table></figure>
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/mysql/">mysql</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/idea-tips-format/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Idea tips-格式化</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/idea-tips-highlight/">
+        <span class="next-text nav-default">Itellij Idea Tips- 高亮显示</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2026
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  </script>
+  </body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="Solr facet、group、fq"/>
+
+
+
+
+  <meta name="keywords" content="solr," />
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦" >
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=1.1"/>
+
+
+
+<link rel="canonical" href="http://yoursite.com/solr-facet-group-fq/"/>
+
+
+<meta name="description" content="一、Facetfacet是什么呢？你可以这样理解，当你在电商网站购物时，搜索笔记本，出现了很多品牌、厂商、价格区间等分组的信息，facet就可以根据这写文档的这些公共属性的维度进行分组统计。 solr主要有一下几种facet：  普通facet，比如根据字段中厂商信息、品牌等分组统计 facet.field&#x3D;品牌  区间范围facet，比如根据价格区间等分组统计 可以使用facet.qu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Solr facet、group、fq">
+<meta property="og:url" content="http://yoursite.com/solr-facet-group-fq/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="一、Facetfacet是什么呢？你可以这样理解，当你在电商网站购物时，搜索笔记本，出现了很多品牌、厂商、价格区间等分组的信息，facet就可以根据这写文档的这些公共属性的维度进行分组统计。 solr主要有一下几种facet：  普通facet，比如根据字段中厂商信息、品牌等分组统计 facet.field&#x3D;品牌  区间范围facet，比如根据价格区间等分组统计 可以使用facet.qu">
+<meta property="og:locale">
+<meta property="article:published_time" content="2014-03-02T09:53:00.000Z">
+<meta property="article:modified_time" content="2026-03-16T14:04:02.397Z">
+<meta property="article:author" content="Neo">
+<meta property="article:tag" content="solr">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1"/>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Solr facet、group、fq - 浮生若梦 </title>
+  <meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Solr facet、group、fq
+        
+      </h1>
+
+      <time class="post-time">
+          Mar 2 2014
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h4 id="一、Facet"><a href="#一、Facet" class="headerlink" title="一、Facet"></a>一、Facet</h4><p>facet是什么呢？你可以这样理解，当你在电商网站购物时，搜索笔记本，出现了很多品牌、厂商、价格区间等分组的信息，facet就可以根据这写文档的这些公共属性的维度进行分组统计。</p>
+<p>solr主要有一下几种facet：</p>
+<ol>
+<li><p>普通facet，比如根据字段中厂商信息、品牌等分组统计 facet.field&#x3D;品牌</p>
+</li>
+<li><p>区间范围facet，比如根据价格区间等分组统计 可以使用facet.query&#x3D;price:[*<br>TO 500]这种方式，也可以使用facet.range facet.range&#x3D;price<br>f.price.facet.range.start&#x3D;0 &#x2F;&#x2F;表示起始位置 f.price.facet.range.end&#x3D;500<br>&#x2F;&#x2F;表示结束位置 f.price.facet.range.gap&#x3D;100 &#x2F;&#x2F;表示间隔范围<br>range范围是左闭右开[start, end)，例如上面的例子就是分别对区间[0,<br>100)，[100, 200)，[200, 300)…的统计</p>
+</li>
+<li><p>日期facet，对日期分组统计 facet.date&#x3D;ptime<br>facet.date.start&#x3D;2013-01-01T00:00:00Z facet.date.end&#x3D;NOW<br>facet.date.gap&#x3D;%2B1MONTH<br>gap设置的时候可以用+-&#x2F;等符号，但是需要转义才能用。</p>
+</li>
+<li><p>multi-select facet 这是solr4的新特性，举例说明，如下面facet查询：<br>q&#x3D;mainquery&amp;fq&#x3D;status:public&amp;fq&#x3D;doctype:pdf&amp;facet&#x3D;on&amp;facet.field&#x3D;doctype<br>查询中将doctype为pdf的文档过滤出来，也就是说查询结果都是doctype为pfd的文档，那么doctype为别的类型的文档统计数都是0.为了对doctype域实现multi-select<br>facet，客户端界面想要显示doctype的分组统计，使用如下：<br>q&#x3D;mainquery&amp;fq&#x3D;status:public&amp;fq&#x3D;{!tag&#x3D;dt}doctype:pdf&amp;facet&#x3D;on&amp;facet.field&#x3D;{!ex&#x3D;dt}doctype.<br>这时分组统计信息中fq&#x3D;doctype:pdf的信息没有被应用。</p>
+</li>
+<li><p>Pivot facet 这也是solr4的新特性，如： facet.pivot&#x3D;popularity,grade<br>这是对popularity和grade进行二维分组统计。</p>
+</li>
+</ol>
+<h4 id="二：group-solr"><a href="#二：group-solr" class="headerlink" title="二：group solr"></a>二：group solr</h4><p>group也是一种分组统计的实现，类似于关系型数据库的group，和facet的区别是：facet只统计有多少个分组，每个分组是什么和有多少对应文档，却不知道具体的每个文档，若要查询每个文档，需要进一步查询；group是对该域的各个值进行分组统计，可以统计出该域有多少个不同的值，可以用于字段的去重，可以根据group.limit&#x3D;n的值取每个group的对应前n条记录。</p>
+<h4 id="三：fq"><a href="#三：fq" class="headerlink" title="三：fq"></a>三：fq</h4><p>fq是过滤查询，例如上面使用facet知道了分组信息，要在某个分组中进行查找，就可以使用fq。<br>fq主要有两种实现方式： a、fq&#x3D;popularity:[10 TO *]&amp; fq&#x3D;section:0<br>b、fq&#x3D;+popularity:[10 TO *] +section:0<br>如果popularity和section的过滤是相互独立的，那么就用a，如果popularity和section的过滤是经常一起使用的，那么就使用b。</p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/solr/">solr</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/haproxy-x-forwarded-for/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">X-Forwarded-For引发的悬案</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/regular-expression-match-multiple-of-3/">
+        <span class="next-text nav-default">正则表达式匹配3的倍数</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2026
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  </script>
+  </body>
+</html>

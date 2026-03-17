@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="Mongodb学习[转]"/>
+
+
+
+
+  <meta name="keywords" content="mongodb," />
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦" >
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=1.1"/>
+
+
+
+<link rel="canonical" href="http://yoursite.com/mongodb-study/"/>
+
+
+<meta name="description" content="网上看到mongodb一系统的相关文章，手贱就转过来了http:&#x2F;&#x2F;www.ttlsa.com&#x2F;mongodb&#x2F;mongodb-study&#x2F; mongodb入门（必备） ttlsa教程系列之mongodb—(一)mongodb介绍  ttlsa教程系列之mongodb——(二)mongodb安装  ttlsa教程系列之mongodb——(三)mongodb的增删查改  ttlsa教程系列之mong">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mongodb学习[转]">
+<meta property="og:url" content="http://yoursite.com/mongodb-study/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="网上看到mongodb一系统的相关文章，手贱就转过来了http:&#x2F;&#x2F;www.ttlsa.com&#x2F;mongodb&#x2F;mongodb-study&#x2F; mongodb入门（必备） ttlsa教程系列之mongodb—(一)mongodb介绍  ttlsa教程系列之mongodb——(二)mongodb安装  ttlsa教程系列之mongodb——(三)mongodb的增删查改  ttlsa教程系列之mong">
+<meta property="og:locale">
+<meta property="article:published_time" content="2014-11-05T10:55:00.000Z">
+<meta property="article:modified_time" content="2026-03-16T14:04:02.397Z">
+<meta property="article:author" content="Neo">
+<meta property="article:tag" content="mongodb">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1"/>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Mongodb学习[转] - 浮生若梦 </title>
+  <meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Mongodb学习[转]
+        
+      </h1>
+
+      <time class="post-time">
+          Nov 5 2014
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>网上看到mongodb一系统的相关文章，手贱就转过来了<a href="http://www.ttlsa.com/mongodb/mongodb-study/">http://www.ttlsa.com/mongodb/mongodb-study/</a></p>
+<h3 id="mongodb入门（必备）"><a href="#mongodb入门（必备）" class="headerlink" title="mongodb入门（必备）"></a>mongodb入门（必备）</h3><ol>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-description/">ttlsa教程系列之mongodb—(一)mongodb介绍</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/install-mongodb-on-linux/">ttlsa教程系列之mongodb——(二)mongodb安装</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-insert-delete-select-update/">ttlsa教程系列之mongodb——(三)mongodb的增删查改</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-index-explain-profile-4/">ttlsa教程系列之mongodb——(四)mongodb索引&amp;explain&amp;profile</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/the-mongodb-architecture-copy-principle-_-replica-set/">ttlsa教程系列之mongodb——(五)mongodb架构-复制原理&amp;复制集</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/the-architecture-of-mongodb-mongodb-fragment-cluster-and-simple-construction-scheme/">mongodb架构mongodb分片集群与简易搭建方案—ttlsa教程系列之mongodb(六)</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/one-minute-to-build-mongodb-replica-set_sharding-architecture/">一分钟搭建mongodb架构Replica Set&amp;Sharding—ttlsa教程系列之mongodb(七)</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-backup-and-recovery-_on_-ttlsa-tutorial-series-mongodb/">mongodb备份与恢复(上)—ttlsa教程系列之mongodb(八)</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-backup-and-recovery-_lower_-ttlsa-tutorial-series-mongodb/">mongodb备份与恢复(下)—ttlsa教程系列之mongodb(九)</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-full-text-search-mongodb-ttlsa-tutorial-series/">mongodb 全文搜索—ttlsa教程系列之mongodb(十)</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/php-operation-mongodb-example-ttlsa-tutorial-series-mongodb/">PHP操作MongoDB实例 — ttlsa教程系列之mongodb(十一)</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/guide-configuration-verification-of-mongod/">mongod 验证配置指南(十二)</a></p>
+</li>
+</ol>
+ <span id="more"></span>
+
+<h3 id="mongodb深入"><a href="#mongodb深入" class="headerlink" title="mongodb深入"></a>mongodb深入</h3><ol>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-update-operator/">mongodb 更新操作</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-data-insert/">mongodb数据插入</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-remove-data/">mongodb删除数据</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-index/">mongodb 索引</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-sort-limit-skip-usage/">mongodb sort limit和skip用法</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/how-to-choose-a-shard-key-for-mongodb/">MongoDB 分片片键如何选择</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-aggregate-command/">mongodb 聚合命令</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-conditional-operators/">mongodb 查询条件</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-rotate-log-files/">MongoDB 日志切换</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-index-and-query-analyzer-tools-dex/">mongodb 索引和查询分析器—dex</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-distributed-read-and-write-operations-1/">mongodb 分布式读写操作(1)</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-distributed-read-and-write-operations-2/">mongodb 分布式读写操作(2)</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-getlasterror-write-security-mechanism/">Mongodb GetLastError写入安全机制</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-data-module/">mongodb 数据建模</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/embedding-referencing-information-in-documents/">mongodb 文档的嵌入和引用</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-replica-set/">mongodb高可用性架构—Replica Set</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-sharding-cluster/">mongodb sharding cluster(分片集群)</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/nosql-mongodb-description/">NoSQL之MongoDB(1)</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-gridfs-process-bigfile/">NoSQL之MongoDB(2)—使用GridFS处理大文件</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/in-depth-analysis-of-mongodb-oplog/">MongoDB oplog 深入剖析</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-find-in-all/">mongoDB find的$in $all的区别</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-and-memory/">MongoDB与内存</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/research-on-mongdb-data-transfer-program/">关于MongDB数据迁移方案的研究</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/how-mongodbs-journaling-works/">MongoDB journaling 工作原理</a></p>
+</li>
+</ol>
+<h3 id="mongodb持久化"><a href="#mongodb持久化" class="headerlink" title="mongodb持久化"></a>mongodb持久化</h3><ol>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-durability-1/">mongodb 持久化(1)</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-durability-2/">mongodb 持久化(2)</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-durability-3/">mongodb 持久化(3)</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-durability-4/">mongodb 持久化(4)</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-durability-5/">mongodb 持久化(5)</a></p>
+</li>
+</ol>
+<h3 id="mongodb工具"><a href="#mongodb工具" class="headerlink" title="mongodb工具"></a>mongodb工具</h3><ol>
+<li><p><a href="http://www.ttlsa.com/mongodb/nagios-check_mongodb-plugin-to-monitor-mongodb/">nagios check_mongodb插件监控mongodb</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/incremental-backup-of-mongobackup-mongodb-recovery-tool/">mongobackup mongodb的增量备份恢复工具</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-cluster-management-tool-umongo/">MongoDB集群管理工具UMongo</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongotop-detail/">mongotop详解</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-real-time-monitoring-tool-motop/">mongodb 实时监控工具motop</a></p>
+</li>
+</ol>
+<h3 id="mongodb常见问题"><a href="#mongodb常见问题" class="headerlink" title="mongodb常见问题"></a>mongodb常见问题</h3><ol>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-numa/">mongodb的NUMA问题</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/mongodb-so-undefined-symbol-heutf8/">MongoDB.so: undefined symbol: HeUTF8解决方法</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mongodb/initandlisten-connection-refused-because-too-many-open-connections-819-of-819/">[initandlisten] connection refused because too many open connections: 819 of 819</a></p>
+</li>
+</ol>
+<h3 id="mongodb其他"><a href="#mongodb其他" class="headerlink" title="mongodb其他"></a>mongodb其他</h3><ol>
+<li><a href="http://www.ttlsa.com/mongodb/mongodb-php-driver-tips-tricks/">MongoDB的PHP驱动方法与技巧</a></li>
+</ol>
+<hr>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
+<li><p><a href="http://www.ttlsa.com/nosql/mongodb">mongodb更多学习教程 – ttlsa出品</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/nginx/nginx-tutorial-from-entry-to-the-master-ttlsa/">nginx教程汇总 – ttlsa出品</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/zabbix/follow-ttlsa-to-study-zabbix/">zabbix监控教程汇总 – ttlsa出品</a></p>
+</li>
+<li><p><a href="http://www.ttlsa.com/mms/mongodb-mms-monitor-backup-tutorial/">mms mongodb监控教程汇总 – ttlsa出品</a></p>
+</li>
+</ol>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/mongodb/">mongodb</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/linux-ngrok/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">ngrok-神器让你外网访问本地</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/android-method-id-not-in-0xffff/">
+        <span class="next-text nav-default">Android  method ID not in [0, 0xffff]</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2026
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  </script>
+  </body>
+</html>

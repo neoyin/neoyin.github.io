@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="Python安装pip"/>
+
+
+
+
+  <meta name="keywords" content="python," />
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦" >
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=1.1"/>
+
+
+
+<link rel="canonical" href="http://yoursite.com/python-install-pip/"/>
+
+
+<meta name="description" content="之前调用Rancher API的python脚本需要使用pip 默认python并没有安装pip命令 Pip安装 使用软件管理器安装  Debian 和 Ubuntu:下安装sudo apt-get install python-pip 由于Mac下没有相关命令brew也没有pip的安装 可以用源码安装  123git clone https:&#x2F;&#x2F;github.com&#x2F;pypa&#x2F;pipcd pi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python安装pip">
+<meta property="og:url" content="http://yoursite.com/python-install-pip/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="之前调用Rancher API的python脚本需要使用pip 默认python并没有安装pip命令 Pip安装 使用软件管理器安装  Debian 和 Ubuntu:下安装sudo apt-get install python-pip 由于Mac下没有相关命令brew也没有pip的安装 可以用源码安装  123git clone https:&#x2F;&#x2F;github.com&#x2F;pypa&#x2F;pipcd pi">
+<meta property="og:locale">
+<meta property="article:published_time" content="2016-10-26T04:10:00.000Z">
+<meta property="article:modified_time" content="2026-03-16T14:04:02.397Z">
+<meta property="article:author" content="Neo">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1"/>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Python安装pip - 浮生若梦 </title>
+  <meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Python安装pip
+        
+      </h1>
+
+      <time class="post-time">
+          Oct 26 2016
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <hr>
+<p>之前调用Rancher API的python脚本需要使用pip 默认python并没有安装pip命令</p>
+<h5 id="Pip安装"><a href="#Pip安装" class="headerlink" title="Pip安装"></a>Pip安装</h5><ul>
+<li>使用软件管理器安装</li>
+</ul>
+<p>Debian 和 Ubuntu:下安装<br><code>sudo apt-get install python-pip</code></p>
+<p>由于Mac下没有相关命令brew也没有pip的安装 可以用源码安装 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/pypa/pip</span><br><span class="line">cd pip</span><br><span class="line">sudo python setup.py install</span><br></pre></td></tr></table></figure>
+
+<p>验证安装成功</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip -V</span><br><span class="line">pip 1.6.dev1 from /Library/Python/2.7/site-packages/pip-1.6.dev1-py2.7.egg (python 2.7)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h5><ul>
+<li><a href="http://stackoverflow.com/questions/18358878/cant-find-pip-executable-on-mac-os-x">http://stackoverflow.com/questions/18358878/cant-find-pip-executable-on-mac-os-x</a></li>
+<li><a href="http://pip-cn.readthedocs.io/en/latest/installing.html">http://pip-cn.readthedocs.io/en/latest/installing.html</a></li>
+</ul>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/python/">python</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/jenkins-github-clone-timeout/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">阿里云Jenkins从Github构建项目超时</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/jenkins-auto-deploy-rancher/">
+        <span class="next-text nav-default">Jenkins自动构建及通过Rancher API自动发布</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2026
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  </script>
+  </body>
+</html>

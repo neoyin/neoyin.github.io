@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="很牛掰的格式转换器pandoc"/>
+
+
+
+
+  <meta name="keywords" content="linux," />
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦" >
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=1.1"/>
+
+
+
+<link rel="canonical" href="http://yoursite.com/linux-command-pandoc/"/>
+
+
+<meta name="description" content="今天在查找html转markdown工具时发现出pandoc，真是不用不知道，一用吓一跳。相关介绍可以看一看它的wikihttp:&#x2F;&#x2F;zh.wikipedia.org&#x2F;zh-cn&#x2F;Pandoc咱这里只说一说它的用法吧。先安装sudo apt-get install pandoc看看帮助： 123456789101112131415161718192021222324252627282930313">
+<meta property="og:type" content="article">
+<meta property="og:title" content="很牛掰的格式转换器pandoc">
+<meta property="og:url" content="http://yoursite.com/linux-command-pandoc/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="今天在查找html转markdown工具时发现出pandoc，真是不用不知道，一用吓一跳。相关介绍可以看一看它的wikihttp:&#x2F;&#x2F;zh.wikipedia.org&#x2F;zh-cn&#x2F;Pandoc咱这里只说一说它的用法吧。先安装sudo apt-get install pandoc看看帮助： 123456789101112131415161718192021222324252627282930313">
+<meta property="og:locale">
+<meta property="article:published_time" content="2015-04-08T05:59:00.000Z">
+<meta property="article:modified_time" content="2026-03-16T14:04:02.396Z">
+<meta property="article:author" content="Neo">
+<meta property="article:tag" content="linux">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1"/>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> 很牛掰的格式转换器pandoc - 浮生若梦 </title>
+  <meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          很牛掰的格式转换器pandoc
+        
+      </h1>
+
+      <time class="post-time">
+          Apr 8 2015
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <hr>
+<p>今天在查找html转markdown工具时发现出pandoc，真是不用不知道，一用吓一跳。<br>相关介绍可以看一看它的wiki<a href="http://zh.wikipedia.org/zh-cn/Pandoc">http://zh.wikipedia.org/zh-cn/Pandoc</a><br>咱这里只说一说它的用法吧。<br>先安装<code>sudo apt-get install pandoc</code><br>看看帮助：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">pandoc -h</span><br><span class="line">pandoc [OPTIONS] [FILES]</span><br><span class="line">Input formats:  native, json, markdown, markdown+lhs, rst, rst+lhs, docbook,</span><br><span class="line">                textile, html, latex, latex+lhs</span><br><span class="line">Output formats: native, json, html, html5, html+lhs, html5+lhs, s5, slidy,</span><br><span class="line">                slideous, dzslides, docbook, opendocument, latex, latex+lhs,</span><br><span class="line">                beamer, beamer+lhs, context, texinfo, man, markdown,</span><br><span class="line">                markdown+lhs, plain, rst, rst+lhs, mediawiki, textile, rtf, org,</span><br><span class="line">                asciidoc, odt, docx, epub</span><br><span class="line">Options:</span><br><span class="line">  -f FORMAT, -r FORMAT  --from=FORMAT, --read=FORMAT</span><br><span class="line">  -t FORMAT, -w FORMAT  --to=FORMAT, --write=FORMAT</span><br><span class="line">  -o FILENAME           --output=FILENAME</span><br><span class="line">                        --data-dir=DIRECTORY</span><br><span class="line">                        --strict</span><br><span class="line">  -R                    --parse-raw</span><br><span class="line">  -S                    --smart</span><br><span class="line">                        --old-dashes</span><br><span class="line">                        --base-header-level=NUMBER</span><br><span class="line">                        --indented-code-classes=STRING</span><br><span class="line">                        --normalize</span><br><span class="line">  -p                    --preserve-tabs</span><br><span class="line">                        --tab-stop=NUMBER</span><br><span class="line">  -s                    --standalone</span><br><span class="line">                        --template=FILENAME</span><br><span class="line">  -V KEY[:VALUE]        --variable=KEY[:VALUE]</span><br><span class="line">  -D FORMAT             --print-default-template=FORMAT</span><br><span class="line">                        --no-wrap</span><br><span class="line">                        --columns=NUMBER</span><br><span class="line">                        --toc, --table-of-contents</span><br><span class="line">                        --no-highlight</span><br><span class="line">                        --highlight-style=STYLE</span><br><span class="line">  -H FILENAME           --include-in-header=FILENAME</span><br><span class="line">  -B FILENAME           --include-before-body=FILENAME</span><br><span class="line">  -A FILENAME           --include-after-body=FILENAME</span><br><span class="line">                        --self-contained</span><br><span class="line">                        --offline</span><br><span class="line">  -5                    --html5</span><br><span class="line">                        --ascii</span><br><span class="line">                        --reference-links</span><br><span class="line">                        --atx-headers</span><br><span class="line">                        --chapters</span><br><span class="line">  -N                    --number-sections</span><br><span class="line">                        --no-tex-ligatures</span><br><span class="line">                        --listings</span><br><span class="line">  -i                    --incremental</span><br><span class="line">                        --slide-level=NUMBER</span><br><span class="line">                        --section-divs</span><br><span class="line">                        --email-obfuscation=none|javascript|references</span><br><span class="line">                        --id-prefix=STRING</span><br><span class="line">---</span><br><span class="line">  -T STRING             --title-prefix=STRING</span><br><span class="line">  -c URL                --css=URL</span><br><span class="line">                        --reference-odt=FILENAME</span><br><span class="line">                        --reference-docx=FILENAME</span><br><span class="line">                        --epub-stylesheet=FILENAME</span><br><span class="line">                        --epub-cover-image=FILENAME</span><br><span class="line">                        --epub-metadata=FILENAME</span><br><span class="line">                        --epub-embed-font=FILE</span><br><span class="line">                        --latex-engine=PROGRAM</span><br><span class="line">                        --bibliography=FILENAME</span><br><span class="line">                        --csl=FILENAME</span><br><span class="line">                        --citation-abbreviations=FILENAME</span><br><span class="line">                        --natbib</span><br><span class="line">                        --biblatex</span><br><span class="line">  -m[URL]               --latexmathml[=URL], --asciimathml[=URL]</span><br><span class="line">                        --mathml[=URL]</span><br><span class="line">                        --mimetex[=URL]</span><br><span class="line">                        --webtex[=URL]</span><br><span class="line">                        --jsmath[=URL]</span><br><span class="line">                        --mathjax[=URL]</span><br><span class="line">                        --gladtex</span><br><span class="line">                        --dump-args</span><br><span class="line">                        --ignore-args</span><br><span class="line">  -v                    --version</span><br><span class="line">  -h                    --help</span><br></pre></td></tr></table></figure>
+
+<p>瑞士军刀真不是白叫的，各种类型之间的转换，真是强大.<br>它之间的对应关系网上有图在这里<br><a href="http://johnmacfarlane.net/pandoc/diagram.png">http://johnmacfarlane.net/pandoc/diagram.png</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#将html转成markdown 如下:</span><br><span class="line">pandoc -f html -t markdown -o test.md test.html</span><br></pre></td></tr></table></figure>
+<p>大家可以试试，非常不错.</p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/linux/">linux</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/redis-linux-init/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Redis在Linux自启动</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/linux-ngrok/">
+        <span class="next-text nav-default">ngrok-神器让你外网访问本地</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2026
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  </script>
+  </body>
+</html>

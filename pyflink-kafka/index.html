@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="Pyflink接收kafka消息"/>
+
+
+
+
+  <meta name="keywords" content="docker,flink,python,pyflink," />
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦" >
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=1.1"/>
+
+
+
+<link rel="canonical" href="http://yoursite.com/pyflink-kafka/"/>
+
+
+<meta name="description" content="Kafka依赖如下  flink-connector-kafka-0.9_2.11-1.8.1.jar    flink-connector-kafka-base_2.11-1.10-SNAPSHOT.jar flink-json-1.10-SNAPSHOT.jar  kafka-clients-0.9.0.1.jar   注意:这里kafka相关的版本号为0.9 与公司kafka服务器版本相同">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pyflink接收kafka消息">
+<meta property="og:url" content="http://yoursite.com/pyflink-kafka/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="Kafka依赖如下  flink-connector-kafka-0.9_2.11-1.8.1.jar    flink-connector-kafka-base_2.11-1.10-SNAPSHOT.jar flink-json-1.10-SNAPSHOT.jar  kafka-clients-0.9.0.1.jar   注意:这里kafka相关的版本号为0.9 与公司kafka服务器版本相同">
+<meta property="og:locale">
+<meta property="article:published_time" content="2020-02-28T09:10:00.000Z">
+<meta property="article:modified_time" content="2026-03-16T14:04:02.397Z">
+<meta property="article:author" content="Neo">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="flink">
+<meta property="article:tag" content="pyflink">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1"/>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Pyflink接收kafka消息 - 浮生若梦 </title>
+  <meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Pyflink接收kafka消息
+        
+      </h1>
+
+      <time class="post-time">
+          Feb 28 2020
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <hr>
+<h2 id="Kafka依赖"><a href="#Kafka依赖" class="headerlink" title="Kafka依赖"></a>Kafka依赖</h2><p>如下</p>
+<ul>
+<li>flink-connector-kafka-0.9_2.11-1.8.1.jar   </li>
+<li>flink-connector-kafka-base_2.11-1.10-SNAPSHOT.jar</li>
+<li>flink-json-1.10-SNAPSHOT.jar </li>
+<li>kafka-clients-0.9.0.1.jar</li>
+</ul>
+<blockquote>
+<p>注意:这里kafka相关的版本号为0.9 与公司kafka服务器版本相同</p>
+</blockquote>
+<h2 id="环境部署kafka依赖"><a href="#环境部署kafka依赖" class="headerlink" title="环境部署kafka依赖"></a>环境部署kafka依赖</h2><ol>
+<li><p>本地开发部署<br>需要将以上jar包 copy至python flink 环境中 $python_module&#x2F;site-packages&#x2F;pyflink&#x2F;lib 目录下<br>&#x2F;usr&#x2F;local&#x2F;lib&#x2F;python3.7&#x2F;site-packages&#x2F;pyflink&#x2F;</p>
+</li>
+<li><p>服务器环境部署<br>将以上jar包copy至 $flink_home&#x2F;lib 目录下</p>
+</li>
+<li><p>Docker环境部署</p>
+<p><a href="https://git.chinawayltd.com/rdp/pyflink-rdp">pyflink-rdp</a> 项目Dockerfile如下 添加jar包</p>
+</li>
+</ol>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">COPY</span><span class="language-bash"> flink-1.10.0-bin-scala_2.11.tgz <span class="variable">$FLINK_HOME</span></span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> ``tar` `-xf flink*.tgz --strip-components=1;\</span></span><br><span class="line"><span class="language-bash"><span class="built_in">rm</span>` `flink*.tgz; \</span></span><br><span class="line"><span class="language-bash"><span class="built_in">chown</span>` `-R flink:flink .;</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> jlib/* <span class="variable">$FLINK_HOME</span>``/lib/</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Kafka-开发准备"><a href="#Kafka-开发准备" class="headerlink" title="Kafka 开发准备"></a>Kafka 开发准备</h2><p>​    这直接用公司kafka集群平台测试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">kfk_services = &quot;node1.test.com:9092,node2.test.com:9092,node3.test.com:9092&quot;</span><br><span class="line">kfk_consumer_topic = &quot;pyflink-test&quot;;</span><br><span class="line">kfk_consumer_groupid =&quot;test&quot;;</span><br><span class="line">kfk_producter_topic =&quot;pyflink-test-result&quot;;</span><br><span class="line"> </span><br><span class="line">kfkConsumer = Kafka().version(&quot;0.9&quot;).topic(kfk_consumer_topic).start_from_latest()\</span><br><span class="line">.property(&quot;group.id&quot;,kfk_consumer_groupid)\</span><br><span class="line">.property(&quot;bootstrap.servers&quot;, kfk_services)\</span><br><span class="line">.property(&quot;zookeeper.connect&quot;,&quot;&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>注意: version为0.9 与服务器版本保持一致</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">st_env.connect(kfkConsumer) \</span><br><span class="line">.with_format(Json()</span><br><span class="line">.fail_on_missing_field(``<span class="literal">True</span>``)</span><br><span class="line">.json_schema(</span><br><span class="line"><span class="string">&quot;&#123;&quot;</span></span><br><span class="line"><span class="string">&quot; type: &#x27;object&#x27;,&quot;</span></span><br><span class="line"><span class="string">&quot; properties: &#123;&quot;</span></span><br><span class="line"><span class="string">&quot; type: &#123;&quot;</span></span><br><span class="line"><span class="string">&quot; type: &#x27;string&#x27;&quot;</span></span><br><span class="line"><span class="string">&quot; &#125;,&quot;</span></span><br><span class="line"><span class="string">&quot; carnum: &#123;&quot;</span></span><br><span class="line"><span class="string">&quot; type: &#x27;string&#x27;&quot;</span></span><br><span class="line"><span class="string">&quot; &#125;,&quot;</span></span><br><span class="line"><span class="string">&quot; time: &#123;&quot;</span></span><br><span class="line"><span class="string">&quot; type: &#x27;string&#x27;,&quot;</span></span><br><span class="line"><span class="string">&quot; format: &#x27;date-time&#x27;&quot;</span></span><br><span class="line"><span class="string">&quot; &#125;&quot;</span></span><br><span class="line"><span class="string">&quot; &#125;&quot;</span></span><br><span class="line"><span class="string">&quot;&#125;&quot;</span></span><br><span class="line">)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>需要将数据json格式化 json schema 见官方文档 <a href="http://json-schema.org/specification.html">http://json-schema.org/specification.html</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">kfkProducter = Kafka().version(<span class="string">&quot;0.9&quot;</span>).topic(kfk_producter_topic) \</span><br><span class="line">.<span class="built_in">property</span>(<span class="string">&quot;bootstrap.servers&quot;</span>, kfk_services) \</span><br><span class="line">.<span class="built_in">property</span>(<span class="string">&quot;zookeeper.connect&quot;</span>,<span class="string">&quot;&quot;</span>)</span><br><span class="line">  </span><br><span class="line">st_env.connect(kfkProducter.sink_partitioner_fixed()) \</span><br><span class="line">.with_format(Json().fail_on_missing_field(<span class="literal">True</span>).json_schema(</span><br><span class="line"><span class="string">&quot;&#123;&quot;</span></span><br><span class="line"><span class="string">&quot; type: &#x27;object&#x27;,&quot;</span></span><br><span class="line"><span class="string">&quot; properties: &#123;&quot;</span></span><br><span class="line"><span class="string">&quot; carnum: &#123;&quot;</span></span><br><span class="line"><span class="string">&quot; type: &#x27;string&#x27;&quot;</span></span><br><span class="line"><span class="string">&quot; &#125;,&quot;</span></span><br><span class="line"><span class="string">&quot; count: &#123;&quot;</span></span><br><span class="line"><span class="string">&quot; type: &#x27;integer&#x27;&quot;</span></span><br><span class="line"><span class="string">&quot; &#125;,&quot;</span></span><br><span class="line"><span class="string">&quot; t: &#123;&quot;</span></span><br><span class="line"><span class="string">&quot; type: &#x27;string&#x27;&quot;</span></span><br><span class="line"><span class="string">&quot; &#125;&quot;</span></span><br><span class="line"><span class="string">&quot; &#125;&quot;</span></span><br><span class="line"><span class="string">&quot;&#125;&quot;</span></span><br><span class="line">))\</span><br><span class="line">.with_schema(Schema()</span><br><span class="line">.field(<span class="string">&#x27;carnum&#x27;</span>, DataTypes.STRING())</span><br><span class="line">.field(<span class="string">&#x27;count&#x27;</span>, DataTypes.INT())</span><br><span class="line">.field(<span class="string">&quot;t&quot;</span>,DataTypes.STRING())</span><br><span class="line">) \</span><br><span class="line">.register_table_sink(<span class="string">&#x27;mySink&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">st_env.scan(&#x27;source&#x27;) \</span><br><span class="line">	.window(Session.with_gap(&quot;30.minutes&quot;).on(&quot;rowtime&quot;).alias(&quot;w&quot;))\</span><br><span class="line">	.group_by(&quot;w,carnum&quot;)\</span><br><span class="line">	.select(&quot;carnum,count(carnum),carnum as t&quot;)\</span><br><span class="line">	.insert_into(&#x27;mySink&#x27;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>部署方式不变如上篇文章 </p>
+<h2 id="注意问题"><a href="#注意问题" class="headerlink" title="注意问题"></a>注意问题</h2><p>公司用的pyflink版本为1.10 对应的kafka为0.11 需要与kafka服务端保持一致 </p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/docker/">docker</a>
+          
+            <a href="/tags/flink/">flink</a>
+          
+            <a href="/tags/python/">python</a>
+          
+            <a href="/tags/pyflink/">pyflink</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/pyflink-windows/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Pyflink中windows</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/pyflink-config-deploy/">
+        <span class="next-text nav-default">Pyflink开发-环境部署</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2026
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  </script>
+  </body>
+</html>

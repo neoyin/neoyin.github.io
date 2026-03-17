@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="android中的ListView在超过屏幕后，会使选择数据混乱的解决方法"/>
+
+
+
+
+  <meta name="keywords" content="android," />
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦" >
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=1.1"/>
+
+
+
+<link rel="canonical" href="http://yoursite.com/android-listview-issue/"/>
+
+
+<meta name="description" content="看了一下几个月以前写的一个android应用，后来捣鼓除了这个解决ListView的选择数据混乱的问题，由于sdk出了些问题，因此无法运行程序贴出图片，只能贴上代码，以后再待用了。 package com.asms.adapter;  import java.util.ArrayList; import java.util.HashMap;  import android.app.Activity">
+<meta property="og:type" content="article">
+<meta property="og:title" content="android中的ListView在超过屏幕后，会使选择数据混乱的解决方法">
+<meta property="og:url" content="http://yoursite.com/android-listview-issue/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="看了一下几个月以前写的一个android应用，后来捣鼓除了这个解决ListView的选择数据混乱的问题，由于sdk出了些问题，因此无法运行程序贴出图片，只能贴上代码，以后再待用了。 package com.asms.adapter;  import java.util.ArrayList; import java.util.HashMap;  import android.app.Activity">
+<meta property="og:locale">
+<meta property="article:published_time" content="2013-11-30T16:06:00.000Z">
+<meta property="article:modified_time" content="2026-03-16T14:04:02.395Z">
+<meta property="article:author" content="Neo">
+<meta property="article:tag" content="android">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1"/>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> android中的ListView在超过屏幕后，会使选择数据混乱的解决方法 - 浮生若梦 </title>
+  <meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          android中的ListView在超过屏幕后，会使选择数据混乱的解决方法
+        
+      </h1>
+
+      <time class="post-time">
+          Dec 1 2013
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>看了一下几个月以前写的一个android应用，后来捣鼓除了这个解决ListView的选择数据混乱的问题，由于sdk出了些问题，因此无法运行程序贴出图片，只能贴上代码，以后再待用了。</p>
+<pre><code>package com.asms.adapter;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.RadioButton;
+import android.widget.TextView;
+
+import com.asms.MainActivity;
+import com.asms.R;
+import com.asms.activity.SettingTargetEmailActivity;
+import com.asms.activity.UpdateTargetEmailActivity;
+import com.asms.db.DBManager;
+import com.asms.dialog.SelfSettingDialog;
+import com.asms.utils.Constant;
+
+/**
+* ListView的自定义布局类
+* @author Administrator
+*
+*/
+public class ListViewAdapter extends BaseAdapter{
+
+public static final int e_id = 1000;
+public static final int c_id = 100;
+private Context context = null;
+private ArrayList&lt;ContentValues&gt; cvs = null;
+private LayoutInflater layoutInflater = null;
+private HashMap&lt;Integer, Boolean&gt; statusMap = new HashMap&lt;Integer, Boolean&gt;();
+private HashMap&lt;Integer, Boolean&gt; removeMap = new HashMap&lt;Integer, Boolean&gt;();
+private View convertView = null;
+public ListViewAdapter(Context context, ArrayList&lt;ContentValues&gt; cvs) {
+this.context = context;
+this.cvs = cvs;
+this.layoutInflater = LayoutInflater.from(context);
+}
+
+@Override
+public int getCount() {
+return cvs.size();
+}
+
+@Override
+public Object getItem(int position) {
+return cvs.get(position);
+}
+
+@Override
+public long getItemId(int position) {
+return position;
+}
+
+@Override
+public View getView(int position, View convertView, ViewGroup parent) {
+ViewHolder vh = null;
+if(convertView == null) {
+Log.v(&quot;ListViewAdapter&quot;, &quot;&quot;+position);
+vh = new ViewHolder();
+convertView = layoutInflater.inflate(R.layout.listviewadapter, null);
+vh.emailShow = (TextView) convertView.findViewById(R.id.emailShowView);
+vh.statusShow = (RadioButton) convertView.findViewById(R.id.changeStatus);
+
+vh.removeCb = (CheckBox) convertView.findViewById(R.id.removeEmailChk);
+
+convertView.setTag(vh);
+} else {
+vh = (ViewHolder) convertView.getTag();
+}
+//给选择框添加事件
+vh.emailShow.setOnClickListener(new EmailShowListener());
+vh.emailShow.setId(e_id+position); //必须具有不同的id，不然会被覆盖掉
+
+vh.statusShow.setId(position);
+vh.removeCb.setId(c_id + position);
+vh.statusShow.setOnCheckedChangeListener(new RadioGroupListener());
+vh.removeCb.setOnCheckedChangeListener(new CheckBoxListener());
+
+String email = cvs.get(position).getAsString(&quot;email&quot;);
+if(email.length() &gt; 20) {
+email = email.substring(0, 20) + &quot;...&quot;;
+}
+vh.emailShow.setText(email);
+int status = cvs.get(position).getAsInteger(&quot;status&quot;).intValue();
+//在每一次下拉列表时，都会执行下面的判断
+if((status == 0 &amp;&amp; statusMap.size() &lt;= 0) || statusMap.containsKey(position)) {
+statusMap.put(position, true);
+vh.statusShow.setChecked(true);
+} else {
+vh.statusShow.setChecked(false);
+}
+if(removeMap.containsKey(c_id + position)) {
+vh.removeCb.setChecked(removeMap.get(c_id + position));
+} else {
+vh.removeCb.setChecked(false);
+}
+this.convertView = convertView;
+return convertView;
+}
+
+class ViewHolder {
+public TextView emailShow;
+public RadioButton statusShow;
+public CheckBox removeCb;
+}
+
+class CheckBoxListener implements android.widget.CompoundButton.OnCheckedChangeListener {
+@Override
+public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+int id = buttonView.getId();
+if(!isChecked) {
+removeMap.remove(id);
+return;
+}
+removeMap.put(id, isChecked);
+
+Log.v(&quot;ListViewAdapter&quot;, removeMap.toString());
+}
+}
+
+class RadioGroupListener implements OnCheckedChangeListener {
+public RadioGroupListener(){}
+@Override
+public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+int id = buttonView.getId();
+if(!isChecked) {
+return;
+}
+int tempId = -1;
+if(statusMap.size() &gt; 0) {
+tempId = statusMap.entrySet().iterator().next().getKey();
+RadioButton rb = (RadioButton) ((Activity) context).findViewById(tempId);
+if(rb != null)
+rb.setChecked(false);
+}
+statusMap.remove(tempId);
+statusMap.put(id, isChecked);
+DBManager db = new DBManager(context);
+ContentValues cv = new ContentValues();
+cv.put(&quot;status&quot;, 0);
+db.update(Constant.MAIN_TABLE, cv, &quot; where id = ?&quot;, cvs.get(id).getAsString(&quot;id&quot;));
+cv.put(&quot;status&quot;, 1);
+db.update(Constant.MAIN_TABLE, cv, &quot; where id != ?&quot;, cvs.get(id).getAsString(&quot;id&quot;));
+Log.v(&quot;ListViewAdapter&quot;, statusMap.toString() + &quot;, &quot; + id);
+}
+}
+
+class EmailShowListener implements OnClickListener {
+
+@Override
+public void onClick(View v) {
+int id = cvs.get(v.getId() - e_id).getAsInteger(&quot;id&quot;);
+DBManager db = new DBManager(context);
+String sql = &quot;select e.*, t.name, t.host_name,t.send_host_name from main_table e left join email_type t on t.id = e.email_type where t.status = 0 and e.id=?&quot;;
+ArrayList&lt;ContentValues&gt; cvs = db.rawQuery(sql, &quot;&quot; + id);
+if(cvs.size() &gt; 0) {
+ContentValues cv = cvs.get(0);
+SelfSettingDialog.Builder sb = new SelfSettingDialog.Builder(context);
+</code></pre>
+<hr>
+<pre><code>sb.settitle(cv.getAsString(&quot;email&quot;));
+StringBuffer temp = new StringBuffer();
+temp.append(&quot;名称：&quot;).append(cv.getAsString(&quot;name&quot;)).append(&quot;\n&quot;).append(&quot;发送协议：&quot;).append(cv.getAsString(&quot;host_name&quot;)).append(&quot;\n&quot;);
+temp.append(&quot;接收协议：&quot;).append(cv.getAsString(&quot;send_host_name&quot;)).append(&quot;\n&quot;);
+temp.append(&quot;创建时间：&quot;).append(cv.getAsString(&quot;create_time&quot;));
+sb.setMessage(temp.toString());
+sb.setPostiveButton(R.string.ok, new PostiveButtonListener());
+sb.setNegativeButton(R.string.update, new NegativeButtonListener());
+Dialog dialog = sb.create();
+dialog.show();
+}
+}
+
+}
+
+public void setSelectAll(boolean isChecked) {
+int length = cvs.size();
+for(int i = 0; i &lt; length; i++) {
+removeMap.put(c_id + i, isChecked);
+}
+}
+
+public HashMap&lt;Integer, Boolean&gt; getSelectedRemove() {
+return removeMap;
+}
+
+public void setSelectedRomve(HashMap&lt;Integer, Boolean&gt; removes) {
+this.removeMap = removes;
+}
+
+public void setStatus(HashMap&lt;Integer, Boolean&gt; statusMap) {
+this.statusMap = statusMap;
+}
+
+public HashMap&lt;Integer, Boolean&gt; getStatusSelected() {
+return statusMap;
+}
+
+public ArrayList&lt;ContentValues&gt; getCvs() {
+return cvs;
+}
+
+class PostiveButtonListener implements DialogInterface.OnClickListener {
+
+@Override
+public void onClick(DialogInterface dialog, int which) {
+dialog.dismiss();
+}
+
+}
+
+class NegativeButtonListener implements DialogInterface.OnClickListener {
+
+@Override
+public void onClick(DialogInterface dialog, int which) {
+Intent intent = new Intent(context,UpdateTargetEmailActivity.class);
+((Activity)context).overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+MainActivity.tabHost.addTab(MainActivity.buildTabSpec(&quot;home2&quot;,-1, R.drawable.receivebox, intent,context.getResources()));
+//((Activity)context).startActivityForResult(intent, 1);
+}
+
+}
+}
+</code></pre>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/android/">android</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/hadoop-jobclient-69s-timeout/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">hadoop jobclient69秒超时问题</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/idea-config/">
+        <span class="next-text nav-default"></span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2026
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  </script>
+  </body>
+</html>

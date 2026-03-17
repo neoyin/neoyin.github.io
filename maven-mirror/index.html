@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="Maven私服中的mirror"/>
+
+
+
+
+  <meta name="keywords" content="maven," />
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦" >
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=1.1"/>
+
+
+
+<link rel="canonical" href="http://yoursite.com/maven-mirror/"/>
+
+
+<meta name="description" content="前一段时间在公司内部搭建了Maven私服，在内部开发过程中一定程度上提高了工作效率。但是最近开发过程中遇到了一个问题，现将这一问题的发生的原因和过程记录下来： 最近一个同事开发过程中需要用到rabbitmq的最新版本(3.2.3)。但是本地私服还没更新这一最新版本。于是在其项目pom.xml文件中添加了一个repository &lt;repository&gt;  &lt;id&gt;sonat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Maven私服中的mirror">
+<meta property="og:url" content="http://yoursite.com/maven-mirror/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="前一段时间在公司内部搭建了Maven私服，在内部开发过程中一定程度上提高了工作效率。但是最近开发过程中遇到了一个问题，现将这一问题的发生的原因和过程记录下来： 最近一个同事开发过程中需要用到rabbitmq的最新版本(3.2.3)。但是本地私服还没更新这一最新版本。于是在其项目pom.xml文件中添加了一个repository &lt;repository&gt;  &lt;id&gt;sonat">
+<meta property="og:locale">
+<meta property="article:published_time" content="2014-02-07T08:26:00.000Z">
+<meta property="article:modified_time" content="2026-03-16T14:04:02.397Z">
+<meta property="article:author" content="Neo">
+<meta property="article:tag" content="maven">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1"/>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Maven私服中的mirror - 浮生若梦 </title>
+  <meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Maven私服中的mirror
+        
+      </h1>
+
+      <time class="post-time">
+          Feb 7 2014
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>前一段时间在公司内部搭建了Maven私服，在内部开发过程中一定程度上提高了工作效率。但是最近开发过程中遇到了一个问题，现将这一问题的发生的原因和过程记录下来：</p>
+<p>最近一个同事开发过程中需要用到rabbitmq的最新版本(3.2.3)。但是本地私服还没更新这一最新版本。于是在其项目pom.xml文件中添加了一个repository</p>
+<pre><code>&lt;repository&gt;
+ &lt;id&gt;sonatype-nexus-staging&lt;/id&gt;
+ &lt;name&gt;Nexus Release Repository&lt;/name&gt;
+ &lt;url&gt;http://oss.sonatype.org/service/local/staging/deploy/maven2/&lt;/url&gt;
+&lt;/repository&gt;
+</code></pre>
+<p>在其本机上运行后没问题，放至测试环境后项目编译失败,仔细查看了一下日志发现编译的时候所需的rabbitmq最新版本jar从maven私服找不到。<br>这个当然找不到呀。私服上还没有最新的版本呢。</p>
+<span id="more"></span>
+
+<p>但是明明在pom.xml文件中指定了repository，怎么还会去私服中找呢？而且本地没有问题呀。<br>经过仔细排查发现在测试环境中的~&#x2F;.m2&#x2F;settings.xml文件中有一段配置</p>
+<pre><code> &lt;mirror&gt;
+    &lt;id&gt;nexus&lt;/id&gt;
+    &lt;mirrorOf&gt;*&lt;/mirrorOf&gt;
+    &lt;name&gt;Nexus&lt;/name&gt;
+    &lt;url&gt;http://nexus.xy.l99.com:8081/nexus/content/groups/public/&lt;/url&gt;
+ &lt;/mirror&gt;
+</code></pre>
+<p>此处的镜像配置中 <code>&lt;mirrorOf&gt;*&lt;/mirrorOf&gt;</code><br>将所有对于远程仓库的请求都会被转至私服了.而本地没有做过这样的配置。所以本地编译OK，测试环境却出现报错。</p>
+<p>关于mirror配置如下： Maven还支持更高级的镜像配置：</p>
+<ol>
+<li><code>&lt;mirrorOf&gt;*&lt;/mirrorOf&gt;</code>匹配所有远程仓库。</li>
+<li><code>&lt;mirrorOf&gt;external:*&lt;/mirrorOf&gt;</code>匹配所有远程仓库，使用localhost的除外，使用file:&#x2F;&#x2F;协议的除外。也就是说，匹配所有不在本机上的远程仓库。</li>
+<li><code>&lt;mirrorOf&gt;repo1,repo2&lt;/mirrorOf&gt;</code><br>匹配仓库repo1和repo2，使用逗号分隔多个远程仓库。</li>
+<li><code>&lt;mirrorOf&gt;*,!repo1&lt;/miiroOf&gt;</code><br>匹配所有远程仓库，repo1除外，使用感叹号将仓库从匹配中排除。</li>
+</ol>
+<hr>
+<p><a href="http://m.oschina.net/blog/100634">http://m.oschina.net/blog/100634</a></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/maven/">maven</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/regex-html-tags/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">使用正则表达式匹配嵌套Html标签</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/my201314/">
+        <span class="next-text nav-default">我的201314</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2026
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  </script>
+  </body>
+</html>

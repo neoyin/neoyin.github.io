@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="MongoDB Replication"/>
+
+
+
+
+  <meta name="keywords" content="mongodb," />
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦" >
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=1.1"/>
+
+
+
+<link rel="canonical" href="http://yoursite.com/mongodb-replication/"/>
+
+
+<meta name="description" content="MongoDB Replication介绍目的数据备份冗余, 防止单点挂机. 还可以提高读数据的承受能力. Replication in MongoDB副本集合是一组有着相同数据的mongod实例, 其中一台作主要机,其余的作次要机.只在主要机接收写操作, 次要机从主要机中复制写操作.复制功能是异步执行的. replica set 成员Replica Set PrimaryPrimary 是唯一接">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MongoDB Replication">
+<meta property="og:url" content="http://yoursite.com/mongodb-replication/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="MongoDB Replication介绍目的数据备份冗余, 防止单点挂机. 还可以提高读数据的承受能力. Replication in MongoDB副本集合是一组有着相同数据的mongod实例, 其中一台作主要机,其余的作次要机.只在主要机接收写操作, 次要机从主要机中复制写操作.复制功能是异步执行的. replica set 成员Replica Set PrimaryPrimary 是唯一接">
+<meta property="og:locale">
+<meta property="article:published_time" content="2014-06-14T02:09:00.000Z">
+<meta property="article:modified_time" content="2026-03-16T14:04:02.397Z">
+<meta property="article:author" content="Neo">
+<meta property="article:tag" content="mongodb">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1"/>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> MongoDB Replication - 浮生若梦 </title>
+  <meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          MongoDB Replication
+        
+      </h1>
+
+      <time class="post-time">
+          Jun 14 2014
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h1 id="MongoDB-Replication"><a href="#MongoDB-Replication" class="headerlink" title="MongoDB Replication"></a>MongoDB Replication</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><h4 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h4><p>数据备份冗余, 防止单点挂机. 还可以提高读数据的承受能力.</p>
+<h4 id="Replication-in-MongoDB"><a href="#Replication-in-MongoDB" class="headerlink" title="Replication in MongoDB"></a>Replication in MongoDB</h4><p>副本集合是一组有着相同数据的mongod实例, 其中一台作主要机,<br>其余的作次要机.<br>只在主要机接收写操作, 次要机从主要机中复制写操作.复制功能是异步执行的.</p>
+<h3 id="replica-set-成员"><a href="#replica-set-成员" class="headerlink" title="replica set 成员"></a>replica set 成员</h3><h4 id="Replica-Set-Primary"><a href="#Replica-Set-Primary" class="headerlink" title="Replica Set Primary"></a>Replica Set Primary</h4><p>Primary 是唯一接受写操作的成员.<br>所有成员都可以接受读操作, 默认配置下应用把读操作指向primary. 点 <a href="http://docs.mongodb.org/manual/core/read-preference/">Read<br>Preference</a>查看如何修改默认行为有关的细节.</p>
+<h4 id="Secondary成员"><a href="#Secondary成员" class="headerlink" title="Secondary成员"></a>Secondary成员</h4><p>secondary 通过<br><a href="http://docs.mongodb.org/manual/core/replica-set-oplog/">oplog</a> 冗余<br>primary的数据.<br>secondary 成员可以被配置成不同的成员</p>
+<h4 id="Non-voting-成员"><a href="#Non-voting-成员" class="headerlink" title="Non-voting 成员"></a>Non-voting 成员</h4><p>在选举中不能投票, 但可以投反对票,</p>
+<h4 id="Priority-0-成员"><a href="#Priority-0-成员" class="headerlink" title="Priority 0 成员"></a>Priority 0 成员</h4><p>这种成员不能选举成为 primary, 其它与secondary成员没有区别.<br>在多数据中心的情况下, 可以只让一个中心的成员可以成为primary.</p>
+<h4 id="Hidden-成员"><a href="#Hidden-成员" class="headerlink" title="Hidden 成员"></a>Hidden 成员</h4><p>Hidden成员维护一份primary数据的复本, 但对应用程序不可见,<br>hidden成员必须是priority 0成员, db.isMaster()方法不显示hidden成员,<br>但hidden成员在选举中可以投票.<br>In a sharded cluster, mongos do not interact with hidden members.<br>在做数据备份时,可以用db.fsyncLock() 和 db.fsyncUnlock()<br>把所有写入刷新到磁盘, 并在备份操作期间锁定 mongod 实例,<br>这样就不需要在备份时停掉hidden成员.</p>
+<h5 id="深入阅读"><a href="#深入阅读" class="headerlink" title="深入阅读"></a>深入阅读</h5><p>关于如何备份数据库, 看<a href="http://docs.mongodb.org/manual/core/backups/">MongoDB Backup Methods</a>.<br>如何配置一个hidden成员, 看 <a href="http://docs.mongodb.org/manual/tutorial/configure-a-hidden-replica-set-member/">Configure a Hidden Replica Set Member</a>.</p>
+<h4 id="Arbiter"><a href="#Arbiter" class="headerlink" title="Arbiter"></a>Arbiter</h4><p>只能用来进行选举, 在偶数台机器的 replica set 中加入 Arbiter,<br>奇数的不加.<br>To add an arbiter, see <a href="http://docs.mongodb.org/manual/tutorial/add-replica-set-arbiter/">Add an Arbiter to Replica Set</a>.</p>
+<h3 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h3><p><a href="http://docs.mongodb.org/manual/tutorial/deploy-replica-set/">Deploy a Replica Set</a></p>
+<h4 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h4><p>三台机器的副本集可以</p>
+<h4 id="部署一个副本集"><a href="#部署一个副本集" class="headerlink" title="部署一个副本集"></a>部署一个副本集</h4><h4 id="从replica-set中删除一个成员"><a href="#从replica-set中删除一个成员" class="headerlink" title="从replica set中删除一个成员"></a>从replica set中删除一个成员</h4><h3 id="replica-set-成员配置"><a href="#replica-set-成员配置" class="headerlink" title="replica set 成员配置"></a>replica set 成员配置</h3><h4 id="调整成员-proority"><a href="#调整成员-proority" class="headerlink" title="调整成员 proority"></a>调整成员 proority</h4>
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/mongodb/">mongodb</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/git-delete-remote-branch/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">git删除远程分支abc</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/what-are-managers-often-make-mistakes/">
+        <span class="next-text nav-default">缺乏经验的管理者有哪些常犯错误？</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2026
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  </script>
+  </body>
+</html>

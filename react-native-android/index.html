@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="React-native 环境搭建"/>
+
+
+
+
+  <meta name="keywords" content="react-native," />
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦" >
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=1.1"/>
+
+
+
+<link rel="canonical" href="http://yoursite.com/react-native-android/"/>
+
+
+<meta name="description" content="环境 JAVA  Gradle http:&#x2F;&#x2F;gradle.org&#x2F;gradle-download&#x2F; Node  https:&#x2F;&#x2F;nodejs.org&#x2F;en&#x2F; Android-SDK http:&#x2F;&#x2F;www.androiddevtools.cn&#x2F; Genymotion https:&#x2F;&#x2F;www.genymotion.com&#x2F;  Bugfix123456789101112java.io.IOExcep">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React-native 环境搭建">
+<meta property="og:url" content="http://yoursite.com/react-native-android/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="环境 JAVA  Gradle http:&#x2F;&#x2F;gradle.org&#x2F;gradle-download&#x2F; Node  https:&#x2F;&#x2F;nodejs.org&#x2F;en&#x2F; Android-SDK http:&#x2F;&#x2F;www.androiddevtools.cn&#x2F; Genymotion https:&#x2F;&#x2F;www.genymotion.com&#x2F;  Bugfix123456789101112java.io.IOExcep">
+<meta property="og:locale">
+<meta property="article:published_time" content="2016-05-04T02:12:00.000Z">
+<meta property="article:modified_time" content="2026-03-16T14:04:02.397Z">
+<meta property="article:author" content="Neo">
+<meta property="article:tag" content="react-native">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1"/>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> React-native 环境搭建 - 浮生若梦 </title>
+  <meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          React-native 环境搭建
+        
+      </h1>
+
+      <time class="post-time">
+          May 4 2016
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <hr>
+<h4 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h4><ol>
+<li><code>JAVA </code></li>
+<li><code>Gradle</code> <a href="http://gradle.org/gradle-download/">http://gradle.org/gradle-download/</a></li>
+<li><code>Node</code>  <a href="https://nodejs.org/en/">https://nodejs.org/en/</a></li>
+<li><code>Android-SDK</code> <a href="http://www.androiddevtools.cn/">http://www.androiddevtools.cn/</a></li>
+<li><code>Genymotion</code> <a href="https://www.genymotion.com/">https://www.genymotion.com/</a></li>
+</ol>
+<h4 id="Bugfix"><a href="#Bugfix" class="headerlink" title="Bugfix"></a>Bugfix</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">java.io.IOException: Cannot run program &quot;/usr/local/android-sdk/build-tools/23.0.1/aapt&quot;: error=2, 没有那个文件或目录</span><br><span class="line">	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1047)</span><br><span class="line">	at com.android.builder.png.AaptProcess$Builder.start(AaptProcess.java:154)</span><br><span class="line">	at com.android.builder.png.QueuedCruncher$1.creation(QueuedCruncher.java:105)</span><br><span class="line">	at com.android.builder.tasks.WorkQueue.run(WorkQueue.java:206)</span><br><span class="line">	at java.lang.Thread.run(Thread.java:745)</span><br><span class="line">Caused by: java.io.IOException: error=2, 没有那个文件或目录</span><br><span class="line">	at java.lang.UNIXProcess.forkAndExec(Native Method)</span><br><span class="line">	at java.lang.UNIXProcess.&lt;init&gt;(UNIXProcess.java:187)</span><br><span class="line">	at java.lang.ProcessImpl.start(ProcessImpl.java:130)</span><br><span class="line">	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1028)</span><br><span class="line">	... 4 more</span><br></pre></td></tr></table></figure>
+
+<p>Linux 下需要安装依赖<code>sudo apt-get install lib32stdc++6 lib32z1</code></p>
+<p>执行<code>react-native run-android</code></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/react-native/">react-native</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/react-native-android-offline-apk/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">React-native Android打离线APK</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/linux-sed-line/">
+        <span class="next-text nav-default">SED单行脚本快速参考（Unix 流编辑器）</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2026
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  </script>
+  </body>
+</html>

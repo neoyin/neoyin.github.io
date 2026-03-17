@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="solr shard查询请求时createMainQuery报错"/>
+
+
+
+
+  <meta name="keywords" content="solr," />
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦" >
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=1.1"/>
+
+
+
+<link rel="canonical" href="http://yoursite.com/solr-shard-error-of-query-createmainquery/"/>
+
+
+<meta name="description" content="昨天又对一个solrcore进行分片操作，结果查询请求时报错： [http-8983-2] ERROR org.apache.solr.core.SolrCore – java.lang.NullPointerException at org.apache.solr.handler.component.QueryComponent.createMainQuery(QueryComponent.ja">
+<meta property="og:type" content="article">
+<meta property="og:title" content="solr shard查询请求时createMainQuery报错">
+<meta property="og:url" content="http://yoursite.com/solr-shard-error-of-query-createmainquery/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="昨天又对一个solrcore进行分片操作，结果查询请求时报错： [http-8983-2] ERROR org.apache.solr.core.SolrCore – java.lang.NullPointerException at org.apache.solr.handler.component.QueryComponent.createMainQuery(QueryComponent.ja">
+<meta property="og:locale">
+<meta property="article:published_time" content="2013-12-24T12:35:00.000Z">
+<meta property="article:modified_time" content="2026-03-16T14:04:02.397Z">
+<meta property="article:author" content="Neo">
+<meta property="article:tag" content="solr">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1"/>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> solr shard查询请求时createMainQuery报错 - 浮生若梦 </title>
+  <meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          solr shard查询请求时createMainQuery报错
+        
+      </h1>
+
+      <time class="post-time">
+          Dec 24 2013
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>昨天又对一个solrcore进行分片操作，结果查询请求时报错：</p>
+<pre><code>[http-8983-2] ERROR org.apache.solr.core.SolrCore – java.lang.NullPointerException
+at org.apache.solr.handler.component.QueryComponent.createMainQuery(QueryComponent.java:759)
+at org.apache.solr.handler.component.QueryComponent.regularDistributedProcess(QueryComponent.java:612)
+at org.apache.solr.handler.component.QueryComponent.distributedProcess(QueryComponent.java:565)
+at org.apache.solr.handler.component.SearchHandler.handleRequestBody(SearchHandler.java:244)
+at org.apache.solr.handler.RequestHandlerBase.handleRequest(RequestHandlerBase.java:135)
+at org.apache.solr.core.SolrCore.execute(SolrCore.java:1859)
+</code></pre>
+<p>google下报错原因，才发现该core中的schema.xml中没有配置uniqueKey，增加uniqueKey后查询正常。</p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/solr/">solr</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/input-button-event/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">input中的回车事件引起的页面调转</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/apache-mina-abstractpollingioconnector/">
+        <span class="next-text nav-default">apache-mina基础类分析(四)AbstractPollingIoConnector</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2026
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  </script>
+  </body>
+</html>

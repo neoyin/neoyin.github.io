@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="Docker中安装jenkins"/>
+
+
+
+
+  <meta name="keywords" content="docker,jenkins," />
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦" >
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=1.1"/>
+
+
+
+<link rel="canonical" href="http://yoursite.com/docker-jenkins-start/"/>
+
+
+<meta name="description" content="http:&#x2F;&#x2F;terrence.logdown.com&#x2F;posts&#x2F;261289-jenkins-docker-github-deployment-automation https:&#x2F;&#x2F;wiki.jenkins-ci.org&#x2F;display&#x2F;JENKINS&#x2F;Docker+Plugin https:&#x2F;&#x2F;github.com&#x2F;Shashikant86&#x2F;jenkins2-docker https:&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker中安装jenkins">
+<meta property="og:url" content="http://yoursite.com/docker-jenkins-start/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="http:&#x2F;&#x2F;terrence.logdown.com&#x2F;posts&#x2F;261289-jenkins-docker-github-deployment-automation https:&#x2F;&#x2F;wiki.jenkins-ci.org&#x2F;display&#x2F;JENKINS&#x2F;Docker+Plugin https:&#x2F;&#x2F;github.com&#x2F;Shashikant86&#x2F;jenkins2-docker https:&#x2F;">
+<meta property="og:locale">
+<meta property="article:published_time" content="2016-10-09T06:29:00.000Z">
+<meta property="article:modified_time" content="2026-03-16T14:04:02.395Z">
+<meta property="article:author" content="Neo">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="jenkins">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1"/>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Docker中安装jenkins - 浮生若梦 </title>
+  <meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Docker中安装jenkins
+        
+      </h1>
+
+      <time class="post-time">
+          Oct 9 2016
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <hr>
+<ul>
+<li><a href="http://terrence.logdown.com/posts/261289-jenkins-docker-github-deployment-automation">http://terrence.logdown.com/posts/261289-jenkins-docker-github-deployment-automation</a></li>
+<li><a href="https://wiki.jenkins-ci.org/display/JENKINS/Docker+Plugin">https://wiki.jenkins-ci.org/display/JENKINS/Docker+Plugin</a></li>
+<li><a href="https://github.com/Shashikant86/jenkins2-docker">https://github.com/Shashikant86/jenkins2-docker</a></li>
+<li><a href="https://hub.docker.com/_/jenkins/">https://hub.docker.com/_/jenkins/</a></li>
+<li><a href="https://www.cloudbees.com/blog/get-started-jenkins-20-docker">https://www.cloudbees.com/blog/get-started-jenkins-20-docker</a></li>
+<li><a href="http://www.dockone.io/article/431">http://www.dockone.io/article/431</a></li>
+<li><a href="http://container-solutions.com/running-docker-in-jenkins-in-docker/">http://container-solutions.com/running-docker-in-jenkins-in-docker/</a></li>
+<li><a href="https://my.oschina.net/donhui/blog/478514">https://my.oschina.net/donhui/blog/478514</a></li>
+</ul>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/docker/">docker</a>
+          
+            <a href="/tags/jenkins/">jenkins</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/linux-jenkins-install/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Linux中安装jenkins2</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/elementary-os-sogoupinyin-bug/">
+        <span class="next-text nav-default">Elementary OS 系统 sogoupinyin 问题</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2026
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  </script>
+  </body>
+</html>

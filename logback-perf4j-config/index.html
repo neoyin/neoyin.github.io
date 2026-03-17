@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="logback 中配置 perf4j"/>
+
+
+
+
+  <meta name="keywords" content="logback,perf4j," />
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦" >
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=1.1"/>
+
+
+
+<link rel="canonical" href="http://yoursite.com/logback-perf4j-config/"/>
+
+
+<meta name="description" content="logback 中配置 perf4jPerf4j最主要的一个好处就是可以跟log4j或者logback来性能分析和监控线上运行的程序。集成的方式主要是：自定义log4j的appenders通过标准的配置加入到log4j中去（后面会有配置的例子）。有一个要注意的地方就是需要使用log4j的1.2.14版本或者更高版本。perf4j的 0.9.16 版本开始才能与logback集成.   由于我一般都">
+<meta property="og:type" content="article">
+<meta property="og:title" content="logback 中配置 perf4j">
+<meta property="og:url" content="http://yoursite.com/logback-perf4j-config/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="logback 中配置 perf4jPerf4j最主要的一个好处就是可以跟log4j或者logback来性能分析和监控线上运行的程序。集成的方式主要是：自定义log4j的appenders通过标准的配置加入到log4j中去（后面会有配置的例子）。有一个要注意的地方就是需要使用log4j的1.2.14版本或者更高版本。perf4j的 0.9.16 版本开始才能与logback集成.   由于我一般都">
+<meta property="og:locale">
+<meta property="article:published_time" content="2014-06-22T03:47:00.000Z">
+<meta property="article:modified_time" content="2026-03-16T14:04:02.397Z">
+<meta property="article:author" content="Neo">
+<meta property="article:tag" content="logback">
+<meta property="article:tag" content="perf4j">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1"/>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> logback 中配置 perf4j - 浮生若梦 </title>
+  <meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          logback 中配置 perf4j
+        
+      </h1>
+
+      <time class="post-time">
+          Jun 22 2014
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h1 id="logback-中配置-perf4j"><a href="#logback-中配置-perf4j" class="headerlink" title="logback 中配置 perf4j"></a>logback 中配置 perf4j</h1><p>Perf4j最主要的一个好处就是可以跟log4j或者logback来性能分析和监控线上运行的程序。集成的方式主要是：自定义log4j的appenders通过标准的配置加入到log4j中去（后面会有配置的例子）。有一个要注意的地方就是需要使用log4j的1.2.14版本或者更高版本。perf4j<br>的 0.9.16 版本开始才能与logback集成.  </p>
+<p>由于我一般都是使用logback，所以对于log4j的集成我就不描述了，我觉得应该差不多的。</p>
+<p>Perf4j最重要的appender就是AsyncCoalescingStatisticsAppender，它会把一段时间内StopWatch的信息汇总到一个独立的GroupedTimingStatistics日志信息，然后把这个独立的信息传给下游的appenders，比如fileappenders，这样就可以写到文件中去了。也可以传给per4j的其他自定义appenders.</p>
+<p>接下来我们看一个logback.xml的例子</p>
+<pre><code>&lt;!-- Perf4J appenders --&gt;
+
+&lt;!-- This file appender is used to output aggregated performance statistics --&gt;
+&lt;appender name=&quot;perf4jFileAppender&quot; class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;
+    &lt;File&gt;${LOG_DIR}/lifeix-dbcontent-api-perf4j.log&lt;/File&gt;
+    &lt;encoder&gt;
+        &lt;Pattern&gt;%date %-5level [%thread] %logger{36} [%file:%line] %msg%n&lt;/Pattern&gt;
+    &lt;/encoder&gt;
+    &lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;
+        &lt;FileNamePattern&gt;${LOG_DIR}/lifeix-dbcontent-api-perf4j.%d{yyyy-MM-dd}.log&lt;/FileNamePattern&gt;
+    &lt;/rollingPolicy&gt;
+&lt;/appender&gt;
+
+&lt;!-- Loggers --&gt;
+&lt;!--
+  The Perf4J logger. Note that org.perf4j.TimingLogger is the value of the
+  org.perf4j.StopWatch.DEFAULT_LOGGER_NAME constant. Also, note that
+  additivity is set to false, which is usually what is desired - this means
+  that timing statements will only be sent to this logger and NOT to
+  upstream loggers.
+--&gt;
+&lt;logger name=&quot;org.perf4j.TimingLogger&quot; additivity=&quot;false&quot;&gt;
+    &lt;level value=&quot;INFO&quot;/&gt;
+    &lt;appender-ref ref=&quot;perf4jFileAppender&quot;/&gt;
+&lt;/logger&gt;
+</code></pre>
+<p>配置文件来自于<a href="http://perf4j.codehaus.org/apidocs/org/perf4j/logback/package-summary.html">官方文档</a>,<br>内有更详细的各种appender配置<br>关于log4j的配置,<br>在<a href="http://www.blogjava.net/yangpingyu/archive/2012/04/16/374725.html">perf4j使用三（log4j集成）</a></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/logback/">logback</a>
+          
+            <a href="/tags/perf4j/">perf4j</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/webapp-config-slf4j-logback/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">在web app中配置 slf4j 和 logback</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/git-diff-two-version/">
+        <span class="next-text nav-default">git 比较两个版本号的差异</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2026
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  </script>
+  </body>
+</html>

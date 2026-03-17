@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="mongodb 慢查询"/>
+
+
+
+
+  <meta name="keywords" content="mongodb," />
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦" >
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=1.1"/>
+
+
+
+<link rel="canonical" href="http://yoursite.com/mongodb-slow-query/"/>
+
+
+<meta name="description" content="mongodb 慢查询开启慢查询记录有两种方式可以控制 Profiling的开关和级别，第一种是直接在启动参数里直接进行设置。启动MongoDB时加上–profile&#x3D;级别 即可。也可以在客户端调用 db.setProfilingLevel(级别) 命令来实时配置，Profiler信息保存在 system.profile中。我们可以通过db.getProfilingLevel()命令来获">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mongodb 慢查询">
+<meta property="og:url" content="http://yoursite.com/mongodb-slow-query/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="mongodb 慢查询开启慢查询记录有两种方式可以控制 Profiling的开关和级别，第一种是直接在启动参数里直接进行设置。启动MongoDB时加上–profile&#x3D;级别 即可。也可以在客户端调用 db.setProfilingLevel(级别) 命令来实时配置，Profiler信息保存在 system.profile中。我们可以通过db.getProfilingLevel()命令来获">
+<meta property="og:locale">
+<meta property="article:published_time" content="2014-06-27T05:29:00.000Z">
+<meta property="article:modified_time" content="2026-03-16T14:04:02.397Z">
+<meta property="article:author" content="Neo">
+<meta property="article:tag" content="mongodb">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1"/>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> mongodb 慢查询 - 浮生若梦 </title>
+  <meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          mongodb 慢查询
+        
+      </h1>
+
+      <time class="post-time">
+          Jun 27 2014
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h1 id="mongodb-慢查询"><a href="#mongodb-慢查询" class="headerlink" title="mongodb 慢查询"></a>mongodb 慢查询</h1><h2 id="开启慢查询记录"><a href="#开启慢查询记录" class="headerlink" title="开启慢查询记录"></a>开启慢查询记录</h2><p>有两种方式可以控制 Profiling<br>的开关和级别，第一种是直接在启动参数里直接进行设置。<br>启动MongoDB时加上–profile&#x3D;级别 即可。<br>也可以在客户端调用 db.setProfilingLevel(级别) 命令来实时配置，Profiler<br>信息保存在 system.profile<br>中。我们可以通过<code>db.getProfilingLevel()</code>命令来获取当前的Profile级别，类似如下操作</p>
+<pre><code>db.setProfilingLevel(2);   
+db.getProfilingLevel();
+db.getProfilingStatus();
+</code></pre>
+<p>上面profile的级别可以取0，1，2 三个值，他们表示的意义如下：</p>
+<ul>
+<li>0 – 不开启</li>
+<li>1 – 记录慢命令 (默认为&gt;100ms)</li>
+<li>2 – 记录所有命令</li>
+</ul>
+<p>慢命令的时间设置方法和级别一样有两种，一种是通过添加–slowms<br>启动参数配置。第二种是调用db.setProfilingLevel时加上第二个参数：</p>
+<pre><code>db.setProfilingLevel( 1 , 10 ); 
+</code></pre>
+<h2 id="查询-Profiling-记录"><a href="#查询-Profiling-记录" class="headerlink" title="查询 Profiling 记录"></a>查询 Profiling 记录</h2><p>直接查看system.profile表, 列出执行时间长于某一限度(5ms)的 Profile 记录：</p>
+<pre><code>db.system.profile.find( { millis : { $gt : 5 } } ) 
+</code></pre>
+<p>查看最新的 Profile 记录：</p>
+<pre><code>db.system.profile.find().sort({$natural:-1}).limit(1) 
+</code></pre>
+<p><em>MongoDB Shell 还提供了一个比较简洁的命令 show profile，可列出最近5<br>条执行时间超过 1ms 的 Profile 记录。</em></p>
+<h2 id="MongoDB-查询优化"><a href="#MongoDB-查询优化" class="headerlink" title="MongoDB 查询优化"></a>MongoDB 查询优化</h2><p>如果nscanned(扫描的记录数)远大于nreturned(返回结果的记录数)的话，那么我们就要考虑通过加索引来优化记录定位了。</p>
+<p>reslen<br>如果过大，那么说明我们返回的结果集太大了，这时请查看find函数的第二个参数是否只写上了你需要的属性名。(类似<br>于MySQL中不要总是select *)</p>
+<p>对于创建索引的建议是：如果很少读，那么尽量不要添加索引，因为索引越多，写操作会越慢。如果读量很大，那么创建索引还是比较划算的。(和RDBMS一样，貌似是废话<br>-_-!!)</p>
+<p>参考:<br><a href="http://blog.sina.com.cn/s/blog_7af230cd01010ggh.html">Mongodb<br>profile（慢查询日志）</a>  </p>
+<p><a href="http://blog.sina.com.cn/s/blog_5f53615f0101448f.html">mongodb慢查询记录（耗时查询的日志记录）</a></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/mongodb/">mongodb</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/jmagick-install-and-error/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">jmagick 常见错误和安装</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/webapp-config-slf4j-logback/">
+        <span class="next-text nav-default">在web app中配置 slf4j 和 logback</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2026
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  </script>
+  </body>
+</html>

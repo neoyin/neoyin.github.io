@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="apache mina系列 client初始化分析(三)"/>
+
+
+
+
+  <meta name="keywords" content="apache,mina," />
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦" >
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=1.1"/>
+
+
+
+<link rel="canonical" href="http://yoursite.com/apache-mina-basic-client-init/"/>
+
+
+<meta name="description" content="距离上一次更新mina好长时间了，今晚把mina的client初始化补上了，快来一睹为快吧….. 先调用NioSocketConnector类的构造方法，然后在这个构造方法中又初始化父类AbstractPollingIoConnector的构造方法AbstractPollingIoConnector(IoSessionConfigsessionConfig, Executor executor,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="apache mina系列 client初始化分析(三)">
+<meta property="og:url" content="http://yoursite.com/apache-mina-basic-client-init/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="距离上一次更新mina好长时间了，今晚把mina的client初始化补上了，快来一睹为快吧….. 先调用NioSocketConnector类的构造方法，然后在这个构造方法中又初始化父类AbstractPollingIoConnector的构造方法AbstractPollingIoConnector(IoSessionConfigsessionConfig, Executor executor,">
+<meta property="og:locale">
+<meta property="article:published_time" content="2013-12-14T16:37:00.000Z">
+<meta property="article:modified_time" content="2026-03-16T14:04:02.395Z">
+<meta property="article:author" content="Neo">
+<meta property="article:tag" content="apache">
+<meta property="article:tag" content="mina">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1"/>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> apache mina系列 client初始化分析(三) - 浮生若梦 </title>
+  <meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          apache mina系列 client初始化分析(三)
+        
+      </h1>
+
+      <time class="post-time">
+          Dec 15 2013
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>距离上一次更新mina好长时间了，今晚把mina的client初始化补上了，快来一睹为快吧…..</p>
+<p>先调用NioSocketConnector类的构造方法，然后在这个构造方法中又初始化父类AbstractPollingIoConnector的构造方法AbstractPollingIoConnector(IoSessionConfig<br>sessionConfig, Executor executor, IoProcessor<br>processor)构造方法，这个构造方法中的sessionConfig和processor是在NioSocketConnector的构造方法中实现的，即super(new<br>DefaultSocketSessionConfig(),NioProcessor.class)，executor是一个空对象；</p>
+<p>接着回在上面的构造方法中调用父级的构造方法AbstractIoConnector(IoSessionConfig<br>sessionConfig, Executor<br>executor)，然后再在这个构造方法中调用AbstractIoService(IoSessionConfig<br>sessionConfig, Executor<br>executor)，在这个构造方法中主要用来初始化一些基础的服务类：  </p>
+<p>1.初始化一个IoServiceListenerSupport监听器类，这个监听器的作用是提供service的各种状态，然后这个会给这个监听器添加一个关联这个service的活动监听器<br>2.接着会将默认的session配置赋值给一个全局变量<br>3.判断executor是否为空，如果为空，则会初始化一个缓存线程池  </p>
+<p>初始化AbstractIoService的构造方法中的各种参数之后，又回到AbstractPollingIoConnector类中，然后调用init()方法，这个init方法是一个抽象方法，是交个其子类来实现，即NioSocketConnector实现，好了，终于回到初始类了；  </p>
+<p>在NioSocketConnector中，会调用方法getSessionConfig()方法来初始化DefaultSocketSessionConfig的一些参数。上面提到调用init方法，在这个类中，init的方法实现如下：<br>&#x2F;**<br>* {@inheritDoc}<br>*&#x2F;<br>@Override<br>protected void init() throws Exception {<br>this.selector &#x3D; Selector.open();<br>}  </p>
+<p>从上面可以看出，很显然这是一个开启连接的地方，也就是说，在调用了NioSocketConnector后就已经开启了一个socket(channel)连接。  </p>
+<p>NioSocketConnector初始化完毕之后，剩下的事情就跟服务器端的基本上一样了。但是在client端有这样一段代码：<br>IoSession session &#x3D; null;<br>try {<br>ConnectFuture future &#x3D; connector.connect(new InetSocketAddress(HOST,<br>PORT));<br>future.awaitUninterruptibly(); &#x2F;&#x2F;等待链接创建完成<br>session &#x3D; future.getSession();<br>session.write(“网络时空 爱你 mina”);<br>} catch(Exception e) {<br>logger.error(“客户端连接异常”);<br>}</p>
+<p>这段代码是调用已经建立连接的socket(channel)，然后通过一个ConnectFuture来获的一个session，而这个session正是处理网络数据读取的核心类。</p>
+<p>不好意思，本人看了也觉得不怎么好，不过这个过程必须经历啊，望大家多提建议，我会继续完善的。接下来我有以下计划：1.画出server和client的初始化活动图；2.从server到client，分析每个基础类的具体作用。我觉得这样一步步来才会越练越能写出优秀的文章。望大家海涵！</p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/apache/">apache</a>
+          
+            <a href="/tags/mina/">mina</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/apache-mina-basic-ioService/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">apache mina 基础类研究(一):IoService方法详解</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/eclipse-maven-tools-jar/">
+        <span class="next-text nav-default">eclipse中pom报错 tools.jar</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2026
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  </script>
+  </body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="apache mina 基础类研究(一):IoService方法详解"/>
+
+
+
+
+  <meta name="keywords" content="apache,mina," />
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦" >
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=1.1"/>
+
+
+
+<link rel="canonical" href="http://yoursite.com/apache-mina-basic-ioService/"/>
+
+
+<meta name="description" content="IoService:&#x2F;*Base interface for all IoAcceptor and IoConnector that provide I&#x2F;Oservice and manage IoSession.*&#x2F;   上面的英文是这个接口的描述，大概意思是：这是个一IoAcceptor和IoConnector的基础接口，它提供了一个I&#x2F;O服务，并且管理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="apache mina 基础类研究(一):IoService方法详解">
+<meta property="og:url" content="http://yoursite.com/apache-mina-basic-ioService/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="IoService:&#x2F;*Base interface for all IoAcceptor and IoConnector that provide I&#x2F;Oservice and manage IoSession.*&#x2F;   上面的英文是这个接口的描述，大概意思是：这是个一IoAcceptor和IoConnector的基础接口，它提供了一个I&#x2F;O服务，并且管理">
+<meta property="og:locale">
+<meta property="article:published_time" content="2013-12-15T15:16:00.000Z">
+<meta property="article:modified_time" content="2026-03-16T14:04:02.395Z">
+<meta property="article:author" content="Neo">
+<meta property="article:tag" content="apache">
+<meta property="article:tag" content="mina">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1"/>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> apache mina 基础类研究(一):IoService方法详解 - 浮生若梦 </title>
+  <meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          apache mina 基础类研究(一):IoService方法详解
+        
+      </h1>
+
+      <time class="post-time">
+          Dec 15 2013
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>IoService:<br>&#x2F;*Base interface for all IoAcceptor and IoConnector that provide I&#x2F;O<br>service and manage IoSession.<br>*&#x2F;  </p>
+<p>上面的英文是这个接口的描述，大概意思是：这是个一IoAcceptor和IoConnector的基础接口，它提供了一个I&#x2F;O服务，并且管理着每一个连接的IoSession.很显然，实现这个接口的类肯定就是操作I&#x2F;O以及管理网络连接的功能。<br>TransportMetaData<br>getTransportMetadata();这个方法返回一个运行的service的元数据，TransportMetaData主要提供service的一些基础配置的信息，比如协议名称，提供者名称，SocketAddress的类型等。<br>void addListener(IoServiceListener<br>listener);这个方法用来添加一个service的监听器，用来监听跟这个service关联的所有事件。IoServiceListener接口继承了EventListener接口，主要提供了五个方法，分别是：  </p>
+<p>1.serviceActivated:当IoService激活一个新的service时会被调用，也就是说，如果有新的来接，则会调用此方法  </p>
+<p>2.serviceIdle:service空闲时调用(我猜可能是用来唤起其它任务线程的，等后面研究到具体实现了看看是不是这样的)  </p>
+<p>3.serviceDeativated:service无效时调用此方法，这应该是一个连接关闭时调用的  </p>
+<p>4.sessionCreated:当IoService创建一个新session时调用此方法(我猜应该是在创建session之后，会记录这个session的一些信息放入内存，比如超时时间，目的地等，研究到具体实现后再看是否是这样)  </p>
+<p>5.sessionDestroyed:IoService销毁一个session后被调用，在这个方法中会执行一些清理session缓存的任务  </p>
+<p>所以从这五个方法不难看出，IoServiceListener是用来监听session的生命周期的一个接口<br>removeListener(IoServiceListener listener)很显然这是移除监听器<br>boolean<br>isDisposing():如果调用了dispose()方法，则返回true,注意，当所有的的被关联的资源都被释放之后这个方法将返回true<br>boolean<br>isDisposed():如果当前的processor的所有资源被释放，则返回true,这个方法的意思应该是说当连接被断开后则返回true<br>void<br>dispose():释放被service分配的一些资源。请注意，调用这个方法时，也许会阻塞一些被这个service管理的session<br>void<br>dispose(awaitTermination):这个方法和上面的方法基本上一样，但是如果传递的参数为true,则有可能会导致思索，因为设置为true时，会阻塞session，直到底层的ExecutorService被终止。（至于为什么会造成死锁，等到研究到具体实现的时候再说吧）<br>IoHandler<br>getHandler():返回句柄，这个句柄会处理所有被这个service管理的连接<br>Map&lt;Long,IoSession&gt;<br>getManagedSessions():返回当前被service管理的所有session集合，map的key是IoSession的id<br>IoFilterChainBuilder<br>getFilterChainBuilder():这个接口会构建所有IoSession的IoFilterChain，它会被service创建，默认值是空的</p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/apache/">apache</a>
+          
+            <a href="/tags/mina/">mina</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/apache-mina-basic-abstractioservice/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Apache mina 基础类分析（二）：AbstractIoService</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/apache-mina-basic-client-init/">
+        <span class="next-text nav-default">apache mina系列 client初始化分析(三)</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2026
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  </script>
+  </body>
+</html>

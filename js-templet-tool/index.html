@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="js 的 templet 工具"/>
+
+
+
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦" >
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=1.1"/>
+
+
+
+<link rel="canonical" href="http://yoursite.com/js-templet-tool/"/>
+
+
+<meta name="description" content="underscore.js 的模板方法  template_.template(templateString, [data], [settings])  Compiles JavaScript templates into functions that can be evaluated forrendering. Useful for rendering complicated bits of H">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js 的 templet 工具">
+<meta property="og:url" content="http://yoursite.com/js-templet-tool/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="underscore.js 的模板方法  template_.template(templateString, [data], [settings])  Compiles JavaScript templates into functions that can be evaluated forrendering. Useful for rendering complicated bits of H">
+<meta property="og:locale">
+<meta property="article:published_time" content="2014-01-25T09:35:00.000Z">
+<meta property="article:modified_time" content="2026-03-16T14:04:02.396Z">
+<meta property="article:author" content="Neo">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1"/>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> js 的 templet 工具 - 浮生若梦 </title>
+  <meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          js 的 templet 工具
+        
+      </h1>
+
+      <time class="post-time">
+          Jan 25 2014
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>underscore.js 的模板方法</p>
+<pre><code> template_.template(templateString, [data], [settings])
+</code></pre>
+<p>Compiles JavaScript templates into functions that can be evaluated for<br>rendering. Useful for rendering complicated bits of HTML from JSON data<br>sources. Template functions can both interpolate variables, using &lt;%&#x3D; …<br>%&gt;, as well as execute arbitrary JavaScript code, with &lt;% … %&gt;. If you<br>wish to interpolate a value, and have it be HTML-escaped, use &lt;%- … %&gt;<br>When you evaluate a template function, pass in a data object that has<br>properties corresponding to the template’s free variables. If you’re<br>writing a one-off, you can pass the data object as the second parameter<br>to template in order to render immediately instead of returning a<br>template function. The settings argument should be a hash containing any<br>_.templateSettings that should be overridden.</p>
+<p>变量替换</p>
+<pre><code>var compiled = _.template(&quot;hello: &lt;%= name %&gt;&quot;);
+compiled({name: &#39;moe&#39;});
+=&gt; &quot;hello: moe&quot;
+</code></pre>
+<p>循环列表</p>
+<pre><code>var list = &quot;&lt;% _.each(people, function(name) { %&gt; &lt;li&gt;&lt;%= name %&gt;&lt;/li&gt; &lt;% }); %&gt;&quot;;
+_.template(list, {people: [&#39;moe&#39;, &#39;curly&#39;, &#39;larry&#39;]});
+=&gt; &quot;&lt;li&gt;moe&lt;/li&gt;&lt;li&gt;curly&lt;/li&gt;&lt;li&gt;larry&lt;/li&gt;&quot;
+</code></pre>
+<p>html转义</p>
+<pre><code>var template = _.template(&quot;&lt;b&gt;&lt;%- value %&gt;&lt;/b&gt;&quot;);
+template({value: &#39;&lt;script&gt;&#39;});
+=&gt; &quot;&lt;b&gt;&amp;lt;script&amp;gt;&lt;/b&gt;&quot;
+</code></pre>
+<p>可以在JS中使用print方法.有时候比用 &lt;%&#x3D; … %&gt;.方便些</p>
+<pre><code>var compiled = _.template(&quot;&lt;% print(&#39;Hello &#39; + epithet); %&gt;&quot;);
+compiled({epithet: &quot;stooge&quot;});
+=&gt; &quot;Hello stooge&quot;
+</code></pre>
+<p>Learn more about <a href="http://underscorejs.org/#template">underscore.js<br>template</a></p>
+
+            </div>
+          
+
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2026
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  </script>
+  </body>
+</html>

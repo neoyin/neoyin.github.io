@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="React-native最常用样式"/>
+
+
+
+
+  <meta name="keywords" content="react-native," />
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦" >
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=1.1"/>
+
+
+
+<link rel="canonical" href="http://yoursite.com/react-native-common-style/"/>
+
+
+<meta name="description" content="对于一个非前端来说，一些样式在应用时随手写起来还是有点困难，所以把一些常用的样式抄下来，这样在写react-native 的时候我能快速找到 View Style 支持Flexbox、ShadowPropTypesIOS、Transforms属性。  背面可见性backfaceVisibility enum(&#39;visible&#39;, &#39;hidden&#39;) 背景颜色1ba">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React-native最常用样式">
+<meta property="og:url" content="http://yoursite.com/react-native-common-style/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="对于一个非前端来说，一些样式在应用时随手写起来还是有点困难，所以把一些常用的样式抄下来，这样在写react-native 的时候我能快速找到 View Style 支持Flexbox、ShadowPropTypesIOS、Transforms属性。  背面可见性backfaceVisibility enum(&#39;visible&#39;, &#39;hidden&#39;) 背景颜色1ba">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-01-15T09:34:00.000Z">
+<meta property="article:modified_time" content="2026-03-16T14:04:02.397Z">
+<meta property="article:author" content="Neo">
+<meta property="article:tag" content="react-native">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1"/>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> React-native最常用样式 - 浮生若梦 </title>
+  <meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          React-native最常用样式
+        
+      </h1>
+
+      <time class="post-time">
+          Jan 15 2017
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <hr>
+<p>对于一个非前端来说，一些样式在应用时随手写起来还是有点困难，所以把一些常用的样式抄下来，这样在写react-native 的时候我能快速找到</p>
+<h4 id="View-Style"><a href="#View-Style" class="headerlink" title="View Style"></a>View Style</h4><ul>
+<li>支持Flexbox、ShadowPropTypesIOS、Transforms属性。</li>
+</ul>
+<h5 id="背面可见性"><a href="#背面可见性" class="headerlink" title="背面可见性"></a>背面可见性</h5><p><code>backfaceVisibility enum(&#39;visible&#39;, &#39;hidden&#39;)</code></p>
+<h5 id="背景颜色"><a href="#背景颜色" class="headerlink" title="背景颜色"></a>背景颜色</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">backgroundColor string</span><br></pre></td></tr></table></figure>
+<h5 id="边框颜色"><a href="#边框颜色" class="headerlink" title="边框颜色"></a>边框颜色</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">borderColor string</span><br><span class="line">borderTopColor string</span><br><span class="line">borderRightColor string</span><br><span class="line">borderBottomColor string</span><br><span class="line">borderLeftColor string</span><br></pre></td></tr></table></figure>
+<h5 id="边框圆角半径"><a href="#边框圆角半径" class="headerlink" title="边框圆角半径"></a>边框圆角半径</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">borderRadius number</span><br><span class="line">borderTopLeftRadius number</span><br><span class="line">borderTopRightRadius number</span><br><span class="line">borderBottomLeftRadius number</span><br><span class="line">borderBottomRightRadius number</span><br></pre></td></tr></table></figure>
+<h5 id="边框样式"><a href="#边框样式" class="headerlink" title="边框样式"></a>边框样式</h5><p><code>borderStyle enum(&#39;solid&#39;, &#39;dotted&#39;, &#39;dashed&#39;)</code></p>
+<h5 id="边框宽度"><a href="#边框宽度" class="headerlink" title="边框宽度"></a>边框宽度</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">borderWidth number</span><br><span class="line">borderTopWidth number</span><br><span class="line">borderRightWidth number</span><br><span class="line">borderBottomWidth number</span><br><span class="line">borderLeftWidth number</span><br></pre></td></tr></table></figure>
+<h5 id="不透明度"><a href="#不透明度" class="headerlink" title="不透明度"></a>不透明度</h5><p><code>opacity number</code></p>
+<h5 id="填充"><a href="#填充" class="headerlink" title="填充"></a>填充</h5><p><code>overflow enum(&#39;visible&#39;, &#39;hidden&#39;)</code></p>
+<h5 id="测试ID（用来定位视图）"><a href="#测试ID（用来定位视图）" class="headerlink" title="测试ID（用来定位视图）"></a>测试ID（用来定位视图）</h5><p><code>testID string</code></p>
+<hr>
+<h4 id="Image-Style"><a href="#Image-Style" class="headerlink" title="Image Style"></a>Image Style</h4><ul>
+<li>支持Flexbox和Transforms</li>
+</ul>
+<h5 id="调整大小模式"><a href="#调整大小模式" class="headerlink" title="调整大小模式"></a>调整大小模式</h5><p><code>resizeMode Object.keys(ImageResizeMode)</code></p>
+<h5 id="背景颜色-1"><a href="#背景颜色-1" class="headerlink" title="背景颜色"></a>背景颜色</h5><p><code>backgroundColor string</code></p>
+<h5 id="边框属性"><a href="#边框属性" class="headerlink" title="边框属性"></a>边框属性</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">borderColor string</span><br><span class="line">borderWidth number</span><br><span class="line">borderRadius number</span><br></pre></td></tr></table></figure>
+<h5 id="填充-1"><a href="#填充-1" class="headerlink" title="填充"></a>填充</h5><p><code>overflow enum(&#39;visible&#39;, &#39;hidden&#39;)</code></p>
+<h5 id="色彩颜色"><a href="#色彩颜色" class="headerlink" title="色彩颜色"></a>色彩颜色</h5><p><code>tintColor string</code></p>
+<h5 id="不透明度-1"><a href="#不透明度-1" class="headerlink" title="不透明度"></a>不透明度</h5><p><code>opacity number</code></p>
+<h4 id="Text-Style"><a href="#Text-Style" class="headerlink" title="Text Style"></a>Text Style</h4><ul>
+<li>支持View的样式</li>
+</ul>
+<h5 id="字体颜色"><a href="#字体颜色" class="headerlink" title="字体颜色"></a>字体颜色</h5><p><code>color string</code></p>
+<h5 id="字体"><a href="#字体" class="headerlink" title="字体"></a>字体</h5><p><code>fontFamily string</code></p>
+<h5 id="字体大小"><a href="#字体大小" class="headerlink" title="字体大小"></a>字体大小</h5><p><code>fontSize number</code></p>
+<h5 id="字体样式"><a href="#字体样式" class="headerlink" title="字体样式"></a>字体样式</h5><p><code>fontStyle enum(&#39;normal&#39;, &#39;italic&#39;)</code></p>
+<h5 id="字体粗细（指定字体的粗细。大多数字体都支持’normal’和’bold’值。并非所有字体都支持所有的数字值。如果某个值不支持，则会自动选择最接近的值。）"><a href="#字体粗细（指定字体的粗细。大多数字体都支持’normal’和’bold’值。并非所有字体都支持所有的数字值。如果某个值不支持，则会自动选择最接近的值。）" class="headerlink" title="字体粗细（指定字体的粗细。大多数字体都支持’normal’和’bold’值。并非所有字体都支持所有的数字值。如果某个值不支持，则会自动选择最接近的值。）"></a>字体粗细（指定字体的粗细。大多数字体都支持’normal’和’bold’值。并非所有字体都支持所有的数字值。如果某个值不支持，则会自动选择最接近的值。）</h5><p><code>fontWeight enum(&quot;normal&quot;, &#39;bold&#39;, &#39;100&#39;, &#39;200&#39;, &#39;300&#39;, &#39;400&#39;, &#39;500&#39;, &#39;600&#39;, &#39;700&#39;, &#39;800&#39;, &#39;900&#39;)</code></p>
+<h5 id="字间距"><a href="#字间距" class="headerlink" title="字间距"></a>字间距</h5><p><code>letterSpacing number</code></p>
+<h5 id="行间距"><a href="#行间距" class="headerlink" title="行间距"></a>行间距</h5><p><code>lineHeight number</code></p>
+<h5 id="字体对齐方式（指定文本的对齐方式。其中’justify’值仅iOS支持。）"><a href="#字体对齐方式（指定文本的对齐方式。其中’justify’值仅iOS支持。）" class="headerlink" title="字体对齐方式（指定文本的对齐方式。其中’justify’值仅iOS支持。）"></a>字体对齐方式（指定文本的对齐方式。其中’justify’值仅iOS支持。）</h5><p><code>textAlign enum(&quot;auto&quot;, &#39;left&#39;, &#39;right&#39;, &#39;center&#39;, &#39;justify&#39;)</code></p>
+<h4 id="Flexbox-Style"><a href="#Flexbox-Style" class="headerlink" title="Flexbox Style"></a>Flexbox Style</h4><h5 id="宽高"><a href="#宽高" class="headerlink" title="宽高"></a>宽高</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">width number</span><br><span class="line">height number</span><br></pre></td></tr></table></figure>
+<h5 id="项目对齐"><a href="#项目对齐" class="headerlink" title="项目对齐"></a>项目对齐</h5><p><code>alignItems enum(&#39;flex-start&#39;, &#39;flex-end&#39;, &#39;center&#39;, &#39;stretch&#39;)</code></p>
+<h5 id="自身对齐"><a href="#自身对齐" class="headerlink" title="自身对齐"></a>自身对齐</h5><p><code>alignSelf enum(&#39;auto&#39;, &#39;flex-start&#39;, &#39;flex-end&#39;, &#39;center&#39;, &#39;stretch&#39;)</code></p>
+<h4 id="边框宽度-1"><a href="#边框宽度-1" class="headerlink" title="边框宽度"></a>边框宽度</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">borderBottomWidth number</span><br><span class="line">borderLeftWidth number</span><br><span class="line">borderRightWidth number</span><br><span class="line">borderTopWidth number</span><br><span class="line">borderWidth number</span><br></pre></td></tr></table></figure>
+<h5 id="弹性伸缩"><a href="#弹性伸缩" class="headerlink" title="弹性伸缩"></a>弹性伸缩</h5><p><code>flex number</code></p>
+<h5 id="弹性伸缩方向"><a href="#弹性伸缩方向" class="headerlink" title="弹性伸缩方向"></a>弹性伸缩方向</h5><p><code>flexDirection enum(&#39;row&#39;, &#39;column&#39;)</code></p>
+<h5 id="弹性伸缩包裹"><a href="#弹性伸缩包裹" class="headerlink" title="弹性伸缩包裹"></a>弹性伸缩包裹</h5><p><code>flexWrap enum(&#39;wrap&#39;, &#39;nowrap&#39;)</code></p>
+<h5 id="证明内容"><a href="#证明内容" class="headerlink" title="证明内容"></a>证明内容</h5><p><code>justifyContent enum(&#39;flex-start&#39;, &#39;flex-end&#39;, &#39;center&#39;, &#39;space-between&#39;, &#39;space-around&#39;)</code></p>
+<h5 id="外边距"><a href="#外边距" class="headerlink" title="外边距"></a>外边距</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">margin number</span><br><span class="line">marginBottom number</span><br><span class="line">marginLeft number</span><br><span class="line">marginRight number</span><br><span class="line">marginTop number</span><br><span class="line">marginHorizontal number</span><br><span class="line">marginVertical number</span><br></pre></td></tr></table></figure>
+<h5 id="内边距"><a href="#内边距" class="headerlink" title="内边距"></a>内边距</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">padding number</span><br><span class="line">paddingBottom number</span><br><span class="line">paddingLeft number</span><br><span class="line">paddingRight number</span><br><span class="line">paddingTop number</span><br><span class="line">paddingHorizontal number</span><br><span class="line">paddingVertical number</span><br></pre></td></tr></table></figure>
+<h5 id="位置（绝对、相对）"><a href="#位置（绝对、相对）" class="headerlink" title="位置（绝对、相对）"></a>位置（绝对、相对）</h5><p><code>position enum(&#39;absolute&#39;, &#39;relative&#39;)</code></p>
+<h5 id="上下左右"><a href="#上下左右" class="headerlink" title="上下左右"></a>上下左右</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">right number</span><br><span class="line">top number</span><br><span class="line">left number</span><br><span class="line">bottom number</span><br><span class="line">Transform</span><br></pre></td></tr></table></figure>
+<h5 id="属性变化"><a href="#属性变化" class="headerlink" title="属性变化"></a>属性变化</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">transform [&#123;perspective: number&#125;, &#123;rotate: string&#125;, &#123;rotateX: string&#125;, &#123;rotateY: string&#125;, &#123;rotateZ: string&#125;, &#123;scale: number&#125;, &#123;scaleX: number&#125;, &#123;scaleY: number&#125;, &#123;translateX: number&#125;, &#123;translateY: number&#125;, &#123;skewX: string&#125;, &#123;skewY: string&#125;] </span><br></pre></td></tr></table></figure>
+<h5 id="属性矩阵"><a href="#属性矩阵" class="headerlink" title="属性矩阵"></a>属性矩阵</h5><p><code>transformMatrix TransformMatrixPropType </code></p>
+<hr>
+<h5 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h5><ul>
+<li><a href="http://blog.csdn.net/violetjack0808/article/details/51329554">http://blog.csdn.net/violetjack0808/article/details/51329554</a></li>
+</ul>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/react-native/">react-native</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/mac-update-python/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Mac升级python</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/the-designer-react-native-client/">
+        <span class="next-text nav-default">设计师项目react-native客户端项目</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2026
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  </script>
+  </body>
+</html>

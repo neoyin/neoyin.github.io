@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="解决mongoexport导出数据时NumberLong问题"/>
+
+
+
+
+  <meta name="keywords" content="mongodb," />
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦" >
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=1.1"/>
+
+
+
+<link rel="canonical" href="http://yoursite.com/mongodb-import-data-longnumber/"/>
+
+
+<meta name="description" content="Mongdb导出工具mongoexport命令：123456789101112131415161718192021222324252627282930313233343536373839404142434445[root@localhost mongodb]# .&#x2F;bin&#x2F;mongoexport -hExport MongoDB data to CSV, TSV or JSON files.opt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="解决mongoexport导出数据时NumberLong问题">
+<meta property="og:url" content="http://yoursite.com/mongodb-import-data-longnumber/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="Mongdb导出工具mongoexport命令：123456789101112131415161718192021222324252627282930313233343536373839404142434445[root@localhost mongodb]# .&#x2F;bin&#x2F;mongoexport -hExport MongoDB data to CSV, TSV or JSON files.opt">
+<meta property="og:locale">
+<meta property="article:published_time" content="2014-10-08T01:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-16T14:04:02.397Z">
+<meta property="article:author" content="Neo">
+<meta property="article:tag" content="mongodb">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1"/>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> 解决mongoexport导出数据时NumberLong问题 - 浮生若梦 </title>
+  <meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          解决mongoexport导出数据时NumberLong问题
+        
+      </h1>
+
+      <time class="post-time">
+          Oct 8 2014
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h3 id="Mongdb导出工具mongoexport命令："><a href="#Mongdb导出工具mongoexport命令：" class="headerlink" title="Mongdb导出工具mongoexport命令："></a>Mongdb导出工具mongoexport命令：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost mongodb]# ./bin/mongoexport -h</span><br><span class="line"></span><br><span class="line">Export MongoDB data to CSV, TSV or JSON files.</span><br><span class="line"></span><br><span class="line">options:</span><br><span class="line">  --help                    produce help message</span><br><span class="line">  -v [ --verbose ]          be more verbose (include multiple times for more</span><br><span class="line">                            verbosity e.g. -vvvvv)</span><br><span class="line">  --version                 print the program&#x27;s version and exit</span><br><span class="line">  -h [ --host ] arg         mongo host to connect to ( &lt;set name&gt;/s1,s2 for</span><br><span class="line">                            sets)</span><br><span class="line">  --port arg                server port. Can also use --host hostname:port</span><br><span class="line">  --ipv6                    enable IPv6 support (disabled by default)</span><br><span class="line">  -u [ --username ] arg     username</span><br><span class="line">  -p [ --password ] arg     password</span><br><span class="line">  --dbpath arg              directly access mongod database files in the given</span><br><span class="line">                            path, instead of connecting to a mongod  server -</span><br><span class="line">                            needs to lock the data directory, so cannot be used</span><br><span class="line">                            if a mongod is currently accessing the same path</span><br><span class="line">  --directoryperdb          if dbpath specified, each db is in a separate</span><br><span class="line">                            directory</span><br><span class="line">  --journal                 enable journaling</span><br><span class="line">  -d [ --db ] arg           database to use</span><br><span class="line">  -c [ --collection ] arg   collection to use (some commands)</span><br><span class="line">  -f [ --fields ] arg       comma separated list of field names e.g. -f</span><br><span class="line">                            name,age</span><br><span class="line">  --fieldFile arg           file with fields names - 1 per line</span><br><span class="line">  -q [ --query ] arg        query filter, as a JSON string</span><br><span class="line">  --csv                     export to csv instead of json</span><br><span class="line">  -o [ --out ] arg          output file; if not specified, stdout is used</span><br><span class="line">  --jsonArray               output to a json array rather than one object per</span><br><span class="line">                            line</span><br><span class="line">  -k [ --slaveOk ] arg (=1) use secondaries for export if available, default</span><br><span class="line">                            true</span><br><span class="line">  --forceTableScan          force a table scan (do not use $snapshot)</span><br><span class="line"></span><br><span class="line">参数说明：</span><br><span class="line">-h:指明数据库宿主机的IP</span><br><span class="line">-u:指明数据库的用户名</span><br><span class="line">-p:指明数据库的密码</span><br><span class="line">-d:指明数据库的名字</span><br><span class="line">-c:指明collection的名字</span><br><span class="line">-f:指明要导出那些列</span><br><span class="line">-o:指明到要导出的文件名</span><br><span class="line">-q:指明导出数据的过滤条件</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+
+<h3 id="Mongodb导入工具mongoimport"><a href="#Mongodb导入工具mongoimport" class="headerlink" title="Mongodb导入工具mongoimport"></a>Mongodb导入工具mongoimport</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost mongodb]# ./bin/mongoimport --help  </span><br><span class="line">options:  </span><br><span class="line">  --help                  produce help message  </span><br><span class="line">  -v [ --verbose ]        be more verbose (include multiple times for more   </span><br><span class="line">                          verbosity e.g. -vvvvv)  </span><br><span class="line">  --version               print the program&#x27;s version and exit  </span><br><span class="line">  -h [ --host ] arg       mongo host to connect to ( &lt;set name&gt;/s1,s2 for sets)  </span><br><span class="line">  --port arg              server port. Can also use --host hostname:port  </span><br><span class="line">  --ipv6                  enable IPv6 support (disabled by default)  </span><br><span class="line">  -u [ --username ] arg   username  </span><br><span class="line">  -p [ --password ] arg   password  </span><br><span class="line">  --dbpath arg            directly access mongod database files in the given   </span><br><span class="line">                          path, instead of connecting to a mongod  server -   </span><br><span class="line">                          needs to lock the data directory, so cannot be used   </span><br><span class="line">                          if a mongod is currently accessing the same path  </span><br><span class="line">  --directoryperdb        if dbpath specified, each db is in a separate   </span><br><span class="line">                          directory  </span><br><span class="line">  --journal               enable journaling  </span><br><span class="line">  -d [ --db ] arg         database to use  </span><br><span class="line">  -c [ --collection ] arg collection to use (some commands)  </span><br><span class="line">  -f [ --fields ] arg     comma separated list of field names e.g. -f name,age  </span><br><span class="line">  --fieldFile arg         file with fields names - 1 per line  </span><br><span class="line">  --ignoreBlanks          if given, empty fields in csv and tsv will be ignored  </span><br><span class="line">  --type arg              type of file to import.  default: json (json,csv,tsv)  </span><br><span class="line">  --file arg              file to import from; if not specified stdin is used  </span><br><span class="line">  --drop                  drop collection first   </span><br><span class="line">  --headerline            CSV,TSV only - use first line as headers  </span><br><span class="line">  --upsert                insert or update objects that already exist  </span><br><span class="line">  --upsertFields arg      comma-separated fields for the query part of the   </span><br><span class="line">                          upsert. You should make sure this is indexed  </span><br><span class="line">  --stopOnError           stop importing at first error rather than continuing  </span><br><span class="line">  --jsonArray             load a json array, not one item per line. Currently   </span><br><span class="line">                          limited to 4MB.  </span><br><span class="line">参数说明：</span><br><span class="line">-h:指明数据库宿主机的IP</span><br><span class="line">-u:指明数据库的用户名</span><br><span class="line">-p:指明数据库的密码</span><br><span class="line">-d:指明数据库的名字</span><br><span class="line">-c:指明collection的名字</span><br><span class="line">-f:指明要导入那些列</span><br></pre></td></tr></table></figure>
+
+<p>利用mongodbimport导入时有一些很蛋疼的问题，对于一些Number型的数据导入后并非NumberLong,导致程序中一些错误。<br>最新版的mongodb中只有当number大于等于8位时才会自动转为NumberLong.</p>
+<p>解决这一问题的技巧如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">根据条件将一些数据查询出来并update</span><br><span class="line">db.foo.find( &#123; z : &#123; $type : 16 &#125; &#125; ).forEach( function(o) &#123; o.z = NumberLong(o.z); db.foo.save(o); &#125; )</span><br></pre></td></tr></table></figure>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/mongodb/">mongodb</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/linux-command-sysstat/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Linux系统性能和使用活动监控工具 sysstat</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/yum-source-config/">
+        <span class="next-text nav-default">配置yum的安装源</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2026
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  </script>
+  </body>
+</html>

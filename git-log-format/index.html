@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="Git日志格式化输出"/>
+
+
+
+
+  <meta name="keywords" content="git," />
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦" >
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=1.1"/>
+
+
+
+<link rel="canonical" href="http://yoursite.com/git-log-format/"/>
+
+
+<meta name="description" content="Git日志格式化输出网上看到一个git log format 如下：git log --graph --pretty&#x3D;format:&#39;%C(yellow)%h%Creset -%C(cyan)%d%Creset %s %Cgreen(%an, %cr)&#39; --abbrev-commit 写入 ~&#x2F;.gitconfig 中：git config --global alias.ll &amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git日志格式化输出">
+<meta property="og:url" content="http://yoursite.com/git-log-format/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="Git日志格式化输出网上看到一个git log format 如下：git log --graph --pretty&#x3D;format:&#39;%C(yellow)%h%Creset -%C(cyan)%d%Creset %s %Cgreen(%an, %cr)&#39; --abbrev-commit 写入 ~&#x2F;.gitconfig 中：git config --global alias.ll &amp;">
+<meta property="og:locale">
+<meta property="article:published_time" content="2015-10-12T01:18:00.000Z">
+<meta property="article:modified_time" content="2026-03-16T14:04:02.395Z">
+<meta property="article:author" content="Neo">
+<meta property="article:tag" content="git">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1"/>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Git日志格式化输出 - 浮生若梦 </title>
+  <meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Git日志格式化输出
+        
+      </h1>
+
+      <time class="post-time">
+          Oct 12 2015
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h2 id="Git日志格式化输出"><a href="#Git日志格式化输出" class="headerlink" title="Git日志格式化输出"></a>Git日志格式化输出</h2><p>网上看到一个git log format 如下：<br><code>git log --graph --pretty=format:&#39;%C(yellow)%h%Creset -%C(cyan)%d%Creset %s %Cgreen(%an, %cr)&#39; --abbrev-commit</code></p>
+<p>写入 <code>~/.gitconfig</code> 中：<br><code>git config --global alias.ll &quot;log --graph --pretty=format:&#39;%C(yellow)%h%Creset -%C(cyan)%d%Creset %s %Cgreen(%an, %cr)&#39; --abbrev-commit&quot;</code></p>
+<p>具体参数及说明：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">参数   说明</span><br><span class="line">%H  commit hash</span><br><span class="line">%h  commit short hash</span><br><span class="line">%T  tree hash</span><br><span class="line">%t  tree short hash</span><br><span class="line">%P  parent hash</span><br><span class="line">%p  parent short hash</span><br><span class="line">%an 作者名字</span><br><span class="line">%aN .mailmap 中对应的作者名字</span><br><span class="line">%ae 作者邮箱</span><br><span class="line">%aE .mailmap 中对应的作者邮箱</span><br><span class="line">%ad --date=制定的日期格式</span><br><span class="line">%aD RFC2822 日期格式</span><br><span class="line">%ar 日期格式，例如：1 day ago</span><br><span class="line">%at UNIX timestamp 日期格式</span><br><span class="line">%ai ISO 8601 日期格式</span><br><span class="line">%cn 提交者名字</span><br><span class="line">%cN .mailmap 对应的提交的名字</span><br><span class="line">%ce 提交者邮箱</span><br><span class="line">%cE .mailmap 对应的提交者的邮箱</span><br><span class="line">%cd --data=制定的提交日期的格式</span><br><span class="line">%cD RFC2822 提交日期的格式</span><br><span class="line">%cr 提交日期的格式，例如：1day ago</span><br><span class="line">%ct UNIX timestamp 提交日期的格式</span><br><span class="line">%ci ISO 8601 提交日期的格式</span><br><span class="line">%d  ref 名称</span><br><span class="line">%e  encoding</span><br><span class="line">%s  commit 信息标题</span><br><span class="line">%f  过滤 commit 信息的标题使之可以作为文件名</span><br><span class="line">%b  commit 信息内容</span><br><span class="line">%N  commit notes</span><br><span class="line">%gD reflog selector, e.g., refs/stash@&#123;1&#125;</span><br><span class="line">%gd shortened reflog selector, e.g., stash@&#123;1&#125;</span><br><span class="line">%gs reflog subject</span><br><span class="line">%Cred   切换至红色</span><br><span class="line">%Cgreen 切换至绿色</span><br><span class="line">%Cblue  切换至蓝色</span><br><span class="line">%Creset 重设颜色</span><br><span class="line">%C(color)   制定颜色，as described in color.branch.* config option</span><br><span class="line">%m  left right or boundary mark</span><br><span class="line">%n  换行</span><br><span class="line">%%  a raw %</span><br><span class="line">%x00    print a byte from a hex code</span><br><span class="line">%w([[,[,]]])    switch line wrapping, like the -w option of git-shortlog(1).</span><br></pre></td></tr></table></figure>
+
+<p>通过 <code>git ll</code> 查看 就可以看到漂亮的git日志输出了。</p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/git/">git</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/nginx-proxy-cache/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">nginx proxy_cache缓存</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/redis-linux-init/">
+        <span class="next-text nav-default">Redis在Linux自启动</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2026
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  </script>
+  </body>
+</html>
