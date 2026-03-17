@@ -701,34 +701,49 @@ p {
   text-align: left;
 }
 .post .post-content code, .post .post-content pre {
-  padding: 7px;
-  font-size: 13px;
-  font-family: "Open Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei", "Microsoft Jhenghei", sans-serif;
-  background: #F8F8F8;
+  font-size: 14px;
+  font-family: Consolas, Monaco, "Courier New", monospace, "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei", "Microsoft Jhenghei";
 }
 .post .post-content code {
-  padding: 3px 5px;
-  color: #000;
+  padding: 2px 6px;
+  color: #333;
+  background: hsl(0, 0%, 100.2549019608%);
+  border-radius: 4px;
+  border: 1px solid rgb(235.25, 235.25, 235.25);
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+.post .post-content code:hover {
+  background: #f8f8f8;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .post .post-content .highlight {
-  margin: 1em 0;
+  margin: 1.5em 0;
   overflow-x: auto;
-  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.125);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgb(235.25, 235.25, 235.25);
+  background: #F8F8F8;
 }
 .post .post-content .highlight table {
   position: relative;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
 }
 .post .post-content .highlight table::after {
   position: absolute;
   top: 0;
   right: 0;
   left: 0;
-  padding: 2px 7px;
-  font-size: 13px;
-  font-weight: bold;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 600;
   color: #cacaca;
-  background: rgb(240.35, 240.35, 240.35);
+  background: rgb(235.25, 235.25, 235.25);
   content: "Code";
+  border-bottom: 1px solid rgb(222.5, 222.5, 222.5);
+  font-family: "Open Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei", "Microsoft Jhenghei", sans-serif;
 }
 .post .post-content .highlight.html > ::after {
   content: "HTML";
@@ -786,18 +801,25 @@ p {
 }
 .post .post-content .highlight .code pre {
   margin: 0;
-  padding: 30px 10px 10px;
+  padding: 20px 15px 15px;
+  line-height: 1.6;
+  background: #F8F8F8;
 }
 .post .post-content .highlight .gutter {
-  width: 10px;
-  color: #cacaca;
+  width: 40px;
+  color: #aaa;
+  background: rgb(240.35, 240.35, 240.35);
+  border-right: 1px solid rgb(222.5, 222.5, 222.5);
+  text-align: right;
 }
 .post .post-content .highlight .gutter pre {
   margin: 0;
-  padding: 30px 7px 10px;
+  padding: 20px 10px 15px;
+  font-family: Consolas, Monaco, "Courier New", monospace, "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei", "Microsoft Jhenghei";
+  line-height: 1.6;
 }
 .post .post-content .highlight .line {
-  height: 20px;
+  height: 22px;
 }
 .post .post-content .highlight table, .post .post-content .highlight tr, .post .post-content .highlight td {
   margin: 0;
@@ -808,11 +830,13 @@ p {
 .post .post-content .highlight .code .comment,
 .post .post-content .highlight .code .quote {
   color: #93a1a1;
+  font-style: italic;
 }
 .post .post-content .highlight .code .keyword,
 .post .post-content .highlight .code .selector-tag,
 .post .post-content .highlight .code .addition {
   color: #859900;
+  font-weight: 600;
 }
 .post .post-content .highlight .code .number,
 .post .post-content .highlight .code .string,
@@ -828,6 +852,7 @@ p {
 .post .post-content .highlight .code .selector-id,
 .post .post-content .highlight .code .selector-class {
   color: #268bd2;
+  font-weight: 600;
 }
 .post .post-content .highlight .code .attribute,
 .post .post-content .highlight .code .attr,
@@ -850,6 +875,34 @@ p {
 .post .post-content .highlight .code .built_in,
 .post .post-content .highlight .code .deletion {
   color: #dc322f;
+}
+.post .post-content .highlight {
+  position: relative;
+}
+.post .post-content .highlight .copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: #4D89FB;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+  opacity: 0;
+  visibility: hidden;
+  font-family: "Open Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei", "Microsoft Jhenghei", sans-serif;
+}
+.post .post-content .highlight:hover .copy-btn {
+  opacity: 1;
+  visibility: visible;
+}
+.post .post-content .highlight .copy-btn:hover {
+  background: rgb(27.1208791209, 103.9340659341, 249.8791208791);
+  transform: translateY(-2px);
 }
 .post .post-content .read-more .read-more-link {
   color: #4D89FB;
