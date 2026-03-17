@@ -17,7 +17,7 @@
 
 
 
-  <meta name="keywords" content="docker,rancher," />
+  <meta name="keywords" content="docker,阿里云,rancher," />
 
 
 
@@ -32,21 +32,22 @@
 
 
 
-<link rel="canonical" href="http://yoursite.com/aliyun-docker-rancher/"/>
+<link rel="canonical" href="https://neoyin.github.io/aliyun-docker-rancher/"/>
 
 
-<meta name="description" content="阿里云开通EC2+ RDS安装Docker由于我们采用的Ubuntu  安装Docker https:&#x2F;&#x2F;docs.docker.com&#x2F;engine&#x2F;installation&#x2F;linux&#x2F;ubuntulinux&#x2F; 1234567$ sudo apt-get update$ sudo apt-get install apt-transport-https ca-certificates$ sud">
+<meta name="description" content="本文详细介绍如何在阿里云上搭建Rancher服务，包括环境准备、Rancher Server安装、Agent配置和使用管理等内容。 一、环境准备1. 阿里云ECS实例准备 登录阿里云控制台，创建一台ECS实例： 操作系统：Ubuntu 18.04 LTS 或 CentOS 7 实例规格：至少2核4G内存 存储空间：至少40GB 网络：配置安全组，开放8080端口（Rancher UI）和2376">
 <meta property="og:type" content="article">
 <meta property="og:title" content="阿里云搭建Rancher服务">
-<meta property="og:url" content="http://yoursite.com/aliyun-docker-rancher/index.html">
+<meta property="og:url" content="https://neoyin.github.io/aliyun-docker-rancher/index.html">
 <meta property="og:site_name" content="浮生若梦">
-<meta property="og:description" content="阿里云开通EC2+ RDS安装Docker由于我们采用的Ubuntu  安装Docker https:&#x2F;&#x2F;docs.docker.com&#x2F;engine&#x2F;installation&#x2F;linux&#x2F;ubuntulinux&#x2F; 1234567$ sudo apt-get update$ sudo apt-get install apt-transport-https ca-certificates$ sud">
+<meta property="og:description" content="本文详细介绍如何在阿里云上搭建Rancher服务，包括环境准备、Rancher Server安装、Agent配置和使用管理等内容。 一、环境准备1. 阿里云ECS实例准备 登录阿里云控制台，创建一台ECS实例： 操作系统：Ubuntu 18.04 LTS 或 CentOS 7 实例规格：至少2核4G内存 存储空间：至少40GB 网络：配置安全组，开放8080端口（Rancher UI）和2376">
 <meta property="og:locale">
 <meta property="article:published_time" content="2016-10-25T09:10:00.000Z">
-<meta property="article:modified_time" content="2026-03-16T14:04:02.395Z">
+<meta property="article:modified_time" content="2026-03-17T03:07:47.788Z">
 <meta property="article:author" content="Neo">
 <meta property="article:tag" content="docker">
 <meta property="article:tag" content="rancher">
+<meta property="article:tag" content="阿里云">
 <meta name="twitter:card" content="summary">
 
 
@@ -142,17 +143,155 @@
     
             <div class="post-content">
             <hr>
-<h5 id="阿里云开通EC2-RDS"><a href="#阿里云开通EC2-RDS" class="headerlink" title="阿里云开通EC2+ RDS"></a>阿里云开通EC2+ RDS</h5><h5 id="安装Docker"><a href="#安装Docker" class="headerlink" title="安装Docker"></a>安装Docker</h5><p>由于我们采用的Ubuntu  安装Docker <a href="https://docs.docker.com/engine/installation/linux/ubuntulinux/">https://docs.docker.com/engine/installation/linux/ubuntulinux/</a></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get update</span><br><span class="line">$ sudo apt-get install apt-transport-https ca-certificates</span><br><span class="line">$ sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D</span><br><span class="line">#在/etc/apt/sources.list.d/docker.list 添加</span><br><span class="line">deb https://apt.dockerproject.org/repo ubuntu-trusty main</span><br><span class="line"> sudo apt-get update</span><br><span class="line">sudo apt-get install docker-engine</span><br></pre></td></tr></table></figure>
-
-<p>Docker安装完成 </p>
-<h5 id="安装Rancher-Server"><a href="#安装Rancher-Server" class="headerlink" title="安装Rancher Server"></a>安装Rancher Server</h5><ul>
-<li><a href="http://docs.rancher.com/rancher/v1.2/en/installing-rancher/installing-server/">http://docs.rancher.com/rancher/v1.2/en/installing-rancher/installing-server/</a></li>
+<p>本文详细介绍如何在阿里云上搭建Rancher服务，包括环境准备、Rancher Server安装、Agent配置和使用管理等内容。</p>
+<h2 id="一、环境准备"><a href="#一、环境准备" class="headerlink" title="一、环境准备"></a>一、环境准备</h2><h3 id="1-阿里云ECS实例准备"><a href="#1-阿里云ECS实例准备" class="headerlink" title="1. 阿里云ECS实例准备"></a>1. 阿里云ECS实例准备</h3><ol>
+<li>登录阿里云控制台，创建一台ECS实例：<ul>
+<li>操作系统：Ubuntu 18.04 LTS 或 CentOS 7</li>
+<li>实例规格：至少2核4G内存</li>
+<li>存储空间：至少40GB</li>
+<li>网络：配置安全组，开放8080端口（Rancher UI）和2376端口（Docker API）</li>
 </ul>
-<p>这里为了之后升级rancher方便使用了单独的mysql数据库</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --restart=unless-stopped -p 8080:8080 \</span><br><span class="line">    -e CATTLE_DB_CATTLE_MYSQL_HOST=$host \</span><br><span class="line">    -e CATTLE_DB_CATTLE_MYSQL_PORT=3306 \</span><br><span class="line">    -e CATTLE_DB_CATTLE_MYSQL_NAME=$dbname \</span><br><span class="line">    -e CATTLE_DB_CATTLE_USERNAME=$username \</span><br><span class="line">    -e CATTLE_DB_CATTLE_PASSWORD=$password \</span><br><span class="line">    rancher/server</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="2-安装Docker"><a href="#2-安装Docker" class="headerlink" title="2. 安装Docker"></a>2. 安装Docker</h3><h4 id="Ubuntu系统："><a href="#Ubuntu系统：" class="headerlink" title="Ubuntu系统："></a>Ubuntu系统：</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 更新包管理器</span></span><br><span class="line"><span class="built_in">sudo</span> apt-get update</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装依赖包</span></span><br><span class="line"><span class="built_in">sudo</span> apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加Docker GPG密钥</span></span><br><span class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | <span class="built_in">sudo</span> apt-key add -</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加Docker仓库</span></span><br><span class="line"><span class="built_in">sudo</span> add-apt-repository <span class="string">&quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu <span class="subst">$(lsb_release -cs)</span> stable&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装Docker CE</span></span><br><span class="line"><span class="built_in">sudo</span> apt-get update</span><br><span class="line"><span class="built_in">sudo</span> apt-get install docker-ce docker-ce-cli containerd.io</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动Docker服务</span></span><br><span class="line"><span class="built_in">sudo</span> systemctl start docker</span><br><span class="line"><span class="built_in">sudo</span> systemctl <span class="built_in">enable</span> docker</span><br><span class="line"></span><br><span class="line"><span class="comment"># 验证Docker安装</span></span><br><span class="line"> docker --version</span><br></pre></td></tr></table></figure>
 
-<p>通过http:&#x2F;&#x2F;$ip:8080 是不是可以访问Rancher </p>
+<h4 id="CentOS系统："><a href="#CentOS系统：" class="headerlink" title="CentOS系统："></a>CentOS系统：</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装依赖包</span></span><br><span class="line"><span class="built_in">sudo</span> yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加Docker仓库</span></span><br><span class="line"><span class="built_in">sudo</span> yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装Docker CE</span></span><br><span class="line"><span class="built_in">sudo</span> yum install docker-ce docker-ce-cli containerd.io</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动Docker服务</span></span><br><span class="line"><span class="built_in">sudo</span> systemctl start docker</span><br><span class="line"><span class="built_in">sudo</span> systemctl <span class="built_in">enable</span> docker</span><br><span class="line"></span><br><span class="line"><span class="comment"># 验证Docker安装</span></span><br><span class="line"> docker --version</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-数据库准备"><a href="#3-数据库准备" class="headerlink" title="3. 数据库准备"></a>3. 数据库准备</h3><p>Rancher支持使用内置SQLite或外部MySQL数据库。推荐使用外部MySQL数据库以提高可靠性：</p>
+<ol>
+<li><p>在阿里云RDS控制台创建MySQL实例：</p>
+<ul>
+<li>版本：MySQL 5.7+</li>
+<li>规格：根据实际需求选择</li>
+<li>存储空间：至少20GB</li>
+</ul>
+</li>
+<li><p>创建数据库和用户：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> DATABASE rancher <span class="keyword">CHARACTER SET</span> utf8 <span class="keyword">COLLATE</span> utf8_general_ci;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> <span class="string">&#x27;rancher&#x27;</span>@<span class="string">&#x27;%&#x27;</span> IDENTIFIED <span class="keyword">BY</span> <span class="string">&#x27;your_password&#x27;</span>;</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> PRIVILEGES <span class="keyword">ON</span> rancher.<span class="operator">*</span> <span class="keyword">TO</span> <span class="string">&#x27;rancher&#x27;</span>@<span class="string">&#x27;%&#x27;</span>;</span><br><span class="line">FLUSH PRIVILEGES;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="二、安装Rancher-Server"><a href="#二、安装Rancher-Server" class="headerlink" title="二、安装Rancher Server"></a>二、安装Rancher Server</h2><h3 id="1-拉取Rancher镜像"><a href="#1-拉取Rancher镜像" class="headerlink" title="1. 拉取Rancher镜像"></a>1. 拉取Rancher镜像</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 拉取Rancher Server镜像</span></span><br><span class="line">docker pull rancher/server:stable</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-启动Rancher-Server"><a href="#2-启动Rancher-Server" class="headerlink" title="2. 启动Rancher Server"></a>2. 启动Rancher Server</h3><p>使用外部MySQL数据库启动Rancher Server：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --restart=unless-stopped -p 8080:8080 \</span><br><span class="line">    -e CATTLE_DB_CATTLE_MYSQL_HOST=your_rds_endpoint \</span><br><span class="line">    -e CATTLE_DB_CATTLE_MYSQL_PORT=3306 \</span><br><span class="line">    -e CATTLE_DB_CATTLE_MYSQL_NAME=rancher \</span><br><span class="line">    -e CATTLE_DB_CATTLE_USERNAME=rancher \</span><br><span class="line">    -e CATTLE_DB_CATTLE_PASSWORD=your_password \</span><br><span class="line">    rancher/server:stable</span><br></pre></td></tr></table></figure>
+
+<p>参数说明：</p>
+<ul>
+<li><code>--restart=unless-stopped</code>：容器退出时自动重启</li>
+<li><code>-p 8080:8080</code>：映射容器8080端口到主机8080端口</li>
+<li><code>-e</code>：设置环境变量，配置数据库连接信息</li>
+</ul>
+<h3 id="3-访问Rancher-UI"><a href="#3-访问Rancher-UI" class="headerlink" title="3. 访问Rancher UI"></a>3. 访问Rancher UI</h3><p>在浏览器中访问：<code>http://your_ecs_ip:8080</code></p>
+<p>首次访问时，需要设置管理员密码并配置Rancher服务器URL。</p>
+<h2 id="三、添加主机到Rancher"><a href="#三、添加主机到Rancher" class="headerlink" title="三、添加主机到Rancher"></a>三、添加主机到Rancher</h2><h3 id="1-创建环境"><a href="#1-创建环境" class="headerlink" title="1. 创建环境"></a>1. 创建环境</h3><ol>
+<li>登录Rancher UI</li>
+<li>点击 <strong>环境管理</strong> → <strong>添加环境</strong></li>
+<li>填写环境名称（如：Production）</li>
+<li>选择环境模板（如：Cattle）</li>
+<li>点击 <strong>创建</strong></li>
+</ol>
+<h3 id="2-添加主机"><a href="#2-添加主机" class="headerlink" title="2. 添加主机"></a>2. 添加主机</h3><ol>
+<li>在环境中点击 <strong>基础设施</strong> → <strong>主机</strong> → <strong>添加主机</strong></li>
+<li>复制生成的Docker命令</li>
+<li>在要添加的主机上执行该命令</li>
+</ol>
+<p>例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --privileged --restart=unless-stopped --net=host -v /var/run/docker.sock:/var/run/docker.sock rancher/agent:v1.2.10 http://your_rancher_server_ip:8080/v1/scripts/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-验证主机添加"><a href="#3-验证主机添加" class="headerlink" title="3. 验证主机添加"></a>3. 验证主机添加</h3><p>在Rancher UI的主机列表中查看新添加的主机状态，等待其变为 <strong>活跃</strong> 状态。</p>
+<h2 id="四、使用Rancher管理容器"><a href="#四、使用Rancher管理容器" class="headerlink" title="四、使用Rancher管理容器"></a>四、使用Rancher管理容器</h2><h3 id="1-部署应用"><a href="#1-部署应用" class="headerlink" title="1. 部署应用"></a>1. 部署应用</h3><ol>
+<li>点击 <strong>应用</strong> → <strong>全部</strong> → <strong>添加应用</strong></li>
+<li>填写应用名称</li>
+<li>点击 <strong>创建</strong></li>
+<li>在应用中点击 <strong>添加服务</strong></li>
+<li>填写服务信息：<ul>
+<li>服务名称</li>
+<li>容器镜像</li>
+<li>端口映射</li>
+<li>环境变量</li>
+<li>其他配置</li>
+</ul>
+</li>
+<li>点击 <strong>创建</strong></li>
+</ol>
+<h3 id="2-服务管理"><a href="#2-服务管理" class="headerlink" title="2. 服务管理"></a>2. 服务管理</h3><ul>
+<li><strong>启动&#x2F;停止服务</strong>：在服务列表中操作</li>
+<li><strong>伸缩服务</strong>：调整服务副本数</li>
+<li><strong>升级服务</strong>：更新容器镜像或配置</li>
+<li><strong>查看日志</strong>：查看容器运行日志</li>
+<li><strong>执行命令</strong>：在容器中执行命令</li>
+</ul>
+<h3 id="3-网络管理"><a href="#3-网络管理" class="headerlink" title="3. 网络管理"></a>3. 网络管理</h3><p>Rancher提供多种网络选项：</p>
+<ul>
+<li><strong>管理网络</strong>：Rancher默认网络</li>
+<li><strong>IPsec网络</strong>：加密网络通信</li>
+<li><strong>VXLAN网络</strong>：覆盖网络</li>
+<li><strong>Macvlan网络</strong>：直接使用物理网络</li>
+</ul>
+<h2 id="五、Rancher配置和优化"><a href="#五、Rancher配置和优化" class="headerlink" title="五、Rancher配置和优化"></a>五、Rancher配置和优化</h2><h3 id="1-配置认证"><a href="#1-配置认证" class="headerlink" title="1. 配置认证"></a>1. 配置认证</h3><p>Rancher支持多种认证方式：</p>
+<ul>
+<li>本地认证</li>
+<li>LDAP认证</li>
+<li>Active Directory认证</li>
+<li>GitHub认证</li>
+<li>其他OAuth认证</li>
+</ul>
+<h3 id="2-配置存储"><a href="#2-配置存储" class="headerlink" title="2. 配置存储"></a>2. 配置存储</h3><p>Rancher支持多种存储选项：</p>
+<ul>
+<li>本地存储</li>
+<li>NFS存储</li>
+<li>EBS存储</li>
+<li>S3存储</li>
+</ul>
+<h3 id="3-高可用性配置"><a href="#3-高可用性配置" class="headerlink" title="3. 高可用性配置"></a>3. 高可用性配置</h3><p>为了提高Rancher的可靠性，建议配置高可用部署：</p>
+<ol>
+<li>部署多个Rancher Server实例</li>
+<li>使用负载均衡器分发请求</li>
+<li>配置共享数据库</li>
+</ol>
+<h2 id="六、常见问题解决"><a href="#六、常见问题解决" class="headerlink" title="六、常见问题解决"></a>六、常见问题解决</h2><h3 id="1-Rancher-Server启动失败"><a href="#1-Rancher-Server启动失败" class="headerlink" title="1. Rancher Server启动失败"></a>1. Rancher Server启动失败</h3><p><strong>问题</strong>：容器启动后无法访问UI</p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li>检查数据库连接是否正确</li>
+<li>查看容器日志：<code>docker logs &lt;container-id&gt;</code></li>
+<li>确保8080端口未被占用</li>
+</ul>
+<h3 id="2-主机添加失败"><a href="#2-主机添加失败" class="headerlink" title="2. 主机添加失败"></a>2. 主机添加失败</h3><p><strong>问题</strong>：执行agent命令后主机状态为 <strong>注册</strong> 但无法变为 <strong>活跃</strong></p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li>检查网络连接是否正常</li>
+<li>确保主机防火墙允许2376端口</li>
+<li>查看agent容器日志：<code>docker logs &lt;agent-container-id&gt;</code></li>
+</ul>
+<h3 id="3-服务部署失败"><a href="#3-服务部署失败" class="headerlink" title="3. 服务部署失败"></a>3. 服务部署失败</h3><p><strong>问题</strong>：服务状态为 <strong>启动中</strong> 但无法完成</p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li>检查镜像是否存在</li>
+<li>查看服务日志</li>
+<li>检查资源是否充足</li>
+</ul>
+<h2 id="七、最佳实践"><a href="#七、最佳实践" class="headerlink" title="七、最佳实践"></a>七、最佳实践</h2><ol>
+<li><strong>环境隔离</strong>：为不同环境（开发、测试、生产）创建独立的Rancher环境</li>
+<li><strong>资源管理</strong>：合理设置容器资源限制</li>
+<li><strong>网络配置</strong>：根据应用需求选择合适的网络模式</li>
+<li><strong>存储管理</strong>：使用持久化存储保存重要数据</li>
+<li><strong>监控告警</strong>：配置监控和告警机制</li>
+<li><strong>备份策略</strong>：定期备份Rancher数据库</li>
+<li><strong>版本管理</strong>：使用固定版本的Rancher镜像，避免自动更新</li>
+</ol>
+<h2 id="八、Rancher-2-x-迁移"><a href="#八、Rancher-2-x-迁移" class="headerlink" title="八、Rancher 2.x 迁移"></a>八、Rancher 2.x 迁移</h2><p>注意：Rancher 1.x已经停止维护，建议迁移到Rancher 2.x：</p>
+<ol>
+<li>新部署Rancher 2.x</li>
+<li>导出1.x中的应用配置</li>
+<li>在2.x中重新部署应用</li>
+<li>逐步迁移流量</li>
+</ol>
+<h2 id="九、参考资料"><a href="#九、参考资料" class="headerlink" title="九、参考资料"></a>九、参考资料</h2><ul>
+<li><a href="https://rancher.com/docs/rancher/v1.6/en/">Rancher官方文档</a></li>
+<li><a href="https://docs.docker.com/engine/install/">Docker官方安装文档</a></li>
+<li><a href="https://help.aliyun.com/document_detail/25378.html">阿里云ECS文档</a></li>
+<li><a href="https://help.aliyun.com/document_detail/26122.html">阿里云RDS文档</a></li>
+<li><a href="https://rancher.com/docs/rancher/v2.6/en/">Rancher 2.x文档</a></li>
+</ul>
 
             </div>
           
@@ -162,6 +301,8 @@
         <div class="post-tags">
           
             <a href="/tags/docker/">docker</a>
+          
+            <a href="/tags/%E9%98%BF%E9%87%8C%E4%BA%91/">阿里云</a>
           
             <a href="/tags/rancher/">rancher</a>
           

@@ -17,7 +17,7 @@
 
 
 
-  <meta name="keywords" content="linux,rinetd," />
+  <meta name="keywords" content="linux,rinetd,端口转发," />
 
 
 
@@ -32,21 +32,22 @@
 
 
 
-<link rel="canonical" href="http://yoursite.com/linux-rinetd-port-redirect/"/>
+<link rel="canonical" href="https://neoyin.github.io/linux-rinetd-port-redirect/"/>
 
 
-<meta name="description" content="最近用使用Aliyun数据库时需要使用公网直接连接数据库,发现其文档中是使用了rinetd，虽然之前一直知道rinetd，却未用过，现在给记录下来. 相关地址 https:&#x2F;&#x2F;boutell.com&#x2F;rinetd&#x2F;  下载安装12345wget http:&#x2F;&#x2F;www.boutell.com&#x2F;rinetd&#x2F;http&#x2F;rinetd.tar.gztar -xvf rinetd.tar.gz&amp;&amp;">
+<meta name="description" content="Linux 下使用 rinetd 进行端口转发一、什么是 rinetdrinetd 是一个轻量级的 TCP 端口转发工具，它可以将发往本机特定端口的请求转发到另一台服务器的指定端口。它是一个简单但强大的工具，适用于需要端口转发的各种场景，如：  数据库远程访问 内部服务暴露到公网 负载均衡 网络测试  二、安装 rinetd1. 从源码编译安装1234567891011121314# 下载源码wg">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux下利用rinetd进行端口转发">
-<meta property="og:url" content="http://yoursite.com/linux-rinetd-port-redirect/index.html">
+<meta property="og:url" content="https://neoyin.github.io/linux-rinetd-port-redirect/index.html">
 <meta property="og:site_name" content="浮生若梦">
-<meta property="og:description" content="最近用使用Aliyun数据库时需要使用公网直接连接数据库,发现其文档中是使用了rinetd，虽然之前一直知道rinetd，却未用过，现在给记录下来. 相关地址 https:&#x2F;&#x2F;boutell.com&#x2F;rinetd&#x2F;  下载安装12345wget http:&#x2F;&#x2F;www.boutell.com&#x2F;rinetd&#x2F;http&#x2F;rinetd.tar.gztar -xvf rinetd.tar.gz&amp;&amp;">
+<meta property="og:description" content="Linux 下使用 rinetd 进行端口转发一、什么是 rinetdrinetd 是一个轻量级的 TCP 端口转发工具，它可以将发往本机特定端口的请求转发到另一台服务器的指定端口。它是一个简单但强大的工具，适用于需要端口转发的各种场景，如：  数据库远程访问 内部服务暴露到公网 负载均衡 网络测试  二、安装 rinetd1. 从源码编译安装1234567891011121314# 下载源码wg">
 <meta property="og:locale">
 <meta property="article:published_time" content="2016-12-22T07:34:00.000Z">
-<meta property="article:modified_time" content="2026-03-16T14:04:02.396Z">
+<meta property="article:modified_time" content="2026-03-17T04:22:09.044Z">
 <meta property="article:author" content="Neo">
 <meta property="article:tag" content="linux">
 <meta property="article:tag" content="rinetd">
+<meta property="article:tag" content="端口转发">
 <meta name="twitter:card" content="summary">
 
 
@@ -141,22 +142,111 @@
 
     
             <div class="post-content">
-            <hr>
-<p>最近用使用Aliyun数据库时需要使用公网直接连接数据库,发现其文档中是使用了<code>rinetd</code>，虽然之前一直知道<code>rinetd</code>，却未用过，现在给记录下来.</p>
-<h5 id="相关地址"><a href="#相关地址" class="headerlink" title="相关地址"></a>相关地址</h5><ul>
-<li><a href="https://boutell.com/rinetd/">https://boutell.com/rinetd/</a></li>
+            <h2 id="Linux-下使用-rinetd-进行端口转发"><a href="#Linux-下使用-rinetd-进行端口转发" class="headerlink" title="Linux 下使用 rinetd 进行端口转发"></a>Linux 下使用 rinetd 进行端口转发</h2><h3 id="一、什么是-rinetd"><a href="#一、什么是-rinetd" class="headerlink" title="一、什么是 rinetd"></a>一、什么是 rinetd</h3><p>rinetd 是一个轻量级的 TCP 端口转发工具，它可以将发往本机特定端口的请求转发到另一台服务器的指定端口。它是一个简单但强大的工具，适用于需要端口转发的各种场景，如：</p>
+<ul>
+<li>数据库远程访问</li>
+<li>内部服务暴露到公网</li>
+<li>负载均衡</li>
+<li>网络测试</li>
 </ul>
-<h5 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget http://www.boutell.com/rinetd/http/rinetd.tar.gz</span><br><span class="line">tar -xvf rinetd.tar.gz&amp;&amp;cd rinetd</span><br><span class="line">#(修改端口范围)</span><br><span class="line">sed -i &#x27;s/65536/65535/g&#x27; rinetd.c </span><br><span class="line">mkdir /usr/man&amp;&amp;make&amp;&amp;make install</span><br></pre></td></tr></table></figure>
+<h3 id="二、安装-rinetd"><a href="#二、安装-rinetd" class="headerlink" title="二、安装 rinetd"></a>二、安装 rinetd</h3><h4 id="1-从源码编译安装"><a href="#1-从源码编译安装" class="headerlink" title="1. 从源码编译安装"></a>1. 从源码编译安装</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下载源码</span></span><br><span class="line">wget http://www.boutell.com/rinetd/http/rinetd.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解压并进入目录</span></span><br><span class="line">tar -xvf rinetd.tar.gz</span><br><span class="line"><span class="built_in">cd</span> rinetd</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改端口范围（可选）</span></span><br><span class="line">sed -i <span class="string">&#x27;s/65536/65535/g&#x27;</span> rinetd.c</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建 man 目录并安装</span></span><br><span class="line"><span class="built_in">mkdir</span> -p /usr/man</span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
 
-<h5 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/rinetd.conf</span><br><span class="line">#将所有发往本机的8080端口的请求转发到192.168.1.x的80端口</span><br><span class="line">0.0.0.0 8080 192.168.1.x 80</span><br><span class="line">logfile /var/log/rinetd.log</span><br><span class="line">#格式说明</span><br><span class="line">#bindaddress bindport connectaddress connectport</span><br><span class="line">#绑定的地址  绑定的端口  转发的地址  转发的端口</span><br></pre></td></tr></table></figure>
+<h4 id="2-包管理器安装"><a href="#2-包管理器安装" class="headerlink" title="2. 包管理器安装"></a>2. 包管理器安装</h4><p>某些 Linux 发行版提供了 rinetd 的包管理安装方式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Ubuntu/Debian</span></span><br><span class="line">apt-get install rinetd</span><br><span class="line"></span><br><span class="line"><span class="comment"># CentOS/RHEL</span></span><br><span class="line">yum install rinetd</span><br></pre></td></tr></table></figure>
 
-<h5 id="启动及关闭"><a href="#启动及关闭" class="headerlink" title="启动及关闭"></a>启动及关闭</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pkill rinetd  ##关闭进程</span><br><span class="line">rinetd -c /etc/rinetd.conf  ##启动转发</span><br><span class="line">echo rinetd &gt;&gt;/etc/rc.local里面就可以开机自动运行</span><br></pre></td></tr></table></figure>
+<h3 id="三、配置-rinetd"><a href="#三、配置-rinetd" class="headerlink" title="三、配置 rinetd"></a>三、配置 rinetd</h3><p>rinetd 的配置文件为 <code>/etc/rinetd.conf</code>，格式如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 绑定地址  绑定端口  目标地址  目标端口</span><br><span class="line">bindaddress bindport connectaddress connectport</span><br><span class="line"></span><br><span class="line"># 日志文件配置</span><br><span class="line">logfile /var/log/rinetd.log</span><br><span class="line"></span><br><span class="line"># 允许/拒绝规则（可选）</span><br><span class="line">allow 192.168.1.*</span><br><span class="line">deny 10.0.0.1</span><br></pre></td></tr></table></figure>
 
-<hr>
-<h5 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h5><ul>
-<li><a href="https://help.aliyun.com/knowledge_detail/39952.html">https://help.aliyun.com/knowledge_detail/39952.html</a></li>
-<li><a href="https://boutell.com/rinetd/">https://boutell.com/rinetd/</a></li>
-</ul>
+<h4 id="配置示例"><a href="#配置示例" class="headerlink" title="配置示例"></a>配置示例</h4><ol>
+<li><p><strong>基本端口转发</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 将本机 8080 端口的请求转发到 192.168.1.100 的 80 端口</span><br><span class="line">0.0.0.0 8080 192.168.1.100 80</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>多端口转发</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># HTTP 转发</span><br><span class="line">0.0.0.0 80 192.168.1.100 80</span><br><span class="line"># SSH 转发</span><br><span class="line">0.0.0.0 2222 192.168.1.101 22</span><br><span class="line"># MySQL 转发</span><br><span class="line">0.0.0.0 3306 192.168.1.102 3306</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>指定绑定地址</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 只转发来自 192.168.1.1 的请求</span><br><span class="line">192.168.1.1 8080 192.168.1.100 80</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>使用 IPv6</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># IPv6 端口转发</span><br><span class="line">[::] 8080 [2001:db8::1] 80</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="四、启动和管理-rinetd"><a href="#四、启动和管理-rinetd" class="headerlink" title="四、启动和管理 rinetd"></a>四、启动和管理 rinetd</h3><h4 id="1-启动-rinetd"><a href="#1-启动-rinetd" class="headerlink" title="1. 启动 rinetd"></a>1. 启动 rinetd</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动 rinetd</span></span><br><span class="line">rinetd -c /etc/rinetd.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查是否启动成功</span></span><br><span class="line">ps aux | grep rinetd</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-停止-rinetd"><a href="#2-停止-rinetd" class="headerlink" title="2. 停止 rinetd"></a>2. 停止 rinetd</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 停止 rinetd</span></span><br><span class="line">pkill rinetd</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者使用 kill 命令</span></span><br><span class="line"><span class="built_in">kill</span> $(ps aux | grep rinetd | grep -v grep | awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-重启-rinetd"><a href="#3-重启-rinetd" class="headerlink" title="3. 重启 rinetd"></a>3. 重启 rinetd</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 重启 rinetd</span></span><br><span class="line">pkill rinetd &amp;&amp; rinetd -c /etc/rinetd.conf</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-设置开机自启"><a href="#4-设置开机自启" class="headerlink" title="4. 设置开机自启"></a>4. 设置开机自启</h4><p><strong>方法 1：使用 rc.local</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;rinetd -c /etc/rinetd.conf&quot;</span> &gt;&gt; /etc/rc.local</span><br><span class="line"><span class="built_in">chmod</span> +x /etc/rc.local</span><br></pre></td></tr></table></figure>
+
+<p><strong>方法 2：使用 systemd（推荐）</strong></p>
+<p>创建 systemd 服务文件 <code>/etc/systemd/system/rinetd.service</code>：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[Unit]</span></span><br><span class="line"><span class="attr">Description</span>=Rinetd Port Forwarder</span><br><span class="line"><span class="attr">After</span>=network.target</span><br><span class="line"></span><br><span class="line"><span class="section">[Service]</span></span><br><span class="line"><span class="attr">Type</span>=forking</span><br><span class="line"><span class="attr">ExecStart</span>=/usr/sbin/rinetd -c /etc/rinetd.conf</span><br><span class="line"><span class="attr">ExecStop</span>=pkill rinetd</span><br><span class="line"><span class="attr">Restart</span>=<span class="literal">on</span>-failure</span><br><span class="line"></span><br><span class="line"><span class="section">[Install]</span></span><br><span class="line"><span class="attr">WantedBy</span>=multi-user.target</span><br></pre></td></tr></table></figure>
+
+<p>启用并启动服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl <span class="built_in">enable</span> rinetd.service</span><br><span class="line">systemctl start rinetd.service</span><br></pre></td></tr></table></figure>
+
+<h3 id="五、日志管理"><a href="#五、日志管理" class="headerlink" title="五、日志管理"></a>五、日志管理</h3><p>rinetd 的日志默认存储在 <code>/var/log/rinetd.log</code>，可以通过配置文件修改：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logfile /var/log/rinetd.log</span><br></pre></td></tr></table></figure>
+
+<p>查看日志：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看日志</span></span><br><span class="line"><span class="built_in">cat</span> /var/log/rinetd.log</span><br><span class="line"></span><br><span class="line"><span class="comment"># 实时查看日志</span></span><br><span class="line"><span class="built_in">tail</span> -f /var/log/rinetd.log</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看特定时间的日志</span></span><br><span class="line">grep <span class="string">&quot;2023-12-01&quot;</span> /var/log/rinetd.log</span><br></pre></td></tr></table></figure>
+
+<h3 id="六、常见使用场景"><a href="#六、常见使用场景" class="headerlink" title="六、常见使用场景"></a>六、常见使用场景</h3><h4 id="1-数据库远程访问"><a href="#1-数据库远程访问" class="headerlink" title="1. 数据库远程访问"></a>1. 数据库远程访问</h4><p>将本地数据库端口转发到公网，方便远程访问：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># MySQL 端口转发</span><br><span class="line">0.0.0.0 3306 192.168.1.100 3306</span><br><span class="line"></span><br><span class="line"># PostgreSQL 端口转发</span><br><span class="line">0.0.0.0 5432 192.168.1.101 5432</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-Web-服务转发"><a href="#2-Web-服务转发" class="headerlink" title="2. Web 服务转发"></a>2. Web 服务转发</h4><p>将内部 Web 服务暴露到公网：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># HTTP 服务</span><br><span class="line">0.0.0.0 80 192.168.1.102 80</span><br><span class="line"></span><br><span class="line"># HTTPS 服务</span><br><span class="line">0.0.0.0 443 192.168.1.102 443</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-SSH-访问转发"><a href="#3-SSH-访问转发" class="headerlink" title="3. SSH 访问转发"></a>3. SSH 访问转发</h4><p>通过公网服务器访问内网机器：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># SSH 端口转发</span><br><span class="line">0.0.0.0 2222 192.168.1.103 22</span><br></pre></td></tr></table></figure>
+
+<h3 id="七、安全设置"><a href="#七、安全设置" class="headerlink" title="七、安全设置"></a>七、安全设置</h3><h4 id="1-访问控制"><a href="#1-访问控制" class="headerlink" title="1. 访问控制"></a>1. 访问控制</h4><p>使用 allow 和 deny 规则限制访问：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 只允许特定 IP 访问</span><br><span class="line">allow 192.168.1.*</span><br><span class="line">allow 10.0.0.1</span><br><span class="line"></span><br><span class="line"># 拒绝特定 IP</span><br><span class="line">deny 172.16.0.1</span><br><span class="line"></span><br><span class="line"># 转发规则</span><br><span class="line">0.0.0.0 8080 192.168.1.100 80</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-防火墙设置"><a href="#2-防火墙设置" class="headerlink" title="2. 防火墙设置"></a>2. 防火墙设置</h4><p>配合防火墙使用，只开放需要的端口：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用 iptables 开放 8080 端口</span></span><br><span class="line">iptables -A INPUT -p tcp --dport 8080 -j ACCEPT</span><br><span class="line"></span><br><span class="line"><span class="comment"># 保存规则</span></span><br><span class="line">iptables-save &gt; /etc/iptables/rules.v4</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者使用 firewalld</span></span><br><span class="line">firewall-cmd --add-port=8080/tcp --permanent</span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+
+<h3 id="八、故障排除"><a href="#八、故障排除" class="headerlink" title="八、故障排除"></a>八、故障排除</h3><h4 id="1-端口转发不工作"><a href="#1-端口转发不工作" class="headerlink" title="1. 端口转发不工作"></a>1. 端口转发不工作</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 检查 rinetd 是否运行</span></span><br><span class="line">ps aux | grep rinetd</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查配置文件语法</span></span><br><span class="line">rinetd -c /etc/rinetd.conf -f  <span class="comment"># 前台运行，查看错误信息</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查端口是否被占用</span></span><br><span class="line">netstat -tulpn | grep 8080</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查目标服务器是否可达</span></span><br><span class="line">ping 192.168.1.100</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查目标端口是否开放</span></span><br><span class="line">telnet 192.168.1.100 80</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看日志</span></span><br><span class="line"><span class="built_in">cat</span> /var/log/rinetd.log</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-启动失败"><a href="#2-启动失败" class="headerlink" title="2. 启动失败"></a>2. 启动失败</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 检查配置文件格式</span></span><br><span class="line">rinetd -c /etc/rinetd.conf -f</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查端口权限（低于 1024 的端口需要 root 权限）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查目标地址是否正确</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="九、性能优化"><a href="#九、性能优化" class="headerlink" title="九、性能优化"></a>九、性能优化</h3><ol>
+<li><p><strong>限制连接数</strong>：<br>在 rinetd.c 中修改 MAXCONNECTIONS 宏定义，然后重新编译。</p>
+</li>
+<li><p><strong>调整系统参数</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 增加文件描述符限制</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;* soft nofile 65536&quot;</span> &gt;&gt; /etc/security/limits.conf</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;* hard nofile 65536&quot;</span> &gt;&gt; /etc/security/limits.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 调整网络参数</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;net.core.somaxconn = 4096&quot;</span> &gt;&gt; /etc/sysctl.conf</span><br><span class="line">sysctl -p</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="十、替代方案"><a href="#十、替代方案" class="headerlink" title="十、替代方案"></a>十、替代方案</h3><ol>
+<li><p><strong>iptables</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用 iptables 进行端口转发</span></span><br><span class="line">iptables -t nat -A PREROUTING -p tcp --dport 8080 -j DNAT --to-destination 192.168.1.100:80</span><br><span class="line">iptables -t nat -A POSTROUTING -d 192.168.1.100 -j MASQUERADE</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>socat</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用 socat 进行端口转发</span></span><br><span class="line">socat TCP-LISTEN:8080,fork TCP:192.168.1.100:80</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>HAProxy</strong>：<br>更强大的负载均衡和端口转发工具，支持更多高级功能。</p>
+</li>
+</ol>
+<h3 id="十一、实例演示"><a href="#十一、实例演示" class="headerlink" title="十一、实例演示"></a>十一、实例演示</h3><h4 id="示例：阿里云数据库远程访问"><a href="#示例：阿里云数据库远程访问" class="headerlink" title="示例：阿里云数据库远程访问"></a>示例：阿里云数据库远程访问</h4><ol>
+<li><p><strong>安装 rinetd</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget http://www.boutell.com/rinetd/http/rinetd.tar.gz</span><br><span class="line">tar -xvf rinetd.tar.gz</span><br><span class="line"><span class="built_in">cd</span> rinetd</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>配置转发规则</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> &gt; /etc/rinetd.conf &lt;&lt; <span class="string">EOF</span></span><br><span class="line"><span class="string"># 绑定地址  绑定端口  目标地址  目标端口</span></span><br><span class="line"><span class="string">0.0.0.0 3306 rm-uf6xxxxxxxxxxxx.mysql.rds.aliyuncs.com 3306</span></span><br><span class="line"><span class="string">logfile /var/log/rinetd.log</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>启动服务</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rinetd -c /etc/rinetd.conf</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>测试连接</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -h localhost -P 3306 -u username -p</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="十二、总结"><a href="#十二、总结" class="headerlink" title="十二、总结"></a>十二、总结</h3><p>rinetd 是一个简单但功能强大的端口转发工具，它轻量级、配置简单，适用于各种端口转发场景。通过本文的介绍，你应该已经掌握了 rinetd 的安装、配置、使用和故障排除方法。</p>
+<p>在使用 rinetd 时，请注意安全性，合理设置访问控制规则，并配合防火墙使用，以确保系统安全。同时，对于高流量场景，需要适当优化系统参数，以获得更好的性能。</p>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ol>
+<li><a href="https://boutell.com/rinetd/">rinetd 官方网站</a></li>
+<li><a href="https://help.aliyun.com/knowledge_detail/39952.html">阿里云帮助文档</a></li>
+<li><a href="https://www.cnblogs.com/zhangmingcheng/p/10944667.html">Linux 端口转发技术详解</a></li>
+</ol>
 
             </div>
           
@@ -168,6 +258,8 @@
             <a href="/tags/linux/">linux</a>
           
             <a href="/tags/rinetd/">rinetd</a>
+          
+            <a href="/tags/%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91/">端口转发</a>
           
         </div>
 

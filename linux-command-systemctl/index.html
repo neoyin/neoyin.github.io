@@ -12,12 +12,12 @@
 
 
 
-  <meta name="description" content="Linux下systemctl命令"/>
+  <meta name="description" content="Linux下systemctl命令详解"/>
 
 
 
 
-  <meta name="keywords" content="linux,systemctl," />
+  <meta name="keywords" content="linux,systemctl,系统服务," />
 
 
 
@@ -32,21 +32,22 @@
 
 
 
-<link rel="canonical" href="http://yoursite.com/linux-command-systemctl/"/>
+<link rel="canonical" href="https://neoyin.github.io/linux-command-systemctl/"/>
 
 
-<meta name="description" content="systemctl命令是系统服务管理器指令，它实际上将 service 和 chkconfig 这两个命令组合到一起 例123456789启动nfs服务systemctl start nfs-server.service设置开机自启动 systemctl enable nfs-server.service停止开机自启动 systemctl disable nfs-server.service 查">
+<meta name="description" content="systemctl 命令详解systemctl 是 Linux 系统服务管理器，它将 service 和 chkconfig 命令的功能组合在一起，是 Systemd 系统的核心工具。Systemd 是大多数现代 Linux 发行版采用的初始化系统，用于管理系统服务、挂载点、设备等。 一、基本语法1systemctl [OPTIONS...] COMMAND [UNIT...]  二、服务管理命令">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux下systemctl命令">
-<meta property="og:url" content="http://yoursite.com/linux-command-systemctl/index.html">
+<meta property="og:title" content="Linux下systemctl命令详解">
+<meta property="og:url" content="https://neoyin.github.io/linux-command-systemctl/index.html">
 <meta property="og:site_name" content="浮生若梦">
-<meta property="og:description" content="systemctl命令是系统服务管理器指令，它实际上将 service 和 chkconfig 这两个命令组合到一起 例123456789启动nfs服务systemctl start nfs-server.service设置开机自启动 systemctl enable nfs-server.service停止开机自启动 systemctl disable nfs-server.service 查">
+<meta property="og:description" content="systemctl 命令详解systemctl 是 Linux 系统服务管理器，它将 service 和 chkconfig 命令的功能组合在一起，是 Systemd 系统的核心工具。Systemd 是大多数现代 Linux 发行版采用的初始化系统，用于管理系统服务、挂载点、设备等。 一、基本语法1systemctl [OPTIONS...] COMMAND [UNIT...]  二、服务管理命令">
 <meta property="og:locale">
 <meta property="article:published_time" content="2017-04-29T05:59:00.000Z">
-<meta property="article:modified_time" content="2026-03-16T14:04:02.396Z">
+<meta property="article:modified_time" content="2026-03-17T04:20:40.905Z">
 <meta property="article:author" content="Neo">
 <meta property="article:tag" content="linux">
 <meta property="article:tag" content="systemctl">
+<meta property="article:tag" content="系统服务">
 <meta name="twitter:card" content="summary">
 
 
@@ -80,7 +81,7 @@
 
 
 
-    <title> Linux下systemctl命令 - 浮生若梦 </title>
+    <title> Linux下systemctl命令详解 - 浮生若梦 </title>
   <meta name="generator" content="Hexo 8.1.1"></head>
 
   <body>
@@ -128,7 +129,7 @@
     <header class="post-header">
       <h1 class="post-title">
         
-          Linux下systemctl命令
+          Linux下systemctl命令详解
         
       </h1>
 
@@ -141,9 +142,108 @@
 
     
             <div class="post-content">
-            <hr>
-<p>systemctl命令是系统服务管理器指令，它实际上将 service 和 chkconfig 这两个命令组合到一起</p>
-<h6 id="例"><a href="#例" class="headerlink" title="例"></a>例</h6><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">启动nfs服务</span><br><span class="line">systemctl start nfs-server.service</span><br><span class="line">设置开机自启动 </span><br><span class="line">systemctl enable nfs-server.service</span><br><span class="line">停止开机自启动 </span><br><span class="line">systemctl disable nfs-server.service </span><br><span class="line">查看服务当前状态 </span><br><span class="line">systemctl status nfs-server.service </span><br><span class="line">查看所有已启动的服务 systemctl list -units --type=service</span><br></pre></td></tr></table></figure>
+            <h2 id="systemctl-命令详解"><a href="#systemctl-命令详解" class="headerlink" title="systemctl 命令详解"></a>systemctl 命令详解</h2><p>systemctl 是 Linux 系统服务管理器，它将 <code>service</code> 和 <code>chkconfig</code> 命令的功能组合在一起，是 Systemd 系统的核心工具。Systemd 是大多数现代 Linux 发行版采用的初始化系统，用于管理系统服务、挂载点、设备等。</p>
+<h3 id="一、基本语法"><a href="#一、基本语法" class="headerlink" title="一、基本语法"></a>一、基本语法</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl [OPTIONS...] COMMAND [UNIT...]</span><br></pre></td></tr></table></figure>
+
+<h3 id="二、服务管理命令"><a href="#二、服务管理命令" class="headerlink" title="二、服务管理命令"></a>二、服务管理命令</h3><h4 id="1-启动和停止服务"><a href="#1-启动和停止服务" class="headerlink" title="1. 启动和停止服务"></a>1. 启动和停止服务</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动服务</span></span><br><span class="line">systemctl start service-name.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 停止服务</span></span><br><span class="line">systemctl stop service-name.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重启服务</span></span><br><span class="line">systemctl restart service-name.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重新加载服务配置（不重启服务）</span></span><br><span class="line">systemctl reload service-name.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动服务并立即重新加载配置</span></span><br><span class="line">systemctl reload-or-restart service-name.service</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-查看服务状态"><a href="#2-查看服务状态" class="headerlink" title="2. 查看服务状态"></a>2. 查看服务状态</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看服务当前状态</span></span><br><span class="line">systemctl status service-name.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看所有已启动的服务</span></span><br><span class="line">systemctl list-units --<span class="built_in">type</span>=service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看所有服务（包括未启动的）</span></span><br><span class="line">systemctl list-units --<span class="built_in">type</span>=service --all</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看服务的详细信息</span></span><br><span class="line">systemctl show service-name.service</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-开机自启管理"><a href="#3-开机自启管理" class="headerlink" title="3. 开机自启管理"></a>3. 开机自启管理</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置服务开机自启</span></span><br><span class="line">systemctl <span class="built_in">enable</span> service-name.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 禁止服务开机自启</span></span><br><span class="line">systemctl <span class="built_in">disable</span> service-name.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看服务是否开机自启</span></span><br><span class="line">systemctl is-enabled service-name.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看所有开机自启的服务</span></span><br><span class="line">systemctl list-unit-files --<span class="built_in">type</span>=service | grep enabled</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-服务状态管理"><a href="#4-服务状态管理" class="headerlink" title="4. 服务状态管理"></a>4. 服务状态管理</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看服务是否运行中</span></span><br><span class="line">systemctl is-active service-name.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看服务是否存在</span></span><br><span class="line">systemctl list-unit-files --<span class="built_in">type</span>=service | grep service-name</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查服务的依赖关系</span></span><br><span class="line">systemctl list-dependencies service-name.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查哪些服务依赖于当前服务</span></span><br><span class="line">systemctl list-dependencies --reverse service-name.service</span><br></pre></td></tr></table></figure>
+
+<h3 id="三、系统状态管理"><a href="#三、系统状态管理" class="headerlink" title="三、系统状态管理"></a>三、系统状态管理</h3><h4 id="1-系统关机和重启"><a href="#1-系统关机和重启" class="headerlink" title="1. 系统关机和重启"></a>1. 系统关机和重启</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 关机</span></span><br><span class="line">systemctl poweroff</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重启</span></span><br><span class="line">systemctl reboot</span><br><span class="line"></span><br><span class="line"><span class="comment"># 挂起</span></span><br><span class="line">systemctl <span class="built_in">suspend</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 休眠</span></span><br><span class="line">systemctl hibernate</span><br><span class="line"></span><br><span class="line"><span class="comment"># 混合休眠（同时休眠和挂起）</span></span><br><span class="line">systemctl hybrid-sleep</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-系统运行级别"><a href="#2-系统运行级别" class="headerlink" title="2. 系统运行级别"></a>2. 系统运行级别</h4><p>Systemd 使用目标（target）来替代传统的运行级别：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看当前运行级别</span></span><br><span class="line">systemctl get-default</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置默认运行级别</span></span><br><span class="line">systemctl set-default multi-user.target  <span class="comment"># 对应传统的 runlevel 3</span></span><br><span class="line">systemctl set-default graphical.target   <span class="comment"># 对应传统的 runlevel 5</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 切换运行级别</span></span><br><span class="line">systemctl isolate multi-user.target</span><br></pre></td></tr></table></figure>
+
+<h3 id="四、服务文件管理"><a href="#四、服务文件管理" class="headerlink" title="四、服务文件管理"></a>四、服务文件管理</h3><h4 id="1-服务文件位置"><a href="#1-服务文件位置" class="headerlink" title="1. 服务文件位置"></a>1. 服务文件位置</h4><p>Systemd 服务文件通常位于以下目录：</p>
+<ul>
+<li><code>/etc/systemd/system/</code>：系统管理员创建的服务文件</li>
+<li><code>/usr/lib/systemd/system/</code>：软件包安装的服务文件</li>
+</ul>
+<h4 id="2-创建自定义服务"><a href="#2-创建自定义服务" class="headerlink" title="2. 创建自定义服务"></a>2. 创建自定义服务</h4><p>创建一个简单的服务文件 <code>/etc/systemd/system/my-service.service</code>：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[Unit]</span></span><br><span class="line"><span class="attr">Description</span>=My Custom Service</span><br><span class="line"><span class="attr">After</span>=network.target</span><br><span class="line"></span><br><span class="line"><span class="section">[Service]</span></span><br><span class="line"><span class="attr">Type</span>=simple</span><br><span class="line"><span class="attr">ExecStart</span>=/path/to/your/script.sh</span><br><span class="line"><span class="attr">Restart</span>=always</span><br><span class="line"><span class="attr">User</span>=username</span><br><span class="line"></span><br><span class="line"><span class="section">[Install]</span></span><br><span class="line"><span class="attr">WantedBy</span>=multi-user.target</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-重新加载服务配置"><a href="#3-重新加载服务配置" class="headerlink" title="3. 重新加载服务配置"></a>3. 重新加载服务配置</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 重新加载 systemd 配置</span></span><br><span class="line">systemctl daemon-reload</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重新加载后重启服务</span></span><br><span class="line">systemctl restart my-service.service</span><br></pre></td></tr></table></figure>
+
+<h3 id="五、高级功能"><a href="#五、高级功能" class="headerlink" title="五、高级功能"></a>五、高级功能</h3><h4 id="1-定时器（Timers）"><a href="#1-定时器（Timers）" class="headerlink" title="1. 定时器（Timers）"></a>1. 定时器（Timers）</h4><p>用于替代 cron 作业：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看所有定时器</span></span><br><span class="line">systemctl list-timers</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看定时器状态</span></span><br><span class="line">systemctl status timer-name.timer</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-日志管理"><a href="#2-日志管理" class="headerlink" title="2. 日志管理"></a>2. 日志管理</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看服务日志</span></span><br><span class="line">journalctl -u service-name.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 实时查看服务日志</span></span><br><span class="line">journalctl -u service-name.service -f</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看引导日志</span></span><br><span class="line">journalctl -b</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-环境变量"><a href="#3-环境变量" class="headerlink" title="3. 环境变量"></a>3. 环境变量</h4><p>为服务设置环境变量：</p>
+<ol>
+<li>创建环境变量文件：<code>/etc/systemd/system/service-name.service.d/environment.conf</code></li>
+<li>添加以下内容：<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[Service]</span></span><br><span class="line"><span class="attr">Environment</span>=VAR1=value1 VAR2=value2</span><br></pre></td></tr></table></figure></li>
+<li>重新加载配置并重启服务</li>
+</ol>
+<h3 id="六、常见问题及解决方案"><a href="#六、常见问题及解决方案" class="headerlink" title="六、常见问题及解决方案"></a>六、常见问题及解决方案</h3><h4 id="1-服务启动失败"><a href="#1-服务启动失败" class="headerlink" title="1. 服务启动失败"></a>1. 服务启动失败</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看详细的错误信息</span></span><br><span class="line">systemctl status service-name.service</span><br><span class="line">journalctl -u service-name.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查服务文件语法</span></span><br><span class="line">systemd-analyze verify service-name.service</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-服务依赖问题"><a href="#2-服务依赖问题" class="headerlink" title="2. 服务依赖问题"></a>2. 服务依赖问题</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看服务依赖关系</span></span><br><span class="line">systemctl list-dependencies service-name.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查依赖服务的状态</span></span><br><span class="line">systemctl status $(systemctl list-dependencies service-name.service | grep -v <span class="string">&quot;●&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-开机自启不生效"><a href="#3-开机自启不生效" class="headerlink" title="3. 开机自启不生效"></a>3. 开机自启不生效</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 检查服务是否启用</span></span><br><span class="line">systemctl is-enabled service-name.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查服务文件中的 [Install] 部分是否正确</span></span><br><span class="line"><span class="comment"># 确保 WantedBy 指向正确的 target</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="七、实例演示"><a href="#七、实例演示" class="headerlink" title="七、实例演示"></a>七、实例演示</h3><h4 id="示例-1：管理-NFS-服务"><a href="#示例-1：管理-NFS-服务" class="headerlink" title="示例 1：管理 NFS 服务"></a>示例 1：管理 NFS 服务</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动 NFS 服务</span></span><br><span class="line">systemctl start nfs-server.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置开机自启</span></span><br><span class="line">systemctl <span class="built_in">enable</span> nfs-server.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看服务状态</span></span><br><span class="line">systemctl status nfs-server.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 停止服务</span></span><br><span class="line">systemctl stop nfs-server.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 禁止开机自启</span></span><br><span class="line">systemctl <span class="built_in">disable</span> nfs-server.service</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例-2：创建自定义服务"><a href="#示例-2：创建自定义服务" class="headerlink" title="示例 2：创建自定义服务"></a>示例 2：创建自定义服务</h4><p>创建一个简单的 web 服务器服务：</p>
+<ol>
+<li><p>创建服务文件 <code>/etc/systemd/system/simple-web.service</code>：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[Unit]</span></span><br><span class="line"><span class="attr">Description</span>=Simple Web Server</span><br><span class="line"><span class="attr">After</span>=network.target</span><br><span class="line"></span><br><span class="line"><span class="section">[Service]</span></span><br><span class="line"><span class="attr">Type</span>=simple</span><br><span class="line"><span class="attr">ExecStart</span>=/usr/bin/python3 -m http.server <span class="number">8080</span></span><br><span class="line"><span class="attr">WorkingDirectory</span>=/var/www/html</span><br><span class="line"><span class="attr">Restart</span>=<span class="literal">on</span>-failure</span><br><span class="line"></span><br><span class="line"><span class="section">[Install]</span></span><br><span class="line"><span class="attr">WantedBy</span>=multi-user.target</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启用并启动服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl <span class="built_in">enable</span> simple-web.service</span><br><span class="line">systemctl start simple-web.service</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看服务状态：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status simple-web.service</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="八、systemctl-与传统命令对比"><a href="#八、systemctl-与传统命令对比" class="headerlink" title="八、systemctl 与传统命令对比"></a>八、systemctl 与传统命令对比</h3><table>
+<thead>
+<tr>
+<th>任务</th>
+<th>传统命令</th>
+<th>systemctl 命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>启动服务</td>
+<td>service service start</td>
+<td>systemctl start service.service</td>
+</tr>
+<tr>
+<td>停止服务</td>
+<td>service service stop</td>
+<td>systemctl stop service.service</td>
+</tr>
+<tr>
+<td>重启服务</td>
+<td>service service restart</td>
+<td>systemctl restart service.service</td>
+</tr>
+<tr>
+<td>查看服务状态</td>
+<td>service service status</td>
+<td>systemctl status service.service</td>
+</tr>
+<tr>
+<td>设置开机自启</td>
+<td>chkconfig service on</td>
+<td>systemctl enable service.service</td>
+</tr>
+<tr>
+<td>禁止开机自启</td>
+<td>chkconfig service off</td>
+<td>systemctl disable service.service</td>
+</tr>
+<tr>
+<td>查看所有服务</td>
+<td>chkconfig –list</td>
+<td>systemctl list-unit-files –type&#x3D;service</td>
+</tr>
+</tbody></table>
+<h3 id="九、总结"><a href="#九、总结" class="headerlink" title="九、总结"></a>九、总结</h3><p>systemctl 是现代 Linux 系统中管理服务的核心工具，它提供了丰富的功能来控制服务的启动、停止、重启以及开机自启等。通过本文的介绍，你应该已经掌握了 systemctl 的基本用法和一些高级功能，可以更有效地管理 Linux 系统服务。</p>
+<p>记住，systemctl 是 Systemd 的一部分，它不仅仅用于管理服务，还可以管理系统的其他方面，如挂载点、设备、定时器等。深入了解 systemctl 的使用，将有助于你更好地管理和维护 Linux 系统。</p>
 
             </div>
           
@@ -155,6 +255,8 @@
             <a href="/tags/linux/">linux</a>
           
             <a href="/tags/systemctl/">systemctl</a>
+          
+            <a href="/tags/%E7%B3%BB%E7%BB%9F%E6%9C%8D%E5%8A%A1/">系统服务</a>
           
         </div>
 

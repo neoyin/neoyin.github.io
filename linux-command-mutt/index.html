@@ -32,13 +32,13 @@
 
 
 
-<link rel="canonical" href="http://yoursite.com/linux-command-mutt/"/>
+<link rel="canonical" href="https://neoyin.github.io/linux-command-mutt/"/>
 
 
 <meta name="description" content="As a System admin, sometimes we need to send mails to users orsomeone else from the server and for that we used to go with a web basedinterface to send email, is it really that handy ? Absolutely No.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Mutt 一个通过终端发送邮件的Email客户端">
-<meta property="og:url" content="http://yoursite.com/linux-command-mutt/index.html">
+<meta property="og:url" content="https://neoyin.github.io/linux-command-mutt/index.html">
 <meta property="og:site_name" content="浮生若梦">
 <meta property="og:description" content="As a System admin, sometimes we need to send mails to users orsomeone else from the server and for that we used to go with a web basedinterface to send email, is it really that handy ? Absolutely No.">
 <meta property="og:locale">
@@ -196,8 +196,8 @@ yum install mutt (For RHEL / CentOS / Fedora based system)
 <li>Main Configuration<br>file:改变是全局的，会影响所有用户的mutt，你可以通过它的邮件配置文件”&#x2F;etc&#x2F;Muttrc”进行更改。</li>
 <li>User Configuration file of<br>Mutt：如果你想为特定用户定制Mutt，你可以通过设置~&#x2F;.muttrc或者~&#x2F;.mutt&#x2F;muttrc做到这一点。</li>
 </ul>
-<h3 id="Send-an-email-with-mutt-command"><a href="#Send-an-email-with-mutt-command" class="headerlink" title="Send an email with mutt command"></a>Send an email with mutt command</h3><p>In this example, following command will send a test Email to<br><a href="mailto:&#x6a;&#x6f;&#x68;&#x6e;&#64;&#116;&#x65;&#x63;&#109;&#105;&#110;&#116;&#46;&#99;&#111;&#109;">john@tecmint.com</a>. The “-s” option is used to specify Subject of the<br>mail.</p>
-<p>在这个例子里，下面的命令将会发送一封测试邮件到<a href="mailto:&#x6a;&#111;&#104;&#110;&#x40;&#x74;&#x65;&#99;&#x6d;&#x69;&#110;&#116;&#46;&#99;&#x6f;&#x6d;">john@tecmint.com</a>。”-s”选项用于指定邮件的主题。</p>
+<h3 id="Send-an-email-with-mutt-command"><a href="#Send-an-email-with-mutt-command" class="headerlink" title="Send an email with mutt command"></a>Send an email with mutt command</h3><p>In this example, following command will send a test Email to<br><a href="mailto:&#106;&#111;&#104;&#110;&#x40;&#116;&#101;&#99;&#109;&#105;&#x6e;&#x74;&#x2e;&#x63;&#111;&#x6d;">john@tecmint.com</a>. The “-s” option is used to specify Subject of the<br>mail.</p>
+<p>在这个例子里，下面的命令将会发送一封测试邮件到<a href="mailto:&#x6a;&#111;&#x68;&#x6e;&#x40;&#116;&#101;&#99;&#x6d;&#105;&#x6e;&#116;&#x2e;&#99;&#x6f;&#x6d;">john@tecmint.com</a>。”-s”选项用于指定邮件的主题。</p>
 <p><code>[root@tecmint ~]#  mutt -s &quot;Test Email&quot; john@tecmint.com</code></p>
 <h3 id="Add-Carbon-copy-Cc-and-Blind-Carbon-copy-Bcc"><a href="#Add-Carbon-copy-Cc-and-Blind-Carbon-copy-Bcc" class="headerlink" title="Add Carbon copy(Cc) and Blind Carbon copy(Bcc)"></a>Add Carbon copy(Cc) and Blind Carbon copy(Bcc)</h3><blockquote>
 <p>We can add Cc and Bcc with mutt command to our email with “-c” and<br>“-b” option.</p>

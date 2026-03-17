@@ -12,12 +12,12 @@
 
 
 
-  <meta name="description" content="你不知道的java nio缓冲区（一)"/>
+  <meta name="description" content="Java NIO 缓冲区详解（一）"/>
 
 
 
 
-  <meta name="keywords" content="buffer,java,nio," />
+  <meta name="keywords" content="java,nio,buffer," />
 
 
 
@@ -32,28 +32,23 @@
 
 
 
-<link rel="canonical" href="http://yoursite.com/java-nio-buffer-1/"/>
+<link rel="canonical" href="https://neoyin.github.io/java-nio-buffer-1/"/>
 
 
-<meta name="description" content="因为一直在研究apache mina,看到底层代码之后，发现我对javanio了解甚少，于是又开始深入学习java nio,所以，先来说说javanio的一些知识，然后再来攻克mina吧。 javanio准备写三章，分别是：你不知道的java nio缓冲区，为什么是通道，高效选择器关于javanio的缓冲区，不得不理解的是四个属性，即capacity,limit,position,mark1.ca">
+<meta name="description" content="Java NIO 缓冲区概述因为一直在研究 Apache Mina，看到底层代码后，发现我对 Java NIO 了解甚少，于是开始深入学习 Java NIO。本文是 Java NIO 系列的第一篇，主要介绍 NIO 缓冲区（Buffer）的基本概念和使用方法。 缓冲区的核心属性Java NIO 缓冲区有四个核心属性，理解这些属性是掌握缓冲区操作的关键：  capacity：缓冲区可容纳的最大数据量">
 <meta property="og:type" content="article">
-<meta property="og:title" content="你不知道的java nio缓冲区（一)">
-<meta property="og:url" content="http://yoursite.com/java-nio-buffer-1/index.html">
+<meta property="og:title" content="Java NIO 缓冲区详解（一）">
+<meta property="og:url" content="https://neoyin.github.io/java-nio-buffer-1/index.html">
 <meta property="og:site_name" content="浮生若梦">
-<meta property="og:description" content="因为一直在研究apache mina,看到底层代码之后，发现我对javanio了解甚少，于是又开始深入学习java nio,所以，先来说说javanio的一些知识，然后再来攻克mina吧。 javanio准备写三章，分别是：你不知道的java nio缓冲区，为什么是通道，高效选择器关于javanio的缓冲区，不得不理解的是四个属性，即capacity,limit,position,mark1.ca">
+<meta property="og:description" content="Java NIO 缓冲区概述因为一直在研究 Apache Mina，看到底层代码后，发现我对 Java NIO 了解甚少，于是开始深入学习 Java NIO。本文是 Java NIO 系列的第一篇，主要介绍 NIO 缓冲区（Buffer）的基本概念和使用方法。 缓冲区的核心属性Java NIO 缓冲区有四个核心属性，理解这些属性是掌握缓冲区操作的关键：  capacity：缓冲区可容纳的最大数据量">
 <meta property="og:locale">
-<meta property="og:image" content="http://img.blog.csdn.net/20140101130150312?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamlhbmdmdWxsbGw=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
-<meta property="og:image" content="http://img.blog.csdn.net/20140101130204796?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamlhbmdmdWxsbGw=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
-<meta property="og:image" content="http://img.blog.csdn.net/20140101130229484?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamlhbmdmdWxsbGw=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
-<meta property="og:image" content="http://img.blog.csdn.net/20140101130241109?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamlhbmdmdWxsbGw=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
 <meta property="article:published_time" content="2014-01-01T05:47:00.000Z">
-<meta property="article:modified_time" content="2026-03-16T14:04:02.396Z">
+<meta property="article:modified_time" content="2026-03-17T03:14:52.526Z">
 <meta property="article:author" content="Neo">
 <meta property="article:tag" content="buffer">
 <meta property="article:tag" content="java">
 <meta property="article:tag" content="nio">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://img.blog.csdn.net/20140101130150312?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamlhbmdmdWxsbGw=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
 
 
 <link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1"/>
@@ -86,7 +81,7 @@
 
 
 
-    <title> 你不知道的java nio缓冲区（一) - 浮生若梦 </title>
+    <title> Java NIO 缓冲区详解（一） - 浮生若梦 </title>
   <meta name="generator" content="Hexo 8.1.1"></head>
 
   <body>
@@ -134,7 +129,7 @@
     <header class="post-header">
       <h1 class="post-title">
         
-          你不知道的java nio缓冲区（一)
+          Java NIO 缓冲区详解（一）
         
       </h1>
 
@@ -147,71 +142,119 @@
 
     
             <div class="post-content">
-            <p>因为一直在研究apache mina,看到底层代码之后，发现我对java<br>nio了解甚少，于是又开始深入学习java nio,所以，先来说说java<br>nio的一些知识，然后再来攻克mina吧。 java<br>nio准备写三章，分别是：你不知道的java nio缓冲区，为什么是通道，高效选择器<br>关于java<br>nio的缓冲区，不得不理解的是四个属性，即capacity,limit,position,mark<br>1.capacity:缓冲区可容纳的最大数据量 2.position: 开始读取数据的地方<br>3.limit:：缓冲区第一个不能被读写的元素位置 4.<br>mark:将读取数据的底线设置为mark所在的前一个position<br>可以将position和limit理解为mysql语句里的limit skip,<br>limit，只不过limit是不能被读到的第一个位置而已，而mark可以理解为改变skip<br>四个属性的值域为：0&lt;&#x3D;mark&lt;&#x3D;position&lt;&#x3D;limit&lt;&#x3D;position<br>新建一个ByteBuffer，则其属性如下图：<br><img src="http://img.blog.csdn.net/20140101130150312?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamlhbmdmdWxsbGw=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image"><br>位置被设置为0，因为此时还没有任何数据，容量和limit都是最大值，mark是undefined.</p>
-<span id="more"></span> 再来看看缓冲区的api，以下是Buffer类的
+            <h2 id="Java-NIO-缓冲区概述"><a href="#Java-NIO-缓冲区概述" class="headerlink" title="Java NIO 缓冲区概述"></a>Java NIO 缓冲区概述</h2><p>因为一直在研究 Apache Mina，看到底层代码后，发现我对 Java NIO 了解甚少，于是开始深入学习 Java NIO。本文是 Java NIO 系列的第一篇，主要介绍 NIO 缓冲区（Buffer）的基本概念和使用方法。</p>
+<h2 id="缓冲区的核心属性"><a href="#缓冲区的核心属性" class="headerlink" title="缓冲区的核心属性"></a>缓冲区的核心属性</h2><p>Java NIO 缓冲区有四个核心属性，理解这些属性是掌握缓冲区操作的关键：</p>
+<ol>
+<li><strong>capacity</strong>：缓冲区可容纳的最大数据量，一旦设置不可改变</li>
+<li><strong>position</strong>：当前操作位置，读写操作会改变此值</li>
+<li><strong>limit</strong>：缓冲区第一个不能被读写的元素位置</li>
+<li><strong>mark</strong>：标记位置，用于后续重置 position</li>
+</ol>
+<p>这四个属性的关系是：<code>0 &lt;= mark &lt;= position &lt;= limit &lt;= capacity</code></p>
+<h2 id="缓冲区类型"><a href="#缓冲区类型" class="headerlink" title="缓冲区类型"></a>缓冲区类型</h2><p>Java NIO 提供了多种类型的缓冲区，对应不同的数据类型：</p>
+<table>
+<thead>
+<tr>
+<th>缓冲区类型</th>
+<th>对应数据类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ByteBuffer</td>
+<td>byte</td>
+</tr>
+<tr>
+<td>CharBuffer</td>
+<td>char</td>
+</tr>
+<tr>
+<td>ShortBuffer</td>
+<td>short</td>
+</tr>
+<tr>
+<td>IntBuffer</td>
+<td>int</td>
+</tr>
+<tr>
+<td>LongBuffer</td>
+<td>long</td>
+</tr>
+<tr>
+<td>FloatBuffer</td>
+<td>float</td>
+</tr>
+<tr>
+<td>DoubleBuffer</td>
+<td>double</td>
+</tr>
+</tbody></table>
+<h2 id="缓冲区的基本操作"><a href="#缓冲区的基本操作" class="headerlink" title="缓冲区的基本操作"></a>缓冲区的基本操作</h2><h3 id="1-创建缓冲区"><a href="#1-创建缓冲区" class="headerlink" title="1. 创建缓冲区"></a>1. 创建缓冲区</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 分配指定容量的缓冲区</span></span><br><span class="line"><span class="type">ByteBuffer</span> <span class="variable">buffer</span> <span class="operator">=</span> ByteBuffer.allocate(<span class="number">1024</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 从现有数组创建缓冲区</span></span><br><span class="line"><span class="type">byte</span>[] array = <span class="keyword">new</span> <span class="title class_">byte</span>[<span class="number">1024</span>];</span><br><span class="line"><span class="type">ByteBuffer</span> <span class="variable">buffer</span> <span class="operator">=</span> ByteBuffer.wrap(array);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建直接缓冲区（直接在内存中分配，不经过JVM堆）</span></span><br><span class="line"><span class="type">ByteBuffer</span> <span class="variable">directBuffer</span> <span class="operator">=</span> ByteBuffer.allocateDirect(<span class="number">1024</span>);</span><br></pre></td></tr></table></figure>
 
-<pre><code>package java.nio;
+<h3 id="2-写入数据"><a href="#2-写入数据" class="headerlink" title="2. 写入数据"></a>2. 写入数据</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 写入单个字节</span></span><br><span class="line">buffer.put((<span class="type">byte</span>)<span class="string">&#x27;H&#x27;</span>);</span><br><span class="line">buffer.put((<span class="type">byte</span>)<span class="string">&#x27;e&#x27;</span>);</span><br><span class="line">buffer.put((<span class="type">byte</span>)<span class="string">&#x27;l&#x27;</span>);</span><br><span class="line">buffer.put((<span class="type">byte</span>)<span class="string">&#x27;l&#x27;</span>);</span><br><span class="line">buffer.put((<span class="type">byte</span>)<span class="string">&#x27;o&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 写入指定位置</span></span><br><span class="line">buffer.put(<span class="number">0</span>, (<span class="type">byte</span>)<span class="string">&#x27;M&#x27;</span>); <span class="comment">// 替换第一个字节</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 写入数组</span></span><br><span class="line"><span class="type">byte</span>[] data = <span class="string">&quot;World&quot;</span>.getBytes();</span><br><span class="line">buffer.put(data);</span><br></pre></td></tr></table></figure>
 
-public abstract class ByteBuffer extends Buffer implements Comparable{
+<h3 id="3-翻转缓冲区"><a href="#3-翻转缓冲区" class="headerlink" title="3. 翻转缓冲区"></a>3. 翻转缓冲区</h3><p>当写入完成后，需要将缓冲区从写模式切换到读模式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 翻转缓冲区：limit = position, position = 0</span></span><br><span class="line">buffer.flip();</span><br></pre></td></tr></table></figure>
 
-public abstract byte get();
+<h3 id="4-读取数据"><a href="#4-读取数据" class="headerlink" title="4. 读取数据"></a>4. 读取数据</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 读取单个字节</span></span><br><span class="line"><span class="keyword">while</span> (buffer.hasRemaining()) &#123;</span><br><span class="line">    <span class="type">byte</span> <span class="variable">b</span> <span class="operator">=</span> buffer.get();</span><br><span class="line">    System.out.print((<span class="type">char</span>) b);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 读取到数组</span></span><br><span class="line"><span class="type">byte</span>[] dest = <span class="keyword">new</span> <span class="title class_">byte</span>[buffer.remaining()];</span><br><span class="line">buffer.get(dest);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 读取指定位置</span></span><br><span class="line">buffer.get(<span class="number">0</span>); <span class="comment">// 读取第一个字节，不改变position</span></span><br></pre></td></tr></table></figure>
 
-public abstract byte get(int index);
+<h3 id="5-重置缓冲区"><a href="#5-重置缓冲区" class="headerlink" title="5. 重置缓冲区"></a>5. 重置缓冲区</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 清空缓冲区：position = 0, limit = capacity</span></span><br><span class="line">buffer.clear();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 倒带缓冲区：position = 0, limit 不变</span></span><br><span class="line">buffer.rewind();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 标记位置</span></span><br><span class="line">buffer.mark();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 重置到标记位置</span></span><br><span class="line">buffer.reset();</span><br></pre></td></tr></table></figure>
 
-public abstractByteBuffer put(byte b);
+<h2 id="缓冲区的工作原理"><a href="#缓冲区的工作原理" class="headerlink" title="缓冲区的工作原理"></a>缓冲区的工作原理</h2><h3 id="初始状态"><a href="#初始状态" class="headerlink" title="初始状态"></a>初始状态</h3><p>创建缓冲区后，初始状态为：</p>
+<ul>
+<li>position &#x3D; 0</li>
+<li>limit &#x3D; capacity</li>
+<li>mark &#x3D; -1（未定义）</li>
+</ul>
+<h3 id="写入数据"><a href="#写入数据" class="headerlink" title="写入数据"></a>写入数据</h3><p>写入数据时，position 会逐渐增加，直到达到 limit。</p>
+<h3 id="翻转操作"><a href="#翻转操作" class="headerlink" title="翻转操作"></a>翻转操作</h3><p>调用 <code>flip()</code> 后：</p>
+<ul>
+<li>limit &#x3D; position（设置可读数据的边界）</li>
+<li>position &#x3D; 0（从开始位置读取）</li>
+<li>mark &#x3D; -1（清除标记）</li>
+</ul>
+<h3 id="读取数据"><a href="#读取数据" class="headerlink" title="读取数据"></a>读取数据</h3><p>读取数据时，position 会逐渐增加，直到达到 limit。</p>
+<h3 id="清空操作"><a href="#清空操作" class="headerlink" title="清空操作"></a>清空操作</h3><p>调用 <code>clear()</code> 后：</p>
+<ul>
+<li>position &#x3D; 0</li>
+<li>limit &#x3D; capacity</li>
+<li>mark &#x3D; -1</li>
+</ul>
+<p>注意：<code>clear()</code> 只是重置了指针，并没有清除数据。</p>
+<h2 id="直接缓冲区与非直接缓冲区"><a href="#直接缓冲区与非直接缓冲区" class="headerlink" title="直接缓冲区与非直接缓冲区"></a>直接缓冲区与非直接缓冲区</h2><h3 id="非直接缓冲区"><a href="#非直接缓冲区" class="headerlink" title="非直接缓冲区"></a>非直接缓冲区</h3><ul>
+<li>在 JVM 堆中分配内存</li>
+<li>读写操作需要在 JVM 堆和 native 内存之间复制数据</li>
+<li>创建和销毁速度快</li>
+<li>适合小数据量操作</li>
+</ul>
+<h3 id="直接缓冲区"><a href="#直接缓冲区" class="headerlink" title="直接缓冲区"></a>直接缓冲区</h3><ul>
+<li>在 native 内存中分配内存</li>
+<li>读写操作直接操作 native 内存，无需复制</li>
+<li>创建和销毁速度慢</li>
+<li>适合大数据量操作，特别是需要与通道直接交互的场景</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建直接缓冲区</span></span><br><span class="line"><span class="type">ByteBuffer</span> <span class="variable">directBuffer</span> <span class="operator">=</span> ByteBuffer.allocateDirect(<span class="number">1024</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 检查是否为直接缓冲区</span></span><br><span class="line"><span class="type">boolean</span> <span class="variable">isDirect</span> <span class="operator">=</span> buffer.isDirect();</span><br></pre></td></tr></table></figure>
 
-public abstract ByteBuffer put(int index, byte b);
+<h2 id="缓冲区的最佳实践"><a href="#缓冲区的最佳实践" class="headerlink" title="缓冲区的最佳实践"></a>缓冲区的最佳实践</h2><ol>
+<li><strong>选择合适的缓冲区类型</strong>：根据数据类型选择对应的缓冲区</li>
+<li><strong>合理设置容量</strong>：根据实际需要设置缓冲区容量，避免频繁扩容</li>
+<li><strong>使用直接缓冲区</strong>：对于大数据量操作，使用直接缓冲区提高性能</li>
+<li><strong>正确管理缓冲区状态</strong>：熟练使用 flip(), clear(), rewind() 等方法</li>
+<li><strong>注意缓冲区边界</strong>：使用 hasRemaining() 检查是否还有数据可读</li>
+<li><strong>避免频繁创建缓冲区</strong>：可以复用缓冲区减少GC压力</li>
+</ol>
+<h2 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h2><h3 id="基本读写操作"><a href="#基本读写操作" class="headerlink" title="基本读写操作"></a>基本读写操作</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.nio.ByteBuffer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BufferExample</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">// 创建缓冲区</span></span><br><span class="line">        <span class="type">ByteBuffer</span> <span class="variable">buffer</span> <span class="operator">=</span> ByteBuffer.allocate(<span class="number">1024</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 写入数据</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">message</span> <span class="operator">=</span> <span class="string">&quot;Hello, Java NIO!&quot;</span>;</span><br><span class="line">        buffer.put(message.getBytes());</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 翻转缓冲区</span></span><br><span class="line">        buffer.flip();</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 读取数据</span></span><br><span class="line">        <span class="type">byte</span>[] data = <span class="keyword">new</span> <span class="title class_">byte</span>[buffer.remaining()];</span><br><span class="line">        buffer.get(data);</span><br><span class="line">        System.out.println(<span class="keyword">new</span> <span class="title class_">String</span>(data));</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 清空缓冲区</span></span><br><span class="line">        buffer.clear();</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 重新写入数据</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">newMessage</span> <span class="operator">=</span> <span class="string">&quot;Welcome to NIO Buffer!&quot;</span>;</span><br><span class="line">        buffer.put(newMessage.getBytes());</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 翻转并读取</span></span><br><span class="line">        buffer.flip();</span><br><span class="line">        <span class="keyword">while</span> (buffer.hasRemaining()) &#123;</span><br><span class="line">            System.out.print((<span class="type">char</span>) buffer.get());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-}
+<h3 id="缓冲区复用"><a href="#缓冲区复用" class="headerlink" title="缓冲区复用"></a>缓冲区复用</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.nio.CharBuffer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BufferFillData</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> String[] strings = &#123;</span><br><span class="line">        <span class="string">&quot;A random string value&quot;</span>,</span><br><span class="line">        <span class="string">&quot;The product of an infinite number of monkeys&quot;</span>,</span><br><span class="line">        <span class="string">&quot;Hey hey we&#x27;re the Monkees&quot;</span>,</span><br><span class="line">        <span class="string">&quot;Opening act for the Monkees: jiangfuqiang&quot;</span>,</span><br><span class="line">        <span class="string">&quot;Help me! Help me!&quot;</span></span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">CharBuffer</span> <span class="variable">buffer</span> <span class="operator">=</span> CharBuffer.allocate(<span class="number">100</span>);</span><br><span class="line">        <span class="keyword">while</span> (fillBuffer(buffer)) &#123;</span><br><span class="line">            buffer.flip();</span><br><span class="line">            drainBuffer(buffer);</span><br><span class="line">            buffer.clear();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">drainBuffer</span><span class="params">(CharBuffer buffer)</span> &#123;</span><br><span class="line">        <span class="keyword">while</span> (buffer.hasRemaining()) &#123;</span><br><span class="line">            System.out.print(buffer.get());</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">boolean</span> <span class="title function_">fillBuffer</span><span class="params">(CharBuffer buffer)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (index &gt;= strings.length) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">String</span> <span class="variable">string</span> <span class="operator">=</span> strings[index++];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; string.length(); i++) &#123;</span><br><span class="line">            buffer.put(string.charAt(i));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-buffer.put((byte)&#39;H&#39;).put((byte)&#39;e&#39;).put((byte)&#39;l&#39;).put((byte)&#39;l&#39;).put((byte)&#39;0&#39;);
-</code></pre>
-<p>五次调用填充方法之后，缓冲区如下图所示：</p>
-<p><img src="http://img.blog.csdn.net/20140101130204796?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamlhbmdmdWxsbGw=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image"><br>好了，现在buffer中已经有数据了，那如果我们不想丢失位置的情况下进行一些更改，可以用带参数的put方法实现：<br>buffer.put(0,(byte)’M’).put((byte)’w’);<br>我们将H替换为M，然后在缓冲区的顶部再加一个w，更改后，缓冲区如下图所示：<br><img src="http://img.blog.csdn.net/20140101130229484?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamlhbmdmdWxsbGw=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image"><br>可以看到，使用put()方法，会将位置值加一，而使用put(int index, byte<br>b)则只会替换index下的值<br>接下来我们该怎么样读取这些数据呢，接下来就需要翻转缓冲区，将其position设置为0，然后就可以读取数据了。需要注意的是，读取缓冲区时，读取的数据是从position开始，到limit-1结束的，也就是说，当读取数据时，需要同时把limit设置为poisition，即buffer.limit(buffer.position()).position(0);这样就可以正确读取数据了。不过这样太麻烦，缓冲区已经提供了一个方法来完成这些事情，调用buffer.flip()方法，则会将limit设置为position,然后将position设置为0<br>调用flip()方法后，缓冲区的如下图所示：<br><img src="http://img.blog.csdn.net/20140101130241109?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamlhbmdmdWxsbGw=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="image"><br>可以看到position和limit的位置已经发生改变，当然，buffer还有一个方法rewind()，这个方法和flip()相似，唯一不同的是，rewind()方法只将position设置为0，而不会将limit设置为position。<br>设置完成之后，在调用buffer.get()或者buffer.get(index)就可以读取数据了。看下面这个例子：</p>
-<pre><code>import java.nio.CharBuffer;
+<h2 id="缓冲区的高级操作"><a href="#缓冲区的高级操作" class="headerlink" title="缓冲区的高级操作"></a>缓冲区的高级操作</h2><h3 id="1-压缩操作"><a href="#1-压缩操作" class="headerlink" title="1. 压缩操作"></a>1. 压缩操作</h3><p>当缓冲区中还有未读取的数据时，可以使用 <code>compact()</code> 方法将未读取的数据移到缓冲区开头：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 读取部分数据</span></span><br><span class="line">buffer.get(data, <span class="number">0</span>, <span class="number">5</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 压缩缓冲区：将未读取的数据移到开头</span></span><br><span class="line">buffer.compact();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 继续写入数据</span></span><br><span class="line">buffer.put(moreData);</span><br></pre></td></tr></table></figure>
 
-public class BufferFillData {
+<h3 id="2-批量操作"><a href="#2-批量操作" class="headerlink" title="2. 批量操作"></a>2. 批量操作</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 批量写入</span></span><br><span class="line"><span class="type">byte</span>[] data = <span class="keyword">new</span> <span class="title class_">byte</span>[<span class="number">100</span>];</span><br><span class="line">buffer.put(data);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 批量读取</span></span><br><span class="line">buffer.get(data);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 批量写入指定位置</span></span><br><span class="line">buffer.put(data, <span class="number">0</span>, <span class="number">50</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 批量读取到指定位置</span></span><br><span class="line">buffer.get(data, <span class="number">0</span>, <span class="number">50</span>);</span><br></pre></td></tr></table></figure>
 
-private static int index = 0;
-private static String[] strings = {
-&quot;A random string value&quot;,
-&quot;The product of an infinite number of monkeys&quot;,
-&quot;Hey hey we&#39;re the Monkees&quot;,
-&quot;Opening act for the Monkees: jiangfuqiang&quot;,
-&quot;Help me! Help me!&quot;
-};
+<h3 id="3-缓冲区比较"><a href="#3-缓冲区比较" class="headerlink" title="3. 缓冲区比较"></a>3. 缓冲区比较</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 比较两个缓冲区</span></span><br><span class="line"><span class="type">int</span> <span class="variable">result</span> <span class="operator">=</span> buffer1.compareTo(buffer2);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 检查缓冲区是否相等</span></span><br><span class="line"><span class="type">boolean</span> <span class="variable">equal</span> <span class="operator">=</span> buffer1.equals(buffer2);</span><br></pre></td></tr></table></figure>
 
-/**
-* @param args
-*/
-public static void main(String[] args) throws Exception{
-CharBuffer buffer = CharBuffer.allocate(100);
-while(fillBuffer(buffer)) {
-buffer.flip();
-drainBuffer(buffer);
-buffer.clear();
-}
-}
-
-private static void drainBuffer(CharBuffer buffer) {
-while(buffer.hasRemaining()) {
-System.out.print(buffer.get());
-}
-System.out.println();
-}
-private static boolean fillBuffer(CharBuffer buffer) {
-if(index &gt;= strings.length) {
-return false;
-}
-String string = strings[index++];
-for(int i = 0; i &lt; string.length(); i++) {
-buffer.put(string.charAt(i));
-}
-return true;
-}
-
-}
-</code></pre>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Java NIO 缓冲区是 NIO 操作的基础，掌握缓冲区的使用对于理解 NIO 至关重要。本文介绍了缓冲区的核心属性、类型、基本操作和最佳实践，希望能帮助读者更好地理解和使用 Java NIO 缓冲区。</p>
+<p>在后续文章中，我们将继续介绍 Java NIO 的通道（Channel）和选择器（Selector），敬请期待！</p>
 
             </div>
           
@@ -220,11 +263,11 @@ return true;
       <footer class="post-footer">
         <div class="post-tags">
           
-            <a href="/tags/buffer/">buffer</a>
-          
             <a href="/tags/java/">java</a>
           
             <a href="/tags/nio/">nio</a>
+          
+            <a href="/tags/buffer/">buffer</a>
           
         </div>
 

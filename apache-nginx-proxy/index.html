@@ -32,25 +32,22 @@
 
 
 
-<link rel="canonical" href="http://yoursite.com/apache-nginx-proxy/"/>
+<link rel="canonical" href="https://neoyin.github.io/apache-nginx-proxy/"/>
 
 
-<meta name="description" content="最近需要调试手机端与服务器端的网络通讯协议,需要对网络封包的截取和分析,所以考虑在机器上做一层代理.通过此方案来抓取分析网络包.  正向代理是一个位于客户端和*原始服务器(originserver)*之间的服务器，为了从原始服务器取得内容，客户端向代理发送一个请求并指定目标(原始服务器)，然后代理向原始服务器转交请求并将获得的内容返回给客户端。客户端必须要进行一些特别的设置才能使用正向代理。 正向">
+<meta name="description" content="Apache Nginx 正向和反向代理最近需要调试手机端与服务器端的网络通讯协议,需要对网络封包的截取和分析,所以考虑在机器上做一层代理.通过此方案来抓取分析网络包. 代理的基本概念正向代理正向代理是一个位于客户端和*原始服务器(origin server)*之间的服务器，为了从原始服务器取得内容，客户端向代理发送一个请求并指定目标(原始服务器)，然后代理向原始服务器转交请求并将获得的内容返回给">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Apache Nginx正向和反向代理">
-<meta property="og:url" content="http://yoursite.com/apache-nginx-proxy/index.html">
+<meta property="og:url" content="https://neoyin.github.io/apache-nginx-proxy/index.html">
 <meta property="og:site_name" content="浮生若梦">
-<meta property="og:description" content="最近需要调试手机端与服务器端的网络通讯协议,需要对网络封包的截取和分析,所以考虑在机器上做一层代理.通过此方案来抓取分析网络包.  正向代理是一个位于客户端和*原始服务器(originserver)*之间的服务器，为了从原始服务器取得内容，客户端向代理发送一个请求并指定目标(原始服务器)，然后代理向原始服务器转交请求并将获得的内容返回给客户端。客户端必须要进行一些特别的设置才能使用正向代理。 正向">
+<meta property="og:description" content="Apache Nginx 正向和反向代理最近需要调试手机端与服务器端的网络通讯协议,需要对网络封包的截取和分析,所以考虑在机器上做一层代理.通过此方案来抓取分析网络包. 代理的基本概念正向代理正向代理是一个位于客户端和*原始服务器(origin server)*之间的服务器，为了从原始服务器取得内容，客户端向代理发送一个请求并指定目标(原始服务器)，然后代理向原始服务器转交请求并将获得的内容返回给">
 <meta property="og:locale">
-<meta property="og:image" content="http://f.hiphotos.bdimg.com/album/s%3D550%3Bq%3D90%3Bc%3Dxiangce%2C100%2C100/sign=6c5cec13b119ebc4c478769cb21dbec1/0b55b319ebc4b74556c46460cdfc1e178a821577.jpg?referer=1f16e44e79f40ad14cf3f2d3532e&x=.jpg">
-<meta property="og:image" content="http://g.hiphotos.bdimg.com/album/s%3D550%3Bq%3D90%3Bc%3Dxiangce%2C100%2C100/sign=cccd856160d0f703e2b295d938c12000/622762d0f703918fe632eebc533d269758eec4e1.jpg?referer=92f4ce72369b033b759fc8ea24bf&x=.jpg">
 <meta property="article:published_time" content="2013-12-16T06:12:00.000Z">
-<meta property="article:modified_time" content="2026-03-16T14:04:02.395Z">
+<meta property="article:modified_time" content="2026-03-17T03:21:54.524Z">
 <meta property="article:author" content="Neo">
 <meta property="article:tag" content="apache">
 <meta property="article:tag" content="nginx">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://f.hiphotos.bdimg.com/album/s%3D550%3Bq%3D90%3Bc%3Dxiangce%2C100%2C100/sign=6c5cec13b119ebc4c478769cb21dbec1/0b55b319ebc4b74556c46460cdfc1e178a821577.jpg?referer=1f16e44e79f40ad14cf3f2d3532e&x=.jpg">
 
 
 <link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1"/>
@@ -144,90 +141,75 @@
 
     
             <div class="post-content">
-            <p>最近需要调试手机端与服务器端的网络通讯协议,需要对网络封包的截取和分析,所以考虑在机器上做一层代理.通过此方案来抓取分析网络包.</p>
-<p><img src="http://f.hiphotos.bdimg.com/album/s%3D550%3Bq%3D90%3Bc%3Dxiangce%2C100%2C100/sign=6c5cec13b119ebc4c478769cb21dbec1/0b55b319ebc4b74556c46460cdfc1e178a821577.jpg?referer=1f16e44e79f40ad14cf3f2d3532e&x=.jpg" alt="image"></p>
-<p><dfn>正向代理</dfn>是一个位于客户端和*原始服务器(origin<br>server)*之间的服务器，为了从原始服务器取得内容，客户端向代理发送一个请求并指定目标(原始服务器)，然后代理向原始服务器转交请求并将获得的内容返回给客户端。客户端必须要进行一些特别的设置才能使用正向代理。</p>
-<p>正向代理的典型用途是为在防火墙内的局域网客户端提供访问Internet的途径。</p>
-<span id="more"></span>
+            <h1 id="Apache-Nginx-正向和反向代理"><a href="#Apache-Nginx-正向和反向代理" class="headerlink" title="Apache Nginx 正向和反向代理"></a>Apache Nginx 正向和反向代理</h1><p>最近需要调试手机端与服务器端的网络通讯协议,需要对网络封包的截取和分析,所以考虑在机器上做一层代理.通过此方案来抓取分析网络包.</p>
+<h2 id="代理的基本概念"><a href="#代理的基本概念" class="headerlink" title="代理的基本概念"></a>代理的基本概念</h2><h3 id="正向代理"><a href="#正向代理" class="headerlink" title="正向代理"></a>正向代理</h3><p><dfn>正向代理</dfn>是一个位于客户端和*原始服务器(origin server)*之间的服务器，为了从原始服务器取得内容，客户端向代理发送一个请求并指定目标(原始服务器)，然后代理向原始服务器转交请求并将获得的内容返回给客户端。客户端必须要进行一些特别的设置才能使用正向代理。</p>
+<p>正向代理的典型用途：</p>
+<ul>
+<li>为在防火墙内的局域网客户端提供访问Internet的途径</li>
+<li>隐藏客户端真实IP地址</li>
+<li>缓存内容以提高访问速度</li>
+<li>访问被地理位置限制的资源</li>
+</ul>
+<h3 id="反向代理"><a href="#反向代理" class="headerlink" title="反向代理"></a>反向代理</h3><p><dfn>反向代理</dfn>正好相反，对于客户端而言它就像是原始服务器，并且客户端不需要进行任何特别的设置。客户端向反向代理的命名空间(name-space)中的内容发送普通请求，接着反向代理将判断向何处(原始服务器)转交请求，并将获得的内容返回给客户端，就像这些内容原本就是它自己的一样。</p>
+<p>反向代理的典型用途：</p>
+<ul>
+<li>将防火墙后面的服务器提供给Internet用户访问</li>
+<li>为后端的多台服务器提供负载平衡</li>
+<li>为后端较慢的服务器提供缓冲服务</li>
+<li>启用高级URL策略和管理技术</li>
+<li>提供SSL终止，减轻后端服务器负担</li>
+</ul>
+<h2 id="Apache-正向代理配置"><a href="#Apache-正向代理配置" class="headerlink" title="Apache 正向代理配置"></a>Apache 正向代理配置</h2><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Apache 正向代理配置</span></span><br><span class="line"><span class="attribute">ProxyRequests</span> <span class="literal">On</span></span><br><span class="line"><span class="attribute">ProxyVia</span> <span class="literal">On</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 访问控制配置</span></span><br><span class="line"><span class="section">&lt;Proxy *&gt;</span></span><br><span class="line">  <span class="attribute">Require</span> <span class="literal">all</span> granted  # 现代Apache <span class="number">2</span>.<span class="number">4</span>+语法</span><br><span class="line"><span class="section">&lt;/Proxy&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选：设置代理超时</span></span><br><span class="line"><span class="attribute">ProxyTimeout</span> <span class="number">60</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选：设置代理缓冲区大小</span></span><br><span class="line"><span class="attribute">ProxyBufferSize</span> <span class="number">4096</span></span><br></pre></td></tr></table></figure>
 
-<p>可以通过如下配制Apache下正向代理</p>
-<pre><code>#Apache 正向代理 
-ProxyRequests On
-ProxyVia On
-&lt;Proxy *&gt;
-  Order deny,allow
-  Deny from all
-  Allow from all
-&lt;/Proxy&gt;
-</code></pre>
-<p>Nginx 下的正向代理配置</p>
-<pre><code>#nginx实现代理上网，有三个关键点必须注意，其余的配置跟普通的nginx一样
-#1.增加dns解析resolver
-#2.增加无server_name名的server
-#3.proxy_pass指令
-http {
-    resolver 8.8.8.8;
-        server {
-            listen 8088;
-            location / {
-                proxy_pass http://$http_host$request_uri;
-            }
-    }
-}
-#重启nginx
-</code></pre>
-<p><dfn>反向代理</dfn>正好相反，对于客户端而言它就像是原始服务器，并且客户端不需要进行任何特别的设置。客户端向反向代理的命名空间(name-space)中的内容发送普通请求，接着反向代理将判断向何处(原始服务器)转交请求，并将获得的内容返回给客户端，就像这些内容原本就是它自己的一样。</p>
-<p><img src="http://g.hiphotos.bdimg.com/album/s%3D550%3Bq%3D90%3Bc%3Dxiangce%2C100%2C100/sign=cccd856160d0f703e2b295d938c12000/622762d0f703918fe632eebc533d269758eec4e1.jpg?referer=92f4ce72369b033b759fc8ea24bf&x=.jpg" alt="image"></p>
-<p>反向代理的典型用途是将防火墙后面的服务器提供给Internet用户访问。反向代理还可以为后端的多台服务器提供负载平衡，或为后端较慢的服务器提供缓冲服务。另外，还可以启用高级URL策略和管理技术，从而使处于不同web服务器系统的web页面同时存在于同一个URL空间下。</p>
-<p>Nginx配置反向代码</p>
-<pre><code>upstream xxx_server_backend {
-        server 192.168.1.xx:81;
-}
+<h2 id="Nginx-正向代理配置"><a href="#Nginx-正向代理配置" class="headerlink" title="Nginx 正向代理配置"></a>Nginx 正向代理配置</h2><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># nginx 正向代理配置</span></span><br><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    <span class="comment"># 设置DNS解析器</span></span><br><span class="line">    <span class="attribute">resolver</span> <span class="number">8.8.8.8</span> <span class="number">114.114.114.114</span> valid=<span class="number">300s</span>;</span><br><span class="line">    <span class="attribute">resolver_timeout</span> <span class="number">5s</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="section">server</span> &#123;</span><br><span class="line">        <span class="attribute">listen</span> <span class="number">8088</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="section">location</span> / &#123;</span><br><span class="line">            <span class="attribute">proxy_pass</span> http://<span class="variable">$http_host</span><span class="variable">$request_uri</span>;</span><br><span class="line">            <span class="attribute">proxy_set_header</span> Host <span class="variable">$http_host</span>;</span><br><span class="line">            <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">            <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 处理HTTPS请求</span></span><br><span class="line">            <span class="attribute">proxy_connect_timeout</span> <span class="number">10s</span>;</span><br><span class="line">            <span class="attribute">proxy_read_timeout</span> <span class="number">120s</span>;</span><br><span class="line">            <span class="attribute">proxy_send_timeout</span> <span class="number">120s</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-server {
-        listen 80;
-        access_log logs/access.www.xxx.com.log main;
-        error_log logs/error.www.xxx.com.log;
-        server_name www.xxx.com;
+<h2 id="Nginx-反向代理配置"><a href="#Nginx-反向代理配置" class="headerlink" title="Nginx 反向代理配置"></a>Nginx 反向代理配置</h2><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 定义后端服务器集群</span></span><br><span class="line"><span class="section">upstream</span> backend_servers &#123;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.1.10:8080</span> weight=<span class="number">5</span> max_fails=<span class="number">3</span> fail_timeout=<span class="number">30s</span>;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.1.11:8080</span> weight=<span class="number">5</span> max_fails=<span class="number">3</span> fail_timeout=<span class="number">30s</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 可选：添加健康检查</span></span><br><span class="line">    <span class="comment"># check interval=3000 rise=2 fall=5 timeout=1000 type=http;</span></span><br><span class="line">    <span class="comment"># check_http_send &quot;HEAD /health HTTP/1.0\r\nHost: localhost\r\n\r\n&quot;;</span></span><br><span class="line">    <span class="comment"># check_http_expect_alive http_2xx http_3xx;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> www.example.com;</span><br><span class="line">    </span><br><span class="line">    <span class="attribute">access_log</span> /var/log/nginx/access.log main;</span><br><span class="line">    <span class="attribute">error_log</span> /var/log/nginx/<span class="literal">error</span>.log <span class="literal">warn</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">proxy_pass</span> http://backend_servers;</span><br><span class="line">        <span class="attribute">proxy_http_version</span> <span class="number">1</span>.<span class="number">1</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-Proto <span class="variable">$scheme</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 代理连接设置</span></span><br><span class="line">        <span class="attribute">proxy_connect_timeout</span> <span class="number">10s</span>;</span><br><span class="line">        <span class="attribute">proxy_read_timeout</span> <span class="number">60s</span>;</span><br><span class="line">        <span class="attribute">proxy_send_timeout</span> <span class="number">60s</span>;</span><br><span class="line">        <span class="attribute">proxy_buffers</span> <span class="number">16</span> <span class="number">16k</span>;</span><br><span class="line">        <span class="attribute">proxy_buffer_size</span> <span class="number">32k</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 负载均衡相关设置</span></span><br><span class="line">        <span class="attribute">proxy_next_upstream</span> <span class="literal">error</span> timeout invalid_header http_500 http_502 http_503 http_504;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 健康检查端点</span></span><br><span class="line">    <span class="section">location</span> /health &#123;</span><br><span class="line">        <span class="attribute">return</span> <span class="number">200</span> <span class="string">&quot;OK&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-        location / {
-#               auth_basic &quot;Restricted&quot;;
-#               auth_basic_user_file  xxx.com/xxx_test.pwd;
+<h2 id="Apache-反向代理配置"><a href="#Apache-反向代理配置" class="headerlink" title="Apache 反向代理配置"></a>Apache 反向代理配置</h2><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启用必要的模块</span></span><br><span class="line"><span class="comment"># LoadModule proxy_module modules/mod_proxy.so</span></span><br><span class="line"><span class="comment"># LoadModule proxy_http_module modules/mod_proxy_http.so</span></span><br><span class="line"><span class="comment"># LoadModule proxy_balancer_module modules/mod_proxy_balancer.so</span></span><br><span class="line"><span class="comment"># LoadModule lbmethod_byrequests_module modules/mod_lbmethod_byrequests.so</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭正向代理</span></span><br><span class="line"><span class="attribute">ProxyRequests</span> <span class="literal">Off</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置后端服务器集群</span></span><br><span class="line"><span class="section">&lt;Proxy <span class="string">&quot;balancer://mycluster&quot;</span>&gt;</span></span><br><span class="line">    <span class="attribute">BalancerMember</span> http://<span class="number">192.168.1.10:8080</span> loadfactor=<span class="number">5</span></span><br><span class="line">    <span class="attribute">BalancerMember</span> http://<span class="number">192.168.1.11:8080</span> loadfactor=<span class="number">5</span></span><br><span class="line">    <span class="attribute">ProxySet</span> lbmethod=byrequests</span><br><span class="line">    <span class="attribute">ProxySet</span> stickysession=JSESSIONID</span><br><span class="line"><span class="section">&lt;/Proxy&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 访问控制</span></span><br><span class="line"><span class="section">&lt;Proxy *&gt;</span></span><br><span class="line">    <span class="attribute">Require</span> <span class="literal">all</span> granted</span><br><span class="line"><span class="section">&lt;/Proxy&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置反向代理</span></span><br><span class="line"><span class="attribute">ProxyPass</span> / balancer://mycluster/</span><br><span class="line"><span class="attribute">ProxyPassReverse</span> / balancer://mycluster/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选：设置代理超时</span></span><br><span class="line"><span class="attribute">ProxyTimeout</span> <span class="number">60</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选：设置请求头</span></span><br><span class="line"><span class="attribute">RequestHeader</span> set X-Forwarded-Proto <span class="string">&quot;https&quot;</span> env=HTTPS</span><br></pre></td></tr></table></figure>
 
-                #limit_req zone=www_zone;
-                #more_set_headers &quot;Cache-Control&quot; &quot;no-cache&quot;;
-                proxy_cache off;
-                proxy_next_upstream http_502 http_504 error timeout invalid_header;
-                proxy_ignore_headers   Expires Cache-Control;
-        #       proxy_ignore_headers    Cache-Control   no-cache;
-                proxy_store         off;
-                proxy_set_header        Host            $host;
-                proxy_set_header        X-Real-IP       $remote_addr;
-                proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_pass http://xxx_server_backend;
-                more_clear_headers  &quot;Cache-Control&quot;;
-                add_header      Cache-Control &quot;no-cache,max-age=0&quot;;
-                #more_set_headers       &quot;Cache-Control&quot; &quot;no-cache&quot;;
-                #expires        0;
-        }
+<h2 id="高级配置与最佳实践"><a href="#高级配置与最佳实践" class="headerlink" title="高级配置与最佳实践"></a>高级配置与最佳实践</h2><h3 id="SSL-终止配置"><a href="#SSL-终止配置" class="headerlink" title="SSL 终止配置"></a>SSL 终止配置</h3><h4 id="Nginx-SSL-终止"><a href="#Nginx-SSL-终止" class="headerlink" title="Nginx SSL 终止"></a>Nginx SSL 终止</h4><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">443</span> ssl http2;</span><br><span class="line">    <span class="attribute">server_name</span> www.example.com;</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># SSL 证书配置</span></span><br><span class="line">    <span class="attribute">ssl_certificate</span> /etc/nginx/ssl/fullchain.pem;</span><br><span class="line">    <span class="attribute">ssl_certificate_key</span> /etc/nginx/ssl/privkey.pem;</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># SSL 优化配置</span></span><br><span class="line">    <span class="attribute">ssl_protocols</span> TLSv1.<span class="number">2</span> TLSv1.<span class="number">3</span>;</span><br><span class="line">    <span class="attribute">ssl_prefer_server_ciphers</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">ssl_ciphers</span> ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384;</span><br><span class="line">    <span class="attribute">ssl_session_cache</span> shared:SSL:<span class="number">10m</span>;</span><br><span class="line">    <span class="attribute">ssl_session_timeout</span> <span class="number">10m</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">proxy_pass</span> http://backend_servers;</span><br><span class="line">        <span class="comment"># 其他代理设置...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重定向HTTP到HTTPS</span></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> www.example.com;</span><br><span class="line">    <span class="attribute">return</span> <span class="number">301</span> https://<span class="variable">$host</span><span class="variable">$request_uri</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-}
-</code></pre>
-<p>Apache配置反向代理</p>
-<pre><code>ProxyRequests Off
-&lt;Proxy *&gt;
-   Order deny,allow
-   Allow from all
-&lt;/Proxy&gt;
+<h3 id="缓存配置"><a href="#缓存配置" class="headerlink" title="缓存配置"></a>缓存配置</h3><h4 id="Nginx-代理缓存"><a href="#Nginx-代理缓存" class="headerlink" title="Nginx 代理缓存"></a>Nginx 代理缓存</h4><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    <span class="comment"># 定义缓存路径</span></span><br><span class="line">    <span class="attribute">proxy_cache_path</span> /var/cache/nginx levels=<span class="number">1</span>:<span class="number">2</span> keys_zone=my_cache:<span class="number">10m</span> max_size=<span class="number">1g</span> inactive=<span class="number">60m</span> use_temp_path=<span class="literal">off</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="section">server</span> &#123;</span><br><span class="line">        <span class="comment"># ...</span></span><br><span class="line">        </span><br><span class="line">        <span class="section">location</span> / &#123;</span><br><span class="line">            <span class="attribute">proxy_cache</span> my_cache;</span><br><span class="line">            <span class="attribute">proxy_cache_valid</span> <span class="number">200</span> <span class="number">304</span> <span class="number">10m</span>;</span><br><span class="line">            <span class="attribute">proxy_cache_valid</span> any <span class="number">1m</span>;</span><br><span class="line">            <span class="attribute">proxy_cache_key</span> <span class="string">&quot;<span class="variable">$scheme</span><span class="variable">$request_method</span><span class="variable">$host</span><span class="variable">$request_uri</span>&quot;</span>;</span><br><span class="line">            </span><br><span class="line">            <span class="attribute">proxy_pass</span> http://backend_servers;</span><br><span class="line">            <span class="comment"># 其他代理设置...</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-ProxyPass /foo http://foo.example.com/bar
-ProxyPassReverse /foo http://foo.example.com/bar
-</code></pre>
-<p>参考:</p>
-<p><a href="http://apache.jz123.cn/mod/mod_proxy.html">http://apache.jz123.cn/mod/mod_proxy.html</a></p>
-<p><a href="http://www.nginx.cn/482.html">http://www.nginx.cn/482.html</a></p>
-<p><a href="http://wiki.nginx.org/NginxChs">http://wiki.nginx.org/NginxChs</a></p>
-<p><a href="http://lenky.info/archives/2013/01/12/2263">http://lenky.info/archives/2013/01/12/2263</a></p>
+<h2 id="常见问题与解决方案"><a href="#常见问题与解决方案" class="headerlink" title="常见问题与解决方案"></a>常见问题与解决方案</h2><h3 id="1-代理服务器无法解析域名"><a href="#1-代理服务器无法解析域名" class="headerlink" title="1. 代理服务器无法解析域名"></a>1. 代理服务器无法解析域名</h3><p><strong>解决方案：</strong></p>
+<ul>
+<li>确保配置了正确的DNS解析器</li>
+<li>检查网络连接和防火墙设置</li>
+<li>验证DNS服务器是否可达</li>
+</ul>
+<h3 id="2-代理超时问题"><a href="#2-代理超时问题" class="headerlink" title="2. 代理超时问题"></a>2. 代理超时问题</h3><p><strong>解决方案：</strong></p>
+<ul>
+<li>调整<code>proxy_connect_timeout</code>、<code>proxy_read_timeout</code>和<code>proxy_send_timeout</code>参数</li>
+<li>检查后端服务器响应时间</li>
+<li>考虑增加代理缓冲区大小</li>
+</ul>
+<h3 id="3-负载均衡配置问题"><a href="#3-负载均衡配置问题" class="headerlink" title="3. 负载均衡配置问题"></a>3. 负载均衡配置问题</h3><p><strong>解决方案：</strong></p>
+<ul>
+<li>确保所有后端服务器都正常运行</li>
+<li>配置适当的健康检查</li>
+<li>调整负载均衡算法以适应业务需求</li>
+</ul>
+<h3 id="4-SSL证书问题"><a href="#4-SSL证书问题" class="headerlink" title="4. SSL证书问题"></a>4. SSL证书问题</h3><p><strong>解决方案：</strong></p>
+<ul>
+<li>确保使用有效的SSL证书</li>
+<li>配置正确的证书链</li>
+<li>定期更新证书以避免过期</li>
+</ul>
+<h2 id="性能优化建议"><a href="#性能优化建议" class="headerlink" title="性能优化建议"></a>性能优化建议</h2><ol>
+<li><strong>启用连接复用</strong>：使用<code>keepalive</code>连接减少连接建立开销</li>
+<li><strong>调整工作进程数</strong>：根据服务器CPU核心数设置合适的工作进程</li>
+<li><strong>优化缓冲区大小</strong>：根据实际流量调整代理缓冲区</li>
+<li><strong>启用Gzip压缩</strong>：减少传输数据量</li>
+<li><strong>配置适当的超时设置</strong>：避免连接占用时间过长</li>
+<li><strong>使用缓存</strong>：对静态内容和频繁访问的动态内容使用缓存</li>
+</ol>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://httpd.apache.org/docs/current/mod/mod_proxy.html">Apache mod_proxy 官方文档</a></li>
+<li><a href="https://nginx.org/en/docs/http/ngx_http_proxy_module.html">Nginx 反向代理文档</a></li>
+<li><a href="https://nginx.org/en/docs/http/load_balancing.html">Nginx 负载均衡文档</a></li>
+<li><a href="https://ssl-config.mozilla.org/">SSL&#x2F;TLS 最佳实践</a></li>
+<li><a href="https://nginx.org/en/docs/http/ngx_http_v2_module.html">HTTP&#x2F;2 配置指南</a></li>
+</ul>
 
             </div>
           

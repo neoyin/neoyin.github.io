@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="Java HashMap 原理与实现分析"/>
+
+
+
+
+  <meta name="keywords" content="hashmap,java,collection," />
+
+
+
+
+
+    <link rel="alternate" href="/default" title="浮生若梦" >
+
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.png?v=1.1"/>
+
+
+
+<link rel="canonical" href="https://neoyin.github.io/java-hashmap-principle-and-implementation/"/>
+
+
+<meta name="description" content="HashMap 概述HashMap 是 Java 中最常用的 Map 实现类之一，它基于哈希表实现，提供了高效的键值对存储和检索功能。本文将详细分析 HashMap 的工作原理、实现细节以及使用最佳实践。 HashMap 工作原理基本概念HashMap 实现了 Map 接口，具有以下特点：  允许 null 键和 null 值：与 Hashtable 不同，HashMap 可以存储 null 键和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java HashMap 原理与实现分析">
+<meta property="og:url" content="https://neoyin.github.io/java-hashmap-principle-and-implementation/index.html">
+<meta property="og:site_name" content="浮生若梦">
+<meta property="og:description" content="HashMap 概述HashMap 是 Java 中最常用的 Map 实现类之一，它基于哈希表实现，提供了高效的键值对存储和检索功能。本文将详细分析 HashMap 的工作原理、实现细节以及使用最佳实践。 HashMap 工作原理基本概念HashMap 实现了 Map 接口，具有以下特点：  允许 null 键和 null 值：与 Hashtable 不同，HashMap 可以存储 null 键和">
+<meta property="og:locale">
+<meta property="article:published_time" content="2013-11-21T17:17:00.000Z">
+<meta property="article:modified_time" content="2026-03-17T03:13:16.077Z">
+<meta property="article:author" content="Neo">
+<meta property="article:tag" content="collection">
+<meta property="article:tag" content="hashmap">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1"/>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+    
+
+
+
+
+
+    
+
+
+
+
+
+    <title> Java HashMap 原理与实现分析 - 浮生若梦 </title>
+  <meta name="generator" content="Hexo 8.1.1"></head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">浮生若梦</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+                
+            </ul>
+        
+    </nav>
+
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Java HashMap 原理与实现分析
+        
+      </h1>
+
+      <time class="post-time">
+          Nov 22 2013
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h2 id="HashMap-概述"><a href="#HashMap-概述" class="headerlink" title="HashMap 概述"></a>HashMap 概述</h2><p>HashMap 是 Java 中最常用的 Map 实现类之一，它基于哈希表实现，提供了高效的键值对存储和检索功能。本文将详细分析 HashMap 的工作原理、实现细节以及使用最佳实践。</p>
+<h2 id="HashMap-工作原理"><a href="#HashMap-工作原理" class="headerlink" title="HashMap 工作原理"></a>HashMap 工作原理</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>HashMap 实现了 Map 接口，具有以下特点：</p>
+<ul>
+<li><strong>允许 null 键和 null 值</strong>：与 Hashtable 不同，HashMap 可以存储 null 键和 null 值</li>
+<li><strong>非同步</strong>：HashMap 不是线程安全的，多线程环境下需要额外同步</li>
+<li><strong>无序</strong>：不保证映射的顺序，特别是不保证顺序会随时间保持不变</li>
+<li><strong>常量时间性能</strong>：在理想情况下，get 和 put 操作的时间复杂度为 O(1)</li>
+</ul>
+<h3 id="核心数据结构"><a href="#核心数据结构" class="headerlink" title="核心数据结构"></a>核心数据结构</h3><p>HashMap 的核心数据结构是<strong>数组 + 链表 + 红黑树</strong>（Java 8+）：</p>
+<ol>
+<li><strong>数组</strong>：作为哈希表的主体，每个元素是一个桶（bucket）</li>
+<li><strong>链表</strong>：当发生哈希冲突时，相同哈希值的元素会以链表形式存储</li>
+<li><strong>红黑树</strong>：当链表长度超过阈值（默认为 8）时，链表会转换为红黑树以提高查询性能</li>
+</ol>
+<h2 id="HashMap-实现细节"><a href="#HashMap-实现细节" class="headerlink" title="HashMap 实现细节"></a>HashMap 实现细节</h2><h3 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 默认构造函数，初始容量为 16，负载因子为 0.75</span></span><br><span class="line"><span class="keyword">public</span> <span class="title function_">HashMap</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.loadFactor = DEFAULT_LOAD_FACTOR; <span class="comment">// 默认负载因子 0.75</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 指定初始容量的构造函数</span></span><br><span class="line"><span class="keyword">public</span> <span class="title function_">HashMap</span><span class="params">(<span class="type">int</span> initialCapacity)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>(initialCapacity, DEFAULT_LOAD_FACTOR);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 指定初始容量和负载因子的构造函数</span></span><br><span class="line"><span class="keyword">public</span> <span class="title function_">HashMap</span><span class="params">(<span class="type">int</span> initialCapacity, <span class="type">float</span> loadFactor)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (initialCapacity &lt; <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;Illegal initial capacity: &quot;</span> + initialCapacity);</span><br><span class="line">    <span class="keyword">if</span> (initialCapacity &gt; MAXIMUM_CAPACITY)</span><br><span class="line">        initialCapacity = MAXIMUM_CAPACITY;</span><br><span class="line">    <span class="keyword">if</span> (loadFactor &lt;= <span class="number">0</span> || Float.isNaN(loadFactor))</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;Illegal load factor: &quot;</span> + loadFactor);</span><br><span class="line">    <span class="built_in">this</span>.loadFactor = loadFactor;</span><br><span class="line">    <span class="built_in">this</span>.threshold = tableSizeFor(initialCapacity);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="关键参数"><a href="#关键参数" class="headerlink" title="关键参数"></a>关键参数</h3><ul>
+<li><strong>初始容量</strong>：哈希表的初始大小，默认值为 16</li>
+<li><strong>负载因子</strong>：决定哈希表在扩容前可以达到多满，默认值为 0.75</li>
+<li><strong>阈值</strong>：当哈希表中的元素数量超过 <code>容量 × 负载因子</code> 时，会触发扩容</li>
+</ul>
+<h3 id="哈希计算"><a href="#哈希计算" class="headerlink" title="哈希计算"></a>哈希计算</h3><p>HashMap 使用 <code>hashCode()</code> 方法计算键的哈希值，然后通过位运算将哈希值映射到数组索引：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="title function_">hash</span><span class="params">(Object key)</span> &#123;</span><br><span class="line">    <span class="type">int</span> h;</span><br><span class="line">    <span class="keyword">return</span> (key == <span class="literal">null</span>) ? <span class="number">0</span> : (h = key.hashCode()) ^ (h &gt;&gt;&gt; <span class="number">16</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 计算索引</span></span><br><span class="line"><span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> (table.length - <span class="number">1</span>) &amp; hash(key);</span><br></pre></td></tr></table></figure>
+
+<h3 id="扩容机制"><a href="#扩容机制" class="headerlink" title="扩容机制"></a>扩容机制</h3><p>当元素数量超过阈值时，HashMap 会进行扩容：</p>
+<ol>
+<li>新容量为原容量的 2 倍</li>
+<li>重新计算所有元素的哈希值和索引</li>
+<li>将元素重新分配到新的哈希表中</li>
+</ol>
+<h3 id="Java-8-的改进"><a href="#Java-8-的改进" class="headerlink" title="Java 8 的改进"></a>Java 8 的改进</h3><p>Java 8 对 HashMap 进行了重要改进：</p>
+<ol>
+<li><strong>引入红黑树</strong>：当链表长度超过 8 时，自动转换为红黑树</li>
+<li><strong>优化哈希函数</strong>：减少哈希冲突</li>
+<li><strong>改进扩容机制</strong>：减少元素移动次数</li>
+</ol>
+<h2 id="HashMap-与-Hashtable-的对比"><a href="#HashMap-与-Hashtable-的对比" class="headerlink" title="HashMap 与 Hashtable 的对比"></a>HashMap 与 Hashtable 的对比</h2><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>HashMap</th>
+<th>Hashtable</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>线程安全</td>
+<td>非线程安全</td>
+<td>线程安全（synchronized）</td>
+</tr>
+<tr>
+<td>null 值</td>
+<td>允许 null 键和值</td>
+<td>不允许 null 键和值</td>
+</tr>
+<tr>
+<td>性能</td>
+<td>更高（无同步开销）</td>
+<td>较低（有同步开销）</td>
+</tr>
+<tr>
+<td>迭代器</td>
+<td>快速失败</td>
+<td>安全失败</td>
+</tr>
+<tr>
+<td>初始容量</td>
+<td>16</td>
+<td>11</td>
+</tr>
+<tr>
+<td>扩容因子</td>
+<td>0.75</td>
+<td>0.75</td>
+</tr>
+<tr>
+<td>扩容方式</td>
+<td>2倍</td>
+<td>2倍+1</td>
+</tr>
+</tbody></table>
+<h2 id="HashMap-的最佳实践"><a href="#HashMap-的最佳实践" class="headerlink" title="HashMap 的最佳实践"></a>HashMap 的最佳实践</h2><h3 id="1-初始容量设置"><a href="#1-初始容量设置" class="headerlink" title="1. 初始容量设置"></a>1. 初始容量设置</h3><p>根据预期存储的元素数量设置合适的初始容量，避免频繁扩容：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 假设需要存储 1000 个元素</span></span><br><span class="line"><span class="type">int</span> <span class="variable">initialCapacity</span> <span class="operator">=</span> <span class="number">1000</span>;</span><br><span class="line"><span class="comment">// 考虑负载因子 0.75，实际容量应为 1000 / 0.75 ≈ 1334</span></span><br><span class="line"><span class="comment">// 向上取最近的 2 的幂，即 2048</span></span><br><span class="line">HashMap&lt;String, Object&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;(<span class="number">2048</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-键的选择"><a href="#2-键的选择" class="headerlink" title="2. 键的选择"></a>2. 键的选择</h3><ul>
+<li><strong>使用不可变类型作为键</strong>：如 String、Integer 等</li>
+<li><strong>重写 hashCode() 和 equals() 方法</strong>：确保键的哈希计算和比较正确</li>
+</ul>
+<h3 id="3-线程安全处理"><a href="#3-线程安全处理" class="headerlink" title="3. 线程安全处理"></a>3. 线程安全处理</h3><p>在多线程环境中使用 HashMap 时，有以下几种线程安全处理方式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 使用 Collections.synchronizedMap</span></span><br><span class="line">Map&lt;String, Object&gt; synchronizedMap = Collections.synchronizedMap(<span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;());</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 使用 ConcurrentHashMap（推荐）</span></span><br><span class="line">Map&lt;String, Object&gt; concurrentMap = <span class="keyword">new</span> <span class="title class_">ConcurrentHashMap</span>&lt;&gt;();</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-避免频繁扩容"><a href="#4-避免频繁扩容" class="headerlink" title="4. 避免频繁扩容"></a>4. 避免频繁扩容</h3><ul>
+<li>预估元素数量，设置合适的初始容量</li>
+<li>避免一次性添加大量元素</li>
+</ul>
+<h3 id="5-遍历方式选择"><a href="#5-遍历方式选择" class="headerlink" title="5. 遍历方式选择"></a>5. 遍历方式选择</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 遍历键值对</span></span><br><span class="line"><span class="keyword">for</span> (Map.Entry&lt;String, Object&gt; entry : map.entrySet()) &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">key</span> <span class="operator">=</span> entry.getKey();</span><br><span class="line">    <span class="type">Object</span> <span class="variable">value</span> <span class="operator">=</span> entry.getValue();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Java 8+ 流式遍历</span></span><br><span class="line">map.forEach((key, value) -&gt; &#123;</span><br><span class="line">    <span class="comment">// 处理键值对</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="常见问题与解决方案"><a href="#常见问题与解决方案" class="headerlink" title="常见问题与解决方案"></a>常见问题与解决方案</h2><h3 id="1-哈希冲突"><a href="#1-哈希冲突" class="headerlink" title="1. 哈希冲突"></a>1. 哈希冲突</h3><p><strong>问题</strong>：不同的键产生相同的哈希值</p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li>使用良好的 hashCode() 实现</li>
+<li>Java 8+ 中会自动将长链表转换为红黑树</li>
+</ul>
+<h3 id="2-线程安全问题"><a href="#2-线程安全问题" class="headerlink" title="2. 线程安全问题"></a>2. 线程安全问题</h3><p><strong>问题</strong>：多线程环境下可能导致数据不一致</p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li>使用 ConcurrentHashMap</li>
+<li>使用 Collections.synchronizedMap</li>
+<li>手动同步</li>
+</ul>
+<h3 id="3-内存泄漏"><a href="#3-内存泄漏" class="headerlink" title="3. 内存泄漏"></a>3. 内存泄漏</h3><p><strong>问题</strong>：在使用 HashMap 存储对象时，可能导致对象无法被垃圾回收</p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li>不再使用的键值对及时移除</li>
+<li>使用弱引用键（WeakHashMap）</li>
+</ul>
+<h3 id="4-扩容开销"><a href="#4-扩容开销" class="headerlink" title="4. 扩容开销"></a>4. 扩容开销</h3><p><strong>问题</strong>：频繁扩容会影响性能</p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li>合理设置初始容量</li>
+<li>避免一次性添加大量元素</li>
+</ul>
+<h2 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h2><h3 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建 HashMap</span></span><br><span class="line">HashMap&lt;String, Integer&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加元素</span></span><br><span class="line">map.put(<span class="string">&quot;apple&quot;</span>, <span class="number">10</span>);</span><br><span class="line">map.put(<span class="string">&quot;banana&quot;</span>, <span class="number">20</span>);</span><br><span class="line">map.put(<span class="string">&quot;orange&quot;</span>, <span class="number">30</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取元素</span></span><br><span class="line"><span class="type">int</span> <span class="variable">appleCount</span> <span class="operator">=</span> map.get(<span class="string">&quot;apple&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 检查键是否存在</span></span><br><span class="line"><span class="type">boolean</span> <span class="variable">exists</span> <span class="operator">=</span> map.containsKey(<span class="string">&quot;apple&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 移除元素</span></span><br><span class="line">map.remove(<span class="string">&quot;orange&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 遍历</span></span><br><span class="line"><span class="keyword">for</span> (Map.Entry&lt;String, Integer&gt; entry : map.entrySet()) &#123;</span><br><span class="line">    System.out.println(entry.getKey() + <span class="string">&quot;: &quot;</span> + entry.getValue());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Java 8+ 流式操作</span></span><br><span class="line">map.forEach((key, value) -&gt; System.out.println(key + <span class="string">&quot;: &quot;</span> + value));</span><br></pre></td></tr></table></figure>
+
+<h3 id="自定义键类型"><a href="#自定义键类型" class="headerlink" title="自定义键类型"></a>自定义键类型</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> age;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 构造方法、getter、setter</span></span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">hashCode</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">result</span> <span class="operator">=</span> name != <span class="literal">null</span> ? name.hashCode() : <span class="number">0</span>;</span><br><span class="line">        result = <span class="number">31</span> * result + age;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object o)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span> == o) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">if</span> (o == <span class="literal">null</span> || getClass() != o.getClass()) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="type">Person</span> <span class="variable">person</span> <span class="operator">=</span> (Person) o;</span><br><span class="line">        <span class="keyword">return</span> age == person.age &amp;&amp; Objects.equals(name, person.name);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用自定义类型作为键</span></span><br><span class="line">HashMap&lt;Person, String&gt; personMap = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line"><span class="type">Person</span> <span class="variable">person</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&quot;John&quot;</span>, <span class="number">30</span>);</span><br><span class="line">personMap.put(person, <span class="string">&quot;Engineer&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>HashMap 是 Java 中最常用的 Map 实现类，它通过哈希表实现了高效的键值对存储和检索。在使用 HashMap 时，需要注意以下几点：</p>
+<ol>
+<li><strong>合理设置初始容量</strong>：根据预期元素数量设置合适的初始容量，避免频繁扩容</li>
+<li><strong>使用不可变类型作为键</strong>：确保键的哈希值和相等性保持不变</li>
+<li><strong>注意线程安全</strong>：在多线程环境中使用合适的线程安全方案</li>
+<li><strong>了解扩容机制</strong>：避免一次性添加大量元素导致频繁扩容</li>
+<li><strong>利用 Java 8+ 特性</strong>：享受红黑树带来的性能提升</li>
+</ol>
+<p>通过合理使用 HashMap，可以在保证性能的同时，实现高效的键值对存储和检索功能。</p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/hashmap/">hashmap</a>
+          
+            <a href="/tags/java/">java</a>
+          
+            <a href="/tags/collection/">collection</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/idea-tips/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">IDEA tips</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/ubuntu-gitlab-install/">
+        <span class="next-text nav-default">Ubuntu搭建gitLab</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2012 -
+    
+    2026
+    <span class="footer-author">Neo.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+    
+
+  
+  </script>
+  </body>
+</html>

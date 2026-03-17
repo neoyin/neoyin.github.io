@@ -32,18 +32,18 @@
 
 
 
-<link rel="canonical" href="http://yoursite.com/python-apscheduler/"/>
+<link rel="canonical" href="https://neoyin.github.io/python-apscheduler/"/>
 
 
-<meta name="description" content="APScheduler是基于Quartz的一个Python定时任务框架。提供了基于日期、固定时间间隔以及crontab类型的任务，并且可以持久化任务。在线文档：https:&#x2F;&#x2F;apscheduler.readthedocs.io&#x2F;en&#x2F;latest&#x2F;userguide.html  安装APSchedulerpip install apscheduler 基本架构 触发器 triggers：设定触">
+<meta name="description" content="Python中任务调度模块APSchedulerAPScheduler（Advanced Python Scheduler）是一个功能强大的Python定时任务框架，基于Quartz设计理念，提供了灵活的任务调度功能，支持基于日期、固定时间间隔以及crontab类型的任务调度，并且可以持久化任务。 1. 安装APScheduler12345# 安装最新版本pip install apschedul">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python中任务调度模块APScheduler">
-<meta property="og:url" content="http://yoursite.com/python-apscheduler/index.html">
+<meta property="og:url" content="https://neoyin.github.io/python-apscheduler/index.html">
 <meta property="og:site_name" content="浮生若梦">
-<meta property="og:description" content="APScheduler是基于Quartz的一个Python定时任务框架。提供了基于日期、固定时间间隔以及crontab类型的任务，并且可以持久化任务。在线文档：https:&#x2F;&#x2F;apscheduler.readthedocs.io&#x2F;en&#x2F;latest&#x2F;userguide.html  安装APSchedulerpip install apscheduler 基本架构 触发器 triggers：设定触">
+<meta property="og:description" content="Python中任务调度模块APSchedulerAPScheduler（Advanced Python Scheduler）是一个功能强大的Python定时任务框架，基于Quartz设计理念，提供了灵活的任务调度功能，支持基于日期、固定时间间隔以及crontab类型的任务调度，并且可以持久化任务。 1. 安装APScheduler12345# 安装最新版本pip install apschedul">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-03-04T09:10:00.000Z">
-<meta property="article:modified_time" content="2026-03-16T14:04:02.397Z">
+<meta property="article:modified_time" content="2026-03-17T03:27:27.624Z">
 <meta property="article:author" content="Neo">
 <meta property="article:tag" content="APScheduler">
 <meta property="article:tag" content="python">
@@ -141,158 +141,140 @@
 
     
             <div class="post-content">
-            <blockquote>
-<p>APScheduler是基于Quartz的一个Python定时任务框架。提供了基于日期、固定时间间隔以及crontab类型的任务，并且可以持久化任务。<br>在线文档：<a href="https://apscheduler.readthedocs.io/en/latest/userguide.html">https://apscheduler.readthedocs.io/en/latest/userguide.html</a></p>
-</blockquote>
-<h5 id="安装APScheduler"><a href="#安装APScheduler" class="headerlink" title="安装APScheduler"></a>安装APScheduler</h5><p><code>pip install apscheduler</code></p>
-<h5 id="基本架构"><a href="#基本架构" class="headerlink" title="基本架构"></a>基本架构</h5><ol>
-<li><p>触发器 triggers：设定触发任务的条件</p>
-<blockquote>
-<p>描述一个任务何时被触发，按日期或按时间间隔或按 cronjob 表达式三种方式触发</p>
-</blockquote>
-</li>
-<li><p>任务存储器 job stores：存放任务，可以放内存(默认)或数据库</p>
-<blockquote>
-<p>注：调度器之间不能共享任务存储器</p>
-</blockquote>
-</li>
-<li><p>执行器 executors：用于执行任务，可设定执行模式</p>
-<blockquote>
-<p>将指定的作业提交到线程池或者进程池中运行，任务完成通知调度器触发相应的事件。</p>
-</blockquote>
-</li>
-<li><p>调度器 schedulers：将上方三个组件作为参数，创建调度器实例执行。</p>
-<blockquote>
-<p>协调三个组件的运行。</p>
-</blockquote>
-</li>
-</ol>
-<h5 id="调度器组件-schedulers"><a href="#调度器组件-schedulers" class="headerlink" title="调度器组件(schedulers)"></a>调度器组件(schedulers)</h5><ul>
-<li><code>BlockingScheduler</code>阻塞式调度器</li>
-</ul>
-<blockquote>
-<p>调度程序是进程中唯一运行的进程，调用start函数会阻塞当前线程，不能立即返回</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.blocking <span class="keyword">import</span> BlockingScheduler</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">scheduler = BlockingScheduler()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job1</span>():</span><br><span class="line">    <span class="built_in">print</span> <span class="string">&quot;%s: 执行任务&quot;</span>  % time.asctime()</span><br><span class="line"></span><br><span class="line">scheduler.add_job(job1, <span class="string">&#x27;interval&#x27;</span>, seconds=<span class="number">3</span>)</span><br><span class="line">scheduler.start()</span><br></pre></td></tr></table></figure>
+            <h1 id="Python中任务调度模块APScheduler"><a href="#Python中任务调度模块APScheduler" class="headerlink" title="Python中任务调度模块APScheduler"></a>Python中任务调度模块APScheduler</h1><p>APScheduler（Advanced Python Scheduler）是一个功能强大的Python定时任务框架，基于Quartz设计理念，提供了灵活的任务调度功能，支持基于日期、固定时间间隔以及crontab类型的任务调度，并且可以持久化任务。</p>
+<h2 id="1-安装APScheduler"><a href="#1-安装APScheduler" class="headerlink" title="1. 安装APScheduler"></a>1. 安装APScheduler</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装最新版本</span></span><br><span class="line">pip install apscheduler</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装指定版本</span></span><br><span class="line">pip install apscheduler==3.10.4</span><br></pre></td></tr></table></figure>
 
+<h2 id="2-基本架构"><a href="#2-基本架构" class="headerlink" title="2. 基本架构"></a>2. 基本架构</h2><p>APScheduler由四个核心组件组成：</p>
+<ol>
+<li><p><strong>触发器（Triggers）</strong>：定义任务触发的条件</p>
 <ul>
-<li><p><code>BackgroundScheduler</code>后台调度器</p>
-<blockquote>
-<p>当前线程不会阻塞，调度器后台执行</p>
-</blockquote>
-</li>
+<li>描述任务何时被触发，支持按日期、时间间隔或cron表达式三种方式</li>
 </ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">scheduler = BackgroundScheduler()</span><br><span class="line"> </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job1</span>():</span><br><span class="line">    <span class="built_in">print</span> <span class="string">&quot;%s: 执行任务&quot;</span>  % time.asctime()</span><br><span class="line"></span><br><span class="line">scheduler.add_job(job1, <span class="string">&#x27;interval&#x27;</span>, seconds=<span class="number">3</span>)</span><br><span class="line">scheduler.start()</span><br><span class="line">time.sleep(<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
-
+</li>
+<li><p><strong>任务存储器（Job Stores）</strong>：存放任务</p>
 <ul>
-<li><p><code>AsyncIOScheduler</code>AsyncIO调度器</p>
-<blockquote>
-<p>适用于使用了asyncio的情况</p>
-</blockquote>
-</li>
-<li><p><code>GeventScheduler</code>Gevent调度器</p>
-<blockquote>
-<p>使用了Gevent的情况</p>
-</blockquote>
-</li>
-<li><p><code>TornadoScheduler</code>Tornado调度器</p>
-<blockquote>
-<p>适用于构建Tornado应用</p>
-</blockquote>
-</li>
-<li><p><code>TwistedScheduler</code> Twisted调度器</p>
-<blockquote>
-<p>适用于构建Twisted应用</p>
-</blockquote>
-</li>
-<li><p><code>QtScheduler</code> Qt调度器</p>
-<blockquote>
-<p>适用于构建Qt应用</p>
-</blockquote>
-</li>
+<li>可以存储在内存（默认）或数据库中</li>
+<li>注意：调度器之间不能共享任务存储器</li>
 </ul>
-<h5 id="触发器组件-trigger"><a href="#触发器组件-trigger" class="headerlink" title="触发器组件(trigger)"></a>触发器组件(trigger)</h5><ol>
-<li><p><code>date</code>：只在某个时间点执行一次，具体日期</p>
-<blockquote>
-<p><code>run_date(datetime|str)</code></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Copyscheduler.add_job(my_job, <span class="string">&#x27;date&#x27;</span>, run_date=datetime(<span class="number">2019</span>, <span class="number">7</span>, <span class="number">12</span>, <span class="number">15</span>, <span class="number">30</span>, <span class="number">5</span>), args=[])</span><br><span class="line">scheduler.add_job(my_job, <span class="string">&#x27;date&#x27;</span>, run_date=<span class="string">&quot;2019-07-12&quot;</span>, args=[])</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>执行器（Executors）</strong>：用于执行任务</p>
+<ul>
+<li>将任务提交到线程池或进程池中运行</li>
+<li>任务完成后通知调度器触发相应的事件</li>
+</ul>
+</li>
+<li><p><strong>调度器（Schedulers）</strong>：协调三个组件的运行</p>
+<ul>
+<li>根据配置将触发器、任务存储器和执行器组合在一起</li>
+</ul>
+</li>
+</ol>
+<h2 id="3-调度器类型"><a href="#3-调度器类型" class="headerlink" title="3. 调度器类型"></a>3. 调度器类型</h2><h3 id="3-1-BlockingScheduler"><a href="#3-1-BlockingScheduler" class="headerlink" title="3.1 BlockingScheduler"></a>3.1 BlockingScheduler</h3><p>阻塞式调度器，适用于作为独立进程运行的情况：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.blocking <span class="keyword">import</span> BlockingScheduler</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">scheduler = BlockingScheduler()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;time.asctime()&#125;</span>: 执行任务&quot;</span>)</span><br><span class="line"></span><br><span class="line">scheduler.add_job(job, <span class="string">&#x27;interval&#x27;</span>, seconds=<span class="number">3</span>)</span><br><span class="line">scheduler.start()  <span class="comment"># 此调用会阻塞当前线程</span></span><br></pre></td></tr></table></figure>
 
-<p><code>timezone</code> 指定时区</p>
-</blockquote>
-</li>
-<li><p><code>interval</code>：每隔一段时间允许一次，时间间隔</p>
-<blockquote>
-<p><code>weeks=0 | days=0 | hours=0 | minutes=0 | seconds=0, start_date=None, end_date=None, timezone=None</code></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Copyscheduler.add_job(my_job, <span class="string">&#x27;interval&#x27;</span>, hours=<span class="number">2</span>)</span><br><span class="line">scheduler.add_job(my_job, <span class="string">&#x27;interval&#x27;</span>, hours=<span class="number">2</span>, start_date=<span class="string">&#x27;2017-9-8 21:30:00&#x27;</span>, end_date=<span class="string">&#x27;2018-06-15 21:30:00)</span></span><br></pre></td></tr></table></figure></blockquote>
-</li>
-<li><p><code>cron</code>：任务的运行周期</p>
-</li>
-</ol>
-<blockquote>
-<p><code>(year=None, month=None, day=None, week=None, day_of_week=None, hour=None, minute=None, second=None, start_date=None, end_date=None, timezone=None)</code></p>
-<p>除了week和 day_of_week，它们的默认值是<code>*</code></p>
-<p>例如<code>day=1, minute=20</code>，这就等于<code>year=&#39;*&#39;, month=&#39;*&#39;, day=1, week=&#39;*&#39;, day_of_week=&#39;*&#39;, hour=&#39;*&#39;, minute=20, second=0</code>，工作将在每个月的第一天以每小时20分钟的时间执行</p>
-</blockquote>
-<ol start="4">
-<li>表达式</li>
-</ol>
-<table>
+<h3 id="3-2-BackgroundScheduler"><a href="#3-2-BackgroundScheduler" class="headerlink" title="3.2 BackgroundScheduler"></a>3.2 BackgroundScheduler</h3><p>后台调度器，适用于在应用程序后台运行：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">scheduler = BackgroundScheduler()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;time.asctime()&#125;</span>: 执行任务&quot;</span>)</span><br><span class="line"></span><br><span class="line">scheduler.add_job(job, <span class="string">&#x27;interval&#x27;</span>, seconds=<span class="number">3</span>)</span><br><span class="line">scheduler.start()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 主线程继续执行其他任务</span></span><br><span class="line">time.sleep(<span class="number">10</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;主线程任务完成&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-其他调度器"><a href="#3-3-其他调度器" class="headerlink" title="3.3 其他调度器"></a>3.3 其他调度器</h3><ul>
+<li><strong>AsyncIOScheduler</strong>：适用于使用asyncio的异步应用</li>
+<li><strong>GeventScheduler</strong>：适用于使用Gevent的应用</li>
+<li><strong>TornadoScheduler</strong>：适用于Tornado应用</li>
+<li><strong>TwistedScheduler</strong>：适用于Twisted应用</li>
+<li><strong>QtScheduler</strong>：适用于Qt应用</li>
+</ul>
+<h2 id="4-触发器类型"><a href="#4-触发器类型" class="headerlink" title="4. 触发器类型"></a>4. 触发器类型</h2><h3 id="4-1-date触发器"><a href="#4-1-date触发器" class="headerlink" title="4.1 date触发器"></a>4.1 date触发器</h3><p>在指定的日期和时间执行一次：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line">scheduler = BackgroundScheduler()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;任务执行时间: <span class="subst">&#123;datetime.now()&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用datetime对象</span></span><br><span class="line">scheduler.add_job(job, <span class="string">&#x27;date&#x27;</span>, run_date=datetime(<span class="number">2024</span>, <span class="number">12</span>, <span class="number">31</span>, <span class="number">23</span>, <span class="number">59</span>, <span class="number">59</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用字符串</span></span><br><span class="line">scheduler.add_job(job, <span class="string">&#x27;date&#x27;</span>, run_date=<span class="string">&quot;2024-12-31 23:59:59&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 带时区</span></span><br><span class="line">scheduler.add_job(job, <span class="string">&#x27;date&#x27;</span>, run_date=<span class="string">&quot;2024-12-31 23:59:59&quot;</span>, timezone=<span class="string">&quot;Asia/Shanghai&quot;</span>)</span><br><span class="line"></span><br><span class="line">scheduler.start()</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-interval触发器"><a href="#4-2-interval触发器" class="headerlink" title="4.2 interval触发器"></a>4.2 interval触发器</h3><p>按照固定的时间间隔重复执行：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"></span><br><span class="line">scheduler = BackgroundScheduler()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;执行周期性任务&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每3秒执行一次</span></span><br><span class="line">scheduler.add_job(job, <span class="string">&#x27;interval&#x27;</span>, seconds=<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每2小时执行一次，设置开始和结束时间</span></span><br><span class="line">scheduler.add_job(</span><br><span class="line">    job, </span><br><span class="line">    <span class="string">&#x27;interval&#x27;</span>, </span><br><span class="line">    hours=<span class="number">2</span>, </span><br><span class="line">    start_date=<span class="string">&#x27;2024-01-01 00:00:00&#x27;</span>, </span><br><span class="line">    end_date=<span class="string">&#x27;2024-12-31 23:59:59&#x27;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 复杂间隔：每1天2小时30分钟执行一次</span></span><br><span class="line">scheduler.add_job(</span><br><span class="line">    job, </span><br><span class="line">    <span class="string">&#x27;interval&#x27;</span>, </span><br><span class="line">    days=<span class="number">1</span>, </span><br><span class="line">    hours=<span class="number">2</span>, </span><br><span class="line">    minutes=<span class="number">30</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">scheduler.start()</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-cron触发器"><a href="#4-3-cron触发器" class="headerlink" title="4.3 cron触发器"></a>4.3 cron触发器</h3><p>按照cron表达式执行任务，功能最强大：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"></span><br><span class="line">scheduler = BackgroundScheduler()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;执行cron任务&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每天早上8点执行</span></span><br><span class="line">scheduler.add_job(job, <span class="string">&#x27;cron&#x27;</span>, hour=<span class="number">8</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每天8:30执行</span></span><br><span class="line">scheduler.add_job(job, <span class="string">&#x27;cron&#x27;</span>, hour=<span class="number">8</span>, minute=<span class="number">30</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每个月1号的8:30执行</span></span><br><span class="line">scheduler.add_job(job, <span class="string">&#x27;cron&#x27;</span>, day=<span class="number">1</span>, hour=<span class="number">8</span>, minute=<span class="number">30</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每周一的8:30执行</span></span><br><span class="line">scheduler.add_job(job, <span class="string">&#x27;cron&#x27;</span>, day_of_week=<span class="number">0</span>, hour=<span class="number">8</span>, minute=<span class="number">30</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用cron表达式格式（与Linux crontab类似）</span></span><br><span class="line">scheduler.add_job(job, <span class="string">&#x27;cron&#x27;</span>, expression=<span class="string">&#x27;30 8 * * 1&#x27;</span>)  <span class="comment"># 每周一8:30</span></span><br><span class="line"></span><br><span class="line">scheduler.start()</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-4-cron表达式详解"><a href="#4-4-cron表达式详解" class="headerlink" title="4.4 cron表达式详解"></a>4.4 cron表达式详解</h3><table>
 <thead>
 <tr>
 <th>表达式</th>
-<th>参数类型</th>
 <th>描述</th>
+<th>示例</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>*</td>
-<td>所有</td>
-<td>通配符。例：<code>minutes=*</code>即每分钟触发</td>
+<td><code>*</code></td>
+<td>通配符，匹配所有值</td>
+<td><code>minutes=*</code> 每分钟触发</td>
 </tr>
 <tr>
-<td>*&#x2F;a</td>
-<td>所有</td>
-<td>可被a整除的通配符。</td>
+<td><code>*/a</code></td>
+<td>可被a整除的通配符</td>
+<td><code>minutes=*/5</code> 每5分钟触发</td>
 </tr>
 <tr>
-<td>a-b</td>
-<td>所有</td>
+<td><code>a-b</code></td>
 <td>范围a-b触发</td>
+<td><code>hours=9-17</code> 9点到17点之间每小时触发</td>
 </tr>
 <tr>
-<td>a-b&#x2F;c</td>
-<td>所有</td>
+<td><code>a-b/c</code></td>
 <td>范围a-b，且可被c整除时触发</td>
+<td><code>minutes=0-30/10</code> 0-30分钟内每10分钟触发</td>
 </tr>
 <tr>
-<td>xth y</td>
-<td>日</td>
-<td>第几个星期几触发。x为第几个，y为星期几</td>
+<td><code>xth y</code></td>
+<td>第几个星期几触发</td>
+<td><code>day=&#39;1st mon&#39;</code> 每个月第一个周一</td>
 </tr>
 <tr>
-<td>last x</td>
-<td>日</td>
-<td>一个月中，最后个星期几触发</td>
+<td><code>last x</code></td>
+<td>一个月中最后一个星期几触发</td>
+<td><code>day=&#39;last fri&#39;</code> 每个月最后一个周五</td>
 </tr>
 <tr>
-<td>last</td>
-<td>日</td>
+<td><code>last</code></td>
 <td>一个月最后一天触发</td>
+<td><code>day=&#39;last&#39;</code> 每个月最后一天</td>
 </tr>
 <tr>
-<td>x,y,z</td>
-<td>所有</td>
-<td>组合表达式，可以组合确定值或上方的表达式</td>
+<td><code>x,y,z</code></td>
+<td>组合表达式</td>
+<td><code>hours=&#39;9,12,18&#39;</code> 9点、12点、18点触发</td>
 </tr>
 </tbody></table>
-<blockquote>
-<p>注：当设置的时间间隔小于，任务的执行时间，线程会阻塞住，等待执行完了才能执行下一个任务，可以设置<code>max_instance</code>指定一个任务同一时刻有多少个实例在运行，默认为1</p>
-</blockquote>
-<h5 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h5><ol>
-<li><a href="https://www.cnblogs.com/mangM/p/11187015.html">https://www.cnblogs.com/mangM/p/11187015.html</a></li>
-<li><a href="https://www.cnblogs.com/gdjlc/p/11432526.html">https://www.cnblogs.com/gdjlc/p/11432526.html</a></li>
-<li><a href="https://www.biaodianfu.com/python-schedule.html">https://www.biaodianfu.com/python-schedule.html</a></li>
+<h2 id="5-任务存储配置"><a href="#5-任务存储配置" class="headerlink" title="5. 任务存储配置"></a>5. 任务存储配置</h2><h3 id="5-1-内存存储（默认）"><a href="#5-1-内存存储（默认）" class="headerlink" title="5.1 内存存储（默认）"></a>5.1 内存存储（默认）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"></span><br><span class="line"><span class="comment"># 默认使用内存存储</span></span><br><span class="line">scheduler = BackgroundScheduler()</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-数据库存储"><a href="#5-2-数据库存储" class="headerlink" title="5.2 数据库存储"></a>5.2 数据库存储</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"><span class="keyword">from</span> apscheduler.jobstores.sqlalchemy <span class="keyword">import</span> SQLAlchemyJobStore</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用SQLite数据库</span></span><br><span class="line">jobstores = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: SQLAlchemyJobStore(url=<span class="string">&#x27;sqlite:///jobs.sqlite&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">scheduler = BackgroundScheduler(jobstores=jobstores)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用MySQL数据库</span></span><br><span class="line"><span class="comment"># jobstores = &#123;</span></span><br><span class="line"><span class="comment">#     &#x27;default&#x27;: SQLAlchemyJobStore(url=&#x27;mysql://user:password@localhost/mydb&#x27;)</span></span><br><span class="line"><span class="comment"># &#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="6-执行器配置"><a href="#6-执行器配置" class="headerlink" title="6. 执行器配置"></a>6. 执行器配置</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"><span class="keyword">from</span> apscheduler.executors.pool <span class="keyword">import</span> ThreadPoolExecutor, ProcessPoolExecutor</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置线程池和进程池执行器</span></span><br><span class="line">executors = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: ThreadPoolExecutor(<span class="number">20</span>),  <span class="comment"># 20个线程</span></span><br><span class="line">    <span class="string">&#x27;processpool&#x27;</span>: ProcessPoolExecutor(<span class="number">5</span>)  <span class="comment"># 5个进程</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">scheduler = BackgroundScheduler(executors=executors)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 为任务指定执行器</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">cpu_intensive_job</span>():</span><br><span class="line">    <span class="comment"># 耗时的CPU密集型任务</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">io_intensive_job</span>():</span><br><span class="line">    <span class="comment"># IO密集型任务</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用进程池执行CPU密集型任务</span></span><br><span class="line">scheduler.add_job(cpu_intensive_job, <span class="string">&#x27;interval&#x27;</span>, seconds=<span class="number">60</span>, executor=<span class="string">&#x27;processpool&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用线程池执行IO密集型任务</span></span><br><span class="line">scheduler.add_job(io_intensive_job, <span class="string">&#x27;interval&#x27;</span>, seconds=<span class="number">10</span>, executor=<span class="string">&#x27;default&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="7-任务管理"><a href="#7-任务管理" class="headerlink" title="7. 任务管理"></a>7. 任务管理</h2><h3 id="7-1-添加任务"><a href="#7-1-添加任务" class="headerlink" title="7.1 添加任务"></a>7.1 添加任务</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 方法1：add_job()</span></span><br><span class="line">job = scheduler.add_job(job_func, <span class="string">&#x27;interval&#x27;</span>, seconds=<span class="number">5</span>, <span class="built_in">id</span>=<span class="string">&#x27;my_job&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方法2：装饰器</span></span><br><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"><span class="keyword">from</span> apscheduler.triggers.interval <span class="keyword">import</span> IntervalTrigger</span><br><span class="line"></span><br><span class="line">scheduler = BackgroundScheduler()</span><br><span class="line"></span><br><span class="line"><span class="meta">@scheduler.scheduled_job(<span class="params"><span class="string">&#x27;interval&#x27;</span>, seconds=<span class="number">5</span>, <span class="built_in">id</span>=<span class="string">&#x27;decorated_job&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;使用装饰器添加的任务&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-2-修改任务"><a href="#7-2-修改任务" class="headerlink" title="7.2 修改任务"></a>7.2 修改任务</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改任务的触发时间</span></span><br><span class="line">job.modify(seconds=<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 暂停任务</span></span><br><span class="line">job.pause()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 恢复任务</span></span><br><span class="line">job.resume()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 移除任务</span></span><br><span class="line">job.remove()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或通过ID移除</span></span><br><span class="line"><span class="comment"># scheduler.remove_job(&#x27;my_job&#x27;)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="7-3-获取任务列表"><a href="#7-3-获取任务列表" class="headerlink" title="7.3 获取任务列表"></a>7.3 获取任务列表</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取所有任务</span></span><br><span class="line">jobs = scheduler.get_jobs()</span><br><span class="line"><span class="keyword">for</span> job <span class="keyword">in</span> jobs:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;任务ID: <span class="subst">&#123;job.<span class="built_in">id</span>&#125;</span>, 下次执行时间: <span class="subst">&#123;job.next_run_time&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过ID获取任务</span></span><br><span class="line">job = scheduler.get_job(<span class="string">&#x27;my_job&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="8-错误处理"><a href="#8-错误处理" class="headerlink" title="8. 错误处理"></a>8. 错误处理</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"><span class="keyword">from</span> apscheduler.events <span class="keyword">import</span> EVENT_JOB_ERROR</span><br><span class="line"></span><br><span class="line">scheduler = BackgroundScheduler()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job_error_listener</span>(<span class="params">event</span>):</span><br><span class="line">    <span class="keyword">if</span> event.exception:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;任务执行出错: <span class="subst">&#123;event.exception&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;任务ID: <span class="subst">&#123;event.job_id&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加错误监听器</span></span><br><span class="line">scheduler.add_listener(job_error_listener, EVENT_JOB_ERROR)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">error_prone_job</span>():</span><br><span class="line">    <span class="comment"># 会引发异常的任务</span></span><br><span class="line">    <span class="keyword">raise</span> Exception(<span class="string">&quot;任务执行失败&quot;</span>)</span><br><span class="line"></span><br><span class="line">scheduler.add_job(error_prone_job, <span class="string">&#x27;interval&#x27;</span>, seconds=<span class="number">5</span>)</span><br><span class="line">scheduler.start()</span><br></pre></td></tr></table></figure>
+
+<h2 id="9-最佳实践"><a href="#9-最佳实践" class="headerlink" title="9. 最佳实践"></a>9. 最佳实践</h2><h3 id="9-1-配置示例"><a href="#9-1-配置示例" class="headerlink" title="9.1 配置示例"></a>9.1 配置示例</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"><span class="keyword">from</span> apscheduler.jobstores.sqlalchemy <span class="keyword">import</span> SQLAlchemyJobStore</span><br><span class="line"><span class="keyword">from</span> apscheduler.executors.pool <span class="keyword">import</span> ThreadPoolExecutor, ProcessPoolExecutor</span><br><span class="line"><span class="keyword">from</span> apscheduler.events <span class="keyword">import</span> EVENT_JOB_ERROR, EVENT_JOB_EXECUTED</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置任务存储</span></span><br><span class="line">jobstores = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: SQLAlchemyJobStore(url=<span class="string">&#x27;sqlite:///jobs.sqlite&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置执行器</span></span><br><span class="line">executors = &#123;</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span>: ThreadPoolExecutor(<span class="number">20</span>),</span><br><span class="line">    <span class="string">&#x27;processpool&#x27;</span>: ProcessPoolExecutor(<span class="number">5</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置调度器</span></span><br><span class="line">job_defaults = &#123;</span><br><span class="line">    <span class="string">&#x27;coalesce&#x27;</span>: <span class="literal">False</span>,  <span class="comment"># 任务堆积时是否只执行一次</span></span><br><span class="line">    <span class="string">&#x27;max_instances&#x27;</span>: <span class="number">3</span>   <span class="comment"># 同一任务最多同时运行的实例数</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">scheduler = BackgroundScheduler(</span><br><span class="line">    jobstores=jobstores,</span><br><span class="line">    executors=executors,</span><br><span class="line">    job_defaults=job_defaults</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 错误处理</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">job_listener</span>(<span class="params">event</span>):</span><br><span class="line">    <span class="keyword">if</span> event.exception:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;任务 <span class="subst">&#123;event.job_id&#125;</span> 执行失败: <span class="subst">&#123;event.exception&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;任务 <span class="subst">&#123;event.job_id&#125;</span> 执行成功&quot;</span>)</span><br><span class="line"></span><br><span class="line">scheduler.add_listener(job_listener, EVENT_JOB_EXECUTED | EVENT_JOB_ERROR)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动调度器</span></span><br><span class="line">scheduler.start()</span><br></pre></td></tr></table></figure>
+
+<h3 id="9-2-注意事项"><a href="#9-2-注意事项" class="headerlink" title="9.2 注意事项"></a>9.2 注意事项</h3><ol>
+<li><strong>避免任务执行时间过长</strong>：如果任务执行时间超过触发间隔，可能会导致任务堆积</li>
+<li><strong>合理设置max_instances</strong>：根据任务性质设置合适的并发实例数</li>
+<li><strong>使用持久化存储</strong>：对于重要任务，使用数据库存储以防止进程重启后任务丢失</li>
+<li><strong>错误处理</strong>：添加错误监听器，及时发现和处理任务执行失败的情况</li>
+<li><strong>资源管理</strong>：根据任务类型选择合适的执行器（线程池或进程池）</li>
+<li><strong>调度器关闭</strong>：在应用程序退出前，调用<code>scheduler.shutdown()</code>关闭调度器</li>
 </ol>
+<h2 id="10-实际应用示例"><a href="#10-实际应用示例" class="headerlink" title="10. 实际应用示例"></a>10. 实际应用示例</h2><h3 id="10-1-定时数据备份"><a href="#10-1-定时数据备份" class="headerlink" title="10.1 定时数据备份"></a>10.1 定时数据备份</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">backup_data</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;备份数据到指定目录&quot;&quot;&quot;</span></span><br><span class="line">    source_dir = <span class="string">&#x27;/path/to/data&#x27;</span></span><br><span class="line">    backup_dir = <span class="string">f&#x27;/path/to/backup/<span class="subst">&#123;datetime.now().strftime(<span class="string">&quot;%Y%m%d_%H%M%S&quot;</span>)&#125;</span>&#x27;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        os.makedirs(backup_dir, exist_ok=<span class="literal">True</span>)</span><br><span class="line">        shutil.copytree(source_dir, backup_dir)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;数据备份完成: <span class="subst">&#123;backup_dir&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;备份失败: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建调度器</span></span><br><span class="line">scheduler = BackgroundScheduler()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每天凌晨2点执行备份</span></span><br><span class="line">scheduler.add_job(</span><br><span class="line">    backup_data, </span><br><span class="line">    <span class="string">&#x27;cron&#x27;</span>, </span><br><span class="line">    hour=<span class="number">2</span>, </span><br><span class="line">    minute=<span class="number">0</span>,</span><br><span class="line">    <span class="built_in">id</span>=<span class="string">&#x27;data_backup&#x27;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">scheduler.start()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;备份调度已启动&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="10-2-定时API调用"><a href="#10-2-定时API调用" class="headerlink" title="10.2 定时API调用"></a>10.2 定时API调用</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> apscheduler.schedulers.background <span class="keyword">import</span> BackgroundScheduler</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fetch_data</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;定时从API获取数据&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        response = requests.get(<span class="string">&#x27;https://api.example.com/data&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> response.status_code == <span class="number">200</span>:</span><br><span class="line">            data = response.json()</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;获取数据成功: <span class="subst">&#123;data&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="comment"># 处理数据...</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;API调用失败: <span class="subst">&#123;response.status_code&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;请求异常: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建调度器</span></span><br><span class="line">scheduler = BackgroundScheduler()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每15分钟调用一次API</span></span><br><span class="line">scheduler.add_job(</span><br><span class="line">    fetch_data, </span><br><span class="line">    <span class="string">&#x27;interval&#x27;</span>, </span><br><span class="line">    minutes=<span class="number">15</span>,</span><br><span class="line">    <span class="built_in">id</span>=<span class="string">&#x27;api_fetch&#x27;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">scheduler.start()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;API调用调度已启动&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="11-参考资料"><a href="#11-参考资料" class="headerlink" title="11. 参考资料"></a>11. 参考资料</h2><ul>
+<li><a href="https://apscheduler.readthedocs.io/en/latest/">APScheduler官方文档</a></li>
+<li><a href="https://github.com/agronholm/apscheduler">APScheduler GitHub仓库</a></li>
+<li><a href="https://www.cnblogs.com/mangM/p/11187015.html">Python定时任务框架APScheduler使用指南</a></li>
+<li><a href="https://www.cnblogs.com/gdjlc/p/11432526.html">APScheduler高级用法</a></li>
+<li><a href="https://www.biaodianfu.com/python-schedule.html">Python任务调度库对比</a></li>
+</ul>
 
             </div>
           

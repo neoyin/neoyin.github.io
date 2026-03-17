@@ -32,18 +32,18 @@
 
 
 
-<link rel="canonical" href="http://yoursite.com/hadoop-install/"/>
+<link rel="canonical" href="https://neoyin.github.io/hadoop-install/"/>
 
 
-<meta name="description" content="(Hadoop分布式文件系统 Hadoop Distributed File System) 其相关知识就不在这里介绍了,可以直接去[http:&#x2F;&#x2F;hadoop.apache.org&#x2F;](http:&#x2F;&#x2F;hadoop.apache.org&#x2F;),也可以直接google 直接进入安装(Ubuntu)环节: **1.环境需求** jdk 在此不做安装说明 ssh 为建立免登录所用">
+<meta name="description" content="Hadoop 分布式系统安装与配置指南Hadoop是一个开源的分布式计算平台，主要由HDFS（分布式文件系统）和MapReduce（分布式计算框架）组成。本文将详细介绍Hadoop的安装、配置和管理方法。 1. 环境准备1.1 系统要求 操作系统：Linux（推荐Ubuntu 18.04+或CentOS 7+） Java：JDK 8或JDK 11（推荐OpenJDK） 内存：至少4GB（生产环境推">
 <meta property="og:type" content="article">
 <meta property="og:title" content="打造分布式文件系统--Hadoop配置安装">
-<meta property="og:url" content="http://yoursite.com/hadoop-install/index.html">
+<meta property="og:url" content="https://neoyin.github.io/hadoop-install/index.html">
 <meta property="og:site_name" content="浮生若梦">
-<meta property="og:description" content="(Hadoop分布式文件系统 Hadoop Distributed File System) 其相关知识就不在这里介绍了,可以直接去[http:&#x2F;&#x2F;hadoop.apache.org&#x2F;](http:&#x2F;&#x2F;hadoop.apache.org&#x2F;),也可以直接google 直接进入安装(Ubuntu)环节: **1.环境需求** jdk 在此不做安装说明 ssh 为建立免登录所用">
+<meta property="og:description" content="Hadoop 分布式系统安装与配置指南Hadoop是一个开源的分布式计算平台，主要由HDFS（分布式文件系统）和MapReduce（分布式计算框架）组成。本文将详细介绍Hadoop的安装、配置和管理方法。 1. 环境准备1.1 系统要求 操作系统：Linux（推荐Ubuntu 18.04+或CentOS 7+） Java：JDK 8或JDK 11（推荐OpenJDK） 内存：至少4GB（生产环境推">
 <meta property="og:locale">
 <meta property="article:published_time" content="2013-10-23T06:46:00.000Z">
-<meta property="article:modified_time" content="2026-03-16T14:04:02.395Z">
+<meta property="article:modified_time" content="2026-03-17T03:25:39.099Z">
 <meta property="article:author" content="Neo">
 <meta property="article:tag" content="hadoop">
 <meta name="twitter:card" content="summary">
@@ -140,140 +140,122 @@
 
     
             <div class="post-content">
-            </p>
-(Hadoop分布式文件系统 Hadoop Distributed File System)
-其相关知识就不在这里介绍了,可以直接去[http://hadoop.apache.org/](http://hadoop.apache.org/),也可以直接google
-直接进入安装(Ubuntu)环节: **1.环境需求** jdk 在此不做安装说明 ssh
-为建立免登录所用 <span id="more"></span>
+            <h1 id="Hadoop-分布式系统安装与配置指南"><a href="#Hadoop-分布式系统安装与配置指南" class="headerlink" title="Hadoop 分布式系统安装与配置指南"></a>Hadoop 分布式系统安装与配置指南</h1><p>Hadoop是一个开源的分布式计算平台，主要由HDFS（分布式文件系统）和MapReduce（分布式计算框架）组成。本文将详细介绍Hadoop的安装、配置和管理方法。</p>
+<h2 id="1-环境准备"><a href="#1-环境准备" class="headerlink" title="1. 环境准备"></a>1. 环境准备</h2><h3 id="1-1-系统要求"><a href="#1-1-系统要求" class="headerlink" title="1.1 系统要求"></a>1.1 系统要求</h3><ul>
+<li><strong>操作系统</strong>：Linux（推荐Ubuntu 18.04+或CentOS 7+）</li>
+<li><strong>Java</strong>：JDK 8或JDK 11（推荐OpenJDK）</li>
+<li><strong>内存</strong>：至少4GB（生产环境推荐8GB以上）</li>
+<li><strong>存储</strong>：根据数据量需求确定</li>
+<li><strong>网络</strong>：集群节点间网络互通</li>
+</ul>
+<h3 id="1-2-Java安装"><a href="#1-2-Java安装" class="headerlink" title="1.2 Java安装"></a>1.2 Java安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Ubuntu/Debian</span></span><br><span class="line"><span class="built_in">sudo</span> apt update</span><br><span class="line"><span class="built_in">sudo</span> apt install openjdk-8-jdk</span><br><span class="line"></span><br><span class="line"><span class="comment"># CentOS/RHEL</span></span><br><span class="line"><span class="built_in">sudo</span> yum install java-1.8.0-openjdk-devel</span><br><span class="line"></span><br><span class="line"><span class="comment"># 验证Java安装</span></span><br><span class="line">java -version</span><br></pre></td></tr></table></figure>
 
-<pre><code>ssh-keygen -t rsa -P &quot;&quot;  #创建密钥
-cd ~/.ssh
-cat id_rsa.pub &gt;&gt; authorized_keys #加入授权
-ssh localhost
+<h3 id="1-3-SSH免密码配置"><a href="#1-3-SSH免密码配置" class="headerlink" title="1.3 SSH免密码配置"></a>1.3 SSH免密码配置</h3><p>Hadoop需要在节点间进行SSH通信，因此需要配置免密码登录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 生成SSH密钥</span></span><br><span class="line">ssh-keygen -t rsa -P <span class="string">&quot;&quot;</span> -f ~/.ssh/id_rsa</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将公钥添加到authorized_keys</span></span><br><span class="line"><span class="built_in">cat</span> ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys</span><br><span class="line"><span class="built_in">chmod</span> 600 ~/.ssh/authorized_keys</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试本地SSH连接</span></span><br><span class="line">ssh localhost</span><br><span class="line"></span><br><span class="line"><span class="comment"># 对于多节点集群，需要将公钥复制到所有从节点</span></span><br><span class="line">ssh-copy-id hadoop@slave1</span><br><span class="line">ssh-copy-id hadoop@slave2</span><br></pre></td></tr></table></figure>
 
-需要在master slave 中都加入
-</code></pre>
-<p><strong>2.下载安装</strong> 下载地址:<br><a href="http://hadoop.apache.org/releases.html#Download">http://hadoop.apache.org/releases.html#Download</a><br>这里下载的版本:<br><a href="http://www.eu.apache.org/dist/hadoop/common/hadoop-2.2.0/hadoop-2.2.0.tar.gz">hadoop-2.2.0.tar.gz</a><br>Release Notes : <a href="http://hadoop.apache.org/docs/r2.2.0/hadoop-project-dist/hadoop-common/releasenotes.html">Hadoop 2.2.0 Release<br>Notes</a><br>解压到&#x2F;usr&#x2F;local 目录下</p>
-<pre><code>sudo ln -s hadoop-2.2.0/ hadoop   #建立链接
-添加环境路径
-export HADOOP_INSTALL=/usr/local/hapood
-export PATH=$HADOOP_INSTALL/bin:$HADOOP_INSTALL/sbin:$PATH
-export HADOOP_MAPRED_HOME=$HADOOP_INSTALL
-export HADOOP_COMMON_HOME=$HADOOP_INSTALL
-export HADOOP_HDFS_HOME=$HADOOP_INSTALL
-export YARN_HOME=$HADOOP_INSTALL  
-cd /usr/local/hadoop
-bin/hadoop version     #查看hadoop信息
-输入如下安装成功:
-Hadoop 2.2.0
-Subversion https://svn.apache.org/repos/asf/hadoop/common -r 1529768
-Compiled by hortonmu on 2013-10-07T06:28Z
-Compiled with protoc 2.5.0
-From source with checksum 79e53ce7994d1628b240f09af91e1af4
-This command was run using /usr/local/hadoop-2.2.0/share/hadoop/common/hadoop-common-2.2.0.jar
-</code></pre>
-<p><strong>3.配置</strong> 这一部分描述在节点 上安装配置Hadoop， 这里的安装是指： 安装一个<br>HDFS （包含一个命名节点 namenode和一个数据节点 datanode） 以及 一个<br>Map&#x2F;Reduce 机群（带有 jobtracker 和一个单独的 tasktracker） .<br>配置过程同样适用于大规模的机群的安装。<br>此版本配置文件目录为$HADOOP_INSTALL&#x2F;etc&#x2F;hadoop</p>
-<pre><code>hadoop-env.sh：包含Hadoop设置的一些环境变量。你可以使用他们影响Hadoop Deamons的行为，例如：日志文件的存储地点、 最大数量的堆栈内存的使用等等. 需修改的一个环境变量是JAVA_HOME
-slaves ：这个文件每行列出一个HOST的信息，在这些HOST上 Hadoop slave daemons (datanodes 和 tasktrackers)运行其上. 默认是一行： localhost
-core-site.xml： 此文件包含具体每个节点对所有 Hadoop daemons 和 Map/Reduce jobs的设置。此文件默认为空。
-mapred-site.xml ：此文件包含具体每个节点对 Hadoop Map/Reduce daemons 和 jobs的设置信息。默认为空。
+<h2 id="2-Hadoop安装"><a href="#2-Hadoop安装" class="headerlink" title="2. Hadoop安装"></a>2. Hadoop安装</h2><h3 id="2-1-下载Hadoop"><a href="#2-1-下载Hadoop" class="headerlink" title="2.1 下载Hadoop"></a>2.1 下载Hadoop</h3><p>从<a href="http://hadoop.apache.org/releases.html">Apache Hadoop官网</a>下载最新稳定版本，或使用以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下载Hadoop 3.3.6（示例版本）</span></span><br><span class="line">wget https://downloads.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解压</span></span><br><span class="line">tar -zxvf hadoop-3.3.6.tar.gz</span><br><span class="line"><span class="built_in">mv</span> hadoop-3.3.6 /usr/local/hadoop</span><br></pre></td></tr></table></figure>
 
-各相关配置如下:
-各master slave /etc/hosts添加
-#ip              $hostname
-192.168.50.110  neoyin-Inspiron-580
-192.168.50.124  lifeix-DX4840
-192.168.50.123  abc-DX4840
+<h3 id="2-2-环境变量配置"><a href="#2-2-环境变量配置" class="headerlink" title="2.2 环境变量配置"></a>2.2 环境变量配置</h3><p>编辑<code>~/.bashrc</code>文件，添加以下环境变量：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> HADOOP_HOME=/usr/local/hadoop</span><br><span class="line"><span class="built_in">export</span> HADOOP_INSTALL=<span class="variable">$HADOOP_HOME</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_MAPRED_HOME=<span class="variable">$HADOOP_HOME</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_COMMON_HOME=<span class="variable">$HADOOP_HOME</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_HDFS_HOME=<span class="variable">$HADOOP_HOME</span></span><br><span class="line"><span class="built_in">export</span> YARN_HOME=<span class="variable">$HADOOP_HOME</span></span><br><span class="line"><span class="built_in">export</span> HADOOP_COMMON_LIB_NATIVE_DIR=<span class="variable">$HADOOP_HOME</span>/lib/native</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$HADOOP_HOME</span>/bin:<span class="variable">$HADOOP_HOME</span>/sbin</span><br><span class="line"><span class="built_in">export</span> HADOOP_OPTS=<span class="string">&quot;-Djava.library.path=<span class="variable">$HADOOP_HOME</span>/lib/native&quot;</span></span><br></pre></td></tr></table></figure>
 
-core-site.xml
-&lt;configuration&gt;
-&lt;property&gt;
-&lt;name&gt;fs.defaultFS&lt;/name&gt;
-&lt;value&gt;hdfs://masterIP:9000&lt;/value&gt;
-&lt;/property&gt;
-&lt;/configuration&gt;
+<p>使环境变量生效：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
 
-hdfs-site.xml
-&lt;configuration&gt;
-&lt;property&gt;
-&lt;name&gt;dfs.name.dir&lt;/name&gt;
-&lt;value&gt;file:/data/hdfs/name&lt;/value&gt;
-&lt;/property&gt;
-&lt;property&gt;
-&lt;name&gt;dfs.data.dir&lt;/name&gt;
-&lt;value&gt;file:/data/hdfs/data&lt;/value&gt;
-&lt;/property&gt;
-&lt;property&gt;
-&lt;name&gt;dfs.permissions&lt;/name&gt;
-&lt;value&gt;false&lt;/value&gt;
-&lt;/property&gt;
-&lt;property&gt;
-&lt;name&gt;dfs.replication&lt;/name&gt;
-&lt;value&gt;1&lt;/value&gt;
-&lt;/property&gt;
-&lt;/configuration&gt;
+<h3 id="2-3-验证安装"><a href="#2-3-验证安装" class="headerlink" title="2.3 验证安装"></a>2.3 验证安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hadoop version</span><br></pre></td></tr></table></figure>
 
-mapred-site.xml
-&lt;property&gt;
-&lt;name&gt;mapreduce.framework.name&lt;/name&gt;
-&lt;value&gt;yarn&lt;/value&gt;
-&lt;/property&gt;
-&lt;property&gt;
-&lt;name&gt;mapred.system.dir&lt;/name&gt;
-&lt;value&gt;file:/data/hdfs/mapred/mapred/system&lt;/value&gt;
-&lt;final&gt;true&lt;/final&gt;
-&lt;/property&gt;
-&lt;property&gt;
-&lt;name&gt;mapred.local.dir&lt;/name&gt;
-&lt;value&gt;file:/data/hdfs/mapred/mapred/local&lt;/value&gt;
-&lt;final&gt;true&lt;/final&gt;
-&lt;/property&gt;
+<h2 id="3-Hadoop配置"><a href="#3-Hadoop配置" class="headerlink" title="3. Hadoop配置"></a>3. Hadoop配置</h2><h3 id="3-1-配置文件目录"><a href="#3-1-配置文件目录" class="headerlink" title="3.1 配置文件目录"></a>3.1 配置文件目录</h3><p>Hadoop配置文件位于<code>$HADOOP_HOME/etc/hadoop/</code>目录下。</p>
+<h3 id="3-2-hadoop-env-sh"><a href="#3-2-hadoop-env-sh" class="headerlink" title="3.2 hadoop-env.sh"></a>3.2 hadoop-env.sh</h3><p>设置Java环境变量：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 编辑hadoop-env.sh</span></span><br><span class="line"><span class="built_in">sudo</span> nano <span class="variable">$HADOOP_HOME</span>/etc/hadoop/hadoop-env.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加以下内容</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64  <span class="comment"># 根据实际Java安装路径调整</span></span><br></pre></td></tr></table></figure>
 
-yarn-site.xml
-&lt;property&gt;
-&lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;
-&lt;value&gt;mapreduce_shuffle&lt;/value&gt;
-&lt;/property&gt;
-&lt;property&gt;
-&lt;name&gt;yarn.nodemanager.aux-services.mapreduce.shuffle.class&lt;/name&gt;
-&lt;value&gt;org.apache.hadoop.mapred.ShuffleHandler&lt;/value&gt;
-&lt;/property&gt;
+<h3 id="3-3-core-site-xml"><a href="#3-3-core-site-xml" class="headerlink" title="3.3 core-site.xml"></a>3.3 core-site.xml</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>fs.defaultFS<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>hdfs://master:9000<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>hadoop.tmp.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>/data/hadoop/tmp<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>io.file.buffer.size<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>131072<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-master
-#masterip
-slave
-#slave_1_ip
-#slave_2_ip
-...
-</code></pre>
-<p>建立运行Hadoop第一<br>步是格式化Haoop文件系统，它是实现在本地机群的文件系统之上<br>，格式化文件系统是你安装Haddoop第一时间应该做的事情。不要格式化一个正在运行中的Hadoop文件系统，这会导致你所有的数据被清除。</p>
-<p>**格 式化之前，**确保 <code>dfs.name.dir</code> 目录存在。 如果你选择默认的值，那么<br><code>mkdir -p $dfs.name.dir</code> 命令即可实现 . 格式化 (其实是初始化<br><code>dfs.name.dir</code> 变量指向的路径), 运行如下命令：</p>
-<pre><code>bin/hadoop namenode -format
-INFO namenode.NameNode: SHUTDOWN_MSG: 
-/************************************************************
-SHUTDOWN_MSG: Shutting down NameNode at xxx-xxx/127.0.1.1
-************************************************************/
-启动
-sbin/start-all.sh
-check 启动是否成功
-jps命令查看如下:
-14640 ResourceManager
-15138 Jps
-13967 NameNode
-14497 SecondaryNameNode
-</code></pre>
-<p>访问如下页面<a href="http://localhost:8088/">http://localhost:8088/</a> <a href="http://localhost:50070/">http://localhost:50070/</a><br>可查看相关信息 Notes:</p>
-<ol>
-<li>Master和Slave上的几个conf配置文件不需要全部同步，如果确定都是通过Master去启动和关闭，那么Slave机器上的配置不需要去维护。但如果希望在任意一台机器都可以启动和关闭Hadoop，那么就需要全部保持一致了。</li>
-<li>Master和Slave机器上的<code>/etc/hosts</code>中必须把集群中机器都配置上去，就算在配置文件中使用的是IP也需如此,不然一直会出现<br>datanode denied communication with namenode 相关错误. 参考资料:</li>
-</ol>
-<hr>
-<p>参考：</p>
+<h3 id="3-4-hdfs-site-xml"><a href="#3-4-hdfs-site-xml" class="headerlink" title="3.4 hdfs-site.xml"></a>3.4 hdfs-site.xml</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.namenode.name.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>file:/data/hadoop/hdfs/namenode<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.datanode.data.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>file:/data/hadoop/hdfs/datanode<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.replication<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>3<span class="tag">&lt;/<span class="name">value</span>&gt;</span>  <span class="comment">&lt;!-- 生产环境推荐3副本 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.webhdfs.enabled<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.permissions.enabled<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>false<span class="tag">&lt;/<span class="name">value</span>&gt;</span>  <span class="comment">&lt;!-- 开发环境可设置为false --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-5-mapred-site-xml"><a href="#3-5-mapred-site-xml" class="headerlink" title="3.5 mapred-site.xml"></a>3.5 mapred-site.xml</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>mapreduce.framework.name<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>yarn<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>mapreduce.jobhistory.address<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>master:10020<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>mapreduce.jobhistory.webapp.address<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>master:19888<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>mapreduce.map.memory.mb<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>2048<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>mapreduce.reduce.memory.mb<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>4096<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-6-yarn-site-xml"><a href="#3-6-yarn-site-xml" class="headerlink" title="3.6 yarn-site.xml"></a>3.6 yarn-site.xml</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.nodemanager.aux-services<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>mapreduce_shuffle<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.nodemanager.aux-services.mapreduce.shuffle.class<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>org.apache.hadoop.mapred.ShuffleHandler<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.resourcemanager.hostname<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>master<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.resourcemanager.address<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>master:8032<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.resourcemanager.scheduler.address<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>master:8030<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.resourcemanager.resource-tracker.address<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>master:8031<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.resourcemanager.webapp.address<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>master:8088<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.nodemanager.resource.memory-mb<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>8192<span class="tag">&lt;/<span class="name">value</span>&gt;</span>  <span class="comment">&lt;!-- 根据实际内存调整 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.scheduler.maximum-allocation-mb<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>8192<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-7-workers文件（Hadoop-3-x版本，旧版本为slaves）"><a href="#3-7-workers文件（Hadoop-3-x版本，旧版本为slaves）" class="headerlink" title="3.7 workers文件（Hadoop 3.x版本，旧版本为slaves）"></a>3.7 workers文件（Hadoop 3.x版本，旧版本为slaves）</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 编辑workers文件</span></span><br><span class="line"><span class="built_in">sudo</span> nano <span class="variable">$HADOOP_HOME</span>/etc/hadoop/workers</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加所有从节点主机名或IP</span></span><br><span class="line">slave1</span><br><span class="line">slave2</span><br><span class="line">slave3</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-集群部署"><a href="#4-集群部署" class="headerlink" title="4. 集群部署"></a>4. 集群部署</h2><h3 id="4-1-准备目录结构"><a href="#4-1-准备目录结构" class="headerlink" title="4.1 准备目录结构"></a>4.1 准备目录结构</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建必要的目录</span></span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">mkdir</span> -p /data/hadoop/tmp</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">mkdir</span> -p /data/hadoop/hdfs/namenode</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">mkdir</span> -p /data/hadoop/hdfs/datanode</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置权限</span></span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">chown</span> -R hadoop:hadoop /data/hadoop</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-格式化HDFS"><a href="#4-2-格式化HDFS" class="headerlink" title="4.2 格式化HDFS"></a>4.2 格式化HDFS</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 格式化NameNode</span></span><br><span class="line">hdfs namenode -format</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-启动集群"><a href="#4-3-启动集群" class="headerlink" title="4.3 启动集群"></a>4.3 启动集群</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动HDFS和YARN</span></span><br><span class="line">start-all.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或分别启动</span></span><br><span class="line">start-dfs.sh</span><br><span class="line">start-yarn.sh</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-4-验证集群状态"><a href="#4-4-验证集群状态" class="headerlink" title="4.4 验证集群状态"></a>4.4 验证集群状态</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看Java进程</span></span><br><span class="line">jps</span><br><span class="line"></span><br><span class="line"><span class="comment"># 预期输出（主节点）</span></span><br><span class="line">1234 NameNode</span><br><span class="line">5678 DataNode</span><br><span class="line">9012 ResourceManager</span><br><span class="line">3456 NodeManager</span><br><span class="line">7890 SecondaryNameNode</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从节点预期输出</span></span><br><span class="line">1234 DataNode</span><br><span class="line">5678 NodeManager</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-5-Web界面访问"><a href="#4-5-Web界面访问" class="headerlink" title="4.5 Web界面访问"></a>4.5 Web界面访问</h3><ul>
+<li><strong>HDFS管理界面</strong>：<a href="http://master:9870/">http://master:9870</a></li>
+<li><strong>YARN管理界面</strong>：<a href="http://master:8088/">http://master:8088</a></li>
+<li><strong>JobHistory界面</strong>：<a href="http://master:19888/">http://master:19888</a></li>
+</ul>
+<h2 id="5-单节点模式（伪分布式）配置"><a href="#5-单节点模式（伪分布式）配置" class="headerlink" title="5. 单节点模式（伪分布式）配置"></a>5. 单节点模式（伪分布式）配置</h2><h3 id="5-1-配置文件修改"><a href="#5-1-配置文件修改" class="headerlink" title="5.1 配置文件修改"></a>5.1 配置文件修改</h3><p>对于单节点模式，只需修改以下配置：</p>
+<p><strong>core-site.xml</strong>：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>fs.defaultFS<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>hdfs://localhost:9000<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>hadoop.tmp.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>/tmp/hadoop<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>hdfs-site.xml</strong>：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.replication<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>1<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-启动和验证"><a href="#5-2-启动和验证" class="headerlink" title="5.2 启动和验证"></a>5.2 启动和验证</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 格式化HDFS</span></span><br><span class="line">hdfs namenode -format</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动服务</span></span><br><span class="line">start-all.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 验证</span></span><br><span class="line">jps</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-常用操作"><a href="#6-常用操作" class="headerlink" title="6. 常用操作"></a>6. 常用操作</h2><h3 id="6-1-HDFS操作"><a href="#6-1-HDFS操作" class="headerlink" title="6.1 HDFS操作"></a>6.1 HDFS操作</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建目录</span></span><br><span class="line">hdfs dfs -<span class="built_in">mkdir</span> -p /user/hadoop</span><br><span class="line"></span><br><span class="line"><span class="comment"># 上传文件</span></span><br><span class="line">hdfs dfs -put localfile /user/hadoop/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看文件</span></span><br><span class="line">hdfs dfs -<span class="built_in">ls</span> /user/hadoop/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载文件</span></span><br><span class="line">hdfs dfs -get /user/hadoop/file localfile</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除文件</span></span><br><span class="line">hdfs dfs -<span class="built_in">rm</span> /user/hadoop/file</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-2-MapReduce作业提交"><a href="#6-2-MapReduce作业提交" class="headerlink" title="6.2 MapReduce作业提交"></a>6.2 MapReduce作业提交</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 运行示例作业</span></span><br><span class="line">hadoop jar <span class="variable">$HADOOP_HOME</span>/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.6.jar wordcount /input /output</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-3-服务管理"><a href="#6-3-服务管理" class="headerlink" title="6.3 服务管理"></a>6.3 服务管理</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 停止所有服务</span></span><br><span class="line">stop-all.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重启服务</span></span><br><span class="line">stop-all.sh &amp;&amp; start-all.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看服务状态</span></span><br><span class="line">hdfs dfsadmin -report</span><br><span class="line">yarn node -list</span><br></pre></td></tr></table></figure>
+
+<h2 id="7-性能优化"><a href="#7-性能优化" class="headerlink" title="7. 性能优化"></a>7. 性能优化</h2><h3 id="7-1-内存配置"><a href="#7-1-内存配置" class="headerlink" title="7.1 内存配置"></a>7.1 内存配置</h3><p>根据服务器实际内存调整以下参数：</p>
 <ul>
-<li><a href="http://hadoop.apache.org/docs/r2.2.0/">http://hadoop.apache.org/docs/r2.2.0/</a></li>
-<li><a href="http://dongxicheng.org/mapreduce-nextgen/hadoop-2-2-0/">http://dongxicheng.org/mapreduce-nextgen/hadoop-2-2-0/</a></li>
-<li><a href="http://www.yongbok.net/blog/how-to-install-hadoop-2-2-0-pseudo-distributed-mode/">http://www.yongbok.net/blog/how-to-install-hadoop-2-2-0-pseudo-distributed-mode/</a></li>
-<li><a href="http://www.cnblogs.com/xia520pi/category/346943.html">http://www.cnblogs.com/xia520pi/category/346943.html</a></li>
+<li><code>yarn.nodemanager.resource.memory-mb</code>：节点管理器可用内存</li>
+<li><code>yarn.scheduler.maximum-allocation-mb</code>：单个容器最大内存</li>
+<li><code>mapreduce.map.memory.mb</code>：Map任务内存</li>
+<li><code>mapreduce.reduce.memory.mb</code>：Reduce任务内存</li>
+</ul>
+<h3 id="7-2-存储优化"><a href="#7-2-存储优化" class="headerlink" title="7.2 存储优化"></a>7.2 存储优化</h3><ul>
+<li>使用SSD存储提升性能</li>
+<li>合理设置数据块大小（默认128MB）</li>
+<li>配置适当的副本数（生产环境推荐3）</li>
+</ul>
+<h3 id="7-3-网络优化"><a href="#7-3-网络优化" class="headerlink" title="7.3 网络优化"></a>7.3 网络优化</h3><ul>
+<li>使用万兆网络</li>
+<li>配置适当的网络缓冲区大小</li>
+<li>避免网络瓶颈</li>
+</ul>
+<h2 id="8-常见问题与解决方案"><a href="#8-常见问题与解决方案" class="headerlink" title="8. 常见问题与解决方案"></a>8. 常见问题与解决方案</h2><h3 id="8-1-DataNode无法启动"><a href="#8-1-DataNode无法启动" class="headerlink" title="8.1 DataNode无法启动"></a>8.1 DataNode无法启动</h3><p><strong>问题</strong>：DataNode启动失败，日志显示无法连接到NameNode。</p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li>检查网络连接</li>
+<li>确保防火墙已关闭或开放相关端口</li>
+<li>检查<code>/etc/hosts</code>文件配置</li>
+<li>删除DataNode数据目录后重新启动</li>
+</ul>
+<h3 id="8-2-内存不足"><a href="#8-2-内存不足" class="headerlink" title="8.2 内存不足"></a>8.2 内存不足</h3><p><strong>问题</strong>：YARN容器内存不足导致作业失败。</p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li>增加服务器内存</li>
+<li>调整YARN内存配置</li>
+<li>减少作业并行度</li>
+</ul>
+<h3 id="8-3-权限问题"><a href="#8-3-权限问题" class="headerlink" title="8.3 权限问题"></a>8.3 权限问题</h3><p><strong>问题</strong>：HDFS操作权限被拒绝。</p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li>检查文件权限</li>
+<li>临时关闭权限检查（<code>dfs.permissions.enabled=false</code>）</li>
+<li>使用正确的用户身份执行操作</li>
+</ul>
+<h2 id="9-高可用配置"><a href="#9-高可用配置" class="headerlink" title="9. 高可用配置"></a>9. 高可用配置</h2><p>对于生产环境，建议配置Hadoop高可用集群，包括：</p>
+<ul>
+<li>NameNode高可用（使用ZooKeeper）</li>
+<li>ResourceManager高可用</li>
+<li>自动故障转移</li>
+</ul>
+<h2 id="10-参考资料"><a href="#10-参考资料" class="headerlink" title="10. 参考资料"></a>10. 参考资料</h2><ul>
+<li><a href="https://hadoop.apache.org/docs/stable/">Apache Hadoop官方文档</a></li>
+<li><a href="https://www.oreilly.com/library/view/hadoop-the-definitive/9781491901687/">Hadoop权威指南</a></li>
+<li><a href="https://cwiki.apache.org/confluence/display/HADOOP2/Hadoop2Setup">Hadoop集群搭建最佳实践</a></li>
+<li><a href="https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/ClusterSetup.html">Hadoop性能调优指南</a></li>
 </ul>
 
             </div>

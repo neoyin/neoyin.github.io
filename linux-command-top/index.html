@@ -32,18 +32,18 @@
 
 
 
-<link rel="canonical" href="http://yoursite.com/linux-command-top/"/>
+<link rel="canonical" href="https://neoyin.github.io/linux-command-top/"/>
 
 
-<meta name="description" content="linux top命令简介 top 命令是最流行的性能监视工具之一，我们必需了解。它是一个优秀的交互式工具，用于监视性能。它提供系统整体性能，但报告进程信息才是 top 命令的长处。top 命令交互界面如下图所视：  top 界面分为两个部份，光标上面部份显示关于系统整体性能，光标下面部份显示各进程信息。光标所在处是用来输入操作命令的。 linux top命令界面第一行显示的内容和uptime命令">
+<meta name="description" content="Linux top命令简介top 命令是最流行的性能监视工具之一，它是一个优秀的交互式工具，用于实时监视系统性能。它提供系统整体性能信息，但报告进程详细信息才是 top 命令的长处。 top命令界面详解系统整体信息区域第一行（与uptime命令输出相同）： 1top - 01:47:56 up 1:26,  2 users,  load average: 0.00, 0.00, 0.00   01">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux 命令备忘(top)">
-<meta property="og:url" content="http://yoursite.com/linux-command-top/index.html">
+<meta property="og:url" content="https://neoyin.github.io/linux-command-top/index.html">
 <meta property="og:site_name" content="浮生若梦">
-<meta property="og:description" content="linux top命令简介 top 命令是最流行的性能监视工具之一，我们必需了解。它是一个优秀的交互式工具，用于监视性能。它提供系统整体性能，但报告进程信息才是 top 命令的长处。top 命令交互界面如下图所视：  top 界面分为两个部份，光标上面部份显示关于系统整体性能，光标下面部份显示各进程信息。光标所在处是用来输入操作命令的。 linux top命令界面第一行显示的内容和uptime命令">
+<meta property="og:description" content="Linux top命令简介top 命令是最流行的性能监视工具之一，它是一个优秀的交互式工具，用于实时监视系统性能。它提供系统整体性能信息，但报告进程详细信息才是 top 命令的长处。 top命令界面详解系统整体信息区域第一行（与uptime命令输出相同）： 1top - 01:47:56 up 1:26,  2 users,  load average: 0.00, 0.00, 0.00   01">
 <meta property="og:locale">
 <meta property="article:published_time" content="2012-08-22T13:13:00.000Z">
-<meta property="article:modified_time" content="2026-03-16T14:04:02.396Z">
+<meta property="article:modified_time" content="2026-03-17T03:01:02.840Z">
 <meta property="article:author" content="Neo">
 <meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
@@ -140,15 +140,280 @@
 
     
             <div class="post-content">
-            <h3 id="linux-top命令简介"><a href="#linux-top命令简介" class="headerlink" title="linux top命令简介"></a>linux top命令简介</h3><blockquote>
-<p>top 命令是最流行的性能监视工具之一，我们必需了解。它是一个优秀的交互式工具，用于监视性能。它提供系统整体性能，但报告进程信息才是 top 命令的长处。top 命令交互界面如下图所视：</p>
-</blockquote>
-<p>top 界面分为两个部份，光标上面部份显示关于系统整体性能，光标下面部份显示各进程信息。光标所在处是用来输入操作命令的。</p>
-<h3 id="linux-top命令界面"><a href="#linux-top命令界面" class="headerlink" title="linux top命令界面"></a>linux top命令界面</h3><p>第一行显示的内容和uptime命令一样，【l】可以显示和隐藏这个区域：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">top	这个没有什么意思，只是个名称而以</span><br><span class="line">01：47：56	系统当前时间</span><br><span class="line">up 1:26	系统开机到现在经过了多少时间</span><br><span class="line">2 users	当前2用户在线</span><br><span class="line">load average:0.00,0.00,0.00	系统1分钟、5分钟、15分钟的CPU负载信息</span><br><span class="line">第二行：</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line">Tasks	英文意思是工作；任务；差事。</span><br><span class="line">38 total	很好理解，就是当前有38个任务，也就是38个进程。</span><br><span class="line">1 running	1个进程正在运行</span><br><span class="line">37 sleeping	37个进程睡眠</span><br><span class="line">0 stopped	停止的进程数</span><br><span class="line">0 zombie	僵死的进程数</span><br><span class="line">Cpu(s)	表示这一行显示CPU总体信息</span><br><span class="line">0.0%us	用户态进程占用CPU时间百分比，不包含renice值为负的任务占用的CPU的时间。</span><br><span class="line">0.7%sy	内核占用CPU时间百分比</span><br><span class="line">0.0%ni	renice值为负的任务的用户态进程的CPU时间百分比。nice是优先级的意思</span><br><span class="line">99.3%id	空闲CPU时间百分比</span><br><span class="line">0.0%wa	等待I/O的CPU时间百分比</span><br><span class="line">0.0%hi	CPU硬中断时间百分比</span><br><span class="line">0.0%si	CPU软中断时间百分比</span><br><span class="line">0.0%st	我不知道</span><br><span class="line">第三行：</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">Men	内存的意思</span><br><span class="line">256412k total	物理内存总量</span><br><span class="line">30156k used	使用的物理内存量</span><br><span class="line">226256 free	空闲的物理内存量</span><br><span class="line">8176k buffers	用作内核缓存的物理内存量</span><br><span class="line">Swap	交换空间</span><br><span class="line">337356k total	交换区总量</span><br><span class="line">0k used	使用的交换区量</span><br><span class="line">337356k free	空闲的交换区量</span><br><span class="line">12160k cached	缓冲交换区总量</span><br><span class="line">第四行：</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">PID	进程的ID</span><br><span class="line">USER	进程所有者</span><br><span class="line">PR	进程的优先级别，越小越优先被执行</span><br><span class="line">NI	nice值</span><br><span class="line">VIRT	进程占用的虚拟内存</span><br><span class="line">RES	进程占用的物理内存</span><br><span class="line">SHR	进程使用的共享内存</span><br><span class="line">S	进程的状态。S表示休眠，R表示正在运行，Z表示僵死状态，N表示该进程优先值为负数</span><br><span class="line">%CPU	进程占用CPU的使用率</span><br><span class="line">%MEM	进程使用的物理内存和总内存的百分比</span><br><span class="line">TIME+	该进程启动后占用的总的CPU时间，即占用CPU使用时间的累加值。</span><br><span class="line">COMMAND	进程启动命令名称</span><br></pre></td></tr></table></figure>
+            <h2 id="Linux-top命令简介"><a href="#Linux-top命令简介" class="headerlink" title="Linux top命令简介"></a>Linux top命令简介</h2><p><code>top</code> 命令是最流行的性能监视工具之一，它是一个优秀的交互式工具，用于实时监视系统性能。它提供系统整体性能信息，但报告进程详细信息才是 top 命令的长处。</p>
+<h2 id="top命令界面详解"><a href="#top命令界面详解" class="headerlink" title="top命令界面详解"></a>top命令界面详解</h2><h3 id="系统整体信息区域"><a href="#系统整体信息区域" class="headerlink" title="系统整体信息区域"></a>系统整体信息区域</h3><p>第一行（与uptime命令输出相同）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">top - 01:47:56 up 1:26,  2 users,  load average: 0.00, 0.00, 0.00</span><br></pre></td></tr></table></figure>
 
-<h3 id="linux-top命令操作指令"><a href="#linux-top命令操作指令" class="headerlink" title="linux top命令操作指令"></a>linux top命令操作指令</h3><p>下面我列出一些常用的linux top命令操作指令：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">q	退出top命令</span><br><span class="line"> 	立即刷新</span><br><span class="line">s	设置刷新时间间隔</span><br><span class="line">c	显示命令完全模式</span><br><span class="line">t	显示或隐藏进程和CPU状态信息</span><br><span class="line">m	显示或隐藏内存状态信息</span><br><span class="line">l	显示或隐藏uptime信息</span><br><span class="line">f	增加或减少进程显示标志</span><br><span class="line">S	累计模式，会把已完成或退出的子进程占用的CPU时间累计到父进程的MITE+</span><br><span class="line">P	按%CPU使用率排行</span><br><span class="line">T	按MITE+排行</span><br><span class="line">M	按%MEM排行</span><br><span class="line">u	指定显示用户进程</span><br><span class="line">r	修改进程renice值</span><br><span class="line">k	kill进程</span><br><span class="line">i	只显示正在运行的进程</span><br><span class="line">W	保存对top的设置到文件~/.toprc，下次启动将自动调用toprc文件的设置。</span><br><span class="line">h	帮助命令。</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>01:47:56</strong> - 系统当前时间</li>
+<li><strong>up 1:26</strong> - 系统运行时间</li>
+<li><strong>2 users</strong> - 当前登录用户数</li>
+<li><strong>load average: 0.00, 0.00, 0.00</strong> - 系统1分钟、5分钟、15分钟的CPU负载</li>
+</ul>
+<p>第二行（进程信息）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Tasks: 38 total,   1 running,  37 sleeping,   0 stopped,   0 zombie</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>38 total</strong> - 总进程数</li>
+<li><strong>1 running</strong> - 正在运行的进程数</li>
+<li><strong>37 sleeping</strong> - 睡眠的进程数</li>
+<li><strong>0 stopped</strong> - 停止的进程数</li>
+<li><strong>0 zombie</strong> - 僵死的进程数</li>
+</ul>
+<p>第三行（CPU信息）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%Cpu(s):  0.0 us,  0.7 sy,  0.0 ni, 99.3 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>0.0% us</strong> - 用户态进程占用CPU时间百分比</li>
+<li><strong>0.7% sy</strong> - 内核态占用CPU时间百分比</li>
+<li><strong>0.0% ni</strong> - 优先级调整的用户进程占用CPU时间百分比</li>
+<li><strong>99.3% id</strong> - 空闲CPU时间百分比</li>
+<li><strong>0.0% wa</strong> - 等待I&#x2F;O的CPU时间百分比</li>
+<li><strong>0.0% hi</strong> - 硬件中断占用CPU时间百分比</li>
+<li><strong>0.0% si</strong> - 软件中断占用CPU时间百分比</li>
+<li><strong>0.0% st</strong> - 被虚拟机偷取的CPU时间百分比</li>
+</ul>
+<p>第四行（内存信息）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MiB Mem :    250.4 total,    221.1 free,     29.3 used,      8.0 buff/cache</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>250.4 total</strong> - 物理内存总量</li>
+<li><strong>221.1 free</strong> - 空闲物理内存</li>
+<li><strong>29.3 used</strong> - 使用中的物理内存</li>
+<li><strong>8.0 buff&#x2F;cache</strong> - 用作缓冲区和缓存的内存</li>
+</ul>
+<p>第五行（交换空间信息）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MiB Swap:   329.4 total,   329.4 free,     0.0 used.   219.1 avail Mem</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>329.4 total</strong> - 交换空间总量</li>
+<li><strong>329.4 free</strong> - 空闲交换空间</li>
+<li><strong>0.0 used</strong> - 使用中的交换空间</li>
+<li><strong>219.1 avail Mem</strong> - 可用内存</li>
+</ul>
+<h3 id="进程信息区域"><a href="#进程信息区域" class="headerlink" title="进程信息区域"></a>进程信息区域</h3><table>
+<thead>
+<tr>
+<th>列名</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PID</td>
+<td>进程ID</td>
+</tr>
+<tr>
+<td>USER</td>
+<td>进程所有者</td>
+</tr>
+<tr>
+<td>PR</td>
+<td>进程优先级</td>
+</tr>
+<tr>
+<td>NI</td>
+<td>nice值（优先级调整值）</td>
+</tr>
+<tr>
+<td>VIRT</td>
+<td>进程占用的虚拟内存</td>
+</tr>
+<tr>
+<td>RES</td>
+<td>进程占用的物理内存</td>
+</tr>
+<tr>
+<td>SHR</td>
+<td>进程使用的共享内存</td>
+</tr>
+<tr>
+<td>S</td>
+<td>进程状态（R&#x3D;运行，S&#x3D;睡眠，Z&#x3D;僵死，N&#x3D;低优先级）</td>
+</tr>
+<tr>
+<td>%CPU</td>
+<td>进程占用CPU的使用率</td>
+</tr>
+<tr>
+<td>%MEM</td>
+<td>进程使用的物理内存百分比</td>
+</tr>
+<tr>
+<td>TIME+</td>
+<td>进程启动后占用的总CPU时间</td>
+</tr>
+<tr>
+<td>COMMAND</td>
+<td>进程启动命令</td>
+</tr>
+</tbody></table>
+<h2 id="top命令选项"><a href="#top命令选项" class="headerlink" title="top命令选项"></a>top命令选项</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 显示指定数量的进程</span></span><br><span class="line">top -n 10</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置刷新间隔（秒）</span></span><br><span class="line">top -d 2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示指定用户的进程</span></span><br><span class="line">top -u username</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示指定PID的进程</span></span><br><span class="line">top -p 1234,5678</span><br><span class="line"></span><br><span class="line"><span class="comment"># 以批处理模式运行（非交互式）</span></span><br><span class="line">top -b</span><br><span class="line"></span><br><span class="line"><span class="comment"># 以累积模式运行</span></span><br><span class="line">top -S</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示线程信息</span></span><br><span class="line">top -H</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示完整命令行</span></span><br><span class="line">top -c</span><br></pre></td></tr></table></figure>
+
+<h2 id="交互式操作指令"><a href="#交互式操作指令" class="headerlink" title="交互式操作指令"></a>交互式操作指令</h2><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>q</td>
+<td>退出top命令</td>
+</tr>
+<tr>
+<td>空格</td>
+<td>立即刷新</td>
+</tr>
+<tr>
+<td>s</td>
+<td>设置刷新时间间隔</td>
+</tr>
+<tr>
+<td>c</td>
+<td>显示&#x2F;隐藏完整命令行</td>
+</tr>
+<tr>
+<td>t</td>
+<td>显示&#x2F;隐藏进程和CPU状态信息</td>
+</tr>
+<tr>
+<td>m</td>
+<td>显示&#x2F;隐藏内存状态信息</td>
+</tr>
+<tr>
+<td>l</td>
+<td>显示&#x2F;隐藏uptime信息</td>
+</tr>
+<tr>
+<td>f</td>
+<td>增加或减少进程显示字段</td>
+</tr>
+<tr>
+<td>S</td>
+<td>切换累计模式</td>
+</tr>
+<tr>
+<td>P</td>
+<td>按%CPU使用率排序</td>
+</tr>
+<tr>
+<td>T</td>
+<td>按TIME+排序</td>
+</tr>
+<tr>
+<td>M</td>
+<td>按%MEM排序</td>
+</tr>
+<tr>
+<td>u</td>
+<td>显示指定用户的进程</td>
+</tr>
+<tr>
+<td>r</td>
+<td>修改进程优先级</td>
+</tr>
+<tr>
+<td>k</td>
+<td>终止进程</td>
+</tr>
+<tr>
+<td>i</td>
+<td>只显示正在运行的进程</td>
+</tr>
+<tr>
+<td>W</td>
+<td>保存设置到~&#x2F;.toprc文件</td>
+</tr>
+<tr>
+<td>h</td>
+<td>显示帮助信息</td>
+</tr>
+</tbody></table>
+<h2 id="实用示例"><a href="#实用示例" class="headerlink" title="实用示例"></a>实用示例</h2><h3 id="1-监控特定进程"><a href="#1-监控特定进程" class="headerlink" title="1. 监控特定进程"></a>1. 监控特定进程</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 监控PID为1234的进程</span></span><br><span class="line">top -p 1234</span><br><span class="line"></span><br><span class="line"><span class="comment"># 监控多个进程</span></span><br><span class="line">top -p 1234,5678,9012</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-按内存使用排序"><a href="#2-按内存使用排序" class="headerlink" title="2. 按内存使用排序"></a>2. 按内存使用排序</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动top后按M键，或使用命令：</span></span><br><span class="line">top -o %MEM</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-监控系统整体性能"><a href="#3-监控系统整体性能" class="headerlink" title="3. 监控系统整体性能"></a>3. 监控系统整体性能</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 批处理模式，每2秒刷新一次，输出5次后退出</span></span><br><span class="line">top -b -d 2 -n 5 &gt; top_output.txt</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-查看线程信息"><a href="#4-查看线程信息" class="headerlink" title="4. 查看线程信息"></a>4. 查看线程信息</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 显示线程信息</span></span><br><span class="line">top -H</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示特定进程的线程</span></span><br><span class="line">top -H -p 1234</span><br></pre></td></tr></table></figure>
+
+<h2 id="性能分析技巧"><a href="#性能分析技巧" class="headerlink" title="性能分析技巧"></a>性能分析技巧</h2><ol>
+<li><p><strong>CPU分析</strong>：</p>
+<ul>
+<li>如果%us（用户态）高，说明应用程序消耗CPU</li>
+<li>如果%sy（内核态）高，说明系统调用频繁</li>
+<li>如果%wa（I&#x2F;O等待）高，说明系统存在I&#x2F;O瓶颈</li>
+</ul>
+</li>
+<li><p><strong>内存分析</strong>：</p>
+<ul>
+<li>关注used内存和avail Mem</li>
+<li>如果交换空间使用过多，说明物理内存不足</li>
+</ul>
+</li>
+<li><p><strong>进程分析</strong>：</p>
+<ul>
+<li>识别占用CPU和内存最多的进程</li>
+<li>注意是否有僵死进程（Z状态）</li>
+</ul>
+</li>
+<li><p><strong>负载分析</strong>：</p>
+<ul>
+<li>load average值不应持续超过CPU核心数</li>
+<li>1分钟、5分钟、15分钟的负载趋势可以反映系统状态</li>
+</ul>
+</li>
+</ol>
+<h2 id="与其他工具的对比"><a href="#与其他工具的对比" class="headerlink" title="与其他工具的对比"></a>与其他工具的对比</h2><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>特点</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>top</td>
+<td>实时交互式监控</td>
+<td>日常系统监控</td>
+</tr>
+<tr>
+<td>htop</td>
+<td>增强版top，界面更友好</td>
+<td>交互式监控，支持鼠标操作</td>
+</tr>
+<tr>
+<td>vmstat</td>
+<td>虚拟内存统计</td>
+<td>系统整体性能分析</td>
+</tr>
+<tr>
+<td>iostat</td>
+<td>I&#x2F;O统计</td>
+<td>存储性能分析</td>
+</tr>
+<tr>
+<td>mpstat</td>
+<td>CPU使用情况统计</td>
+<td>多CPU系统分析</td>
+</tr>
+<tr>
+<td>ps</td>
+<td>进程静态快照</td>
+<td>一次性进程查看</td>
+</tr>
+</tbody></table>
+<h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><p>top命令的配置保存在<code>~/.toprc</code>文件中，通过<code>W</code>键可以保存当前设置。</p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ol>
+<li>top命令会消耗一定的系统资源，在系统负载很高时应谨慎使用</li>
+<li>对于长期监控，建议使用批处理模式并将输出重定向到文件</li>
+<li>在多核系统上，top默认显示的是所有CPU的平均值，可以按数字键1查看每个CPU的详细情况</li>
+</ol>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://man7.org/linux/man-pages/man1/top.1.html">Linux top命令官方文档</a></li>
+<li><a href="https://www.linux.com/training-tutorials/monitoring-linux-performance-top-command/">Linux性能监控工具指南</a></li>
+</ul>
+
             </div>
           
 
