@@ -720,15 +720,20 @@ p {
 .post .post-content .highlight {
   margin: 1.5em 0;
   overflow-x: auto;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
   border: 1px solid rgb(235.25, 235.25, 235.25);
   background: #F8F8F8;
+  transition: all 0.3s ease;
+}
+.post .post-content .highlight:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
 }
 .post .post-content .highlight table {
   position: relative;
   width: 100%;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
 }
 .post .post-content .highlight table::after {
@@ -736,7 +741,7 @@ p {
   top: 0;
   right: 0;
   left: 0;
-  padding: 8px 12px;
+  padding: 10px 16px;
   font-size: 14px;
   font-weight: 600;
   color: #cacaca;
@@ -744,69 +749,74 @@ p {
   content: "Code";
   border-bottom: 1px solid rgb(222.5, 222.5, 222.5);
   font-family: "Open Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei", "Microsoft Jhenghei", sans-serif;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.post .post-content .highlight.html > ::after {
+.post .post-content .highlight.html table::after {
   content: "HTML";
 }
-.post .post-content .highlight.js > ::after {
+.post .post-content .highlight.js table::after {
   content: "JavaScript";
 }
-.post .post-content .highlight.bash > ::after {
+.post .post-content .highlight.bash table::after {
   content: "Bash";
 }
-.post .post-content .highlight.css > ::after {
+.post .post-content .highlight.css table::after {
   content: "CSS";
 }
-.post .post-content .highlight.scss > ::after {
+.post .post-content .highlight.scss table::after {
   content: "Scss";
 }
-.post .post-content .highlight.java > ::after {
+.post .post-content .highlight.java table::after {
   content: "Java";
 }
-.post .post-content .highlight.xml > ::after {
+.post .post-content .highlight.xml table::after {
   content: "XML";
 }
-.post .post-content .highlight.python > ::after {
+.post .post-content .highlight.python table::after {
   content: "Python";
 }
-.post .post-content .highlight.json > ::after {
+.post .post-content .highlight.json table::after {
   content: "JSON";
 }
-.post .post-content .highlight.swift > ::after {
+.post .post-content .highlight.swift table::after {
   content: "Swift";
 }
-.post .post-content .highlight.ruby > ::after {
+.post .post-content .highlight.ruby table::after {
   content: "Ruby";
 }
-.post .post-content .highlight.php > ::after {
+.post .post-content .highlight.php table::after {
   content: "PHP";
 }
-.post .post-content .highlight.c > ::after {
+.post .post-content .highlight.c table::after {
   content: "C";
 }
-.post .post-content .highlight.cpp > ::after {
+.post .post-content .highlight.cpp table::after {
   content: "C++";
 }
-.post .post-content .highlight.scheme > ::after {
+.post .post-content .highlight.scheme table::after {
   content: "Scheme";
 }
-.post .post-content .highlight.objectivec > ::after {
+.post .post-content .highlight.objectivec table::after {
   content: "Objective-C";
 }
-.post .post-content .highlight.yml > ::after {
+.post .post-content .highlight.yml table::after {
   content: "YAML";
 }
-.post .post-content .highlight.stylus > ::after {
+.post .post-content .highlight.stylus table::after {
   content: "Stylus";
 }
 .post .post-content .highlight .code pre {
   margin: 0;
-  padding: 20px 15px 15px;
+  padding: 40px 16px 16px 16px;
   line-height: 1.6;
   background: #F8F8F8;
+  font-family: Consolas, Monaco, "Courier New", monospace, "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei", "Microsoft Jhenghei";
 }
 .post .post-content .highlight .gutter {
-  width: 40px;
+  width: 48px;
   color: #aaa;
   background: rgb(240.35, 240.35, 240.35);
   border-right: 1px solid rgb(222.5, 222.5, 222.5);
@@ -814,7 +824,7 @@ p {
 }
 .post .post-content .highlight .gutter pre {
   margin: 0;
-  padding: 20px 10px 15px;
+  padding: 40px 12px 16px 12px;
   font-family: Consolas, Monaco, "Courier New", monospace, "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei", "Microsoft Jhenghei";
   line-height: 1.6;
 }
@@ -876,25 +886,23 @@ p {
 .post .post-content .highlight .code .deletion {
   color: #dc322f;
 }
-.post .post-content .highlight {
-  position: relative;
-}
 .post .post-content .highlight .copy-btn {
   position: absolute;
   top: 8px;
   right: 12px;
   background: #4D89FB;
   color: white;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  z-index: 10;
-  transition: all 0.2s ease;
+  z-index: 15;
+  transition: all 0.3s ease;
   opacity: 0;
   visibility: hidden;
   font-family: "Open Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei", "Microsoft Jhenghei", sans-serif;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 .post .post-content .highlight:hover .copy-btn {
   opacity: 1;
@@ -903,6 +911,10 @@ p {
 .post .post-content .highlight .copy-btn:hover {
   background: rgb(27.1208791209, 103.9340659341, 249.8791208791);
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+.post .post-content .highlight .copy-btn:active {
+  transform: translateY(0);
 }
 .post .post-content .read-more .read-more-link {
   color: #4D89FB;
